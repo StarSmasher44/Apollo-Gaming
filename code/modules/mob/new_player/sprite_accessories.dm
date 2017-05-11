@@ -936,6 +936,14 @@
 		species_allowed = list(SPECIES_VOX)
 /datum/sprite_accessory/facial_hair
 
+	// Apollo-specific
+	//Wryn antennae
+	wry_antennae_default
+		name = "Antennae"
+		icon_state = "wryn_antennae"
+		species_allowed = list("Wryn")
+
+
 	taj_sideburns
 		name = "Tajara Sideburns"
 		icon_state = "facial_sideburns"
