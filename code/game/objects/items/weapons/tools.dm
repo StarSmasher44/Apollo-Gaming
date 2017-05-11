@@ -121,7 +121,7 @@
 			var/turf/p_loc_m = C.loc
 
 			user.visible_message("<span class='notice'>[user] begins to cut off [C]'s antennae.</span>")
-			C << "<span class='alert'><B>[user] begins to cut off your antennae!<B></span>"
+			C << "<span class='alert'><B>[user] begins to cut off your antennae!</B></span>"
 			do_after(C, 150)
 			if(p_loc == user.loc && p_loc_m == C.loc)
 				qdel(C.internal_organs_by_name["antennae"])
