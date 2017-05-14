@@ -109,6 +109,8 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		if(ishuman(loc))
 			var/mob/living/carbon/human/C = loc
 			var/obj/item/toxiccycle = C.check_head_coverage()
+			if (toxiccycle && prob(50))
+				C.apply_damages(tox = 8, oxy = 8)
 				to_chat(C, "<span class='warning'>You feel toxic smoke circulate in your helmet.</span>")
 			if (src == C.wear_mask && C.check_has_mouth()) // if it's in the human/monkey mouth, transfer reagents to the mob
 				reagents.trans_to_mob(C, REM, CHEM_INGEST, 0.2) // Most of it is not inhaled... balance reasons.
