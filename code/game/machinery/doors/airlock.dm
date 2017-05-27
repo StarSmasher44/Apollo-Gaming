@@ -359,10 +359,10 @@
 		PhoronBurn(exposed_temperature)
 
 /obj/machinery/door/airlock/phoron/proc/PhoronBurn(temperature)
-	for(var/turf/simulated/floor/target_tile in range(2,loc))
+	for(var/turf/simulated/floor/target_tile in trange(2,loc))
 		target_tile.assume_gas("phoron", 35, 400+T0C)
 		spawn (0) target_tile.hotspot_expose(temperature, 400)
-	for(var/turf/simulated/wall/W in range(3,src))
+	for(var/turf/simulated/wall/W in trange(3,src))
 		W.burn((temperature/4))//Added so that you can't set off a massive chain reaction with a small flame
 	for(var/obj/machinery/door/airlock/phoron/D in range(3,src))
 		D.ignite(temperature/4)
@@ -897,13 +897,17 @@ About the new airlock wires panel:
 		return brace.attackby(C, user)
 
 	if(!brace && istype(C, /obj/item/weapon/airlock_brace))
+		var/obj/item/weapon/airlock_brace/A = C
 		if(!density)
-			to_chat(user, "You must close \the [src] before installing \the [C]!")
+			to_chat(user, "You must close \the [src] before installing \the [A]!")
+			return
+
+		if((!A.req_access.len && !A.req_one_access) && (alert("\the [A]'s 'Access Not Set' light is flashing. Install it anyway?", "Access not set", "Yes", "No") == "No"))
 			return
 
 		if(do_after(user, 50, src) && density)
-			to_chat(user, "You successfully install \the [C]. \The [src] has been locked.")
-			brace = C
+			to_chat(user, "You successfully install \the [A]. \The [src] has been locked.")
+			brace = A
 			brace.airlock = src
 			user.drop_from_inventory(brace)
 			brace.forceMove(src)
