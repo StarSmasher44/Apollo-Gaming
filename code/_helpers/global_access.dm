@@ -91,8 +91,6 @@
 			return global.REMOTEVIEWBLOCK;
 		if("SHOCKIMMUNITYBLOCK")
 			return global.SHOCKIMMUNITYBLOCK;
-		if("SKILLS")
-			return global.SKILLS;
 		if("SMALLSIZEBLOCK")
 			return global.SMALLSIZEBLOCK;
 		if("SSgarbage")
@@ -129,8 +127,6 @@
 			return global.acting_rank_prefixes;
 		if("active_diseases")
 			return global.active_diseases;
-		if("actor")
-			return global.actor;
 		if("additional_antag_types")
 			return global.additional_antag_types;
 		if("adjectives")
@@ -671,8 +667,6 @@
 			return global.hands_state;
 		if("hazard_overlays")
 			return global.hazard_overlays;
-		if("hidden_skill_types")
-			return global.hidden_skill_types;
 		if("hiss_sound")
 			return global.hiss_sound;
 		if("hit_appends")
@@ -1497,7 +1491,7 @@
 			return global.z_state;
 		if("zone_blocked")
 			return global.zone_blocked;
-		
+
 /proc/writeglobal(which, newval)
 	switch(which)
 		if("ALL_ANTIGENS")
@@ -1590,8 +1584,6 @@
 			global.REMOTEVIEWBLOCK=newval;
 		if("SHOCKIMMUNITYBLOCK")
 			global.SHOCKIMMUNITYBLOCK=newval;
-		if("SKILLS")
-			global.SKILLS=newval;
 		if("SMALLSIZEBLOCK")
 			global.SMALLSIZEBLOCK=newval;
 		if("SSgarbage")
@@ -1628,8 +1620,6 @@
 			global.acting_rank_prefixes=newval;
 		if("active_diseases")
 			global.active_diseases=newval;
-		if("actor")
-			global.actor=newval;
 		if("additional_antag_types")
 			global.additional_antag_types=newval;
 		if("adjectives")
@@ -2170,8 +2160,6 @@
 			global.hands_state=newval;
 		if("hazard_overlays")
 			global.hazard_overlays=newval;
-		if("hidden_skill_types")
-			global.hidden_skill_types=newval;
 		if("hiss_sound")
 			global.hiss_sound=newval;
 		if("hit_appends")
@@ -2996,7 +2984,7 @@
 			global.z_state=newval;
 		if("zone_blocked")
 			global.zone_blocked=newval;
-		
+
 /var/list/_all_globals=list(
 	"ALL_ANTIGENS",
 	"ANTAG_FREQS",
