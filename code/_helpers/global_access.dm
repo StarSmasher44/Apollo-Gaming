@@ -1003,8 +1003,6 @@
 			return global.spark_sound;
 		if("sparring_attack_cache")
 			return global.sparring_attack_cache;
-		if("spawntypes")
-			return global.spawntypes;
 		if("spells")
 			return global.spells;
 		if("splatter_cache")
@@ -2220,8 +2218,6 @@
 			global.spark_sound=newval;
 		if("sparring_attack_cache")
 			global.sparring_attack_cache=newval;
-		if("spawntypes")
-			global.spawntypes=newval;
 		if("spells")
 			global.spells=newval;
 		if("splatter_cache")
@@ -2936,7 +2932,6 @@
 	"spacevines_spawned",
 	"spark_sound",
 	"sparring_attack_cache",
-	"spawntypes",
 	"spells",
 	"splatter_cache",
 	"sqladdress",
