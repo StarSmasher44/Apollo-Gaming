@@ -250,6 +250,8 @@
 		return 0
 
 	var/obj/P = new /obj/effect/decal/point(tile)
+	P.pixel_x = A.pixel_x
+	P.pixel_y = A.pixel_y
 	P.invisibility = invisibility
 	spawn (20)
 		if(P)
@@ -624,6 +626,7 @@
 			stat("Local Time", stationtime2text())
 			stat("Local Date", stationdate2text())
 			stat("Round Duration", roundduration2text())
+			stat("CPU Status", cpustate)
 		if(client.holder || isghost(client.mob))
 			stat("Location:", "([x], [y], [z]) [loc]")
 
