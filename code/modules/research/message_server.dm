@@ -84,14 +84,14 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 	if(active && (stat & (BROKEN|NOPOWER)))
 		active = 0
 		power_failure = 10
-		update_icon()
+		ADD_ICON_QUEUE(src)
 		return
 	else if(stat & (BROKEN|NOPOWER))
 		return
 	else if(power_failure > 0)
 		if(!(--power_failure))
 			active = 1
-			update_icon()
+			ADD_ICON_QUEUE(src)
 
 /obj/machinery/message_server/proc/send_pda_message(var/recipient = "",var/sender = "",var/message = "")
 	var/result
@@ -319,6 +319,7 @@ var/obj/machinery/blackbox_recorder/blackbox
 //This proc is only to be called at round end.
 /obj/machinery/blackbox_recorder/proc/save_all_data_to_sql()
 	if(!feedback) return
+	return //No SQL, piss off.
 
 	round_end_data_gathering() //round_end time logging and some other data processing
 	establish_db_connection()

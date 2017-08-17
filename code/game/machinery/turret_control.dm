@@ -48,7 +48,7 @@
 	if(!control_area)
 		control_area = get_area(src)
 	else if(istext(control_area))
-		for(var/area/A in world)
+		for(var/area/A in all_areas)
 			if(A.name && A.name==control_area)
 				control_area = A
 				break
@@ -192,7 +192,7 @@
 		for (var/obj/machinery/porta_turret/aTurret in control_area)
 			aTurret.setState(TC)
 
-	update_icon()
+	ADD_ICON_QUEUE(src)
 
 /obj/machinery/turretid/power_change()
 	. = ..()

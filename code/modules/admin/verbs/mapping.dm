@@ -118,7 +118,7 @@ var/intercom_range_display_status = 0
 
 	if(intercom_range_display_status)
 		for(var/obj/item/device/radio/intercom/I in world)
-			for(var/turf/T in orange(7,I))
+			for(var/turf/T in otrange(7,I))
 				var/obj/effect/debugging/marker/F = new/obj/effect/debugging/marker(T)
 				if (!(F in view(7,I.loc)))
 					qdel(F)
@@ -138,6 +138,7 @@ var/list/debug_verbs = list (
         ,/client/proc/jump_to_dead_group
         ,/client/proc/startSinglo
         ,/client/proc/ticklag
+        ,/client/proc/set_server_fps
         ,/client/proc/cmd_admin_grantfullaccess
         ,/client/proc/cmd_admin_areatest
         ,/client/proc/cmd_admin_rejuvenate

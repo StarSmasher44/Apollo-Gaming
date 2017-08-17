@@ -40,14 +40,14 @@
 			trunk.linked = src	// link the pipe trunk to self
 
 		air_contents = new/datum/gas_mixture(PRESSURE_TANK_VOLUME)
-		update_icon()
+		ADD_ICON_QUEUE(src)
 	. = ..()
 
 /obj/machinery/disposal/Destroy()
 	eject()
 	if(trunk)
 		trunk.linked = null
-	return ..()
+	. = ..()
 
 // attack by item places it in to disposal
 /obj/machinery/disposal/attackby(var/obj/item/I, var/mob/user)
@@ -368,7 +368,7 @@
 		update_use_power(1)
 	else if(air_contents.return_pressure() >= SEND_PRESSURE)
 		mode = 2 //if full enough, switch to ready mode
-		update_icon()
+		ADD_ICON_QUEUE(src)
 	else
 		src.pressurize() //otherwise charge
 
@@ -431,7 +431,7 @@
 // called when area power changes
 /obj/machinery/disposal/power_change()
 	..()	// do default setting/reset of stat NOPOWER bit
-	update_icon()	// update icon
+	ADD_ICON_QUEUE(src)	// update icon
 	return
 
 
@@ -1278,8 +1278,8 @@
 
 	dpdir = sortdir | inactive_dir | active_dir
 
-/obj/structure/disposalpipe/diversion_junction/New()
-	..()
+/obj/structure/disposalpipe/diversion_junction/Initialize()
+	. = ..()
 
 	updatedir()
 	updatedesc()
@@ -1455,8 +1455,8 @@
 	icon_state = "pipe-t"
 	var/obj/linked 	// the linked obj/machinery/disposal or obj/disposaloutlet
 
-/obj/structure/disposalpipe/trunk/New()
-	..()
+/obj/structure/disposalpipe/trunk/Initialize()
+	. = ..()
 	dpdir = dir
 	spawn(1)
 		getlinked()
