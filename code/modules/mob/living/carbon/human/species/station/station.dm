@@ -18,6 +18,8 @@
 	spawn_flags = SPECIES_CAN_JOIN
 	appearance_flags = HAS_HAIR_COLOR | HAS_SKIN_TONE_NORMAL | HAS_LIPS | HAS_UNDERWEAR | HAS_EYE_COLOR
 
+	sexybits_location = BP_GROIN
+
 /datum/species/human/get_bodytype(var/mob/living/carbon/human/H)
 	return SPECIES_HUMAN
 
@@ -89,7 +91,7 @@
 	secondary_langs = list(LANGUAGE_UNATHI)
 	name_language = LANGUAGE_UNATHI
 	health_hud_intensity = 2
-	hunger_factor = 0.2
+	hunger_factor = DEFAULT_HUNGER_FACTOR * 3
 
 	min_age = 18
 	max_age = 260
@@ -147,26 +149,26 @@
 		return
 	if(H.nutrition < 50)
 		H.adjustToxLoss(2,0)
-	else if (H.innate_heal)
-		//Heals normal damage.
-		if (H.getBruteLoss())
-			H.adjustBruteLoss(-4)
-			H.nutrition -= 4
-		if(H.getFireLoss())
-			H.adjustFireLoss(-3)
-			H.nutrition -= 4
-		if(H.getOxyLoss())
-			H.adjustOxyLoss(-4)
-			H.nutrition -= 4
-		if(H.getToxLoss())
-			H.adjustToxLoss(-2)
-			H.nutrition -= 4
+		return
+	if(!H.innate_heal)
+		return
 
-		if(prob(10) && H.nutrition > 150 && !H.getBruteLoss() && !H.getFireLoss())
-			var/obj/item/organ/external/head/D = H.organs_by_name["head"]
-			if (D.disfigured)
-				D.disfigured = 0
-				H.nutrition -= 20
+	//Heals normal damage.
+	if(H.getBruteLoss())
+		H.adjustBruteLoss(-2 * config.organ_regeneration_multiplier)	//Heal brute better than other ouchies.
+		H.nutrition -= 1
+	if(H.getFireLoss())
+		H.adjustFireLoss(-1 * config.organ_regeneration_multiplier)
+		H.nutrition -= 1
+	if(H.getToxLoss())
+		H.adjustToxLoss(-1 * config.organ_regeneration_multiplier)
+		H.nutrition -= 1
+
+	if(prob(5) && H.nutrition > 150 && !H.getBruteLoss() && !H.getFireLoss())
+		var/obj/item/organ/external/head/D = H.organs_by_name["head"]
+		if (D.disfigured)
+			D.disfigured = 0
+			H.nutrition -= 20
 
 	if(H.nutrition <= 100)
 		return
@@ -178,26 +180,26 @@
 		if(regen_organ.robotic >= ORGAN_ROBOT)
 			continue
 		if(istype(regen_organ))
-			if(regen_organ.damage > 0)
+			if(regen_organ.damage > 0 && !(regen_organ.status & ORGAN_DEAD))
 				regen_organ.damage = max(regen_organ.damage - 5, 0)
 				H.nutrition -= 5
 				if(prob(5))
 					to_chat(H, "<span class='warning'>You feel a soothing sensation as your [regen_organ] mends...</span>")
 
-	if(prob(5) && H.nutrition > 150)
+	if(prob(2) && H.nutrition > 150)
 		for(var/limb_type in has_limbs)
 			var/obj/item/organ/external/E = H.organs_by_name[limb_type]
-			if(E && !E.is_usable())
-				E.removed()
+			if(E && E.organ_tag != BP_HEAD && !E.vital && !E.is_usable())	//Skips heads and vital bits... 
+				E.removed()			//...because no one wants their head to explode to make way for a new one.
 				qdel(E)
 				E= null
 			if(!E)
 				var/list/organ_data = has_limbs[limb_type]
 				var/limb_path = organ_data["path"]
-				var/obj/item/organ/O = new limb_path(H)
+				var/obj/item/organ/external/O = new limb_path(H)
 				organ_data["descriptor"] = O.name
 				to_chat(H, "<span class='danger'>With a shower of fresh blood, a new [O.name] forms.</span>")
-				H.visible_message("<span class='danger'>With a shower of fresh blood, a length of biomass shoots from [H], forming a new [O.name]</span>")
+				H.visible_message("<span class='danger'>With a shower of fresh blood, a length of biomass shoots from [H]'s [O.amputation_point], forming a new [O.name]!</span>")
 				H.nutrition -= 50
 				var/datum/reagent/blood/B = locate(/datum/reagent/blood) in H.vessel.reagent_list
 				blood_splatter(H,B,1)
@@ -266,6 +268,8 @@
 		"Your overheated skin itches."
 		)
 	cold_discomfort_level = 275
+
+	sexybits_location = BP_GROIN
 
 /datum/species/tajaran/equip_survival_gear(var/mob/living/carbon/human/H)
 	..()
