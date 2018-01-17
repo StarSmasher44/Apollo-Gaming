@@ -1,6 +1,5 @@
 #define PUBLIC_GAME_MODE (ticker ? (ticker.hide_mode == 0 ? master_mode : "Secret") : "Unknown")
 
-#define Clamp(value, low, high) 	(value <= low ? low : (value >= high ? high : value))
 #define CLAMP01(x) 		(Clamp(x, 0, 1))
 
 #define get_turf(A) get_step(A,0)
@@ -75,6 +74,20 @@
 #define isairlock(A) istype(A, /obj/machinery/door/airlock)
 
 #define isopenspace(A) istype(A, /turf/simulated/open)
+
+#define isWrench(A) istype(A, /obj/item/weapon/wrench)
+
+#define isWelder(A) istype(A, /obj/item/weapon/weldingtool)
+
+#define isCoil(A) istype(A, /obj/item/stack/cable_coil)
+
+#define isWirecutter(A) istype(A, /obj/item/weapon/wirecutters)
+
+#define isScrewdriver(A) istype(A, /obj/item/weapon/screwdriver)
+
+#define isMultitool(A) istype(A, /obj/item/device/multitool)
+
+#define isCrowbar(A) istype(A, /obj/item/weapon/crowbar)
 
 #define sequential_id(key) uniqueness_repository.Generate(/datum/uniqueness_generator/id_sequential, key)
 

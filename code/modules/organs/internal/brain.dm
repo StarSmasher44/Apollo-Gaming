@@ -21,7 +21,7 @@
 	var/healed_threshold = 1
 
 /obj/item/organ/internal/brain/robotize()
-	replace_self_with(/obj/item/organ/internal/mmi_holder/posibrain)
+	replace_self_with(/obj/item/organ/internal/posibrain)
 
 /obj/item/organ/internal/brain/mechassist()
 	replace_self_with(/obj/item/organ/internal/mmi_holder)
@@ -186,14 +186,15 @@
 
 			if(owner.is_asystole()) // Heart is missing or isn't beating and we're not breathing (hardcrit)
 				owner.Paralyse(3)
-			var/can_heal = damage && (damage % damage_threshold_value || owner.chem_effects[CE_BRAIN_REGEN] || (!past_damage_threshold(3) && owner.chem_effects[CE_STABLE]))
+			var/can_heal = damage && damage < max_damage && (damage % damage_threshold_value || owner.chem_effects[CE_BRAIN_REGEN] || (!past_damage_threshold(3) && owner.chem_effects[CE_STABLE]))
 			var/damprob
 			//Effects of bloodloss
 			switch(blood_volume)
 
 				if(BLOOD_VOLUME_SAFE to INFINITY)
 					if(can_heal)
-						damage--
+						if(prob(1)) //Not always heal. ~L: Set to 1 because brain damage doesn't fix itself bro..
+							damage--
 				if(BLOOD_VOLUME_OKAY to BLOOD_VOLUME_SAFE)
 					if(prob(1))
 						to_chat(owner, "<span class='warning'>You feel [pick("dizzy","woozy","faint")]...</span>")
@@ -212,7 +213,7 @@
 					owner.eye_blurry = max(owner.eye_blurry,6)
 					damprob = owner.chem_effects[CE_STABLE] ? 60 : 100
 					if(!past_damage_threshold(6) && prob(damprob))
-						take_damage(1)
+						take_damage(rand(1, 3))
 					if(!owner.paralysis && prob(15))
 						owner.Paralyse(3,5)
 						to_chat(owner, "<span class='warning'>You feel extremely [pick("dizzy","woozy","faint")]...</span>")
@@ -220,5 +221,5 @@
 					owner.eye_blurry = max(owner.eye_blurry,6)
 					damprob = owner.chem_effects[CE_STABLE] ? 80 : 100
 					if(prob(damprob))
-						take_damage(1)
+						take_damage(rand(1, 4))
 	..()

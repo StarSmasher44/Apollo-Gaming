@@ -83,7 +83,8 @@
 	if(check_area)
 		return check_area.powered(chan)			// return power status of the area
 	else
-		return MyArea.powered(chan)			// return power status of the area
+		if(MyArea)
+			return MyArea.powered(chan)			// return power status of the area
 
 // increment the power usage stats for an area
 /obj/machinery/proc/use_power(var/amount, var/chan = -1) // defaults to power_channel

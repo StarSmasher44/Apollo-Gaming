@@ -174,7 +174,7 @@
 
 
 /obj/machinery/power/shield_generator/attackby(obj/item/O as obj, mob/user as mob)
-	if(panel_open && (istype(O, /obj/item/device/multitool) || istype(O, /obj/item/weapon/wirecutters)))
+	if(panel_open && isMultitool(O) || isWirecutter(O))
 		attack_hand(user)
 		return
 
@@ -426,7 +426,7 @@
 
 	for(var/turf/gen_turf in base_turfs)
 		var/area/TA = null // Variable for area checking. Defining it here so memory does not have to be allocated repeatedly.
-		for(var/turf/T in trange(field_radius, gen_turf))
+		for(var/turf/T in RANGE_TURFS(field_radius, gen_turf))
 			// Don't expand to space or on shuttle areas.
 			if(istype(T, /turf/space) || istype(T, /turf/simulated/open))
 				continue

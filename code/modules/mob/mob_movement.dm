@@ -286,13 +286,13 @@
 				move_delay += 7+config.walk_speed
 		move_delay += mob.movement_delay()
 		for(var/obj/M in mob.loc)
-			if(istype(M, /obj/structure/bed) || istype(M, /obj/item/weapon/stool))
+			if(istype(M, /obj/structure/bed) || istype(M, /obj/item/weapon/stool) && !istype(M, /obj/structure/bed/chair/wheelchair))
 				move_delay += 2
-				if(prob(2))
+				if(prob(1) && prob(33))
 					mob.visible_message("<span class='notice'>[mob.name] trips and falls over the [M.name]!.</span>")
 					to_chat(mob, "<span class='warning'>You trip and fall over the [M.name]!</span>")
-					mob.weakened = 5
-					mob:apply_damage(rand(3, 6), BRUTE)
+					mob.weakened = rand(2, 3)
+					mob:apply_damage(rand(2, 4), BRUTE)
 
 		if(istype(mob.buckled, /obj/vehicle))
 			//manually set move_delay for vehicles so we don't inherit any mob movement penalties
@@ -328,6 +328,9 @@
 							if(prob(25))	direct = turn(direct, pick(90, -90))
 				move_delay += 2
 				return mob.buckled.relaymove(mob,direct)
+
+		if(mob.check_slipmove())
+			return
 
 		//We are now going to move
 		moving = 1
@@ -453,7 +456,7 @@
 
 	var/shoegrip = Check_Shoegrip()
 
-	for(var/turf/simulated/T in trange(1,src)) //we only care for non-space turfs
+	for(var/turf/simulated/T in RANGE_TURFS(1,src)) //we only care for non-space turfs
 		if(T.density)	//walls work
 			return 1
 		else
@@ -490,28 +493,27 @@
 
 #define DO_MOVE(this_dir) var/final_dir = turn(this_dir, -dir2angle(dir)); Move(get_step(mob, final_dir), final_dir);
 
+/mob/proc/check_slipmove()
+	return
+
 /client/verb/moveup()
 	set name = ".moveup"
 	set instant = 1
-	set waitfor = 0
 	DO_MOVE(NORTH)
 
 /client/verb/movedown()
 	set name = ".movedown"
 	set instant = 1
-	set waitfor = 0
 	DO_MOVE(SOUTH)
 
 /client/verb/moveright()
 	set name = ".moveright"
 	set instant = 1
-	set waitfor = 0
 	DO_MOVE(EAST)
 
 /client/verb/moveleft()
 	set name = ".moveleft"
 	set instant = 1
-	set waitfor = 0
 	DO_MOVE(WEST)
 
 #undef DO_MOVE

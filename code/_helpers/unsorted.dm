@@ -884,46 +884,6 @@ var/global/list/common_tools = list(
 		return 1
 	return 0
 
-/proc/iswrench(O)
-	if(istype(O, /obj/item/weapon/wrench))
-		return 1
-	return 0
-
-/proc/iswelder(O)
-	if(istype(O, /obj/item/weapon/weldingtool))
-		return 1
-	return 0
-
-/proc/iscoil(O)
-	if(istype(O, /obj/item/stack/cable_coil))
-		return 1
-	return 0
-
-/proc/iswirecutter(O)
-	if(istype(O, /obj/item/weapon/wirecutters))
-		return 1
-	return 0
-
-/proc/isscrewdriver(O)
-	if(istype(O, /obj/item/weapon/screwdriver))
-		return 1
-	return 0
-
-/proc/ismultitool(O)
-	if(istype(O, /obj/item/device/multitool))
-		return 1
-	return 0
-
-/proc/iscrowbar(O)
-	if(istype(O, /obj/item/weapon/crowbar))
-		return 1
-	return 0
-
-/proc/iswire(O)
-	if(istype(O, /obj/item/stack/cable_coil))
-		return 1
-	return 0
-
 proc/is_hot(obj/item/W as obj)
 	switch(W.type)
 		if(/obj/item/weapon/weldingtool)
@@ -1048,7 +1008,7 @@ var/list/WALLITEMS = list(
 	/obj/machinery/status_display, /obj/machinery/requests_console, /obj/machinery/light_switch, /obj/structure/sign,
 	/obj/machinery/newscaster, /obj/machinery/firealarm, /obj/structure/noticeboard,
 	/obj/item/weapon/storage/secure/safe, /obj/machinery/door_timer, /obj/machinery/flasher, /obj/machinery/keycard_auth,
-	/obj/structure/mirror, /obj/structure/fireaxecabinet
+	/obj/structure/mirror, /obj/structure/fireaxecabinet, /obj/structure/filingcabinet/wallcabinet
 	)
 /proc/gotwallitem(loc, dir)
 	for(var/obj/O in loc)
@@ -1138,70 +1098,17 @@ GLOBAL_DATUM_INIT(dview_mob, /mob/dview, new)
 // call to generate a stack trace and print to runtime logs
 /proc/crash_with(msg)
 	CRASH(msg)
-
+/*
 /proc/spiral_range_turfs2(dist=0, center=usr, tick_checked)
 	. = list()
 	var/dist2 = 1
 	if(!center)	return .
-	for(var/T in trange(dist, center))
+	for(var/T in RANGE_TURFS(dist, center))
 		var/turf/TU = T
 		if(get_dist(TU, center) == dist2)
 			. += TU
 
 		dist++
-
-//similar function to RANGE_TURFS(), but will search spiralling outwards from the center (like the above, but only turfs)
-/proc/spiral_range_turfs(dist=0, center=usr, orange=0, tick_checked)
-	. = list()
-	if(!dist)
-		. += center
-		return .
-
-	var/turf/t_center = get_turf(center)
-	if(!t_center)
-		return .
-
-	var/turf/T
-	var/y
-	var/x
-	var/c_dist = 1
-
-	if(!orange)
-		. += t_center
-
-	while( c_dist <= dist )
-		y = t_center.y + c_dist
-		x = t_center.x - c_dist + 1
-		for(x in x to t_center.x+c_dist)
-			T = locate(x,y,t_center.z)
-			if(T)
-				. += T
-
-		y = t_center.y + c_dist - 1
-		x = t_center.x + c_dist
-		for(y in t_center.y-c_dist to y)
-			T = locate(x,y,t_center.z)
-			if(T)
-				. += T
-
-		y = t_center.y - c_dist
-		x = t_center.x + c_dist - 1
-		for(x in t_center.x-c_dist to x)
-			T = locate(x,y,t_center.z)
-			if(T)
-				. += T
-
-		y = t_center.y - c_dist + 1
-		x = t_center.x - c_dist
-		for(y in y to t_center.y+c_dist)
-			T = locate(x,y,t_center.z)
-			if(T)
-				. += T
-		c_dist++
-		if(tick_checked)
-			CHECK_TICK
-
-	return .
-
+*/
 /proc/pass()
 	return

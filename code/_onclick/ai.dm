@@ -25,11 +25,12 @@
 	if(incapacitated(INCAPACITATION_KNOCKDOWN))
 		if(isturf(A)) // If its a turf and our little spaceman is downed
 			visible_message("<span class='danger'>\The [src] is trying to crawl to the [A.name]</span>")
-			if(do_after(src, rand(20,45), A, needhand = 1))
+			var/crawltime = rand(20, 45)
+			if(do_after(src, crawltime, A, incapacitation_flags = 0))
 				visible_message("<span class='danger'>[src] crawls away to the [A.name]!</span>")
 				if(src.pull_damage())
 					if(prob(50))
-						adjustBruteLoss(rand(2, 5))
+						adjustBruteLoss(rand(1, 4))
 						visible_message("<span class='danger'>\The [src]'s [src.isSynthetic() ? "state" : "wounds"] worsen terribly from being dragged across the floor!</span>")
 						A.add_blood(src)
 						var/blood_volume = round(src.vessel.get_reagent_amount(/datum/reagent/blood))
@@ -56,6 +57,9 @@
 		return
 
 	var/list/modifiers = params2list(params)
+	if(modifiers["ctrl"] && modifiers["alt"])
+		CtrlAltClickOn(A)
+		return
 	if(modifiers["shift"] && modifiers["ctrl"])
 		CtrlShiftClickOn(A)
 		return
@@ -118,6 +122,11 @@
 	for AI shift, ctrl, and alt clicking.
 */
 
+/mob/living/silicon/ai/CtrlAltClickOn(var/atom/A)
+	if(!control_disabled && A.AICtrlAltClick(src))
+		return
+	..()
+
 /mob/living/silicon/ai/ShiftClickOn(var/atom/A)
 	if(!control_disabled && A.AIShiftClick(src))
 		return
@@ -142,6 +151,17 @@
 	The following criminally helpful code is just the previous code cleaned up;
 	I have no idea why it was in atoms.dm instead of respective files.
 */
+
+/atom/proc/AICtrlAltClick()
+
+/obj/machinery/door/airlock/AICtrlAltClick() // Electrifies doors.
+	if(!electrified_until)
+		// permanent shock
+		Topic(src, list("command"="electrify_permanently", "activate" = "1"))
+	else
+		// disable/6 is not in Topic; disable/5 disables both temporary and permanent shock
+		Topic(src, list("command"="electrify_permanently", "activate" = "0"))
+	return 1
 
 /atom/proc/AICtrlShiftClick()
 	return
@@ -177,21 +197,12 @@
 /atom/proc/AIAltClick(var/atom/A)
 	return AltClick(A)
 
-/obj/machinery/door/airlock/AIAltClick() // Electrifies doors.
-	if(!electrified_until)
-		// permanent shock
-		Topic(src, list("command"="electrify_permanently", "activate" = "1"))
-	else
-		// disable/6 is not in Topic; disable/5 disables both temporary and permanent shock
-		Topic(src, list("command"="electrify_permanently", "activate" = "0"))
-	return 1
-
 /obj/machinery/turretid/AIAltClick() //toggles lethal on turrets
 	Topic(src, list("command"="lethal", "value"="[!lethal]"))
 	return 1
 
-/obj/machinery/teleport/station/AIAltClick()
-	testfire()
+/obj/machinery/atmospherics/binary/pump/AIAltClick()
+	return AltClick()
 
 /atom/proc/AIMiddleClick(var/mob/living/silicon/user)
 	return 0

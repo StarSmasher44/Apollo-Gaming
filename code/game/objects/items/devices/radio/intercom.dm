@@ -9,7 +9,7 @@
 	flags = CONDUCT | NOBLOODY
 	layer = ABOVE_WINDOW_LAYER
 	var/number = 0
-	var/last_tick //used to delay the powercheck
+	var/next_tick = 0 //used to delay the powercheck
 	var/area/MyArea
 
 /obj/item/device/radio/intercom/get_storage_cost()
@@ -125,8 +125,8 @@
 	return canhear_range
 
 /obj/item/device/radio/intercom/Process()
-	if(((world.timeofday - last_tick) > 40) || ((world.timeofday - last_tick) < 0))
-		last_tick = world.timeofday
+	if(next_tick < world.time)
+		next_tick = world.time + 45
 
 		if(!src.loc || !MyArea)
 			on = 0
@@ -144,19 +144,18 @@
 /obj/item/device/radio/intercom/locked
 	var/locked_frequency
 
-/obj/item/device/radio/intercom/locked/set_frequency(var/frequency)
-	if(frequency == locked_frequency)
-		..(locked_frequency)
+/obj/item/device/radio/intercom/locked/set_frequency()
+	..(locked_frequency)
 
 /obj/item/device/radio/intercom/locked/list_channels()
 	return ""
 
 /obj/item/device/radio/intercom/locked/ai_private
 	name = "\improper AI intercom"
-	frequency = AI_FREQ
+	locked_frequency = AI_FREQ
 	broadcasting = 1
 	listening = 1
 
 /obj/item/device/radio/intercom/locked/confessional
 	name = "confessional intercom"
-	frequency = 1480
+	locked_frequency = 1480

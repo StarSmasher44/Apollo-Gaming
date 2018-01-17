@@ -23,12 +23,12 @@
 	if(!istype(start))
 		to_chat(src, "<span class='notice'>You are unable to move from here.</span>")
 		return 0
-		
+
 	var/turf/destination = (direction == UP) ? GetAbove(src) : GetBelow(src)
 	if(!destination)
 		to_chat(src, "<span class='notice'>There is nothing of interest in this direction.</span>")
 		return 0
-	
+
 	if(!start.CanZPass(src, direction))
 		to_chat(src, "<span class='warning'>\The [start] is in the way.</span>")
 		return 0
@@ -82,7 +82,7 @@
 		return 1
 
 	if(Check_Shoegrip())	//scaling hull with magboots
-		for(var/turf/simulated/T in trange(1,src))
+		for(var/turf/simulated/T in RANGE_TURFS(1,src))
 			if(T.density)
 				return 1
 
@@ -93,7 +93,7 @@
 	if(Allow_Spacemove()) //Checks for active jetpack
 		return 1
 
-	for(var/turf/simulated/T in trange(1,src)) //Robots get "magboots"
+	for(var/turf/simulated/T in RANGE_TURFS(1,src)) //Robots get "magboots"
 		if(T.density)
 			return 1
 
@@ -131,7 +131,7 @@
 	if(anchored && !anchor_bypass)
 		return FALSE
 
-	if(locate(/obj/structure/lattice, loc))
+	if(locate(/obj/structure/lattice, loc) || locate(/obj/structure/catwalk, loc))
 		return FALSE
 
 	// See if something prevents us from falling.
