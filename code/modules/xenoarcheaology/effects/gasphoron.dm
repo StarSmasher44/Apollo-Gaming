@@ -9,11 +9,11 @@
 /datum/artifact_effect/gasphoron/DoEffectTouch(var/mob/user)
 	if(holder)
 		var/turf/holder_loc = holder.loc
-		if(istype(holder_loc))
+		if(isturf(holder_loc))
 			holder_loc.assume_gas("phoron", rand(2, 15))
 
 /datum/artifact_effect/gasphoron/DoEffectAura()
 	if(holder)
 		var/turf/holder_loc = holder.loc
-		if(istype(holder_loc))
+		if(isturf(holder_loc))
 			holder_loc.assume_gas("phoron", pick(0, 0, 0.1, rand()))

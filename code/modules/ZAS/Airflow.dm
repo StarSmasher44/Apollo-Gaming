@@ -89,7 +89,7 @@ obj/check_airflow_movable(n)
 	if(airflow_speed > 0 && airflow_dest)
 		if(airborne_acceleration > 1)
 			airflow_hit(A)
-		else if(istype(src, /mob/living/carbon/human))
+		else if(ishuman(src))
 			to_chat(src, "<span class='notice'>You are pinned against [A] by airflow!</span>")
 			airborne_acceleration = 0
 	else
@@ -107,7 +107,7 @@ mob/airflow_hit(atom/A)
 	for(var/mob/M in hearers(src))
 		M.show_message("<span class='danger'>\The [src] slams into \a [A]!</span>",1,"<span class='danger'>You hear a loud slam!</span>",2)
 	playsound(src.loc, "smash.ogg", 25, 1, -1)
-	var/weak_amt = istype(A,/obj/item) ? A:w_class : rand(1,5) //Heheheh
+	var/weak_amt = isitem(A) ? A:w_class : rand(1,5) //Heheheh
 	Weaken(weak_amt)
 	. = ..()
 

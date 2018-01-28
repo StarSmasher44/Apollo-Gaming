@@ -23,7 +23,7 @@
 	attack_hand(user)
 
 /obj/structure/droppod_door/attack_generic(var/mob/user)
-	if(istype(user))
+	if(ismob(user))
 		attack_hand(user)
 
 /obj/structure/droppod_door/attack_hand(var/mob/user)

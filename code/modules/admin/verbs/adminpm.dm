@@ -41,7 +41,7 @@
 		to_chat(src, "<span class='warning'>Error: Private-Message: You are unable to use PM-s (muted).</span>")
 		return
 
-	if(!istype(C,/client))
+	if(!isclient(C))
 		if(holder)	to_chat(src, "<span class='warning'>Error: Private-Message: Client not found.</span>")
 		else		to_chat(src, "<span class='warning'>Error: Private-Message: Client not found. They may have lost connection, so please be patient!</span>")
 		return

@@ -128,7 +128,7 @@ default behaviour is:
 		now_pushing = 0
 		spawn(0)
 			..()
-			if (!istype(AM, /atom/movable) || AM.anchored)
+			if (!ismovable(AM) || AM.anchored)
 				if(confused && prob(50) && m_intent=="run")
 					Weaken(2)
 					playsound(loc, "punch", 25, 1, -1)
@@ -144,7 +144,7 @@ default behaviour is:
 						now_pushing = 0
 						return
 				step(AM, t)
-				if (istype(AM, /mob/living))
+				if (isliving(AM))
 					var/mob/living/tmob = AM
 					if(istype(tmob.buckled, /obj/structure/bed))
 						if(!tmob.buckled.anchored)
@@ -225,7 +225,7 @@ default behaviour is:
 		temperature -= change
 		if(actual < desired)
 			temperature = desired
-//	if(istype(src, /mob/living/carbon/human))
+//	if(ishuman(src))
 //		log_debug("[src] ~ [src.bodytemperature] ~ [temperature]")
 
 	return temperature
@@ -531,13 +531,13 @@ default behaviour is:
 						var/atom/movable/t = M.pulling
 						M.stop_pulling()
 
-						if(!istype(M.loc, /turf/space))
+						if(!isspace(M.loc))
 							var/area/A = get_area(M)
 							if(A.has_gravity)
 								//this is the gay blood on floor shit -- Added back -- Skie
 								if (M.lying && (prob(M.getBruteLoss() / 6)))
 									var/turf/location = M.loc
-									if (istype(location, /turf/simulated))
+									if (issimturf(location))
 										location.add_blood(M)
 								//pull damage with injured people
 									if(prob(25))
@@ -548,7 +548,7 @@ default behaviour is:
 										M.adjustBruteLoss(2)
 										visible_message("<span class='danger'>\The [M]'s [M.isSynthetic() ? "state" : "wounds"] worsen terribly from being dragged!</span>")
 										var/turf/location = M.loc
-										if (istype(location, /turf/simulated))
+										if (issimturf(location))
 											location.add_blood(M)
 											if(ishuman(M))
 												var/mob/living/carbon/human/H = M
@@ -612,7 +612,7 @@ default behaviour is:
 
 	var/mob/M = H.loc //Get our mob holder (if any).
 
-	if(istype(M))
+	if(ismob(M))
 		M.drop_from_inventory(H)
 		to_chat(M, "<span class='warning'>\The [H] wriggles out of your grip!</span>")
 		to_chat(src, "<span class='warning'>You wriggle out of \the [M]'s grip!</span>")
@@ -628,7 +628,7 @@ default behaviour is:
 			holster.clear_holster()
 		to_chat(src, "<span class='warning'>You extricate yourself from \the [holster].</span>")
 		H.forceMove(get_turf(H))
-	else if(istype(H.loc,/obj))
+	else if(isobj(H.loc))
 		if(istype(H.loc, /obj/machinery/cooker))
 			var/obj/machinery/cooker/C = H.loc
 			C.cooking_obj = null

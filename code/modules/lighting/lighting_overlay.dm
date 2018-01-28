@@ -46,7 +46,7 @@
 		qdel(src, TRUE)
 		return
 /*
-	if(!istype(T))
+	if(!isturf(T))
 		if(loc)
 			log_debug("A lighting overlay realised its loc was NOT a turf (actual loc: [loc][loc ? ", " + loc.type : "null"]) in update_overlay() and got qdel'ed!")
 		else

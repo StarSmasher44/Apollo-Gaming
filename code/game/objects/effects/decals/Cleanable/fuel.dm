@@ -39,7 +39,7 @@
 	//The spread for flamethrower fuel is much more precise, to create a wide fire pattern.
 	if(amount < 0.1) return
 	var/turf/simulated/S = loc
-	if(!istype(S)) return
+	if(!issimturf(S)) return
 
 	for(var/d in list(turn(dir,90),turn(dir,-90), dir))
 		var/turf/simulated/O = get_step(S,d)

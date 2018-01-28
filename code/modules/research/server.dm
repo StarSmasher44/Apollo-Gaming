@@ -97,7 +97,7 @@
 
 	if(!(stat & (NOPOWER|BROKEN))) //Blatently stolen from telecoms
 		var/turf/simulated/L = loc
-		if(istype(L))
+		if(issimturf(L))
 			var/datum/gas_mixture/env = L.return_air()
 
 			var/transfer_moles = 0.25 * env.total_moles

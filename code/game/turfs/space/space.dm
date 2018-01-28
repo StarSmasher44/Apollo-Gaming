@@ -26,12 +26,12 @@
 	if(!HasBelow(z))
 		return
 	var/turf/below = GetBelow(src)
-	if(istype(below, /turf/space))
+	if(isspace(below))
 		return
 	var/area/A = below.loc
 	if(A.flags & AREA_EXTERNAL)
 		return
-	if(!below.density && istype(below.loc, /area/space))
+	if(!below.density && isspacearea(below.loc))
 		return
 
 	return INITIALIZE_HINT_LATELOAD // oh no! we need to switch to being a different kind of turf!

@@ -199,11 +199,11 @@
 		return
 
 	var/mob/living/carbon/human/H = M
-	if(istype(H) && H.lying)
+	if(ishuman(H) && H.lying)
 		cuff_target(H)
 		return
 
-	if(istype(M, /mob/living/simple_animal))
+	if(isanimal(M))
 		a_intent = I_HURT
 	else
 		a_intent = I_GRAB
@@ -238,7 +238,7 @@
 	return "unidentified lifeform"
 
 /mob/living/bot/secbot/proc/check_threat(var/mob/living/M)
-	if(!M || !istype(M) || M.stat == DEAD || src == M)
+	if(!M || !isliving(M) || M.stat == DEAD || src == M)
 		return 0
 
 	if(emagged && !M.incapacitated()) //check incapacitated so emagged secbots don't keep attacking the same target forever

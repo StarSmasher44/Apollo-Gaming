@@ -170,11 +170,11 @@
 
 /datum/trader/proc/hail(var/mob/user)
 	var/specific
-	if(istype(user, /mob/living/carbon/human))
+	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(H.species)
 			specific = H.species.name
-	else if(istype(user, /mob/living/silicon))
+	else if(issilicon(user))
 		specific = "silicon"
 	if(!speech["hail_[specific]"])
 		specific = "generic"
@@ -205,10 +205,10 @@
 /datum/trader/proc/trade(var/list/offers, var/num, var/turf/location)
 	if(offers && offers.len)
 		for(var/offer in offers)
-			if(istype(offer,/mob))
+			if(ismob(offer))
 				var/text = mob_transfer_message
 				to_chat(offer, replacetext(text, "ORIGIN", origin))
-			if(istype(offer, /obj/mecha))
+			if(ismecha(offer))
 				var/obj/mecha/M = offer
 				M.wreckage = null //So they don't ruin the illusion
 			qdel(offer)

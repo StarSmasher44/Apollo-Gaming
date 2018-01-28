@@ -21,7 +21,7 @@
 
 /obj/item/projectile/energy/flash/on_impact(var/atom/A)
 	var/turf/T = flash_range? src.loc : get_turf(A)
-	if(!istype(T)) return
+	if(!isturf(T)) return
 
 	//blind and confuse adjacent people
 	for (var/mob/living/carbon/M in viewers(T, flash_range))

@@ -71,7 +71,7 @@
 	var/price = 100
 	var/mob/living/silicon/ai/user = usr
 
-	if(target && !istype(target))
+	if(target && !isrobot(target))
 		to_chat(user, "This is not a camera.")
 		return
 
@@ -95,7 +95,7 @@
 	set category = "Software"
 	var/price = 275
 	var/mob/living/silicon/ai/user = usr
-	if(!T || !istype(T))
+	if(!T || !isturf(T))
 		return
 	if(!ability_prechecks(user, price) || !ability_pay(user, price))
 		return
@@ -145,7 +145,7 @@
 				else
 					to_chat(user, "<span class='notice'>ERROR: SMES RCon error - Unable to reach destination. Please verify wire connection.</span>")
 				return
-	else if(M && istype(M)) // Not power machinery, so it's a regular machine instead. These have weak explosions.
+	else if(M && ismachine(M)) // Not power machinery, so it's a regular machine instead. These have weak explosions.
 		if(!M.use_power) // Not using power at all
 			to_chat(user, "<span class='notice'>ERROR: No power grid connection. Unable to overload.</span>")
 			return

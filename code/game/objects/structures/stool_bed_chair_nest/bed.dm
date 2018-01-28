@@ -93,7 +93,7 @@
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		dismantle()
 		qdel(src)
-	else if(istype(W,/obj/item/stack))
+	else if(isstack(W))
 		if(padding_material)
 			to_chat(user, "\The [src] is already padded.")
 			return
@@ -113,7 +113,7 @@
 			to_chat(user, "You cannot pad \the [src] with that.")
 			return
 		C.use(1)
-		if(!istype(src.loc, /turf))
+		if(!isturf(src.loc))
 			user.drop_from_inventory(src)
 			src.loc = get_turf(src)
 		to_chat(user, "You add padding to \the [src].")
@@ -192,7 +192,7 @@
 	return // Doesn't care about material or anything else.
 
 /obj/structure/bed/roller/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(isWrench(W) || istype(W,/obj/item/stack) || isWirecutter(W))
+	if(isWrench(W) || isstack(W) || isWirecutter(W))
 		return
 	else if(istype(W,/obj/item/roller_holder))
 		if(buckled_mob)

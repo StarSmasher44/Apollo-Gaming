@@ -71,7 +71,7 @@ var/list/mining_floors = list()
 		if(update_neighbors && istype(turf_to_check,/turf/simulated/floor/asteroid))
 			var/turf/simulated/floor/asteroid/T = turf_to_check
 			T.updateMineralOverlays()
-		else if(istype(turf_to_check,/turf/space) || istype(turf_to_check,/turf/simulated/floor))
+		else if(isspace(turf_to_check) || istype(turf_to_check,/turf/simulated/floor))
 			var/image/rock_side = image('icons/turf/walls.dmi', "rock_side", dir = turn(direction, 180))
 			rock_side.turf_decal_layerise()
 			switch(direction)
@@ -116,19 +116,19 @@ var/list/mining_floors = list()
 
 /turf/simulated/mineral/Bumped(AM)
 	. = ..()
-	if(istype(AM,/mob/living/carbon/human))
+	if(ishuman(AM))
 		var/mob/living/carbon/human/H = AM
 		if((istype(H.l_hand,/obj/item/weapon/pickaxe)) && (!H.hand))
 			attackby(H.l_hand,H)
 		else if((istype(H.r_hand,/obj/item/weapon/pickaxe)) && H.hand)
 			attackby(H.r_hand,H)
 
-	else if(istype(AM,/mob/living/silicon/robot))
+	else if(isrobot(AM))
 		var/mob/living/silicon/robot/R = AM
 		if(istype(R.module_active,/obj/item/weapon/pickaxe))
 			attackby(R.module_active,R)
 
-	else if(istype(AM,/obj/mecha))
+	else if(ismecha(AM))
 		var/obj/mecha/M = AM
 		if(istype(M.selected,/obj/item/mecha_parts/mecha_equipment/tool/drill))
 			M.selected.action(src)
@@ -154,7 +154,7 @@ var/list/mining_floors = list()
 //Not even going to touch this pile of spaghetti
 /turf/simulated/mineral/attackby(obj/item/weapon/W as obj, mob/user as mob)
 
-	if (!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
+	if (!(ishuman(usr) || ticker) && ticker.mode.name != "monkey")
 		to_chat(usr, "<span class='warning'>You don't have the dexterity to do this!</span>")
 		return
 
@@ -177,7 +177,7 @@ var/list/mining_floors = list()
 		return
 
 	if (istype(W, /obj/item/weapon/pickaxe))
-		if(!istype(user.loc, /turf))
+		if(!isturf(user.loc))
 			return
 
 		var/obj/item/weapon/pickaxe/P = W
@@ -478,7 +478,7 @@ var/list/mining_floors = list()
 			return
 
 		var/turf/T = user.loc
-		if (!(istype(T)))
+		if (!(isturf(T)))
 			return
 
 		to_chat(user, "<span class='warning'>You start digging.</span>")
@@ -525,7 +525,7 @@ var/list/mining_floors = list()
 	var/list/step_overlays = list("n" = NORTH, "s" = SOUTH, "e" = EAST, "w" = WEST)
 	for(var/direction in step_overlays)
 
-		if(istype(get_step(src, step_overlays[direction]), /turf/space))
+		if(isspace(get_step(src, step_overlays[direction])))
 			var/image/aster_edge = image('icons/turf/flooring/asteroid.dmi', "asteroid_edges", dir = step_overlays[direction])
 			aster_edge.turf_decal_layerise()
 			overlays += aster_edge
@@ -551,7 +551,7 @@ var/list/mining_floors = list()
 
 /turf/simulated/floor/asteroid/Entered(atom/movable/M as mob|obj)
 	..()
-	if(istype(M,/mob/living/silicon/robot))
+	if(isrobot(M))
 		var/mob/living/silicon/robot/R = M
 		if(R.module)
 			if(istype(R.module_state_1,/obj/item/weapon/storage/ore))

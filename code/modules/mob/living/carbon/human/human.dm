@@ -439,10 +439,10 @@
 
 					spawn()
 						BITSET(hud_updateflag, WANTED_HUD)
-						if(istype(usr,/mob/living/carbon/human))
+						if(ishuman(usr))
 							var/mob/living/carbon/human/U = usr
 							U.handle_regular_hud_updates()
-						if(istype(usr,/mob/living/silicon/robot))
+						if(isrobot(usr))
 							var/mob/living/silicon/robot/U = usr
 							U.handle_regular_hud_updates()
 
@@ -493,10 +493,10 @@
 					modified = 1
 
 					spawn()
-						if(istype(usr,/mob/living/carbon/human))
+						if(ishuman(usr))
 							var/mob/living/carbon/human/U = usr
 							U.handle_regular_hud_updates()
-						if(istype(usr,/mob/living/silicon/robot))
+						if(isrobot(usr))
 							var/mob/living/silicon/robot/U = usr
 							U.handle_regular_hud_updates()
 
@@ -667,7 +667,7 @@
 					playsound(loc, 'sound/effects/splat.ogg', 50, 1)
 
 					var/turf/location = loc
-					if (istype(location, /turf/simulated))
+					if (issimturf(location))
 						location.add_vomit_floor(src, toxvomit)
 					ingested.remove_any(5)
 					nutrition -= 30
@@ -986,7 +986,7 @@
 			if(client.eye == shadow)
 				reset_view(0)
 				return
-			if(istype(above, /turf/simulated/open))
+			if(isopenspace(above))
 				to_chat(src, "<span class='notice'>You look up.</span>")
 				if(client)
 					reset_view(shadow)
@@ -1116,14 +1116,14 @@
 		return
 
 	var/turf/simulated/T = src.loc
-	if (!istype(T)) //to prevent doodling out of mechs and lockers
+	if (!issimturf(T)) //to prevent doodling out of mechs and lockers
 		to_chat(src, "<span class='warning'>You cannot reach the floor.</span>")
 		return
 
 	var/direction = input(src,"Which way?","Tile selection") as anything in list("Here","North","South","East","West")
 	if (direction != "Here")
 		T = get_step(T,text2dir(direction))
-	if (!istype(T))
+	if (!issimturf(T))
 		to_chat(src, "<span class='warning'>You cannot doodle there.</span>")
 		return
 
@@ -1391,7 +1391,7 @@
 			return DEVOUR_SLOW
 		else if(src.species.gluttonous & GLUT_ANYTHING) // Eat anything ever
 			return DEVOUR_FAST
-	else if(istype(victim, /obj/item) && !istype(victim, /obj/item/weapon/holder)) //Don't eat holders. They are special.
+	else if(isitem(victim) && !istype(victim, /obj/item/weapon/holder)) //Don't eat holders. They are special.
 		var/obj/item/I = victim
 		var/cost = I.get_storage_cost()
 		if(cost != ITEM_SIZE_NO_CONTAINER)

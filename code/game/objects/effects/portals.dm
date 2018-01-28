@@ -43,14 +43,14 @@
 /obj/effect/portal/proc/teleport(atom/movable/M as mob|obj)
 	if(istype(M, /obj/effect)) //sparks don't teleport
 		return
-	if (M.anchored&&istype(M, /obj/mecha))
+	if (M.anchored&&ismecha(M))
 		return
 	if (icon_state == "portal1")
 		return
 	if (!( target ))
 		qdel(src)
 		return
-	if (istype(M, /atom/movable))
+	if (ismovable(M))
 		if(prob(failchance)) //oh dear a problem, put em in deep space
 			src.icon_state = "portal1"
 			var/destination_z = GLOB.using_map.get_transit_zlevel(z)

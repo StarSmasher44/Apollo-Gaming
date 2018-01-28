@@ -87,7 +87,7 @@
 /mob/living/silicon/ai/proc/has_power(var/respect_override = 1)
 	if(psupply && psupply.powered())
 		return 1
-	if(istype(src.loc,/obj/item))
+	if(isitem(src.loc))
 		return 1
 	if(APU_power || admin_powered)
 		return 1

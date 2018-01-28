@@ -57,7 +57,7 @@
 
 
 	var/turf/T = get_turf(src)
-	if(!istype(T))
+	if(!isturf(T))
 		return
 
 	var/scrubber_icon = "scrubber"
@@ -75,7 +75,7 @@
 	if(..())
 		underlays.Cut()
 		var/turf/T = get_turf(src)
-		if(!istype(T))
+		if(!isturf(T))
 			return
 		if(!T.is_plating() && node && node.level == 1 && istype(node, /obj/machinery/atmospherics/pipe))
 			return

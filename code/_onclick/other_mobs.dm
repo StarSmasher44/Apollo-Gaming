@@ -80,7 +80,7 @@
 	//should have already been set if we are attacking a mob, but it doesn't hurt and will cover attacking non-mobs too
 	setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 	var/mob/living/M = A
-	if(!istype(M))
+	if(!isliving(M))
 		A.attack_generic(src, (is_adult ? rand(20,40) : rand(5,25)), "glomped") // Basic attack.
 	else
 		var/power = max(0, min(10, (powerlevel + rand(0, 3))))
@@ -91,7 +91,7 @@
 			if (I_DISARM) // We stun the target, with the intention to feed
 				var/stunprob = 1
 
-				if (powerlevel > 0 && !istype(A, /mob/living/carbon/slime))
+				if (powerlevel > 0 && !isslime(A))
 					switch(power * 10)
 						if(0) stunprob *= 10
 						if(1 to 2) stunprob *= 20
@@ -133,7 +133,7 @@
 
 	if(!..())
 		return
-	if(istype(A,/mob/living))
+	if(isliving(A))
 		if(melee_damage_upper == 0)
 			custom_emote(1,"[friendly] [A]!")
 			return

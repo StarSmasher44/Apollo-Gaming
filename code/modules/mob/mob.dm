@@ -141,11 +141,11 @@
 
 /mob/proc/movement_delay()
 	. = 0
-	if(istype(loc, /turf))
+	if(isturf(loc))
 		var/turf/T = loc
 		. += T.movement_delay
 	if(pulling)
-		if(istype(pulling, /obj))
+		if(isobj(pulling))
 			var/obj/O = pulling
 			. += between(0, O.w_class, ITEM_SIZE_GARGANTUAN) / 5
 		else if(istype(pulling, /mob))
@@ -214,7 +214,7 @@
 /mob/proc/reset_view(atom/A)
 	if (client)
 		A = A ? A : eyeobj
-		if (istype(A, /atom/movable))
+		if (ismovable(A))
 			client.perspective = EYE_PERSPECTIVE
 			client.eye = A
 		else
@@ -286,7 +286,7 @@
 	set category = "Object"
 	set src = usr
 
-	if(istype(loc,/obj/mecha)) return
+	if(ismecha(loc)) return
 
 	if(hand)
 		var/obj/item/W = l_hand
@@ -514,7 +514,7 @@
 	if(M != usr) return
 	if(usr == src) return
 	if(!Adjacent(usr)) return
-	if(istype(M,/mob/living/silicon/ai)) return
+	if(isAI(M)) return
 	show_inv(usr)
 
 
@@ -602,7 +602,7 @@
 /mob/proc/is_mechanical()
 	if(mind && (mind.assigned_role == "Cyborg" || mind.assigned_role == "AI"))
 		return 1
-	return istype(src, /mob/living/silicon) || get_species() == SPECIES_IPC
+	return issilicon(src) || get_species() == SPECIES_IPC
 
 /mob/proc/is_ready()
 	return client && !!mind
@@ -632,9 +632,6 @@
 			stat("Local Date", stationdate2text())
 			stat("Round Duration", roundduration2text())
 			stat("CPU Status", cpustate)
-		if(client)
-			winset(client, null, "command=.update_ping+[world.time+world.tick_lag*TICK_USAGE_REAL/100]")
-			stat("Ping: [round(client.lastping, 1)]ms (Average: [round(client.avgping, 1)]ms)")
 
 		if(client.holder || isghost(client.mob))
 			stat("Location:", "([x], [y], [z]) [loc]")

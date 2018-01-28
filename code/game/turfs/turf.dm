@@ -122,7 +122,7 @@ var/const/enterloopsanity = 100
 
 	..()
 
-	if(!istype(atom, /atom/movable))
+	if(!ismovable(atom))
 		return
 
 	var/atom/movable/A = atom
@@ -161,7 +161,7 @@ var/const/enterloopsanity = 100
 
 /turf/proc/inertial_drift(atom/movable/A)
 	if(!(A.last_move))	return
-	if((istype(A, /mob/) && src.x > 2 && src.x < (world.maxx - 1) && src.y > 2 && src.y < (world.maxy-1)))
+	if((ismob(A) && src.x > 2 && src.x < (world.maxx - 1) && src.y > 2 && src.y < (world.maxy-1)))
 		var/mob/M = A
 		if(M.Allow_Spacemove(1)) //if this mob can control their own movement in space then they shouldn't be drifting
 			M.inertia_dir  = 0

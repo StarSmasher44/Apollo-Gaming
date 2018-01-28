@@ -220,7 +220,7 @@
 		affecting_turfs    += T
 
 		var/turf/simulated/open/O = T
-		if(istype(O) && O.below)
+		if(isopenspace(O) && O.below)
 			// Consider the turf below us as well. (Z-lights)
 			//Do subprocessing for open turfs
 			for(T = O.below; !isnull(T); T = process_the_turf(T,update_gen));
@@ -256,7 +256,7 @@
 	affecting_turfs    += T
 
 	var/turf/simulated/open/O = T
-	if(istype(O) && O.below)
+	if(isopenspace(O) && O.below)
 		return O.below
 	return null
 
@@ -294,7 +294,7 @@
 		turfs   += T
 
 		var/turf/simulated/open/O = T
-		if(istype(O) && O.below)
+		if(isopenspace(O) && O.below)
 			// Consider the turf below us as well. (Z-lights)
 			for(T = O.below; !isnull(T); T = update_the_turf(T,corners, turfs));
 
@@ -332,7 +332,7 @@
 	turfs   += T
 
 	var/turf/simulated/open/O = T
-	if(istype(O) && O.below)
+	if(isopenspace(O) && O.below)
 		return O.below
 	return null
 

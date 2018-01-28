@@ -98,7 +98,7 @@
 		return
 
 	proc/in_mecha()
-		if(istype(src.loc, /obj/mecha))
+		if(ismecha(src.loc))
 			return src.loc
 		return 0
 

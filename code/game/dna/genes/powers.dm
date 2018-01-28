@@ -167,7 +167,7 @@
 		return 0
 
 	OnMobLife(var/mob/living/carbon/human/M)
-		if(!istype(M)) return
+		if(!ishuman(M)) return
 		if(M.health <= 25)
 			M.mutations.Remove(HULK)
 			M.update_mutations()		//update our mutation overlays

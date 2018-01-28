@@ -44,7 +44,7 @@
 
 #define BLOOD_SPRAY_DISTANCE 2
 /mob/living/carbon/human/proc/blood_squirt(var/amt, var/turf/sprayloc)
-	if(amt <= 0 || !istype(sprayloc))
+	if(amt <= 0 || !isturf(sprayloc))
 		return
 	var/spraydir = pick(GLOB.alldirs)
 	amt = ceil(amt/BLOOD_SPRAY_DISTANCE)
@@ -52,7 +52,7 @@
 	spawn(0)
 		for(var/i = 1 to BLOOD_SPRAY_DISTANCE)
 			sprayloc = get_step(sprayloc, spraydir)
-			if(!istype(sprayloc) || sprayloc.density)
+			if(!isturf(sprayloc) || sprayloc.density)
 				break
 			var/hit_mob
 			for(var/thing in sprayloc)
@@ -198,7 +198,7 @@ proc/blood_splatter(var/target,var/datum/reagent/blood/source,var/large,var/spra
 	var/decal_type = /obj/effect/decal/cleanable/blood/splatter
 	var/turf/T = get_turf(target)
 
-	if(istype(source,/mob/living/carbon/human))
+	if(ishuman(source))
 		var/mob/living/carbon/human/M = source
 		source = M.get_blood(M.vessel)
 

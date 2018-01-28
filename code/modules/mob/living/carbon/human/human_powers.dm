@@ -15,7 +15,7 @@
 
 	var/list/choices = list()
 	for(var/mob/living/M in view(1,src))
-		if(!istype(M,/mob/living/silicon) && Adjacent(M))
+		if(!issilicon(M) && Adjacent(M))
 			choices += M
 	choices -= src
 
@@ -57,7 +57,7 @@
 
 	var/list/choices = list()
 	for(var/mob/living/M in oview(6,src))
-		if(!istype(M,/mob/living/silicon))
+		if(!issilicon(M))
 			choices += M
 	choices -= src
 
@@ -125,7 +125,7 @@
 	log_say("[key_name(src)] communed to [key_name(M)]: [text]")
 
 	to_chat(M, "<span class='notice'>Like lead slabs crashing into the ocean, alien thoughts drop into your mind: <i>[text]</i></span>")
-	if(istype(M,/mob/living/carbon/human))
+	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		if(H.species.name == src.species.name)
 			return
@@ -234,7 +234,7 @@
 		return FALSE
 
 	if(target)
-		if(!istype(target) || issilicon(target))
+		if(!isliving(target) || issilicon(target))
 			return FALSE
 		if(!Adjacent(target))
 			to_chat(src, "<span class='warning'>\The [target] has to be adjacent to you.</span>")
@@ -252,7 +252,7 @@
 
 	var/list/choices = list()
 	for(var/mob/living/M in view(1,src))
-		if(!istype(M,/mob/living/silicon) && Adjacent(M))
+		if(!issilicon(M) && Adjacent(M))
 			choices += M
 	choices -= src
 

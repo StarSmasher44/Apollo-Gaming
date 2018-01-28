@@ -203,7 +203,7 @@
 		cell = null
 
 	//stuns people who are thrown off a train that has been blown up
-	if(istype(load, /mob/living))
+	if(isliving(load))
 		var/mob/living/M = load
 		M.apply_effects(5, 5)
 
@@ -358,7 +358,7 @@
 	if(!damage)
 		return
 	visible_message("<span class='danger'>\The [user] [attack_message] the \the [src]!</span>")
-	if(istype(user))
+	if(ismob(user))
 		admin_attacker_log(user, "attacked \the [src]")
 		user.do_attack_animation(src)
 	src.health -= damage

@@ -62,15 +62,15 @@
 	return t
 
 /datum/reagent/blood/touch_turf(var/turf/simulated/T)
-	if(!istype(T) || volume < 3)
+	if(!issimturf(T) || volume < 3)
 		return
 	var/weakref/W = data["donor"]
 	if (!W)
 		blood_splatter(T, src, 1)
 	W = W.resolve()
-	if(istype(W, /mob/living/carbon/human))
+	if(ishuman(W))
 		blood_splatter(T, src, 1)
-	else if(istype(W, /mob/living/carbon/alien))
+	else if(isalien(W))
 		var/obj/effect/decal/cleanable/blood/B = blood_splatter(T, src, 1)
 		if(B)
 			B.blood_DNA["UNKNOWN DNA STRUCTURE"] = "X*"
@@ -133,24 +133,24 @@
 	glass_desc = "The father of all refreshments."
 
 /datum/reagent/water/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
-	if(!istype(M, /mob/living/carbon/slime) && alien != IS_SLIME)
+	if(!isslime(M) && alien != IS_SLIME)
 		return
 	M.adjustToxLoss(2 * removed)
 
 /datum/reagent/water/affect_ingest(var/mob/living/carbon/M, var/alien, var/removed)
-	if(!istype(M, /mob/living/carbon/slime) && alien != IS_SLIME)
+	if(!isslime(M) && alien != IS_SLIME)
 		return
 	M.adjustToxLoss(2 * removed)
 
 /datum/reagent/water/touch_turf(var/turf/simulated/T)
-	if(!istype(T))
+	if(!isturf(T))
 		return
 
 	var/datum/gas_mixture/environment = T.return_air()
 	var/min_temperature = T0C + 100 // 100C, the boiling point of water
 
 	var/hotspot = (locate(/obj/fire) in T)
-	if(hotspot && !istype(T, /turf/space))
+	if(hotspot && !isspace(T))
 		var/datum/gas_mixture/lowertemp = T.remove_air(T:air:total_moles)
 		lowertemp.temperature = max(min(lowertemp.temperature-2000, lowertemp.temperature / 2), 0)
 		lowertemp.react()
@@ -175,7 +175,7 @@
 			cube.Expand()
 
 /datum/reagent/water/touch_mob(var/mob/living/L, var/amount)
-	if(istype(L))
+	if(isliving(L))
 		var/needed = L.fire_stacks * 10
 		if(amount > needed)
 			L.fire_stacks = 0
@@ -186,11 +186,11 @@
 			remove_self(amount)
 
 /datum/reagent/water/affect_touch(var/mob/living/carbon/M, var/alien, var/removed)
-	if(!istype(M, /mob/living/carbon/slime) && alien != IS_SLIME)
+	if(!isslime(M) && alien != IS_SLIME)
 		return
 	M.adjustToxLoss(10 * removed)	// Babies have 150 health, adults have 200; So, 15 units and 20
 	var/mob/living/carbon/slime/S = M
-	if(!S.client && istype(S))
+	if(!S.client && isslime(S))
 		if(S.Target) // Like cats
 			S.Target = null
 		if(S.Victim)
@@ -219,6 +219,6 @@
 	M.adjustToxLoss(2 * removed)
 
 /datum/reagent/fuel/touch_mob(var/mob/living/L, var/amount)
-	if(istype(L))
+	if(isliving(L))
 		L.adjust_fire_stacks(amount / 10) // Splashing people with welding fuel to make them easy to ignite!
 

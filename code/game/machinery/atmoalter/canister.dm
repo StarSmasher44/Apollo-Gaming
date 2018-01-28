@@ -256,7 +256,7 @@ update_flag
 		src.add_fingerprint(user)
 		healthcheck()
 
-	if(istype(user, /mob/living/silicon/robot) && istype(W, /obj/item/weapon/tank/jetpack))
+	if(isrobot(user) && istype(W, /obj/item/weapon/tank/jetpack))
 		var/datum/gas_mixture/thejetpack = W:air_contents
 		var/env_pressure = thejetpack.return_pressure()
 		var/pressure_delta = min(10*ONE_ATMOSPHERE - env_pressure, (air_contents.return_pressure() - env_pressure)/2)
@@ -406,7 +406,7 @@ update_flag
 	air_contents.gas["sleeping_agent"] = 9*4000
 	spawn(10)
 		var/turf/simulated/location = src.loc
-		if (istype(src.loc))
+		if (issimturf(src.loc))
 			while (!location.air)
 				sleep(10)
 			location.assume_air(air_contents)

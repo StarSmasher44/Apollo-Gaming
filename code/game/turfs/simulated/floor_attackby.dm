@@ -43,7 +43,7 @@
 			return
 	else
 
-		if(istype(C, /obj/item/stack))
+		if(isstack(C))
 			if(broken || burnt)
 				to_chat(user, "<span class='warning'>This section is too damaged to support anything. Use a welder to fix the damage.</span>")
 				return

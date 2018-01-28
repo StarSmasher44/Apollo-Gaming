@@ -29,7 +29,7 @@ Small, little HP, poisonous.
 /mob/living/simple_animal/hostile/voxslug/ListTargets(var/dist = 7)
 	. = list()
 	for(var/a in hearers(src, dist))
-		if(istype(a,/mob/living/carbon/human))
+		if(ishuman(a))
 			var/mob/living/carbon/human/H = a
 			if(H.species.get_bodytype() == SPECIES_VOX)
 				continue
@@ -60,7 +60,7 @@ Small, little HP, poisonous.
 
 /mob/living/simple_animal/hostile/voxslug/AttackingTarget()
 	. = ..()
-	if(istype(., /mob/living/carbon/human))
+	if(ishuman(.))
 		var/mob/living/carbon/human/H = .
 		if(prob(H.getBruteLoss()/2))
 			attach(H)
@@ -77,7 +77,7 @@ Small, little HP, poisonous.
 
 /obj/item/weapon/holder/voxslug/attack(var/mob/target, var/mob/user)
 	var/mob/living/simple_animal/hostile/voxslug/V = contents[1]
-	if(!V.stat && istype(target, /mob/living/carbon/human))
+	if(!V.stat && ishuman(target))
 		var/mob/living/carbon/human/H = target
 		if(!do_mob(user, H, 30))
 			return

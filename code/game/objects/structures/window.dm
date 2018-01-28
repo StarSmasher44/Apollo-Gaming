@@ -131,7 +131,7 @@
 	return (dir == SOUTHWEST || dir == SOUTHEAST || dir == NORTHWEST || dir == NORTHEAST)
 
 /obj/structure/window/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(istype(mover) && mover.checkpass(PASSGLASS))
+	if(ismovable(mover) && mover.checkpass(PASSGLASS))
 		return 1
 	if(is_full_window())
 		return 0	//full tile window, you can't move into it!
@@ -142,7 +142,7 @@
 
 
 /obj/structure/window/CheckExit(atom/movable/O as mob|obj, target as turf)
-	if(istype(O) && O.checkpass(PASSGLASS))
+	if(ismovable(O) && O.checkpass(PASSGLASS))
 		return 1
 	if(get_dir(O.loc, target) == dir)
 		return 0
@@ -179,7 +179,7 @@
 
 	else if (usr.a_intent == I_HURT)
 
-		if (istype(usr,/mob/living/carbon/human))
+		if (ishuman(usr))
 			var/mob/living/carbon/human/H = usr
 			if(H.species.can_shred(H))
 				attack_generic(H,25)
@@ -198,7 +198,7 @@
 	return
 
 /obj/structure/window/attack_generic(var/mob/user, var/damage)
-	if(istype(user))
+	if(ismob(user))
 		user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 		user.do_attack_animation(src)
 	if(!damage)
@@ -211,7 +211,7 @@
 	return 1
 
 /obj/structure/window/attackby(obj/item/W as obj, mob/user as mob)
-	if(!istype(W)) return//I really wish I did not need this
+	if(!isitem(W)) return//I really wish I did not need this
 
 	if(W.flags & NOBLUDGEON) return
 

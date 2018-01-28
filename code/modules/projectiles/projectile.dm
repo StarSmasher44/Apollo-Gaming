@@ -167,7 +167,7 @@
 
 //Called when the projectile intercepts a mob. Returns 1 if the projectile hit the mob, 0 if it missed and should keep flying.
 /obj/item/projectile/proc/attack_mob(var/mob/living/target_mob, var/distance, var/miss_modifier=0)
-	if(!istype(target_mob))
+	if(!isliving(target_mob))
 		return
 
 	//roll to-hit
@@ -192,7 +192,7 @@
 
 	//admin logs
 	if(!no_attack_log)
-		if(istype(firer, /mob))
+		if(ismob(firer))
 
 			var/attacker_message = "shot with \a [src.type]"
 			var/victim_message = "shot with \a [src.type]"
@@ -225,7 +225,7 @@
 	bumped = 1
 	if(ismob(A))
 		var/mob/M = A
-		if(istype(A, /mob/living))
+		if(isliving(A))
 			//if they have a neck grab on someone, that person gets hit instead
 			var/obj/item/grab/G = locate() in M
 			if(G && G.shield_assailant())
@@ -254,7 +254,7 @@
 	if(passthrough)
 		//move ourselves onto A so we can continue on our way.
 		if(A)
-			if(istype(A, /turf))
+			if(isturf(A))
 				loc = A
 			else
 				loc = A.loc
@@ -396,7 +396,7 @@
 		return //cannot shoot yourself
 	if(istype(A, /obj/item/projectile))
 		return
-	if(istype(A, /mob/living) || istype(A, /obj/mecha) || istype(A, /obj/vehicle))
+	if(isliving(A) || ismecha(A) || istype(A, /obj/vehicle))
 		result = 2 //We hit someone, return 1!
 		return
 	result = 1
@@ -427,7 +427,7 @@
 		Move(location.return_turf())
 
 		var/mob/living/M = locate() in get_turf(src)
-		if(istype(M)) //If there is someting living...
+		if(isliving(M)) //If there is someting living...
 			return 1 //Return 1
 		else
 			M = locate() in get_step(src,targloc)

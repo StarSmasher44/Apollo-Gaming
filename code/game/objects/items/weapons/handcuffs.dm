@@ -50,7 +50,7 @@
 			to_chat(user, "<span class='danger'>You need to have a firm grip on [C] before you can put \the [src] on!</span>")
 
 /obj/item/weapon/handcuffs/proc/can_place(var/mob/target, var/mob/user)
-	if(user == target || istype(user, /mob/living/silicon/robot) || istype(user, /mob/living/bot))
+	if(user == target || isrobot(user) || istype(user, /mob/living/bot))
 		return 1
 	else
 		for (var/obj/item/grab/G in target.grabbed_by)
@@ -62,7 +62,7 @@
 	playsound(src.loc, cuff_sound, 30, 1, -2)
 
 	var/mob/living/carbon/human/H = target
-	if(!istype(H))
+	if(!ishuman(H))
 		return 0
 
 	if (!H.has_organ_for_slot(slot_handcuffed))

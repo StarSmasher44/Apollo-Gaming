@@ -13,11 +13,11 @@
 	if(max_damage)
 		min_bruised_damage = Floor(max_damage / 4)
 	..()
-	if(istype(holder))
+	if(iscarbon(holder))
 		holder.internal_organs |= src
 
 		var/mob/living/carbon/human/H = holder
-		if(istype(H))
+		if(ishuman(H))
 			var/obj/item/organ/external/E = H.get_organ(parent_organ)
 			if(!E)
 				CRASH("[src] spawned in [holder] without a parent organ: [parent_organ].")
@@ -32,14 +32,14 @@
 		while(null in owner.internal_organs)
 			owner.internal_organs -= null
 		var/obj/item/organ/external/E = owner.organs_by_name[parent_organ]
-		if(istype(E)) E.internal_organs -= src
+		if(isorgan(E)) E.internal_organs -= src
 	return ..()
 
 //disconnected the organ from it's owner but does not remove it, instead it becomes an implant that can be removed with implant surgery
 //TODO move this to organ/internal once the FPB port comes through
 /obj/item/organ/proc/cut_away(var/mob/living/user)
 	var/obj/item/organ/external/parent = owner.get_organ(parent_organ)
-	if(istype(parent)) //TODO ensure that we don't have to check this.
+	if(isorgan(parent)) //TODO ensure that we don't have to check this.
 		removed(user, 0)
 		parent.implants += src
 
@@ -59,7 +59,7 @@
 
 /obj/item/organ/internal/replaced(var/mob/living/carbon/human/target, var/obj/item/organ/external/affected)
 
-	if(!istype(target))
+	if(!ishuman(target))
 		return 0
 
 	if(status & ORGAN_CUT_AWAY)
@@ -90,7 +90,7 @@
 		while(null in owner.internal_organs)
 			owner.internal_organs -= null
 		var/obj/item/organ/external/E = owner.organs_by_name[parent_organ]
-		if(istype(E)) E.internal_organs -= src
+		if(isorgan(E)) E.internal_organs -= src
 	..()
 
 /obj/item/organ/internal/is_usable()

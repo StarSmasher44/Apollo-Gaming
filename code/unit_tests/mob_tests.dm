@@ -23,7 +23,7 @@ datum/unit_test/human_breath
 datum/unit_test/human_breath/start_test()
 	var/turf/T = get_space_turf()
 
-	if(!istype(T, /turf/space))	//If the above isn't a space turf then we force it to find one will most likely pick 1,1,1
+	if(!isspace(T))	//If the above isn't a space turf then we force it to find one will most likely pick 1,1,1
 		T = locate(/turf/space)
 	for(var/species_name in all_species)
 		var/datum/species/S = all_species[species_name]
@@ -103,7 +103,7 @@ proc/damage_check(var/mob/living/M, var/damage_type)
 			loss = M.getToxLoss()
 		if(OXY)
 			loss = M.getOxyLoss()
-			if(istype(M,/mob/living/carbon/human))
+			if(ishuman(M))
 				var/mob/living/carbon/human/H = M
 				var/obj/item/organ/internal/lungs/L = H.internal_organs_by_name["lungs"]
 				if(L)
@@ -113,7 +113,7 @@ proc/damage_check(var/mob/living/M, var/damage_type)
 		if(PAIN)
 			loss = M.getHalLoss()
 
-	if(!loss && istype(M, /mob/living/carbon/human))
+	if(!loss && ishuman(M))
 		var/mob/living/carbon/human/H = M            // Synthetics have robot limbs which don't report damage to getXXXLoss()
 		if(H.isSynthetic())                          // So we have to hard code this check or create a different one for them.
 			return H.species.total_health - H.health

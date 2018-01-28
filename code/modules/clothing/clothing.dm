@@ -63,7 +63,7 @@
 	if (!..())
 		return 0
 
-	if(species_restricted && istype(M,/mob/living/carbon/human))
+	if(species_restricted && ishuman(M))
 		var/exclusive = null
 		var/wearable = null
 		var/mob/living/carbon/human/H = M
@@ -165,7 +165,7 @@
 	set name = "Toggle Headphone Music"
 	set category = "Object"
 	set src in usr
-	if(!istype(usr, /mob/living)) return
+	if(!isliving(usr)) return
 	if(usr.incapacitated()) return
 
 	if(headphones_on)
@@ -394,7 +394,7 @@ BLIND     // can't see anything
 	if(!Adjacent(user))
 		return 0
 	var/success
-	if(istype(user, /mob/living/silicon/robot/drone))
+	if(is_drone(user))
 		var/mob/living/silicon/robot/drone/D = user
 		if(D.hat)
 			success = 2
@@ -421,7 +421,7 @@ BLIND     // can't see anything
 
 	overlays.Cut()
 	var/mob/living/carbon/human/H
-	if(istype(user,/mob/living/carbon/human))
+	if(ishuman(user))
 		H = user
 
 	if(on)
@@ -713,7 +713,7 @@ BLIND     // can't see anything
 
 /obj/item/clothing/under/proc/update_rolldown_status()
 	var/mob/living/carbon/human/H
-	if(istype(src.loc, /mob/living/carbon/human))
+	if(ishuman(src.loc))
 		H = src.loc
 
 
@@ -737,7 +737,7 @@ BLIND     // can't see anything
 
 /obj/item/clothing/under/proc/update_rollsleeves_status()
 	var/mob/living/carbon/human/H
-	if(istype(src.loc, /mob/living/carbon/human))
+	if(ishuman(src.loc))
 		H = src.loc
 
 	var/icon/under_icon
@@ -838,7 +838,7 @@ BLIND     // can't see anything
 	set name = "Roll Down Jumpsuit"
 	set category = "Object"
 	set src in usr
-	if(!istype(usr, /mob/living)) return
+	if(!isliving(usr)) return
 	if(usr.stat) return
 
 	update_rolldown_status()
@@ -861,7 +861,7 @@ BLIND     // can't see anything
 	set name = "Roll Up Sleeves"
 	set category = "Object"
 	set src in usr
-	if(!istype(usr, /mob/living)) return
+	if(!isliving(usr)) return
 	if(usr.stat) return
 
 	update_rollsleeves_status()

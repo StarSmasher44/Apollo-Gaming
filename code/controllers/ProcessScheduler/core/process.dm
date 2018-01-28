@@ -160,7 +160,7 @@
 /datum/controller/process/proc/handleHung()
 	var/datum/lastObj = last_object
 	var/lastObjType = "null"
-	if(istype(lastObj))
+	if(isdatum(lastObj))
 		lastObjType = lastObj.type
 
 	var/msg = "[name] process hung at tick #[ticks]. Process was unresponsive for [(TimeOfGame - run_start) / 10] seconds and was restarted. Last task: [last_task]. Last Object Type: [lastObjType]"
@@ -341,10 +341,10 @@
 			return
 	else
 		exceptions[eid] = 1
-	if(istype(thrower, /datum))
+	if(isdatum(thrower))
 		var/datum/D = thrower
 		ptext = " processing [D.type]"
-		if(istype(thrower, /atom))
+		if(isatom(thrower))
 			var/atom/A = thrower
 			ptext += " ([A]) ([A.x],[A.y],[A.z])"
 	log_to_dd("\[[time_stamp()]\] Process [name] caught exception[ptext]: [etext]")

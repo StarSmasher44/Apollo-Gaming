@@ -19,7 +19,7 @@
 	// They're also super gross and ooze ichor.
 	if(prob(5))
 		var/mob/living/carbon/human/H = owner
-		if(!istype(H))
+		if(!ishuman(H))
 			return
 
 		var/datum/reagent/blood/B = locate(/datum/reagent/blood) in H.vessel.reagent_list

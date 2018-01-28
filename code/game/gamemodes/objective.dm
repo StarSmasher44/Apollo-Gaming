@@ -141,7 +141,7 @@ datum/objective/anti_revolution/demote
 		return target
 
 	check_completion()
-		if(target && target.current && istype(target,/mob/living/carbon/human))
+		if(target && target.current && ishuman(target))
 			var/obj/item/weapon/card/id/I = target.current:wear_id
 			if(istype(I, /obj/item/device/pda))
 				var/obj/item/device/pda/P = I
@@ -246,7 +246,7 @@ datum/objective/block
 
 
 	check_completion()
-		if(!istype(owner.current, /mob/living/silicon))
+		if(!issilicon(owner.current))
 			return 0
 		if(!evacuation_controller.has_evacuated())
 			return 0
@@ -376,7 +376,7 @@ datum/objective/harm
 		if(already_completed)
 			return 1
 
-		if(target && target.current && istype(target.current, /mob/living/carbon/human))
+		if(target && target.current && ishuman(target.current))
 			if(target.current.stat == DEAD)
 				return 0
 
@@ -522,7 +522,7 @@ datum/objective/download
 
 		var/current_amount
 		var/obj/item/weapon/rig/S
-		if(istype(owner.current,/mob/living/carbon/human))
+		if(ishuman(owner.current))
 			var/mob/living/carbon/human/H = owner.current
 			S = H.back
 
@@ -857,7 +857,7 @@ datum/objective/heist/salvage
 	var/rval = 1
 	if(target && target.current)
 		var/mob/living/carbon/human/H = target.current
-		if(!istype(H))
+		if(!ishuman(H))
 			return 1
 		if(H.stat == DEAD || H.restrained())
 			return 1

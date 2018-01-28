@@ -73,7 +73,7 @@
 				open()
 				sleep(50)
 				close()
-		else if(istype(AM, /obj/mecha))
+		else if(ismecha(AM))
 			var/obj/mecha/mecha = AM
 			if(density)
 				if(mecha.occupant && src.allowed(mecha.occupant))
@@ -159,7 +159,7 @@
 
 /obj/machinery/door/window/attack_hand(mob/user as mob)
 
-	if(istype(user,/mob/living/carbon/human))
+	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(H.species.can_shred(H))
 			playsound(src.loc, 'sound/effects/Glasshit.ogg', 75, 1)

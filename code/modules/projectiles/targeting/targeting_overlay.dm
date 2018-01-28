@@ -110,11 +110,11 @@ obj/aiming_overlay/proc/update_aiming_deferred()
 
 	var/cancel_aim = 1
 
-	if(!(aiming_with in owner) || (istype(owner, /mob/living/carbon/human) && (owner.l_hand != aiming_with && owner.r_hand != aiming_with)))
+	if(!(aiming_with in owner) || (ishuman(owner) && (owner.l_hand != aiming_with && owner.r_hand != aiming_with)))
 		to_chat(owner, "<span class='warning'>You must keep hold of your weapon!</span>")
 	else if(owner.eye_blind)
 		to_chat(owner, "<span class='warning'>You are blind and cannot see your target!</span>")
-	else if(!aiming_at || !istype(aiming_at.loc, /turf))
+	else if(!aiming_at || !isturf(aiming_at.loc))
 		to_chat(owner, "<span class='warning'>You have lost sight of your target!</span>")
 	else if(owner.incapacitated() || owner.lying || owner.restrained())
 		to_chat(owner, "<span class='warning'>You must be conscious and standing to keep track of your target!</span>")

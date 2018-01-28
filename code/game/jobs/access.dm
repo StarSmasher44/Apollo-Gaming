@@ -8,7 +8,7 @@
 	//check if it doesn't require any access at all
 	if(src.check_access(null))
 		return 1
-	if(!istype(M))
+	if(!ismob(M))
 		return 0
 	return check_access_list(M.GetAccess())
 
@@ -25,7 +25,7 @@
 /obj/proc/check_access_list(var/list/L)
 	if(!req_access)		req_access = list()
 	if(!req_one_access)	req_one_access = list()
-	if(!istype(L, /list))	return 0
+	if(!islist(L))	return 0
 	return has_access(req_access, req_one_access, L)
 
 /proc/has_access(var/list/req_access, var/list/req_one_access, var/list/accesses)

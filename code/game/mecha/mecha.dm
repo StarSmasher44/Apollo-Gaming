@@ -291,7 +291,7 @@
 		target = safepick(view(3,target))
 		if(!target)
 			return
-	if(istype(target, /obj/machinery))
+	if(ismachine(target))
 		if (src.interface_action(target))
 			return
 	if(!target.Adjacent(src))
@@ -379,7 +379,7 @@
 	if(move_result)
 		can_move = 0
 		use_power(step_energy_drain)
-		if(istype(src.loc, /turf/space))
+		if(isspace(src.loc))
 			if(!src.check_for_support())
 				src.pr_inertial_movement.start(list(src,direction))
 				src.log_message("Movement control lost. Inertial movement started.")
@@ -408,7 +408,7 @@
 
 /obj/mecha/Bump(var/atom/obstacle)
 //	src.inertia_dir = null
-	if(istype(obstacle, /obj))
+	if(isobj(obstacle))
 		var/obj/O = obstacle
 		if(istype(O, /obj/effect/portal)) //derpfix
 			src.anchored = 0
@@ -419,7 +419,7 @@
 			step(obstacle,src.dir)
 		else //I have no idea why I disabled this
 			obstacle.Bumped(src)
-	else if(istype(obstacle, /mob))
+	else if(ismob(obstacle))
 		step(obstacle,src.dir)
 	else
 		obstacle.Bumped(src)
@@ -559,7 +559,7 @@
 /obj/mecha/attack_hand(mob/user as mob)
 	src.log_message("Attack by hand/paw. Attacker - [user].",1)
 
-	if(istype(user,/mob/living/carbon/human))
+	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(H.species.can_shred(user))
 			if(!deflect_hit(is_melee=1))
@@ -594,14 +594,14 @@
 		A.forceMove(src)
 		src.visible_message("The [A] fastens firmly to [src].")
 		return
-	if(deflect_hit(is_melee=0) || istype(A, /mob))
+	if(deflect_hit(is_melee=0) || ismob(A))
 		src.occupant_message("<span class='notice'>\The [A] bounces off the armor.</span>")
 		src.visible_message("\The [A] bounces off \the [src] armor.")
 		src.log_append_to_last("Armor saved.")
-		if(istype(A, /mob/living))
+		if(isliving(A))
 			var/mob/living/M = A
 			M.take_organ_damage(10)
-	else if(istype(A, /obj))
+	else if(isobj(A))
 		var/obj/O = A
 		if(O.throwforce)
 			src.hit_damage(O.throwforce, is_melee=0)
@@ -711,16 +711,15 @@
 //////////////////////
 
 /obj/mecha/attackby(obj/item/weapon/W as obj, mob/user as mob)
-
+	set waitfor = FALSE
 	if(istype(W, /obj/item/mecha_parts/mecha_equipment))
 		var/obj/item/mecha_parts/mecha_equipment/E = W
-		spawn()
-			if(E.can_attach(src))
-				user.drop_item()
-				E.attach(src)
-				user.visible_message("[user] attaches [W] to [src]", "You attach [W] to [src]")
-			else
-				to_chat(user, "You were unable to attach [W] to [src]")
+		if(E.can_attach(src))
+			user.drop_item()
+			E.attach(src)
+			user.visible_message("[user] attaches [W] to [src]", "You attach [W] to [src]")
+		else
+			to_chat(user, "You were unable to attach [W] to [src]")
 		return
 
 	var/obj/item/weapon/card/id/id_card = W.GetIdCard()
@@ -837,7 +836,7 @@
 
 /*
 /obj/mecha/attack_ai(var/mob/living/silicon/ai/user as mob)
-	if(!istype(user, /mob/living/silicon/ai))
+	if(!isAI(user))
 		return
 	var/output = {"<b>Assume direct control over [src]?</b>
 						<a href='?src=\ref[src];ai_take_control=\ref[user];duration=3000'>Yes</a><br>
@@ -1108,7 +1107,7 @@
 	var/atom/movable/mob_container
 	if(ishuman(occupant))
 		mob_container = src.occupant
-	else if(istype(occupant, /mob/living/carbon/brain))
+	else if(isbrain(occupant))
 		var/mob/living/carbon/brain/brain = occupant
 		mob_container = brain.container
 	else
@@ -1178,7 +1177,7 @@
 
 
 /obj/mecha/check_access(obj/item/weapon/card/id/I, list/access_list)
-	if(!istype(access_list))
+	if(!islist(access_list))
 		return 1
 	if(!access_list.len) //no requirements
 		return 1
@@ -1586,7 +1585,7 @@
 		return
 	if(href_list["dna_lock"])
 		if(usr != src.occupant)	return
-		if(istype(occupant, /mob/living/carbon/brain))
+		if(isbrain(occupant))
 			occupant_message("You are a brain. No.")
 			return
 		if(src.occupant)

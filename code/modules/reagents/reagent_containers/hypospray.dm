@@ -31,11 +31,11 @@
 	if(!reagents.total_volume)
 		to_chat(user, "<span class='warning'>[src] is empty.</span>")
 		return
-	if (!istype(M))
+	if (!isliving(M))
 		return
 
 	var/mob/living/carbon/human/H = M
-	if(istype(H))
+	if(ishuman(H))
 		var/obj/item/organ/external/affected = H.get_organ(user.zone_sel.selecting)
 		if(!affected)
 			to_chat(user, "<span class='danger'>\The [H] is missing that limb!</span>")

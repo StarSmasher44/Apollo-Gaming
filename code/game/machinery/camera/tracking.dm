@@ -117,7 +117,7 @@
 		else
 			TB.names.Add(name)
 			TB.namecounts[name] = 1
-		if(istype(M, /mob/living/carbon/human))
+		if(ishuman(M))
 			TB.humans[name] = M
 		else
 			TB.others[name] = M
@@ -150,7 +150,7 @@
 	cameraFollow = null
 
 /mob/living/silicon/ai/proc/ai_actual_track(mob/living/target as mob)
-	if(!istype(target))	return
+	if(!isliving(target))	return
 	var/mob/living/silicon/ai/U = usr
 
 	if(target == U.cameraFollow)
@@ -184,7 +184,7 @@
 			sleep(10)
 
 /obj/machinery/camera/attack_ai(var/mob/living/silicon/ai/user as mob)
-	if (!istype(user))
+	if (!isAI(user))
 		return
 	if (!src.can_use())
 		return

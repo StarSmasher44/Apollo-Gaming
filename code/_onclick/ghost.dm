@@ -17,7 +17,7 @@
 			return
 
 	// Things you might plausibly want to follow
-	if(istype(A,/atom/movable))
+	if(ismovable(A))
 		ManualFollow(A)
 	// Otherwise jump
 	else
@@ -40,7 +40,7 @@
 
 // Oh by the way this didn't work with old click code which is why clicking shit didn't spam you
 /atom/proc/attack_ghost(mob/observer/ghost/user as mob)
-	if(!istype(user))
+	if(!isghost(user))
 		return
 	if(user.client && user.client.inquisitive_ghost)
 		user.examinate(src)

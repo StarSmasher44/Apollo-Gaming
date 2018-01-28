@@ -120,7 +120,7 @@
 
 /obj/item/weapon/shreddedp/proc/FireBurn()
 	var/mob/living/M = loc
-	if(istype(M))
+	if(isliving(M))
 		M.drop_from_inventory(src)
 	new /obj/effect/decal/cleanable/ash(get_turf(src))
 	qdel(src)

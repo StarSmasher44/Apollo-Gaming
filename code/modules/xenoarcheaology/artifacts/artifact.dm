@@ -55,7 +55,7 @@
 
 /obj/machinery/artifact/Process()
 	var/turf/L = loc
-	if(!istype(L)) 	// We're inside a container or on null turf, either way stop processing effects
+	if(!isturf(L)) 	// We're inside a container or on null turf, either way stop processing effects
 		return
 
 	if(my_effect)
@@ -236,7 +236,7 @@
 
 /obj/machinery/artifact/Bumped(M as mob|obj)
 	..()
-	if(istype(M,/obj))
+	if(isobj(M))
 		var/obj/O = M
 		if(O.throwforce >= 10)
 			if(my_effect.trigger == TRIGGER_FORCE)

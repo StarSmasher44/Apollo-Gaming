@@ -65,7 +65,7 @@
 	GLOB.destroyed_event.register(value_to_set, src, /datum/build_mode/edit/proc/ClearValue)
 
 /datum/build_mode/edit/proc/ClearValue(var/feedback)
-	if(!istype(value_to_set, /datum))
+	if(!isdatum(value_to_set))
 		return
 
 	GLOB.destroyed_event.unregister(value_to_set, src, /datum/build_mode/edit/proc/ClearValue)

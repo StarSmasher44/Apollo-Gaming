@@ -124,7 +124,7 @@
 	return 0
 
 /datum/job/proc/apply_fingerprints(var/mob/living/carbon/human/target)
-	if(!istype(target))
+	if(!ishuman(target))
 		return 0
 	for(var/obj/item/item in target.contents)
 		apply_fingerprints_to_item(target, item)

@@ -71,7 +71,7 @@
 /obj/item/weapon/implanter/compressed/afterattack(atom/A, mob/user as mob, proximity)
 	if(!proximity)
 		return
-	if(istype(A,/obj/item) && imp)
+	if(isitem(A) && imp)
 		var/obj/item/weapon/implant/compressed/c = imp
 		if (c.scanned)
 			if (!istype(A,/obj/item/weapon/storage))
@@ -82,7 +82,7 @@
 				to_chat(user, "<span class='warning'>The matter compressor safeties prevent you from doing that.</span>")
 			return
 		c.scanned = A
-		if(istype(A.loc,/mob/living/carbon/human))
+		if(ishuman(A.loc))
 			var/mob/living/carbon/human/H = A.loc
 			H.remove_from_mob(A)
 		else if(istype(A.loc,/obj/item/weapon/storage))

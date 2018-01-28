@@ -147,7 +147,7 @@
 			attack_hand(user)
 			return
 
-	if(O.loc != user && !(istype(O,/obj/item/stack)))
+	if(O.loc != user && !(isstack(O)))
 		return 0
 
 	if(is_robot_module(O))
@@ -174,7 +174,7 @@
 		var/total_material = eating.matter[material]
 
 		//If it's a stack, we eat multiple sheets.
-		if(istype(eating,/obj/item/stack))
+		if(isstack(eating))
 			var/obj/item/stack/stack = eating
 			total_material *= stack.get_amount()
 
@@ -198,7 +198,7 @@
 
 	flick("autolathe_o", src) // Plays metal insertion animation. Work out a good way to work out a fitting animation. ~Z
 
-	if(istype(eating,/obj/item/stack))
+	if(isstack(eating))
 		var/obj/item/stack/stack = eating
 		stack.use(max(1, round(total_used/mass_per_sheet))) // Always use at least 1 to prevent infinite materials.
 	else
@@ -273,7 +273,7 @@
 
 		//Create the desired item.
 		var/obj/item/I = new making.path(loc)
-		if(multiplier > 1 && istype(I, /obj/item/stack))
+		if(multiplier > 1 && isstack(I))
 			var/obj/item/stack/S = I
 			S.amount = multiplier
 			S.update_icon()

@@ -263,11 +263,11 @@
 	if(user in target) //no wrapping closets that you are inside - it's not physically possible
 		return
 
-	if (istype(target, /obj/item) && !(istype(target, /obj/item/weapon/storage) && !istype(target,/obj/item/weapon/storage/box)))
+	if (isitem(target) && !(istype(target, /obj/item/weapon/storage) && !istype(target,/obj/item/weapon/storage/box)))
 		var/obj/item/O = target
 		if (src.amount > 1)
 			var/obj/item/smallDelivery/P = new /obj/item/smallDelivery(get_turf(O.loc))	//Aaannd wrap it up!
-			if(!istype(O.loc, /turf))
+			if(!isturf(O.loc))
 				if(user.client)
 					user.client.screen -= O
 			P.wrapped = O
@@ -408,10 +408,10 @@
 		if(WEST)
 			if(AM.loc.x != src.loc.x-1) return
 
-	if(istype(AM, /obj))
+	if(isobj(AM))
 		var/obj/O = AM
 		O.forceMove(src)
-	else if(istype(AM, /mob))
+	else if(ismob(AM))
 		var/mob/M = AM
 		M.forceMove(src)
 	src.flush()

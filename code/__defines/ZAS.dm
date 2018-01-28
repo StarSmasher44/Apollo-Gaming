@@ -21,7 +21,7 @@
 #define SOUTHDOWN (SOUTH|DOWN)
 #define WESTDOWN (WEST|DOWN)
 
-#define TURF_HAS_VALID_ZONE(T) (istype(T, /turf/simulated) && T:zone && !T:zone:invalid)
+#define TURF_HAS_VALID_ZONE(T) (issimturf(T) && T:zone && !T:zone:invalid)
 
 #ifdef MULTIZAS
 
@@ -34,14 +34,14 @@ var/list/gzn_check = list(NORTH, SOUTH, EAST, WEST, UP, DOWN)
 	} \
 	else if (B.z != A.z) { \
 		if (B.z < A.z) { \
-			if (!istype(A, /turf/simulated/open)) { \
+			if (!isopenspace(A)) { \
 				ret = BLOCKED; \
 			} else { \
 				ret = ZONE_BLOCKED; \
 			} \
 		} \
 		else { \
-			if (!istype(B, /turf/simulated/open)) { \
+			if (!isopenspace(B)) { \
 				ret = BLOCKED; \
 			} else { \
 				ret = ZONE_BLOCKED; \

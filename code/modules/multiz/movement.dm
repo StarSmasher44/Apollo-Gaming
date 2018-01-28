@@ -175,7 +175,7 @@
 		handle_fall_effect(landing)
 
 /atom/movable/proc/handle_fall_effect(var/turf/landing)
-	if(istype(landing, /turf/simulated/open))
+	if(isopenspace(landing))
 		visible_message("\The [src] falls from the deck above through \the [landing]!", "You hear a whoosh of displaced air.")
 	else
 		visible_message("\The [src] falls from the deck above and slams into \the [landing]!", "You hear something slam into the deck.")

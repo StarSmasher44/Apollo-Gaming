@@ -55,7 +55,7 @@
 	if(item_desc)
 		item.desc = item_desc
 	if(item_icon)
-		if(!istype(item))
+		if(!isitem(item))
 			item.icon = CUSTOM_ITEM_OBJ
 			item.set_icon_state(item_icon)
 			return

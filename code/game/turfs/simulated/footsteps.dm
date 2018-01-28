@@ -55,7 +55,7 @@
 
 /turf/simulated/floor/Entered(var/mob/living/carbon/human/H)
 	..()
-	if(istype(H))
+	if(ishuman(H))
 		H.handle_footsteps()
 		H.step_count++
 

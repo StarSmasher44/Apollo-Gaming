@@ -12,7 +12,7 @@ below 100 is not dizzy
 /mob/var/is_dizzy = 0
 
 /mob/proc/make_dizzy(var/amount)
-	if(!istype(src, /mob/living/carbon/human)) // for the moment, only humans get dizzy
+	if(!ishuman(src)) // for the moment, only humans get dizzy
 		return
 
 	dizziness = min(1000, dizziness + amount)	// store what will be new value
@@ -50,7 +50,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 	return //Only for living/carbon/human/
 
 /mob/living/carbon/human/make_jittery(var/amount)
-	if(!istype(src, /mob/living/carbon/human)) // for the moment, only humans get jittery
+	if(!ishuman(src)) // for the moment, only humans get jittery
 		return
 	if(!jittery_damage())
 		return //Robotic hearts don't get jittery.
@@ -151,7 +151,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 	var/default_pixel_x = initial(pixel_x)
 	var/default_pixel_y = initial(pixel_y)
 	var/mob/mob = src
-	if(istype(mob))
+	if(ismob(mob))
 		default_pixel_x = mob.default_pixel_x
 		default_pixel_y = mob.default_pixel_y
 

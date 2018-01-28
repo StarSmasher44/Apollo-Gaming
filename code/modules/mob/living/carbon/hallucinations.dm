@@ -178,7 +178,7 @@
 	min_power = 40
 
 /datum/hallucination/spiderbabies/start()
-	if(istype(holder,/mob/living/carbon/human))
+	if(ishuman(holder))
 		var/mob/living/carbon/human/H = holder
 		var/obj/O = pick(H.organs)
 		to_chat(H,"<span class='warning'>You feel something [pick("moving","squirming","skittering")] inside of your [O.name]!</span>")

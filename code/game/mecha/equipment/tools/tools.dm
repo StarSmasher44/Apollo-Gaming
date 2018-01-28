@@ -17,7 +17,7 @@
 		if(!cargo_holder) return
 
 		//loading
-		if(istype(target,/obj))
+		if(isobj(target))
 			var/obj/O = target
 			if(O.buckled_mob)
 				return
@@ -52,7 +52,7 @@
 					O.anchored = initial(O.anchored)
 
 		//attacking
-		else if(istype(target,/mob/living))
+		else if(isliving(target))
 			var/mob/living/M = target
 			if(M.stat>1) return
 			if(chassis.occupant.a_intent == I_HURT)
@@ -92,7 +92,7 @@
 		var/C = target.loc	//why are these backwards? we may never know -Pete
 		if(do_after_cooldown(target))
 			if(T == chassis.loc && src == chassis.selected)
-				if(istype(target, /turf/simulated/wall))
+				if(issimwall(target))
 					var/turf/simulated/wall/W = target
 					if(W.reinf_material)
 						occupant_message("<span class='warning'>\The [target] is too durable to drill through.</span>")
@@ -147,7 +147,7 @@
 		var/C = target.loc	//why are these backwards? we may never know -Pete
 		if(do_after_cooldown(target))
 			if(T == chassis.loc && src == chassis.selected)
-				if(istype(target, /turf/simulated/wall))
+				if(issimwall(target))
 					var/turf/simulated/wall/W = target
 					if(!W.reinf_material || do_after_cooldown(target))//To slow down how fast mechs can drill through the station
 						log_message("Drilled through \the [target]")
@@ -263,14 +263,14 @@
 			disabled = 1
 		else
 			disabled = 0
-		if(!istype(target, /turf) && !istype(target, /obj/machinery/door/airlock))
+		if(!isturf(target) && !isairlock(target))
 			target = get_turf(target)
 		if(!action_checks(target) || disabled || get_dist(chassis, target)>3) return
 		playsound(chassis, 'sound/machines/click.ogg', 50, 1)
 		//meh
 		switch(mode)
 			if(0)
-				if (istype(target, /turf/simulated/wall))
+				if (issimwall(target))
 					occupant_message("Deconstructing [target]...")
 					set_ready_state(0)
 					if(do_after_cooldown(target))
@@ -288,7 +288,7 @@
 						target:ChangeTurf(get_base_turf_by_area(target))
 						playsound(target, 'sound/items/Deconstruct.ogg', 50, 1)
 						chassis.use_power(energy_drain)
-				else if (istype(target, /obj/machinery/door/airlock))
+				else if (isairlock(target))
 					occupant_message("Deconstructing [target]...")
 					set_ready_state(0)
 					if(do_after_cooldown(target))
@@ -298,7 +298,7 @@
 						playsound(target, 'sound/items/Deconstruct.ogg', 50, 1)
 						chassis.use_power(energy_drain)
 			if(1)
-				if(istype(target, /turf/space) || istype(target,get_base_turf_by_area(target)))
+				if(isspace(target) || istype(target,get_base_turf_by_area(target)))
 					occupant_message("Building Floor...")
 					set_ready_state(0)
 					if(do_after_cooldown(target))
@@ -869,7 +869,7 @@
 			T.visible_message("The [src] suddenly disgorges a cloud of heated phoron.")
 			destroy()
 		else
-			T.assume_gas("phoron", 5, istype(T) ? T.air.temperature : T20C)
+			T.assume_gas("phoron", 5, issimturf(T) ? T.air.temperature : T20C)
 			T.visible_message("The [src] suddenly disgorges a cloud of phoron.")
 		T.assume_air(GM)
 		return
@@ -950,7 +950,7 @@
 	action(atom/target)
 		if(!action_checks(target)) return
 		if(!cargo_holder) return
-		if(istype(target,/obj))
+		if(isobj(target))
 			var/obj/O = target
 			if(!O.anchored)
 				if(cargo_holder.cargo.len < cargo_holder.cargo_capacity)
@@ -975,7 +975,7 @@
 			else
 				chassis.occupant_message("<span class='warning'>[target] is firmly secured.</span>")
 
-		else if(istype(target,/mob/living))
+		else if(isliving(target))
 			var/mob/living/M = target
 			if(M.stat>1) return
 			if(chassis.occupant.a_intent == I_HURT)
@@ -1249,7 +1249,7 @@
 	return new_turf.is_plating()
 
 /obj/item/mecha_parts/mecha_equipment/tool/cable_layer/proc/layCable(var/turf/new_turf)
-	if(equip_ready || !istype(new_turf) || !dismantleFloor(new_turf))
+	if(equip_ready || !isturf(new_turf) || !dismantleFloor(new_turf))
 		return reset()
 	var/fdirn = turn(chassis.dir,180)
 	for(var/obj/structure/cable/LC in new_turf)		// check to make sure there's not a cable there already

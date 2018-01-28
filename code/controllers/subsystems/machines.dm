@@ -76,7 +76,7 @@ if(current_step == this_step || (check_resumed && !resumed)) {\
 }
 //Adding Power usage to a define removes useless proc overhead from the large number of calls.
 #define ADD_POWER_USE(Machine) \
-if (Machine.special_power_checks) { \
+if (ismachine(Machine) && Machine.special_power_checks) { \
 	Machine.auto_use_power(); \
 } \
 else { \

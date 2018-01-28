@@ -1927,7 +1927,7 @@
 
 /datum/chemical_reaction/deuterium/on_reaction(var/datum/reagents/holder, var/created_volume)
 	var/turf/T = get_turf(holder.my_atom)
-	if(istype(T)) new /obj/item/stack/material/deuterium(T, created_volume)
+	if(isturf(T)) new /obj/item/stack/material/deuterium(T, created_volume)
 	return
 
 /datum/chemical_reaction/antidexafen

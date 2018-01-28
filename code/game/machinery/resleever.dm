@@ -189,7 +189,7 @@ obj/machinery/resleever/Process()
 		else
 			to_chat(user, "<span class='warning'>Can not do that while [src] is occupied.</span>")
 
-	else if(istype(W, /obj/item/grab))
+	else if(isgrab(W))
 		var/obj/item/grab/grab = W
 		if(occupant)
 			to_chat(user, "<span class='notice'>\The [src] is in use.</span>")

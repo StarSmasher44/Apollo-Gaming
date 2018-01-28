@@ -111,7 +111,7 @@
 	cardinals = c
 	carry.trans_to_obj(chemholder, carry.total_volume, copy = 1)
 
-	if(istype(loca, /turf/))
+	if(isturf(loca))
 		location = loca
 	else
 		location = get_turf(loca)
@@ -167,7 +167,7 @@
 		for(var/turf/T in targetTurfs)
 			chemholder.reagents.touch_turf(T)
 			for(var/atom/A in T.contents)
-				if(istype(A, /obj/effect/effect/smoke/chem) || istype(A, /mob))
+				if(istype(A, /obj/effect/effect/smoke/chem) || ismob(A))
 					continue
 				else if(isobj(A) && !A.simulated)
 					chemholder.reagents.touch_obj(A)

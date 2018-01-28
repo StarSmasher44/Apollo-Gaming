@@ -11,7 +11,7 @@
 	return src
 
 /mob/living/bot/mulebot/get_mob()
-	if(load && istype(load, /mob/living))
+	if(load && isliving(load))
 		return list(src, load)
 	return src
 
@@ -137,7 +137,7 @@ proc/age2agedescription(age)
 
 //checks whether this item is a module of the robot it is located in.
 /proc/is_robot_module(var/obj/item/thing)
-	if (!thing || !istype(thing.loc, /mob/living/silicon/robot))
+	if (!thing || !isrobot(thing.loc))
 		return 0
 	var/mob/living/silicon/robot/R = thing.loc
 	return (thing in R.module.modules)
@@ -295,7 +295,7 @@ proc/age2agedescription(age)
 			if((M.stat != DEAD) || (!M.client))
 				continue
 			//They need a brain!
-			if(istype(M, /mob/living/carbon/human))
+			if(ishuman(M))
 				var/mob/living/carbon/human/H = M
 				if(H.should_have_organ(BP_BRAIN) && !H.has_brain())
 					continue

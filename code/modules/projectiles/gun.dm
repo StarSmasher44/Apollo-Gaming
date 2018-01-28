@@ -96,7 +96,7 @@
 /obj/item/weapon/gun/update_icon()
 	if(wielded_item_state)
 		var/mob/living/M = loc
-		if(istype(M))
+		if(isliving(M))
 			if(M.can_wield_item(src) && src.is_held_twohanded(M))
 				item_state_slots[slot_l_hand_str] = wielded_item_state
 				item_state_slots[slot_r_hand_str] = wielded_item_state
@@ -109,7 +109,7 @@
 //Otherwise, if you want handle_click_empty() to be called, check in consume_next_projectile() and return null there.
 /obj/item/weapon/gun/proc/special_check(var/mob/user)
 
-	if(!istype(user, /mob/living))
+	if(!isliving(user))
 		return 0
 	if(!user.IsAdvancedToolUser())
 		return 0
@@ -335,7 +335,7 @@
 	//shooting while in shock
 	var/x_offset = 0
 	var/y_offset = 0
-	if(istype(user, /mob/living/carbon/human))
+	if(ishuman(user))
 		var/mob/living/carbon/human/mob = user
 		if(mob.shock_stage > 120)
 			y_offset = rand(-2,2)

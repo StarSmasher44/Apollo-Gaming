@@ -56,10 +56,10 @@
 			var/obj/item/I = user.get_active_hand()
 			if(I && I.force)
 				var/d = rand(round(I.force / 4), I.force)
-				if(istype(src, /mob/living/carbon/human))
+				if(ishuman(src))
 					var/mob/living/carbon/human/H = src
 					var/obj/item/organ/external/organ = H.get_organ(BP_CHEST)
-					if (istype(organ))
+					if (isorgan(organ))
 						organ.take_damage(d, 0)
 					H.updatehealth()
 				else
@@ -84,7 +84,7 @@
 	..()
 
 /mob/living/carbon/attack_hand(mob/M as mob)
-	if(!istype(M, /mob/living/carbon)) return
+	if(!iscarbon(M)) return
 	if (ishuman(M))
 		var/mob/living/carbon/human/H = M
 		var/obj/item/organ/external/temp = H.organs_by_name[BP_R_HAND]
@@ -203,13 +203,13 @@
 				t_him = "him"
 			else if (src.gender == FEMALE)
 				t_him = "her"
-			if (istype(src,/mob/living/carbon/human) && src:w_uniform)
+			if (ishuman(src) && src:w_uniform)
 				var/mob/living/carbon/human/H = src
 				H.w_uniform.add_fingerprint(M)
 
 			var/show_ssd
 			var/mob/living/carbon/human/H = src
-			if(istype(H)) show_ssd = H.species.show_ssd
+			if(ishuman(H)) show_ssd = H.species.show_ssd
 			if(show_ssd && !client && !teleop)
 				M.visible_message("<span class='notice'>[M] shakes [src] trying to wake [t_him] up!</span>", \
 				"<span class='notice'>You shake [src], but they do not respond... Maybe they have S.S.D?</span>")
@@ -304,7 +304,7 @@
 				var/end_T_descriptor = "<font color='#6b4400'>[start_T] \[[end_T.x],[end_T.y],[end_T.z]\] ([end_T.loc])</font>"
 				admin_attack_log(usr, M, "Threw the victim from [start_T_descriptor] to [end_T_descriptor].", "Was from [start_T_descriptor] to [end_T_descriptor].", "threw, from [start_T_descriptor] to [end_T_descriptor], ")
 
-	else if (istype(item, /obj/item/))
+	else if (isitem(item))
 		var/obj/item/I = item
 		itemsize = I.w_class
 
@@ -317,13 +317,13 @@
 
 	if(!src.lastarea)
 		src.lastarea = get_area(src.loc)
-	if((istype(src.loc, /turf/space)) || (src.lastarea.has_gravity == 0))
+	if((isspace(src.loc)) || (src.lastarea.has_gravity == 0))
 		src.inertia_dir = get_dir(target, src)
 		step(src, inertia_dir)
 
 
 /*
-	if(istype(src.loc, /turf/space) || (src.flags & NOGRAV)) //they're in space, move em one space in the opposite direction
+	if(isspace(src.loc) || (src.flags & NOGRAV)) //they're in space, move em one space in the opposite direction
 		src.inertia_dir = get_dir(target, src)
 		step(src, inertia_dir)
 */
@@ -375,7 +375,7 @@
 	if(now_pushing || !yes)
 		return
 	..()
-	if(istype(AM, /mob/living/carbon) && prob(10))
+	if(iscarbon(AM) && prob(10))
 		src.spread_disease_to(AM, "Contact")
 
 /mob/living/carbon/slip(var/slipped_on,stun_duration=8)

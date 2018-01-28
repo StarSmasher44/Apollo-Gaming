@@ -77,7 +77,7 @@ var/datum/antagonist/deathsquad/deathsquad
 	player.current.real_name = player.current.name
 
 	var/mob/living/carbon/human/H = player.current
-	if(istype(H))
+	if(ishuman(H))
 		H.gender = pick(MALE, FEMALE)
 		H.age = rand(25,45)
 		H.dna.ready_dna(H)

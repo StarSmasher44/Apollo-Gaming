@@ -45,7 +45,7 @@
 	if(T.holy)
 		to_chat(src, "<span class='warning'>This place is blessed, you may not draw runes on it - defile it first.</span>")
 		return
-	if(!istype(T, /turf/simulated))
+	if(!issimturf(T))
 		to_chat(src, "<span class='warning'>You need more space to draw a rune here.</span>")
 		return
 	if(locate(/obj/effect/rune) in T)

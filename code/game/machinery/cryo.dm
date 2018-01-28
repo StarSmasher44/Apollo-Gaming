@@ -184,7 +184,7 @@
 		user.drop_item()
 		G.forceMove(src)
 		user.visible_message("[user] adds \a [G] to \the [src]!", "You add \a [G] to \the [src]!")
-	else if(istype(G, /obj/item/grab))
+	else if(isgrab(G))
 		if(!ismob(G:affecting))
 			return
 		for(var/mob/living/carbon/slime/M in range(1,G:affecting))
@@ -287,7 +287,7 @@
 	if (stat & (NOPOWER|BROKEN))
 		to_chat(usr, "<span class='warning'>The cryo cell is not functioning.</span>")
 		return
-	if (!istype(M))
+	if (!iscarbon(M))
 		to_chat(usr, "<span class='danger'>The cryo cell cannot handle such a lifeform!</span>")
 		return
 	if (occupant)
@@ -319,7 +319,7 @@
 /obj/machinery/atmospherics/unary/cryo_cell/MouseDrop_T(var/mob/target, var/mob/user)
 	if(!CanMouseDrop(target, user))
 		return
-	if (!istype(target))
+	if (!ismob(target))
 		return
 	if (target.buckled)
 		to_chat(user, "<span class='warning'>Unbuckle the subject before attempting to move them.</span>")

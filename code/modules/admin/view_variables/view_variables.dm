@@ -118,13 +118,13 @@
 		vtext = "[value]"
 	else if(isfile(value))
 		vtext = "'[value]'"
-	else if(istype(value, /datum))
+	else if(isdatum(value))
 		var/datum/DA = value
 		if("[DA]" == "[DA.type]" || !"[DA]")
 			vtext = "<a href='?_src_=vars;Vars=\ref[DA]'>\ref[DA]</a> - [DA.type]"
 		else
 			vtext = "<a href='?_src_=vars;Vars=\ref[DA]'>\ref[DA]</a> - [DA] ([DA.type])"
-	else if(istype(value, /client))
+	else if(isclient(value))
 		var/client/C = value
 		vtext = "<a href='?_src_=vars;Vars=\ref[C]'>\ref[C]</a> - [C] ([C.type])"
 	else if(islist(value))

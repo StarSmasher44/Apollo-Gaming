@@ -72,7 +72,7 @@
 		var/obj/item/weapon/gun/magnetic/coilgun = new(loc)
 		var/put_in_hands
 		var/mob/M = src.loc
-		if(istype(M))
+		if(ismob(M))
 			put_in_hands = M == user
 			M.drop_from_inventory(src)
 		if(put_in_hands)

@@ -38,7 +38,7 @@
 			else
 				toggle_filter()
 		if(pump > 0)
-			if(beaker && istype(occupant))
+			if(beaker && ishuman(occupant))
 				if(beaker.reagents.total_volume < beaker.reagents.maximum_volume)
 					for(var/datum/reagent/x in occupant.ingested.reagent_list)
 						occupant.ingested.trans_to_obj(beaker, 3)
@@ -135,7 +135,7 @@
 /obj/machinery/sleeper/MouseDrop_T(var/mob/target, var/mob/user)
 	if(!CanMouseDrop(target, user))
 		return
-	if(!istype(target))
+	if(!ismob(target))
 		return
 	if(target.buckled)
 		to_chat(user, "<span class='warning'>Unbuckle the subject before attempting to move them.</span>")

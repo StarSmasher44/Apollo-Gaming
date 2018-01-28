@@ -20,7 +20,7 @@
 
 /datum/build_mode/advanced/OnClick(var/atom/A, var/list/parameters)
 	if(parameters["left"] && !parameters["ctrl"])
-		if(ispath(build_type,/turf))
+		if(isturf(build_type))
 			var/turf/T = get_turf(A)
 			T.ChangeTurf(build_type)
 		else if(ispath(build_type))

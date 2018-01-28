@@ -144,7 +144,7 @@
 	material_alteration = MATERIAL_ALTERATION_NONE
 
 /obj/structure/bed/chair/office/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W,/obj/item/stack) || isWirecutter(W))
+	if(isstack(W) || isWirecutter(W))
 		return
 	..()
 
@@ -178,7 +178,7 @@
 		occupant.apply_effect(6, STUTTER, blocked)
 		occupant.apply_damage(10, BRUTE, def_zone, blocked)
 		playsound(src.loc, 'sound/weapons/punch1.ogg', 50, 1, -1)
-		if(istype(A, /mob/living))
+		if(isliving(A))
 			var/mob/living/victim = A
 			def_zone = ran_zone()
 			blocked = victim.run_armor_check(def_zone, "melee")
@@ -204,7 +204,7 @@
 	material_alteration = MATERIAL_ALTERATION_NAME
 
 /obj/structure/bed/chair/wood/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W,/obj/item/stack) || istype(W, /obj/item/weapon/wirecutters))
+	if(isstack(W) || isWirecutter(W))
 		return
 	..()
 

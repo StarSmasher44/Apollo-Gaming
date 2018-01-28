@@ -184,7 +184,7 @@
 /obj/effect/vine/proc/calc_dir()
 	set background = 1
 	var/turf/T = get_turf(src)
-	if(!istype(T)) return
+	if(!isturf(T)) return
 
 	var/direction = 16
 

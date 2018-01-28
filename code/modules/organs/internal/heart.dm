@@ -147,7 +147,7 @@
 		if(CE_STABLE in owner.chem_effects) // inaprovaline
 			blood_max *= 0.8
 
-		if(world.time >= next_blood_squirt && istype(owner.loc, /turf) && do_spray.len)
+		if(world.time >= next_blood_squirt && isturf(owner.loc) && do_spray.len)
 			owner.visible_message("<span class='danger'>Blood squirts from [pick(do_spray)]!</span>")
 			// It becomes very spammy otherwise. Arterial bleeding will still happen outside of this block, just not the squirt effect.
 			next_blood_squirt = world.time + 100

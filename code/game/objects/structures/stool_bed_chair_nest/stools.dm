@@ -126,7 +126,7 @@ var/global/list/stool_cache = list() //haha stool
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		dismantle()
 		qdel(src)
-	else if(istype(W,/obj/item/stack))
+	else if(isstack(W))
 		if(padding_material)
 			to_chat(user, "\The [src] is already padded.")
 			return
@@ -146,7 +146,7 @@ var/global/list/stool_cache = list() //haha stool
 			to_chat(user, "You cannot pad \the [src] with that.")
 			return
 		C.use(1)
-		if(!istype(src.loc, /turf))
+		if(!isturf(src.loc))
 			user.drop_from_inventory(src)
 			src.dropInto(loc)
 		to_chat(user, "You add padding to \the [src].")

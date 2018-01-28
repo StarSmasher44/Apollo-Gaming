@@ -85,7 +85,7 @@
 	if(anchored != 1)
 		to_chat(user, "<span class='warning'>The shield generator needs to be firmly secured to the floor first.</span>")
 		return 1
-	if(src.locked && !istype(user, /mob/living/silicon))
+	if(src.locked && !issilicon(user))
 		to_chat(user, "<span class='warning'>The controls are locked!</span>")
 		return 1
 	if(power != 1)
@@ -343,7 +343,7 @@
 /obj/machinery/shieldwall/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
 	if(air_group || (height==0)) return 1
 
-	if(istype(mover) && mover.checkpass(PASSGLASS))
+	if(ismovable(mover) && mover.checkpass(PASSGLASS))
 		return prob(20)
 	else
 		if (istype(mover, /obj/item/projectile))

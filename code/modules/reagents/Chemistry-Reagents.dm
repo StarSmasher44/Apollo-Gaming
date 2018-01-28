@@ -41,7 +41,7 @@
 	return
 
 /datum/reagent/proc/on_mob_life(var/mob/living/carbon/M, var/alien, var/location) // Currently, on_mob_life is called on carbons. Any interaction with non-carbon mobs (lube) will need to be done in touch_mob.
-	if(!istype(M))
+	if(!iscarbon(M))
 		return
 	if(!(flags & AFFECTS_DEAD) && M.stat == DEAD && (world.time - M.timeofdeath > 150))
 		return
@@ -102,7 +102,7 @@
 	return
 
 /datum/reagent/proc/get_data() // Just in case you have a reagent that handles data differently.
-	if(data && istype(data, /list))
+	if(data && islist(data))
 		return data.Copy()
 	else if(data)
 		return data

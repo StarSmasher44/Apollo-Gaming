@@ -50,7 +50,7 @@ var/list/holder_mob_icon_cache = list()
 		for(var/mob/M in contents)
 			unregister_all_movement(last_holder, M)
 
-	if(istype(loc,/turf) || !(contents.len))
+	if(isturf(loc) || !(contents.len))
 		for(var/mob/M in contents)
 			var/atom/movable/mob_container = M
 			mob_container.dropInto(loc)
@@ -84,7 +84,7 @@ var/list/holder_mob_icon_cache = list()
 
 /obj/item/weapon/holder/attack(mob/target, mob/user)
 	// Devour on click on self with holder
-	if(target == user && istype(user,/mob/living/carbon))
+	if(target == user && iscarbon(user))
 		var/mob/living/carbon/M = user
 
 		for(var/mob/victim in src.contents)
@@ -169,7 +169,7 @@ var/list/holder_mob_icon_cache = list()
 	return H
 
 /mob/living/MouseDrop(var/mob/living/carbon/human/over_object)
-	if(istype(over_object) && Adjacent(over_object) && (usr == src || usr == over_object) && over_object.a_intent == I_GRAB)
+	if(ishuman(over_object) && Adjacent(over_object) && (usr == src || usr == over_object) && over_object.a_intent == I_GRAB)
 		if(scoop_check(over_object))
 			get_scooped(over_object, (usr == src))
 			return
@@ -189,7 +189,7 @@ var/list/holder_mob_icon_cache = list()
 /obj/item/weapon/holder/human/sync(var/mob/living/M)
 	// Generate appropriate on-mob icons.
 	var/mob/living/carbon/human/owner = M
-	if(istype(owner) && owner.species)
+	if(ishuman(owner) && owner.species)
 
 		var/skin_colour = rgb(owner.r_skin, owner.g_skin, owner.b_skin)
 		var/hair_colour = rgb(owner.r_hair, owner.g_hair, owner.b_hair)

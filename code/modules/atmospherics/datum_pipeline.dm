@@ -121,7 +121,7 @@
 	var/datum/gas_mixture/air_sample = air.remove_ratio(mingle_volume/air.volume)
 	air_sample.volume = mingle_volume
 
-	if(istype(target) && target.zone)
+	if(issimturf(target) && target.zone)
 		//Have to consider preservation of group statuses
 		var/datum/gas_mixture/turf_copy = new
 
@@ -149,7 +149,7 @@
 	var/total_heat_capacity = air.heat_capacity()
 	var/partial_heat_capacity = total_heat_capacity*(share_volume/air.volume)
 
-	if(istype(target, /turf/simulated))
+	if(issimturf(target))
 		var/turf/simulated/modeled_location = target
 
 		if(modeled_location.blocks_air)

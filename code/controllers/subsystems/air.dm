@@ -301,8 +301,8 @@ Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_coun
 
 /datum/controller/subsystem/air/proc/merge(zone/A, zone/B)
 	#ifdef ZASDBG
-	ASSERT(istype(A))
-	ASSERT(istype(B))
+	ASSERT(iszone(A))
+	ASSERT(iszone(B))
 	ASSERT(!A.invalid)
 	ASSERT(!B.invalid)
 	ASSERT(A != B)
@@ -316,8 +316,8 @@ Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_coun
 
 /datum/controller/subsystem/air/proc/connect(turf/simulated/A, turf/simulated/B)
 	#ifdef ZASDBG
-	ASSERT(istype(A))
-	ASSERT(isturf(B))
+	ASSERT(issimturf(A))
+	ASSERT(issimturf(B))
 	ASSERT(A.zone)
 	ASSERT(!A.zone.invalid)
 	//ASSERT(B.zone)
@@ -328,7 +328,7 @@ Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_coun
 	if(block & AIR_BLOCKED) return
 
 	var/direct = !(block & ZONE_BLOCKED)
-	var/space = !istype(B)
+	var/space = !issimturf(B)
 
 	if(!space)
 		if(min(A.zone.contents.len, B.zone.contents.len) < ZONE_MIN_SIZE || (direct && (equivalent_pressure(A.zone,B.zone) || times_fired == 0)))
@@ -371,7 +371,7 @@ Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_coun
 
 /datum/controller/subsystem/air/proc/mark_zone_update(zone/Z)
 	#ifdef ZASDBG
-	ASSERT(istype(Z))
+	ASSERT(iszone(Z))
 	#endif
 	if(Z.needs_update)
 		return
@@ -400,7 +400,7 @@ Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_coun
 	return A.air.compare(B.air)
 
 /datum/controller/subsystem/air/proc/get_edge(zone/A, zone/B)
-	if(istype(B))
+	if(iszone(B))
 		for(var/connection_edge/zone/edge in A.edges)
 			if(edge.contains_zone(B))
 				return edge

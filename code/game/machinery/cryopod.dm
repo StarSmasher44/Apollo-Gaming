@@ -246,7 +246,7 @@
 	if(possible_locations.len && prob(10))
 		newz = pick(possible_locations)
 	var/turf/nloc = locate(rand(TRANSITIONEDGE, world.maxx-TRANSITIONEDGE), rand(TRANSITIONEDGE, world.maxy-TRANSITIONEDGE),newz)
-	if(!istype(nloc, /turf/space))
+	if(!isspace(nloc))
 		explosion(nloc, 1, 2, 3)
 	playsound(loc,'sound/effects/rocket.ogg',100)
 	forceMove(nloc)
@@ -320,7 +320,7 @@
 // Also make sure there is a valid control computer
 /obj/machinery/cryopod/robot/despawn_occupant()
 	var/mob/living/silicon/robot/R = occupant
-	if(!istype(R)) return ..()
+	if(!isrobot(R)) return ..()
 
 	qdel(R.mmi)
 	for(var/obj/item/I in R.module) // the tools the borg has; metal, glass, guns etc
@@ -431,7 +431,7 @@
 
 /obj/machinery/cryopod/attackby(var/obj/item/weapon/G as obj, var/mob/user as mob)
 
-	if(istype(G, /obj/item/grab))
+	if(isgrab(G))
 		var/obj/item/grab/grab = G
 		if(occupant)
 			to_chat(user, "<span class='notice'>\The [src] is in use.</span>")

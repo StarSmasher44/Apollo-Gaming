@@ -95,7 +95,7 @@
 			if ((M.client && M.machine == src))
 				is_in_use = 1
 				src.attack_hand(M)
-		if (istype(usr, /mob/living/silicon/ai) || istype(usr, /mob/living/silicon/robot))
+		if (isAI(usr) || isrobot(usr))
 			if (!(usr in nearby))
 				if (usr.client && usr.machine==src) // && M.machine == src is omitted because if we triggered this by using the dialog, it doesn't matter if our machine changed in between triggering it and this - the dialog is probably still supposed to refresh.
 					is_in_use = 1
@@ -103,7 +103,7 @@
 
 		// check for TK users
 
-		if (istype(usr, /mob/living/carbon/human))
+		if (ishuman(usr))
 			if(istype(usr.l_hand, /obj/item/tk_grab) || istype(usr.r_hand, /obj/item/tk_grab/))
 				if(!(usr in nearby))
 					if(usr.client && usr.machine==src)
@@ -139,12 +139,12 @@
 	if(src.machine)
 		unset_machine()
 	src.machine = O
-	if(istype(O))
+	if(isobj(O))
 		O.in_use = 1
 
 /obj/item/proc/updateSelfDialog()
 	var/mob/M = src.loc
-	if(istype(M) && M.client && M.machine == src)
+	if(ismob(M) && M.client && M.machine == src)
 		src.attack_self(M)
 
 /obj/proc/hide(var/hide)

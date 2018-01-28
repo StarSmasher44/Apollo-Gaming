@@ -273,7 +273,7 @@
 /obj/machinery/suit_storage_unit/Topic(href, href_list) //I fucking HATE this proc
 	if(..())
 		return
-	if ((usr.contents.Find(src) || ((get_dist(src, usr) <= 1) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon/ai)))
+	if ((usr.contents.Find(src) || ((get_dist(src, usr) <= 1) && isturf(src.loc))) || (isAI(usr)))
 		usr.set_machine(src)
 		if (href_list["toggleUV"])
 			src.toggleUV(usr)
@@ -604,7 +604,7 @@
 		to_chat(user, text("<span class='notice'>You [] the unit's maintenance panel.</span>",(src.panelopen ? "open up" : "close") ))
 		src.updateUsrDialog()
 		return
-	if ( istype(I, /obj/item/grab) )
+	if (isgrab(I) )
 		var/obj/item/grab/G = I
 		if( !(ismob(G.affecting)) )
 			return
@@ -832,7 +832,7 @@
 			attack_hand(user)
 		return
 	//Other interface stuff.
-	if(istype(I, /obj/item/grab))
+	if(isgrab(I))
 		var/obj/item/grab/G = I
 
 		if(!(ismob(G.affecting)))

@@ -33,7 +33,7 @@
 		STOP_PROCESSING(SSobj, src)
 		return null
 	var/turf/location = loc
-	if(istype(location, /mob/))
+	if(ismob(location))
 		var/mob/M = location
 		if(M.l_hand == src || M.r_hand == src)
 			location = M.loc
@@ -168,7 +168,7 @@
 	if(!lit || operating)	return
 	operating = 1
 	for(var/turf/T in turflist)
-		if(T.density || istype(T, /turf/space))
+		if(T.density || isspace(T))
 			break
 		if(!previousturf && length(turflist)>1)
 			previousturf = get_turf(src)

@@ -7,7 +7,7 @@
 /datum/phenomena/animate/can_activate(var/atom/a)
 	if(!..())
 		return 0
-	return istype(a, /obj/structure) || istype(a, /obj/item)
+	return isstructure(a) || isitem(a)
 
 /datum/phenomena/animate/activate(var/atom/a)
 	..()

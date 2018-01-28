@@ -27,16 +27,16 @@
 
 /obj/structure/kitchenspike/proc/spike(var/mob/living/victim)
 
-	if(!istype(victim))
+	if(!isliving(victim))
 		return
 
-	if(istype(victim, /mob/living/carbon/human))
+	if(ishuman(victim))
 		var/mob/living/carbon/human/H = victim
 		if(!issmall(H))
 			return 0
 		meat_type = H.species.meat_type
 		icon_state = "spikebloody"
-	else if(istype(victim, /mob/living/carbon/alien))
+	else if(isalien(victim))
 		meat_type = /obj/item/weapon/reagent_containers/food/snacks/xenomeat
 		icon_state = "spikebloodygreen"
 	else

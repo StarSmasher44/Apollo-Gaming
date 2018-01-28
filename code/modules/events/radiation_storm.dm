@@ -40,7 +40,7 @@
 			continue
 		if(A.flags & AREA_RAD_SHIELDED)
 			continue
-		if(istype(C,/mob/living/carbon/human))
+		if(ishuman(C))
 			var/mob/living/carbon/human/H = C
 			if(prob(5 * (0.01 * (100 - H.getarmor(null, "rad")))))
 				if (prob(75))

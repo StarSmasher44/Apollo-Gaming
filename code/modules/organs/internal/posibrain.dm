@@ -39,7 +39,7 @@
 /obj/item/organ/internal/posibrain/proc/init(var/mob/living/carbon/H)
 	brainmob = new(src)
 
-	if(istype(H))
+	if(iscarbon(H))
 		brainmob.name = H.real_name
 		brainmob.real_name = H.real_name
 		brainmob.dna = H.dna.Clone()

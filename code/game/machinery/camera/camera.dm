@@ -146,7 +146,7 @@
 
 /obj/machinery/camera/hitby(AM as mob|obj)
 	..()
-	if (istype(AM, /obj))
+	if (isobj(AM))
 		var/obj/O = AM
 		if (O.throwforce >= src.toughness)
 			visible_message("<span class='warning'><B>[src] was hit by [O].</B></span>")
@@ -157,7 +157,7 @@
 	cameranet.update_visibility(src, 0)
 
 /obj/machinery/camera/attack_hand(mob/living/carbon/human/user as mob)
-	if(!istype(user))
+	if(!ishuman(user))
 		return
 
 	if(user.species.can_shred(user))
@@ -230,7 +230,7 @@
 		if (W.force >= src.toughness)
 			user.do_attack_animation(src)
 			visible_message("<span class='warning'><b>[src] has been [pick(W.attack_verb)] with [W] by [user]!</b></span>")
-			if (istype(W, /obj/item)) //is it even possible to get into attackby() with non-items?
+			if (isitem(W)) //is it even possible to get into attackby() with non-items?
 				var/obj/item/I = W
 				if (I.hitsound)
 					playsound(loc, I.hitsound, 50, 1, -1)
@@ -241,7 +241,7 @@
 
 /obj/machinery/camera/proc/deactivate(user as mob, var/choice = 1)
 	// The only way for AI to reactivate cameras are malf abilities, this gives them different messages.
-	if(istype(user, /mob/living/silicon/ai))
+	if(isAI(user))
 		user = null
 
 	if(choice != 1)
@@ -339,7 +339,7 @@
 	var/turf/simulated/wall/T = null
 	for(var/i = 1, i <= 8; i += i)
 		T = get_ranged_target_turf(src, i, 1)
-		if(istype(T))
+		if(issimwall(T))
 			//If someone knows a better way to do this, let me know. -Giacom
 			switch(i)
 				if(NORTH)
@@ -391,7 +391,7 @@
 	return 0
 
 /obj/machinery/camera/interact(mob/living/user as mob)
-	if(!panel_open || istype(user, /mob/living/silicon/ai))
+	if(!panel_open || isAI(user))
 		return
 
 	if(stat & BROKEN)

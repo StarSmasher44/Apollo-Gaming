@@ -87,7 +87,7 @@
 	//grabbing people
 	if(!victim.anchored && (Adjacent(victim) || victim.loc == src.loc))
 		var/can_grab = 1
-		if(istype(victim, /mob/living/carbon/human))
+		if(ishuman(victim))
 			var/mob/living/carbon/human/H = victim
 			if(((istype(H.shoes, /obj/item/clothing/shoes/magboots) && (H.shoes.item_flags & NOSLIP)) || (H.species.flags & NO_SLIP)) && victim.loc != src.loc)
 				if(prob(90))

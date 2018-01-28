@@ -37,7 +37,7 @@
 	// Locks or unlocks the cyborg
 	else if (href_list["lockdown"])
 		var/mob/living/silicon/robot/target = get_cyborg_by_name(href_list["lockdown"])
-		if(!target || !istype(target))
+		if(!target || !isrobot(target))
 			return
 
 		if(isAI(user) && (target.connected_ai != user))
@@ -52,7 +52,7 @@
 		if(choice != "Yes")
 			return
 
-		if(!target || !istype(target))
+		if(!target || !isrobot(target))
 			return
 
 		if(target.SetLockdown(!target.lockcharge))
@@ -68,11 +68,11 @@
 	// Remotely hacks the cyborg. Only antag AIs can do this and only to linked cyborgs.
 	else if (href_list["hack"])
 		var/mob/living/silicon/robot/target = get_cyborg_by_name(href_list["hack"])
-		if(!target || !istype(target))
+		if(!target || !isrobot(target))
 			return
 
 		// Antag AI checks
-		if(!istype(user, /mob/living/silicon/ai) || !(user.mind.special_role && user.mind.original == user))
+		if(!isAI(user) || !(user.mind.special_role && user.mind.original == user))
 			to_chat(user, "Access Denied")
 			return
 
@@ -84,7 +84,7 @@
 		if(choice != "Yes")
 			return
 
-		if(!target || !istype(target))
+		if(!target || !isrobot(target))
 			return
 
 		message_admins("<span class='notice'>[key_name_admin(usr)] emagged [target.name] using robotic console!</span>")
@@ -94,11 +94,11 @@
 
 	else if (href_list["message"])
 		var/mob/living/silicon/robot/target = get_cyborg_by_name(href_list["message"])
-		if(!target || !istype(target))
+		if(!target || !isrobot(target))
 			return
 
 		var/message = sanitize(input("Enter message to transmit to the synthetic.") as null|text)
-		if(!message || !istype(target))
+		if(!message || !isrobot(target))
 			return
 
 		log_and_message_admins("[key_name_admin(usr)] sent message '[message]' to [target.name] using robotics control console!")
@@ -113,7 +113,7 @@
 
 	for(var/mob/living/silicon/robot/R in GLOB.silicon_mob_list)
 		// Ignore drones
-		if(istype(R, /mob/living/silicon/robot/drone))
+		if(is_drone(R))
 			continue
 		// Ignore antagonistic cyborgs
 		if(R.scrambledcodes)
@@ -124,7 +124,7 @@
 		var/turf/T = get_turf(R)
 		var/area/A = get_area(T)
 
-		if(istype(T) && istype(A) && (T.z in GLOB.using_map.contact_levels))
+		if(isturf(T) && isarea(A) && (T.z in GLOB.using_map.contact_levels))
 			robot["location"] = "[A.name] ([T.x], [T.y])"
 		else
 			robot["location"] = "Unknown"
@@ -148,7 +148,7 @@
 		robot["master_ai"] = R.connected_ai ? R.connected_ai.name : "None"
 		robot["hackable"] = 0
 		// Antag AIs know whether linked cyborgs are hacked or not.
-		if(operator && istype(operator, /mob/living/silicon/ai) && (R.connected_ai == operator) && (operator.mind.special_role && operator.mind.original == operator))
+		if(operator && isAI(operator) && (R.connected_ai == operator) && (operator.mind.special_role && operator.mind.original == operator))
 			robot["hacked"] = R.emagged ? 1 : 0
 			robot["hackable"] = R.emagged? 0 : 1
 		. += list(robot)

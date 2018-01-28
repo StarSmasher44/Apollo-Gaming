@@ -174,7 +174,7 @@
 				icon_state = "[initial(icon_state)]_burnt"
 				return
 			times_used++
-			if(istype(loc, /mob/living/carbon))
+			if(iscarbon(loc))
 				var/mob/living/carbon/M = loc
 				var/safety = M.eyecheck()
 				if(safety < FLASH_PROTECTION_MODERATE)

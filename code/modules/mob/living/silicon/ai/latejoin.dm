@@ -17,7 +17,7 @@ var/global/list/empty_playable_ai_cores = list()
 	set category = "OOC"
 	set desc = "Wipe your core. This is functionally equivalent to cryo or robotic storage, freeing up your job slot."
 
-	if(istype(loc, /obj/item))
+	if(isitem(loc))
 		to_chat(src, "You cannot wipe your core when you are on a portable storage device.")
 		return
 
@@ -26,7 +26,7 @@ var/global/list/empty_playable_ai_cores = list()
 					"Wipe Core", "No", "No", "Yes") != "Yes")
 		return
 
-	if(istype(loc, /obj/item))
+	if(isitem(loc))
 		to_chat(src, "You cannot wipe your core when you are on a portable storage device.")
 		return
 

@@ -64,7 +64,7 @@ Class Procs:
 /zone/proc/add(turf/simulated/T)
 #ifdef ZASDBG
 	ASSERT(!invalid)
-	ASSERT(istype(T))
+	ASSERT(issimturf(T))
 	ASSERT(!SSair.has_valid_zone(T))
 #endif
 
@@ -82,7 +82,7 @@ Class Procs:
 /zone/proc/remove(turf/simulated/T)
 #ifdef ZASDBG
 	ASSERT(!invalid)
-	ASSERT(istype(T))
+	ASSERT(issimturf(T))
 	ASSERT(T.zone == src)
 	soft_assert(T in contents, "Lists are weird broseph")
 #endif
@@ -148,7 +148,7 @@ Class Procs:
 /zone/proc/tick()
 	if(air.temperature >= PHORON_FLASHPOINT && !(src in SSair.active_fire_zones) && air.check_combustability() && contents.len)
 		var/turf/T = pick(contents)
-		if(istype(T))
+		if(isturf(T))
 			T.create_fire(vsc.fire_firelevel_multiplier)
 
 	if(air.check_tile_graphic(graphic_add, graphic_remove))

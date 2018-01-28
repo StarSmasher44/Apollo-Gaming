@@ -22,7 +22,7 @@
 	if(!access)
 		return 1
 
-	if(!istype(user))
+	if(!ismob(user))
 		return 0
 	if(isAdminGhost(user))
 		return 1

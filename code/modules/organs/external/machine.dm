@@ -148,7 +148,7 @@
 
 /obj/item/organ/internal/mmi_holder/cut_away(var/mob/living/user)
 	var/obj/item/organ/external/parent = owner.get_organ(parent_organ)
-	if(istype(parent))
+	if(isorgan(parent))
 		removed(user, 0)
 		parent.implants += transfer_and_delete()
 

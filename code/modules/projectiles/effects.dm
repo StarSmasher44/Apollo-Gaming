@@ -5,7 +5,7 @@
 	layer = PROJECTILE_LAYER
 
 /obj/effect/projectile/New(var/turf/location)
-	if(istype(location))
+	if(isturf(location))
 		loc = location
 
 /obj/effect/projectile/proc/set_transform(var/matrix/M)

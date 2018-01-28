@@ -39,7 +39,7 @@ var/datum/antagonist/rogue_ai/malf
 /datum/antagonist/rogue_ai/remove_antagonist(var/datum/mind/player, var/show_message, var/implanted)
 	if(..(player,show_message,implanted))
 		var/mob/living/silicon/ai/p = player.current
-		if(istype(p))
+		if(isAI(p))
 			p.stop_malf()
 		return 1
 	return 0
@@ -53,7 +53,7 @@ var/datum/antagonist/rogue_ai/malf
 			return
 
 		var/mob/living/silicon/ai/A = player.current
-		if(!istype(A))
+		if(!isAI(A))
 			error("Non-AI mob designated malf AI! Report this.")
 			to_world("##ERROR: Non-AI mob designated malf AI! Report this.")
 
@@ -96,7 +96,7 @@ var/datum/antagonist/rogue_ai/malf
 	return player.current
 
 /datum/antagonist/rogue_ai/set_antag_name(var/mob/living/silicon/player)
-	if(!istype(player))
+	if(!issilicon(player))
 		testing("rogue_ai set_antag_name called on non-silicon mob [player]!")
 		return
 	// Choose a name, if any.

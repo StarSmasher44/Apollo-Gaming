@@ -51,7 +51,7 @@
 
 			return
 
-	if(istype(M,/mob/living/carbon))
+	if(iscarbon(M))
 		M.spread_disease_to(src, "Contact")
 
 	if(istype(H))
@@ -243,7 +243,7 @@
 
 /mob/living/carbon/human/attack_generic(var/mob/user, var/damage, var/attack_message, var/damtype = BRUTE, var/armorcheck = "melee")
 
-	if(!damage || !istype(user))
+	if(!damage || !ismob(user))
 		return
 	admin_attack_log(user, src, "Attacked their victim", "Was attacked", "has [attack_message]")
 	src.visible_message("<span class='danger'>[user] has [attack_message] [src]!</span>")

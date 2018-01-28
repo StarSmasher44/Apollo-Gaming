@@ -31,7 +31,7 @@
 	return TRUE
 
 /obj/item/underwear/proc/CanAdjustUnderwear(var/mob/user, var/mob/living/carbon/human/H, var/adjustment_verb)
-	if(!istype(H))
+	if(!ishuman(H))
 		return FALSE
 	if(user != H && !CanPhysicallyInteractWith(user, H))
 		return FALSE

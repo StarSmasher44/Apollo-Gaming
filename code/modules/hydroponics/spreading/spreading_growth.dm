@@ -4,7 +4,7 @@
 	var/list/cardinal_neighbors = list()
 	for(var/check_dir in GLOB.cardinal)
 		var/turf/simulated/T = get_step(get_turf(src), check_dir)
-		if(istype(T))
+		if(issimturf(T))
 			cardinal_neighbors |= T
 	return cardinal_neighbors
 
@@ -74,14 +74,14 @@
 	var/turf/simulated/T = get_turf(src)
 	if(grow)
 		// Handle life.
-		if(istype(T))
+		if(issimturf(T))
 			health -= seed.handle_environment(T,T.return_air(),null,1)
 		if(health < max_health)
 			health += 1
 			update_icon()
 		if(health > max_health)
 			health = max_health
-		if(parent == src && health == max_health && !plant && istype(T) && !T.CanZPass(src, DOWN))
+		if(parent == src && health == max_health && !plant && issimturf(T) && !T.CanZPass(src, DOWN))
 			plant = new(T,seed)
 			plant.dir = src.dir
 			plant.transform = src.transform

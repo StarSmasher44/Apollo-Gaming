@@ -48,7 +48,7 @@
 /datum/wifi/New(var/new_id, var/obj/O)
 	connected_devices = new()
 	id = new_id
-	if(istype(O))
+	if(isobj(O))
 		parent = O
 
 /datum/wifi/Destroy(var/wifi/device)

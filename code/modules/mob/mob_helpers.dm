@@ -1,12 +1,12 @@
 // fun if you want to typecast humans/monkeys/etc without writing long path-filled lines.
 /proc/isxenomorph(A)
-	if(istype(A, /mob/living/carbon/human))
+	if(ishuman(A))
 		var/mob/living/carbon/human/H = A
 		return istype(H.species, /datum/species/xenos)
 	return 0
 
 /proc/issmall(A)
-	if(A && istype(A, /mob/living))
+	if(A && isliving(A))
 		var/mob/living/L = A
 		return L.mob_size <= MOB_SMALL
 	return 0
@@ -52,7 +52,7 @@ proc/hasorgans(A) // Fucking really??
 	return ishuman(A)
 
 proc/iscuffed(A)
-	if(istype(A, /mob/living/carbon))
+	if(iscarbon(A))
 		var/mob/living/carbon/C = A
 		if(C.handcuffed)
 			return 1
@@ -60,14 +60,14 @@ proc/iscuffed(A)
 
 proc/hassensorlevel(A, var/level)
 	var/mob/living/carbon/human/H = A
-	if(istype(H) && istype(H.w_uniform, /obj/item/clothing/under))
+	if(ishuman(H) && istype(H.w_uniform, /obj/item/clothing/under))
 		var/obj/item/clothing/under/U = H.w_uniform
 		return U.sensor_mode >= level
 	return 0
 
 proc/getsensorlevel(A)
 	var/mob/living/carbon/human/H = A
-	if(istype(H) && istype(H.w_uniform, /obj/item/clothing/under))
+	if(ishuman(H) && istype(H.w_uniform, /obj/item/clothing/under))
 		var/obj/item/clothing/under/U = H.w_uniform
 		return U.sensor_mode
 	return SUIT_SENSOR_OFF
@@ -390,7 +390,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 				hud_used.action_intent.icon_state = I_HELP
 
 proc/is_blind(A)
-	if(istype(A, /mob/living/carbon))
+	if(iscarbon(A))
 		var/mob/living/carbon/C = A
 		if(C.sdisabilities & BLIND || C.blinded)
 			return 1
@@ -420,11 +420,11 @@ proc/is_blind(A)
 /proc/announce_ghost_joinleave(O, var/joined_ghosts = 1, var/message = "")
 	var/client/C
 	//Accept any type, sort what we want here
-	if(istype(O, /mob))
+	if(ismob(O))
 		var/mob/M = O
 		if(M.client)
 			C = M.client
-	else if(istype(O, /client))
+	else if(isclient(O))
 		C = O
 	else if(istype(O, /datum/mind))
 		var/datum/mind/M = O
@@ -562,7 +562,7 @@ proc/is_blind(A)
 	return ..(aiMulti)
 
 /proc/get_both_hands(mob/living/carbon/M)
-	if(!istype(M))
+	if(!iscarbon(M))
 		return
 	. = list(M.l_hand, M.r_hand)
 	return .

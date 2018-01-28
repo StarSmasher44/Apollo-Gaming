@@ -26,7 +26,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 //This proc sends the asset to the client, but only if it needs it.
 //This proc blocks(sleeps) unless verify is set to false
 /proc/send_asset(var/client/client, var/asset_name, var/verify = TRUE, var/check_cache = TRUE)
-	if(!istype(client))
+	if(!isclient(client))
 		if(ismob(client))
 			var/mob/M = client
 			if(M.client)
@@ -73,7 +73,7 @@ You can set verify to TRUE if you want send() to sleep until the client has the 
 
 //This proc blocks(sleeps) unless verify is set to false
 /proc/send_asset_list(var/client/client, var/list/asset_list, var/verify = TRUE)
-	if(!istype(client))
+	if(!isclient(client))
 		if(ismob(client))
 			var/mob/M = client
 			if(M.client)

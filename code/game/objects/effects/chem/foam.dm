@@ -76,7 +76,7 @@
 /obj/effect/effect/foam/Crossed(var/atom/movable/AM)
 	if(metal)
 		return
-	if(istype(AM, /mob/living))
+	if(isliving(AM))
 		var/mob/living/M = AM
 		M.slip("the foam", 6)
 
@@ -87,7 +87,7 @@
 
 /datum/effect/effect/system/foam_spread/set_up(amt=5, loca, var/datum/reagents/carry = null, var/metalfoam = 0)
 	amount = round(sqrt(amt / 3), 1)
-	if(istype(loca, /turf/))
+	if(isturf(loca))
 		location = loca
 	else
 		location = get_turf(loca)
@@ -102,23 +102,23 @@
 			carried_reagents += R.type
 
 /datum/effect/effect/system/foam_spread/start()
-	spawn(0)
-		var/obj/effect/effect/foam/F = locate() in location
-		if(F)
-			F.amount += amount
-			return
+	set waitfor = FALSE
+	var/obj/effect/effect/foam/F = locate() in location
+	if(F)
+		F.amount += amount
+		return
 
-		F = new /obj/effect/effect/foam(location, metal)
-		F.amount = amount
+	F = new /obj/effect/effect/foam(location, metal)
+	F.amount = amount
 
-		if(!metal) // don't carry other chemicals if a metal foam
-			F.create_reagents(10)
+	if(!metal) // don't carry other chemicals if a metal foam
+		F.create_reagents(10)
 
-			if(carried_reagents)
-				for(var/id in carried_reagents)
-					F.reagents.add_reagent(id, 1, safety = 1) //makes a safety call because all reagents should have already reacted anyway
-			else
-				F.reagents.add_reagent(/datum/reagent/water, 1, safety = 1)
+		if(carried_reagents)
+			for(var/id in carried_reagents)
+				F.reagents.add_reagent(id, 1, safety = 1) //makes a safety call because all reagents should have already reacted anyway
+		else
+			F.reagents.add_reagent(/datum/reagent/water, 1, safety = 1)
 
 // wall formed by metal foams, dense and opaque, but easy to break
 

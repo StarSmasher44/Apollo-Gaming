@@ -151,7 +151,7 @@
 		return ..()
 	var/list/removable_objects = list()
 	for(var/obj/item/organ/external/E in (contents + src))
-		if(!istype(E))
+		if(!isorgan(E))
 			continue
 		for(var/obj/item/I in E.contents)
 			if(istype(I,/obj/item/organ))
@@ -160,7 +160,7 @@
 	if(removable_objects.len)
 		var/obj/item/I = pick(removable_objects)
 		I.loc = get_turf(user) //just in case something was embedded that is not an item
-		if(istype(I))
+		if(isitem(I))
 			if(!(user.l_hand && user.r_hand))
 				user.put_in_hands(I)
 		user.visible_message("<span class='danger'>\The [user] rips \the [I] out of \the [src]!</span>")
@@ -675,7 +675,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 	var/clamped = 0
 
 	var/mob/living/carbon/human/H
-	if(istype(owner,/mob/living/carbon/human))
+	if(ishuman(owner))
 		H = owner
 
 	//update damage counts
@@ -814,7 +814,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 			forceMove(get_turf(src))
 			if(!clean)
 				// Throw limb around.
-				if(src && istype(loc,/turf))
+				if(src && isturf(loc))
 					throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,3),30)
 				dir = 2
 		if(DROPLIMB_BURN)
@@ -838,7 +838,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 			for(var/obj/item/organ/I in internal_organs)
 				I.removed()
-				if(istype(loc,/turf))
+				if(isturf(loc))
 					I.throw_at(get_edge_target_turf(src,pick(GLOB.alldirs)),rand(1,3),30)
 
 			for(var/obj/item/I in src)

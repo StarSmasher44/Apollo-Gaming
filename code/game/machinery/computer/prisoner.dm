@@ -46,7 +46,7 @@
 				if(!T.implanted) continue
 				var/loc_display = "Space"
 				var/mob/living/carbon/M = T.imp_in
-				if(!istype(M.loc, /turf/space))
+				if(!isspace(M.loc))
 					var/turf/mob_loc = get_turf(M)
 					loc_display = mob_loc.loc
 				if(T.malfunction)
@@ -70,7 +70,7 @@
 	Topic(href, href_list)
 		if(..())
 			return
-		if((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon)))
+		if((usr.contents.Find(src) || (in_range(src, usr) && isturf(src.loc))) || (issilicon(usr)))
 			usr.set_machine(src)
 
 			if(href_list["inject1"])

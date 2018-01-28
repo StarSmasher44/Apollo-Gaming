@@ -9,7 +9,7 @@
 /datum/surgery_step/robotics/
 	can_infect = 0
 /datum/surgery_step/robotics/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	if (!istype(target))
+	if (!ishuman(target))
 		return 0
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	if (affected == null)

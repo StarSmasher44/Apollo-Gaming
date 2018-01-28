@@ -110,7 +110,7 @@
 // connect the machine to a powernet if a node cable is present on the turf
 /obj/machinery/power/proc/connect_to_network()
 	var/turf/T = src.loc
-	if(!T || !istype(T))
+	if(!T || !isturf(T))
 		return 0
 
 	var/obj/structure/cable/C = T.get_cable_node() //check if we have a node cable on the machine turf, the first found is picked
@@ -297,9 +297,9 @@
 //source is an object caused electrocuting (airlock, grille, etc)
 //No animations will be performed by this proc.
 /proc/electrocute_mob(mob/living/carbon/M as mob, var/power_source, var/obj/source, var/siemens_coeff = 1.0)
-	if(istype(M.loc,/obj/mecha))	return 0	//feckin mechs are dumb
+	if(ismecha(M.loc))	return 0	//feckin mechs are dumb
 	var/area/source_area
-	if(istype(power_source,/area))
+	if(isarea(power_source))
 		source_area = power_source
 		power_source = source_area.get_apc()
 	if(istype(power_source,/obj/structure/cable))
@@ -327,7 +327,7 @@
 	//If following checks determine user is protected we won't alarm for long.
 	if(PN)
 		PN.trigger_warning(5)
-	if(istype(M,/mob/living/carbon/human))
+	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		if(H.species.siemens_coefficient <= 0)
 			return

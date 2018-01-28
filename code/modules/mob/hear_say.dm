@@ -32,7 +32,7 @@
 
 	if(!(language && (language.flags & INNATE))) // skip understanding checks for INNATE languages
 		if(!say_understands(speaker,language))
-			if(istype(speaker,/mob/living/simple_animal))
+			if(isanimal(speaker))
 				var/mob/living/simple_animal/S = speaker
 				message = pick(S.speak)
 			else
@@ -45,7 +45,7 @@
 	if(speaker)
 		speaker_name = speaker.name
 
-	if(istype(speaker, /mob/living/carbon/human))
+	if(ishuman(speaker))
 		var/mob/living/carbon/human/H = speaker
 		speaker_name = H.GetVoice()
 
@@ -100,7 +100,7 @@
 
 	if(!(language && (language.flags & INNATE))) // skip understanding checks for INNATE languages
 		if(!say_understands(speaker,language))
-			if(istype(speaker,/mob/living/simple_animal))
+			if(isanimal(speaker))
 				var/mob/living/simple_animal/S = speaker
 				if(S.speak && S.speak.len)
 					message = pick(S.speak)
@@ -120,7 +120,7 @@
 
 	var/speaker_name = vname ? vname : speaker.name
 
-	if(istype(speaker, /mob/living/carbon/human))
+	if(ishuman(speaker))
 		var/mob/living/carbon/human/H = speaker
 		if(H.voice)
 			speaker_name = H.voice
@@ -130,7 +130,7 @@
 
 	var/changed_voice
 
-	if(istype(src, /mob/living/silicon/ai) && !hard_to_hear)
+	if(isAI(src) && !hard_to_hear)
 		var/jobname // the mob's "job"
 		var/mob/living/carbon/human/impersonating //The crew member being impersonated, if any.
 
@@ -165,7 +165,7 @@
 			jobname = "AI"
 		else if (isrobot(speaker))
 			jobname = "Cyborg"
-		else if (istype(speaker, /mob/living/silicon/pai))
+		else if (ispAI(speaker))
 			jobname = "Personal AI"
 		else
 			jobname = "Unknown"
@@ -190,7 +190,7 @@
 		formatted = "[verb], <span class=\"body\">\"[message]\"</span>"
 	if(sdisabilities & DEAF || ear_deaf)
 		var/mob/living/carbon/human/H = src
-		if(istype(H) && H.has_headset_in_ears() && prob(20))
+		if(ishuman(H) && H.has_headset_in_ears() && prob(20))
 			to_chat(src, "<span class='warning'>You feel your headset vibrate but can hear nothing from it!</span>")
 	else
 		on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted)

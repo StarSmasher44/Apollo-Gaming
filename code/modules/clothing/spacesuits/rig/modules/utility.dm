@@ -113,7 +113,7 @@
 		return 1
 
 	var/turf/T = get_turf(target)
-	if(istype(T) && !T.Adjacent(get_turf(src)))
+	if(isturf(T) && !T.Adjacent(get_turf(src)))
 		return 0
 
 	var/resolved = target.attackby(device,holder.wearer)
@@ -224,7 +224,7 @@
 
 	var/mob/living/carbon/target_mob
 	if(target)
-		if(istype(target,/mob/living/carbon))
+		if(iscarbon(target))
 			target_mob = target
 		else
 			return 0

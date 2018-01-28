@@ -142,7 +142,7 @@
 
 /obj/machinery/power/supermatter/proc/get_epr()
 	var/turf/T = get_turf(src)
-	if(!istype(T))
+	if(!isturf(T))
 		return
 	var/datum/gas_mixture/air = T.return_air()
 	if(!air)
@@ -189,7 +189,7 @@
 	exploded = 1
 	sleep(pull_time)
 	var/turf/TS = get_turf(src)		// The turf supermatter is on. SM being in a locker, mecha, or other container shouldn't block it's effects that way.
-	if(!istype(TS))
+	if(!isturf(TS))
 		return
 
 	var/list/affected_z = GetConnectedZlevels(TS.z)
@@ -282,7 +282,7 @@
 			public_alert = 1
 			for(var/mob/M in GLOB.player_list)
 				var/turf/T = get_turf(M)
-				if(T && (T.z in GLOB.using_map.station_levels) && !istype(M,/mob/new_player) && !isdeaf(M))
+				if(T && (T.z in GLOB.using_map.station_levels) && !isnewplayer(M) && !isdeaf(M))
 					sound_to(M, 'sound/ambience/matteralarm.ogg')
 		else if(safe_warned && public_alert)
 			GLOB.global_announcer.autosay(alert_msg, "Supermatter Monitor")
@@ -296,19 +296,19 @@
 	if(isnull(L))		// We have a null turf...something is wrong, stop processing this entity.
 		return PROCESS_KILL
 
-	if(!istype(L)) 	//We are in a crate or somewhere that isn't turf, if we return to turf resume processing but for now.
+	if(!isturf(L)) 	//We are in a crate or somewhere that isn't turf, if we return to turf resume processing but for now.
 		return  //Yeah just stop.
 
 	if(damage > explosion_point)
 		if(!exploded)
-			if(!istype(L, /turf/space))
+			if(!isspace(L))
 				announce_warning()
 			explode()
 	else if(damage > warning_point) // while the core is still damaged and it's still worth noting its status
 		shift_light(5, warning_color)
 		if(damage > emergency_point)
 			shift_light(7, emergency_color)
-		if(!istype(L, /turf/space) && (world.timeofday - lastwarning) >= WARNING_DELAY * 10)
+		if(!isspace(L) && (world.timeofday - lastwarning) >= WARNING_DELAY * 10)
 			announce_warning()
 	else
 		shift_light(4,initial(light_color))
@@ -323,7 +323,7 @@
 	//We want the cap to scale linearly with power (and explosion_point). Let's aim for a cap of 5 at power = 300 (based on testing, equals roughly 5% per SM alert announcement).
 	var/damage_inc_limit = (power/300)*(explosion_point/1000)*DAMAGE_RATE_LIMIT
 
-	if(!istype(L, /turf/space))
+	if(!isspace(L))
 		env = L.return_air()
 		removed = env.remove(gasefficency * env.total_moles)	//Remove gas from surrounding area
 
@@ -388,7 +388,7 @@
 
 /obj/machinery/power/supermatter/bullet_act(var/obj/item/projectile/Proj)
 	var/turf/L = loc
-	if(!istype(L))		// We don't run process() when we are in space
+	if(!isturf(L))		// We don't run process() when we are in space
 		return 0	// This stops people from being able to really power up the supermatter
 				// Then bring it inside to explode instantly upon landing on a valid turf.
 
@@ -425,7 +425,7 @@
 	var/datum/gas_mixture/env = null
 	var/turf/T = get_turf(src)
 
-	if(istype(T))
+	if(isturf(T))
 		env = T.return_air()
 
 	if(!env)
@@ -463,7 +463,7 @@
 /obj/machinery/power/supermatter/Bumped(atom/AM as mob|obj)
 	if(istype(AM, /obj/effect))
 		return
-	if(istype(AM, /mob/living))
+	if(isliving(AM))
 		AM.visible_message("<span class=\"warning\">\The [AM] slams into \the [src] inducing a resonance... \his body starts to glow and catch flame before flashing into ash.</span>",\
 		"<span class=\"danger\">You slam into \the [src] as your ears are filled with unearthly ringing. Your last thought is \"Oh, fuck.\"</span>",\
 		"<span class=\"warning\">You hear an uneartly ringing, then what sounds like a shrilling kettle as you are washed with a wave of heat.</span>")
@@ -475,7 +475,7 @@
 
 
 /obj/machinery/power/supermatter/proc/Consume(var/mob/living/user)
-	if(istype(user))
+	if(isliving(user))
 		user.dust()
 		power += 200
 	else

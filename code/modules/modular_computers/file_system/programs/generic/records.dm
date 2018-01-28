@@ -160,7 +160,7 @@
 	if(istype(user.get_active_hand(), /obj/item/weapon/photo))
 		var/obj/item/weapon/photo/photo = user.get_active_hand()
 		return photo.img
-	if(istype(user, /mob/living/silicon))
+	if(issilicon(user))
 		var/mob/living/silicon/tempAI = usr
 		var/obj/item/weapon/photo/selection = tempAI.GetPicture()
 		if (selection)

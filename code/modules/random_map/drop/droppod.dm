@@ -81,7 +81,7 @@
 /datum/random_map/droppod/apply_to_map()
 	if(placement_explosion_dev || placement_explosion_heavy || placement_explosion_light || placement_explosion_flash)
 		var/turf/T = locate((origin_x + n_ceil(limit_x / 2)-1), (origin_y + n_ceil(limit_y / 2)-1), origin_z)
-		if(istype(T))
+		if(isturf(T))
 			explosion(T, placement_explosion_dev, placement_explosion_heavy, placement_explosion_light, placement_explosion_flash)
 			sleep(15) // Let the explosion finish proccing before we ChangeTurf(), otherwise it might destroy our spawned objects.
 	return ..()
@@ -103,7 +103,7 @@
 		return null
 	var/turf/target = locate(origin_x+x-1, origin_y+y-1, origin_z)
 	var/turf/middle = locate(origin_x+x_midpoint-1, origin_y+y_midpoint-1, origin_z)
-	if(!istype(target) || !istype(middle))
+	if(!isturf(target) || !isturf(middle))
 		return null
 	return get_dir(middle, target)
 
@@ -190,7 +190,7 @@
 		spawned_mob.tag = "awaiting drop"
 
 		// Equip them, if they are human and it is desirable.
-		if(istype(spawned_mob, /mob/living/carbon/human))
+		if(ishuman(spawned_mob))
 			var/list/all_antag_types = all_antag_types()
 			var/antag_type = input("Select an equipment template to use or cancel for nude.", null) as null|anything in all_antag_types
 			if(antag_type)

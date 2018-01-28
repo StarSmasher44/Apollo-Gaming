@@ -101,7 +101,7 @@
 			return 1
 
 	if(!invalidFeedTarget(M)) // Checks for those we want to eat
-		if(istype(M, /mob/living/carbon/human)) // Ignore slime(wo)men - player-controlled slimes still can attack them
+		if(ishuman(M)) // Ignore slime(wo)men - player-controlled slimes still can attack them
 			var/mob/living/carbon/human/H = M
 			if(H.species.name == SPECIES_PROMETHEAN)
 				return 0
@@ -142,7 +142,7 @@
 				return
 
 		if(Target.Adjacent(src))
-			if(istype(Target, /mob/living/silicon)) // Glomp the silicons
+			if(issilicon(Target)) // Glomp the silicons
 				a_intent = I_HURT
 				UnarmedAttack(Target)
 				addedDelay = 10

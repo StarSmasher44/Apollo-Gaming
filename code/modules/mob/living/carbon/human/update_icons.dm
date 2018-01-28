@@ -163,7 +163,7 @@ Please contact me on #coderbus IRC. ~Carn x
 			for(var/entry in list(overlays_standing[R_HAND_LAYER], overlays_standing[L_HAND_LAYER]))
 				if(istype(entry, /image))
 					overlays += entry
-				else if(istype(entry, /list))
+				else if(islist(entry))
 					for(var/inner_entry in entry)
 						overlays += inner_entry
 
@@ -177,7 +177,7 @@ Please contact me on #coderbus IRC. ~Carn x
 			for(var/entry in overlays_standing)
 				if(istype(entry, /image))
 					overlays += entry
-				else if(istype(entry, /list))
+				else if(islist(entry))
 					for(var/inner_entry in entry)
 						overlays += inner_entry
 			if(species.has_floating_eyes)

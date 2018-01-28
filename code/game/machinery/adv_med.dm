@@ -94,7 +94,7 @@
 
 //Like grap-put, but for mouse-drop.
 /obj/machinery/bodyscanner/MouseDrop_T(var/mob/target, var/mob/user)
-	if(!istype(target))
+	if(!ismob(target))
 		return
 	if (!CanMouseDrop(target, user))
 		return
@@ -205,7 +205,7 @@
 //	if ((src.connected && src.connected.occupant)) //connected & occupant ok
 //		M = src.connected.occupant
 //	else
-//		if (istype(M, /mob))
+//		if (ismob(M))
 //		//do stuff
 //		else
 ///			src.temphtml = "Process terminated due to lack of occupant in scanning chamber."
@@ -259,7 +259,7 @@
 		if (!src.connected.occupant)
 			to_chat(usr, "\icon[src]<span class='warning'>The body scanner is empty.</span>")
 			return
-		if (!istype(occupant,/mob/living/carbon/human))
+		if (!ishuman(occupant))
 			to_chat(usr, "\icon[src]<span class='warning'>The body scanner cannot scan that lifeform.</span>")
 			return
 		new/obj/item/weapon/paper/(loc, "<tt>[connected.occupant.get_medical_data()]</tt>", "Body scan report - [occupant]")

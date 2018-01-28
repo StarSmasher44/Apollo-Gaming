@@ -1026,7 +1026,7 @@
 		if(!ismob(M))
 			to_chat(usr, "This can only be used on instances of type /mob")
 			return
-		if(istype(M, /mob/living/silicon/ai))
+		if(isAI(M))
 			to_chat(usr, "This cannot be used on instances of type /mob/living/silicon/ai")
 			return
 
@@ -1048,7 +1048,7 @@
 		if(!M)	return
 
 		M.forceMove(prison_cell)
-		if(istype(M, /mob/living/carbon/human))
+		if(ishuman(M))
 			var/mob/living/carbon/human/prisoner = M
 			prisoner.equip_to_slot_or_del(new /obj/item/clothing/under/color/orange(prisoner), slot_w_uniform)
 			prisoner.equip_to_slot_or_del(new /obj/item/clothing/shoes/orange(prisoner), slot_shoes)
@@ -1066,7 +1066,7 @@
 		if(!ismob(M))
 			to_chat(usr, "This can only be used on instances of type /mob")
 			return
-		if(istype(M, /mob/living/silicon/ai))
+		if(isAI(M))
 			to_chat(usr, "This cannot be used on instances of type /mob/living/silicon/ai")
 			return
 
@@ -1091,7 +1091,7 @@
 		if(!ismob(M))
 			to_chat(usr, "This can only be used on instances of type /mob")
 			return
-		if(istype(M, /mob/living/silicon/ai))
+		if(isAI(M))
 			to_chat(usr, "This cannot be used on instances of type /mob/living/silicon/ai")
 			return
 
@@ -1116,7 +1116,7 @@
 		if(!ismob(M))
 			to_chat(usr, "This can only be used on instances of type /mob")
 			return
-		if(istype(M, /mob/living/silicon/ai))
+		if(isAI(M))
 			to_chat(usr, "This cannot be used on instances of type /mob/living/silicon/ai")
 			return
 
@@ -1138,14 +1138,14 @@
 		if(!ismob(M))
 			to_chat(usr, "This can only be used on instances of type /mob")
 			return
-		if(istype(M, /mob/living/silicon/ai))
+		if(isAI(M))
 			to_chat(usr, "This cannot be used on instances of type /mob/living/silicon/ai")
 			return
 
 		for(var/obj/item/I in M)
 			M.drop_from_inventory(I)
 
-		if(istype(M, /mob/living/carbon/human))
+		if(ishuman(M))
 			var/mob/living/carbon/human/observer = M
 			observer.equip_to_slot_or_del(new /obj/item/clothing/under/suit_jacket(observer), slot_w_uniform)
 			observer.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(observer), slot_shoes)
@@ -1175,7 +1175,7 @@
 		if(!check_rights(R_SPAWN))	return
 
 		var/mob/living/carbon/human/H = locate(href_list["makeai"])
-		if(!istype(H))
+		if(!ishuman(H))
 			to_chat(usr, "This can only be used on instances of type /mob/living/carbon/human")
 			return
 
@@ -1186,7 +1186,7 @@
 		if(!check_rights(R_SPAWN))	return
 
 		var/mob/living/carbon/human/H = locate(href_list["makeslime"])
-		if(!istype(H))
+		if(!ishuman(H))
 			to_chat(usr, "This can only be used on instances of type /mob/living/carbon/human")
 			return
 
@@ -1196,7 +1196,7 @@
 		if(!check_rights(R_SPAWN))	return
 
 		var/mob/living/carbon/human/H = locate(href_list["makerobot"])
-		if(!istype(H))
+		if(!ishuman(H))
 			to_chat(usr, "This can only be used on instances of type /mob/living/carbon/human")
 			return
 
@@ -1206,7 +1206,7 @@
 		if(!check_rights(R_SPAWN))	return
 
 		var/mob/M = locate(href_list["makeanimal"])
-		if(istype(M, /mob/new_player))
+		if(isnewplayer(M))
 			to_chat(usr, "This cannot be used on instances of type /mob/new_player")
 			return
 
@@ -1216,7 +1216,7 @@
 		if(!check_rights(R_SPAWN))	return
 
 		var/mob/living/carbon/human/H = locate(href_list["togmutate"])
-		if(!istype(H))
+		if(!ishuman(H))
 			to_chat(usr, "This can only be used on instances of type /mob/living/carbon/human")
 			return
 		var/block=text2num(href_list["block"])
@@ -1254,7 +1254,7 @@
 
 		if(!isobserver(usr))	C.admin_ghost()
 		var/mob/observer/ghost/G = C.mob
-		if(istype(G))
+		if(isghost(G))
 			sleep(2)
 			G.ManualFollow(M)
 
@@ -1577,7 +1577,7 @@
 		var/dirty_paths
 		if (istext(href_list["object_list"]))
 			dirty_paths = list(href_list["object_list"])
-		else if (istype(href_list["object_list"], /list))
+		else if (islist(href_list["object_list"]))
 			dirty_paths = href_list["object_list"]
 
 		var/paths = list()

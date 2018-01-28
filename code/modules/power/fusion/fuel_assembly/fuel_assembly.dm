@@ -46,7 +46,7 @@
 	if(!radioactivity)
 		return PROCESS_KILL
 
-	if(istype(loc, /turf))
+	if(isturf(loc))
 		radiation_repository.radiate(src, max(1,ceil(radioactivity/30)))
 
 /obj/item/weapon/fuel_assembly/Destroy()
@@ -66,5 +66,5 @@
 /obj/item/weapon/fuel_assembly/supermatter/New(var/newloc)
 	..(newloc, "supermatter")
 
-/obj/item/fuel_assembly/hydrogen/New(var/newloc)
+/obj/item/weapon/fuel_assembly/hydrogen/New(var/newloc)
 	..(newloc, "hydrogen")

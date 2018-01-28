@@ -348,7 +348,7 @@
 		to_chat(usr, "The machine cannot hold anymore items.")
 		return 1
 
-	if(!istype(O))
+	if(!isitem(O))
 		return
 
 	if(istype(O,/obj/item/weapon/storage/plants))

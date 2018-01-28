@@ -144,7 +144,7 @@ This saves us from having to call add_fingerprint() any time something is put in
 		update_inv_glasses()
 	else if (W == head)
 		head = null
-		if(istype(W, /obj/item))
+		if(isitem(W))
 			var/obj/item/I = W
 			if(I.flags_inv & (HIDEMASK|BLOCKHAIR|BLOCKHEADHAIR))
 				update_hair(0)	//rebuild hair
@@ -173,7 +173,7 @@ This saves us from having to call add_fingerprint() any time something is put in
 		update_inv_belt()
 	else if (W == wear_mask)
 		wear_mask = null
-		if(istype(W, /obj/item))
+		if(isitem(W))
 			var/obj/item/I = W
 			if(I.flags_inv & (BLOCKHAIR|BLOCKHEADHAIR))
 				update_hair(0)	//rebuild hair
@@ -225,7 +225,7 @@ This saves us from having to call add_fingerprint() any time something is put in
 /mob/living/carbon/human/equip_to_slot(obj/item/W as obj, slot, redraw_mob = 1)
 
 	if(!slot) return
-	if(!istype(W)) return
+	if(!isitem(W)) return
 	if(!has_organ_for_slot(slot)) return
 	if(!species || !species.hud || !(slot in species.hud.equip_slots)) return
 	W.forceMove(src)

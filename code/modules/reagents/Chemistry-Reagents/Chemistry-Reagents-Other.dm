@@ -50,15 +50,15 @@
 	color_weight = 20
 
 /datum/reagent/paint/touch_turf(var/turf/T)
-	if(istype(T) && !istype(T, /turf/space))
+	if(isturf(T) && !isspace(T))
 		T.color = color
 
 /datum/reagent/paint/touch_obj(var/obj/O)
-	if(istype(O))
+	if(isobj(O))
 		O.color = color
 
 /datum/reagent/paint/touch_mob(var/mob/M)
-	if(istype(M) && !isobserver(M)) //painting observers: not allowed
+	if(ismob(M) && !isobserver(M)) //painting observers: not allowed
 		M.color = color //maybe someday change this to paint only clothes and exposed body parts for human mobs.
 
 /datum/reagent/paint/get_data()
@@ -162,7 +162,7 @@
 
 /datum/reagent/uranium/touch_turf(var/turf/T)
 	if(volume >= 3)
-		if(!istype(T, /turf/space))
+		if(!isspace(T))
 			var/obj/effect/decal/cleanable/greenglow/glow = locate(/obj/effect/decal/cleanable/greenglow, T)
 			if(!glow)
 				new /obj/effect/decal/cleanable/greenglow(T)
@@ -222,7 +222,7 @@
 
 /datum/reagent/thermite/touch_turf(var/turf/T)
 	if(volume >= 5)
-		if(istype(T, /turf/simulated/wall))
+		if(issimwall(T))
 			var/turf/simulated/wall/W = T
 			W.thermite = 1
 			W.overlays += image('icons/effects/effects.dmi',icon_state = "#673910")
@@ -230,7 +230,7 @@
 	return
 
 /datum/reagent/thermite/touch_mob(var/mob/living/L, var/amount)
-	if(istype(L))
+	if(isliving(L))
 		L.adjust_fire_stacks(amount / 5)
 
 /datum/reagent/thermite/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
@@ -249,7 +249,7 @@
 
 /datum/reagent/space_cleaner/touch_turf(var/turf/T)
 	if(volume >= 1)
-		if(istype(T, /turf/simulated))
+		if(issimturf(T))
 			var/turf/simulated/S = T
 			S.dirt = 0
 			if(S.wet > 1)
@@ -295,7 +295,7 @@
 	color = "#009ca8"
 
 /datum/reagent/lube/touch_turf(var/turf/simulated/T)
-	if(!istype(T))
+	if(!issimturf(T))
 		return
 	if(volume >= 1)
 		T.wet_floor(80)

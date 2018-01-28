@@ -14,7 +14,7 @@
 
 /obj/MouseDrop_T(mob/living/M, mob/living/user)
 	. = ..()
-	if(can_buckle && istype(M))
+	if(can_buckle && isliving(M))
 		user_buckle_mob(M, user)
 
 /obj/Destroy()
@@ -61,7 +61,7 @@
 	if(!ticker) //why do we need to check this?
 		to_chat(user, "<span class='warning'>You can't buckle anyone in before the game starts.</span>")
 		return 0
-	if(!user.Adjacent(M) || user.restrained() || user.lying || user.stat || istype(user, /mob/living/silicon/pai))
+	if(!user.Adjacent(M) || user.restrained() || user.lying || user.stat || ispAI(user))
 		return 0
 	if(M == buckled_mob)
 		return 0

@@ -134,7 +134,7 @@
 	var/key
 
 	if(!whom)	return "*null*"
-	if(istype(whom, /client))
+	if(isclient(whom))
 		C = whom
 		M = C.mob
 		key = C.key
@@ -148,7 +148,7 @@
 		M = D.current
 		if(D.current)
 			C = D.current.client
-	else if(istype(whom, /datum))
+	else if(isdatum(whom))
 		var/datum/D = whom
 		return "*invalid:[D.type]*"
 	else
@@ -212,6 +212,6 @@
 		for(var/e in d)
 			L += log_info_line(e)
 		return "\[[jointext(L, ", ")]\]" // We format the string ourselves, rather than use json_encode(), because it becomes difficult to read recursively escaped "
-	if(!istype(d))
+	if(!isdatum(d))
 		return json_encode(d)
 	return d.get_log_info_line()

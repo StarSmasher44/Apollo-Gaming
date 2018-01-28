@@ -76,7 +76,7 @@
 	metabolism = REM
 
 /datum/reagent/toxin/phoron/touch_mob(var/mob/living/L, var/amount)
-	if(istype(L))
+	if(isliving(L))
 		L.adjust_fire_stacks(amount / fire_mult)
 
 /datum/reagent/toxin/phoron/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
@@ -90,7 +90,7 @@
 		M.pl_effects()
 
 /datum/reagent/toxin/phoron/touch_turf(var/turf/simulated/T)
-	if(!istype(T))
+	if(!issimturf(T))
 		return
 	T.assume_gas("phoron", volume, T20C)
 	remove_self(volume)
@@ -103,7 +103,7 @@
 	fire_mult = 15
 
 /datum/reagent/toxin/phoron/oxygen/touch_turf(var/turf/simulated/T)
-	if(!istype(T))
+	if(!issimturf(T))
 		return
 	T.assume_gas("oxygen", ceil(volume/2), T20C)
 	T.assume_gas("phoron", ceil(volume/2), T20C)
@@ -219,7 +219,7 @@
 	strength = 4
 
 /datum/reagent/toxin/plantbgone/touch_turf(var/turf/T)
-	if(istype(T, /turf/simulated/wall))
+	if(issimwall(T))
 		var/turf/simulated/wall/W = T
 		if(locate(/obj/effect/overlay/wallrot) in W)
 			for(var/obj/effect/overlay/wallrot/E in W)
@@ -412,7 +412,7 @@
 		drug_strength = drug_strength * 0.8
 
 	M.druggy = max(M.druggy, drug_strength)
-	if(prob(10) && isturf(M.loc) && !istype(M.loc, /turf/space) && M.canmove && !M.restrained())
+	if(prob(10) && isturf(M.loc) && !isspace(M.loc) && M.canmove && !M.restrained())
 		step(M, pick(GLOB.cardinal))
 	if(prob(7))
 		M.emote(pick("twitch", "drool", "moan", "giggle"))
@@ -539,7 +539,7 @@
 	metabolism = REM * 0.2
 
 /datum/reagent/slimetoxin/affect_blood(var/mob/living/carbon/human/H, var/alien, var/removed)
-	if(!istype(H))
+	if(!ishuman(H))
 		return
 	if(H.species.name == SPECIES_PROMETHEAN)
 		return
@@ -664,7 +664,7 @@
 			to_chat(M, "<span class='danger'>You feel like you could die at any moment!</span>")
 
 /datum/reagent/toxin/corrupting/overdose(var/mob/living/carbon/M, var/alien)
-	if(istype(M, /mob/living/carbon/human))
+	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		H.zombieze()
 	remove_self(volume)

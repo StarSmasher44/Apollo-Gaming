@@ -65,6 +65,6 @@
 			new /obj/item/stack/rods(src.loc)
 			new /obj/item/stack/rods(src.loc)
 			//Lattice would delete itself, but let's save ourselves a new obj
-			if(istype(src.loc, /turf/space) || istype(src.loc, /turf/simulated/open))
+			if(isspace(src.loc) || isopenspace(src.loc))
 				new /obj/structure/lattice/(src.loc)
 			qdel(src)

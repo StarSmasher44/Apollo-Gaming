@@ -49,13 +49,13 @@ return_location()
 /datum/plot_vector/proc/setup(var/turf/S, var/turf/T, var/xo = 0, var/yo = 0, var/angle_offset=0)
 	source = S
 	target = T
-	
-	if(!istype(source))
-		source = get_turf(source)
-	if(!istype(target))
-		target = get_turf(target)	
 
-	if(!istype(source) || !istype(target))
+	if(!isturf(source))
+		source = get_turf(source)
+	if(!isturf(target))
+		target = get_turf(target)
+
+	if(!isturf(source) || !isturf(target))
 		return
 
 	// convert coordinates to pixel space (default is 32px/turf, 8160px across for a size 255 map)

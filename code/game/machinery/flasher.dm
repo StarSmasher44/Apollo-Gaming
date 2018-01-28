@@ -79,7 +79,7 @@
 			continue
 
 		var/flash_time = strength
-		if (istype(O, /mob/living/carbon/human))
+		if (ishuman(O))
 			var/mob/living/carbon/human/H = O
 			if(!H.eyecheck() <= 0)
 				continue
@@ -109,7 +109,7 @@
 	if ((src.disable) || (src.last_flash && world.time < src.last_flash + 150))
 		return
 
-	if(istype(AM, /mob/living/carbon))
+	if(iscarbon(AM))
 		var/mob/living/carbon/M = AM
 		if ((M.m_intent != "walk") && (src.anchored))
 			src.flash()

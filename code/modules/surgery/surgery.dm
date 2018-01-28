@@ -100,7 +100,7 @@
 	. = max(., 0)
 
 /proc/spread_germs_to_organ(var/obj/item/organ/external/E, var/mob/living/carbon/human/user)
-	if(!istype(user) || !istype(E)) return
+	if(!ishuman(user) || !istype(E)) return
 
 	var/germ_level = user.germ_level
 	if(user.gloves)
@@ -109,7 +109,7 @@
 	E.germ_level = max(germ_level,E.germ_level) //as funny as scrubbing microbes out with clean gloves is - no.
 
 /obj/item/proc/do_surgery(mob/living/carbon/M, mob/living/user, fuckup_prob)
-	if(!istype(M))
+	if(!iscarbon(M))
 		return 0
 	if (user.a_intent == I_HURT)	//check for Hippocratic Oath
 		return 0

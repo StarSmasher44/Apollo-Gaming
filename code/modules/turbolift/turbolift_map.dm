@@ -137,7 +137,7 @@
 
 				var/turf/checking = locate(tx,ty,cz)
 
-				if(!istype(checking))
+				if(!isturf(checking))
 					log_debug("[name] cannot find a component turf at [tx],[ty] on floor [cz]. Aborting.")
 					qdel(src)
 					return

@@ -82,7 +82,7 @@
 	// Handle harm intent grabbing/tabling.
 	if(istype(W, /obj/item/grab) && get_dist(src,user)<2)
 		var/obj/item/grab/G = W
-		if (istype(G.affecting, /mob/living/carbon/human))
+		if (ishuman(G.affecting))
 			var/obj/occupied = turf_is_crowded()
 			if(occupied)
 				to_chat(user, "<span class='danger'>There's \a [occupied] in the way.</span>")

@@ -38,7 +38,7 @@
 /obj/item/organ/internal/eyes/replaced(var/mob/living/carbon/human/target)
 
 	// Apply our eye colour to the target.
-	if(istype(target) && eye_colour)
+	if(ishuman(target) && eye_colour)
 		target.r_eyes = eye_colour[1]
 		target.g_eyes = eye_colour[2]
 		target.b_eyes = eye_colour[3]

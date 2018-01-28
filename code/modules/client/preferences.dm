@@ -37,7 +37,7 @@ datum/preferences
 	real_name = random_name(gender,species)
 	b_type = RANDOM_BLOOD_TYPE
 
-	if(istype(C))
+	if(isclient(C))
 		client = C
 		client_ckey = C.ckey
 		if(!IsGuestKey(C.key))

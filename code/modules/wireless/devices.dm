@@ -40,52 +40,52 @@
 //Receiver procs
 /datum/wifi/receiver/button/door/proc/open()
 	var/obj/machinery/door/D = parent
-	if(istype(D) && D.can_open())
+	if(isairlock(D) && D.can_open())
 		D.open()
 
 /datum/wifi/receiver/button/door/proc/close()
 	var/obj/machinery/door/D = parent
-	if(istype(D) && D.can_close())
+	if(isairlock(D) && D.can_close())
 		D.close()
 
 /datum/wifi/receiver/button/door/proc/lock()
 	var/obj/machinery/door/airlock/D = parent
-	if(istype(D))
+	if(isairlock(D))
 		D.lock()
 
 /datum/wifi/receiver/button/door/proc/unlock()
 	var/obj/machinery/door/airlock/D = parent
-	if(istype(D))
+	if(isairlock(D))
 		D.unlock()
 
 /datum/wifi/receiver/button/door/proc/enable_idscan()
 	var/obj/machinery/door/airlock/D = parent
-	if(istype(D))
+	if(isairlock(D))
 		D.set_idscan(1)
 
 /datum/wifi/receiver/button/door/proc/disable_idscan()
 	var/obj/machinery/door/airlock/D = parent
-	if(istype(D))
+	if(isairlock(D))
 		D.set_idscan(0)
 
 /datum/wifi/receiver/button/door/proc/enable_safeties()
 	var/obj/machinery/door/airlock/D = parent
-	if(istype(D))
+	if(isairlock(D))
 		D.set_safeties(1)
 
 /datum/wifi/receiver/button/door/proc/disable_safeties()
 	var/obj/machinery/door/airlock/D = parent
-	if(istype(D))
+	if(isairlock(D))
 		D.set_safeties(0)
 
 /datum/wifi/receiver/button/door/proc/electrify()
 	var/obj/machinery/door/airlock/D = parent
-	if(istype(D))
+	if(isairlock(D))
 		D.electrify(-1)
 
 /datum/wifi/receiver/button/door/proc/unelectrify()
 	var/obj/machinery/door/airlock/D = parent
-	if(istype(D))
+	if(isairlock(D))
 		D.electrify(0)
 
 //-------------------------------

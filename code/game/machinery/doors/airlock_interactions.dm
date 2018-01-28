@@ -72,7 +72,7 @@
 	SetWeakened(round(crush_damage / 8, 1))
 
 	var/turf/T = loc
-	if(!istype(T))
+	if(!isturf(T))
 		return
 
 	var/list/valid_turfs = list()

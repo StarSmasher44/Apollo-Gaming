@@ -49,7 +49,7 @@
 	if(life_tick % 5 && immunity < 15 && chem_effects[CE_ANTIVIRAL] < VIRUS_COMMON && !virus2.len)
 		var/infection_prob = 15 - immunity
 		var/turf/simulated/T = loc
-		if(istype(T))
+		if(issimturf(T))
 			infection_prob += T.dirt
 		if(prob(infection_prob))
 			infect_mob_random_lesser(src)

@@ -8,7 +8,7 @@
 /datum/progressbar/New(mob/user, goal_number, atom/target)
 	. = ..()
 	if(!target) target = user
-	if (!istype(target))
+	if (!isatom(target))
 		EXCEPTION("Invalid target given")
 	if (goal_number)
 		goal = goal_number

@@ -131,7 +131,7 @@
 		weaken_duration = smash_duration + min(0, force - target.getarmor(hit_zone, "melee") + 10)
 
 	var/mob/living/carbon/human/H = target
-	if(istype(H) && H.headcheck(hit_zone))
+	if(ishuman(H) && H.headcheck(hit_zone))
 		var/obj/item/organ/affecting = H.get_organ(hit_zone) //headcheck should ensure that affecting is not null
 		user.visible_message("<span class='danger'>[user] smashes [src] into [H]'s [affecting.name]!</span>")
 		if(weaken_duration)

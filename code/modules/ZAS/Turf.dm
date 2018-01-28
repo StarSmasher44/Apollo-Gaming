@@ -38,7 +38,7 @@
 		if(r_block & AIR_BLOCKED)
 			continue
 
-		if(istype(unsim, /turf/simulated))
+		if(issimturf(unsim))
 
 			var/turf/simulated/sim = unsim
 			if(TURF_HAS_VALID_ZONE(sim))
@@ -77,7 +77,7 @@
 //helper for can_safely_remove_from_zone()
 /turf/simulated/proc/get_zone_neighbours(turf/simulated/T)
 	. = 0
-	if(istype(T) && T.zone)
+	if(issimturf(T) && T.zone)
 		#ifdef MULTIZAS
 		var/to_check = GLOB.cardinalz
 		#else
@@ -85,7 +85,7 @@
 		#endif
 		for(var/dir in to_check)
 			var/turf/simulated/other = get_step(T, dir)
-			if(istype(other) && other.zone == T.zone && !(other.c_airblock(T) & AIR_BLOCKED) && get_dist(src, other) <= 1)
+			if(issimturf(other) && other.zone == T.zone && !(other.c_airblock(T) & AIR_BLOCKED) && get_dist(src, other) <= 1)
 				. |= dir
 
 /turf/simulated/update_air_properties()
@@ -146,7 +146,7 @@
 
 			//Check that our zone hasn't been cut off recently.
 			//This happens when windows move or are constructed. We need to rebuild.
-			if((previously_open & d) && istype(unsim, /turf/simulated))
+			if((previously_open & d) && issimturf(unsim))
 				var/turf/simulated/sim = unsim
 				if(zone && sim.zone == zone)
 					zone.rebuild()
@@ -156,7 +156,7 @@
 
 		open_directions |= d
 
-		if(istype(unsim, /turf/simulated))
+		if(issimturf(unsim))
 
 			var/turf/simulated/sim = unsim
 			sim.open_directions |= GLOB.reverse_dir[d]

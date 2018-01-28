@@ -13,7 +13,7 @@
 /obj/item/stack/telecrystal/afterattack(var/obj/item/I as obj, mob/user as mob, proximity)
 	if(!proximity)
 		return
-	if(istype(I, /obj/item))
+	if(isitem(I))
 		if(I.hidden_uplink && I.hidden_uplink.active) //No metagaming by using this on every PDA around just to see if it gets used up.
 			I.hidden_uplink.uses += amount
 			I.hidden_uplink.update_nano_data()

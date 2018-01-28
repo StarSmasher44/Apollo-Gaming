@@ -67,7 +67,7 @@
 	if(!ability_prechecks(user, price))
 		return
 
-	if(target && !istype(target))
+	if(target && !isrobot(target))
 		to_chat(user, "This is not a cyborg.")
 		return
 
@@ -84,7 +84,7 @@
 		var/list/robots = list()
 		var/list/robot_names = list()
 		for(var/mob/living/silicon/robot/R in GLOB.silicon_mob_list)
-			if(istype(R, /mob/living/silicon/robot/drone))	// No drones.
+			if(is_drone(R))	// No drones.
 				continue
 			if(R.connected_ai != user)						// No robots linked to other AIs
 				continue
@@ -139,7 +139,7 @@
 	if(!L.len)
 		to_chat(user, "<span class='notice'>ERROR: No unlinked cyborgs detected!</span>")
 
-	if(target && !istype(target))
+	if(target && !isrobot(target))
 		to_chat(user, "This is not a cyborg.")
 		return
 

@@ -44,13 +44,13 @@
 	var/list/obj/structure/cable/cables = list()
 
 	for(var/atom/A in atoms)
-		if(istype(A, /turf))
+		if(isturf(A))
 			turfs += A
 		if(istype(A, /obj/structure/cable))
 			cables += A
 		if(istype(A, /obj/machinery/atmospherics))
 			atmos_machines += A
-		if(istype(A, /obj/machinery))
+		if(ismachine(A))
 			machines += A
 
 	SSatoms.InitializeAtoms(atoms)

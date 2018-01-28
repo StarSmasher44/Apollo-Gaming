@@ -52,7 +52,7 @@
 			update_icon()
 			return
 
-	if(cistern && !istype(user,/mob/living/silicon/robot)) //STOP PUTTING YOUR MODULES IN THE TOILET.
+	if(cistern && !isrobot(user)) //STOP PUTTING YOUR MODULES IN THE TOILET.
 		if(I.w_class > ITEM_SIZE_NORMAL)
 			to_chat(user, "<span class='notice'>\The [I] does not fit.</span>")
 			return
@@ -389,7 +389,7 @@
 	if(!isturf(location)) return
 
 	var/obj/item/I = O
-	if(!I || !istype(I,/obj/item)) return
+	if(!I || !isitem(I)) return
 
 	to_chat(usr, "<span class='notice'>You start washing \the [I].</span>")
 

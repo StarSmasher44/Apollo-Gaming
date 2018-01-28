@@ -21,7 +21,7 @@
 		to_chat(M, "<span class='danger'>You've been silenced!</span>")
 		return
 
-	if (!(istype(user, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
+	if (!(ishuman(user) || ticker) && ticker.mode.name != "monkey")
 		to_chat(user, "<span class='danger'>You don't have the dexterity to do this!</span>")
 		return
 
@@ -122,7 +122,7 @@
 	START_PROCESSING(SSobj, src)
 
 /obj/effect/energy_net/Destroy()
-	if(istype(captured, /mob/living/carbon))
+	if(iscarbon(captured))
 		if(captured.handcuffed == src)
 			captured.handcuffed = null
 	if(captured)
@@ -156,14 +156,14 @@
 	if(M.buckled)
 		M.buckled.unbuckle_mob()
 	buckle_mob(M)
-	if(istype(M, /mob/living/carbon))
+	if(iscarbon(M))
 		var/mob/living/carbon/C = M
 		if(!C.handcuffed)
 			C.handcuffed = src
 	return 1
 
 /obj/effect/energy_net/safari/capture_mob(mob/living/M)
-	if(istype(M, /mob/living/simple_animal))
+	if(isanimal(M))
 		. = ..()
 	else
 		visible_message("\The [src] fails to contain \the [M]!")
@@ -199,7 +199,7 @@
 /obj/effect/energy_net/attack_hand(var/mob/user)
 
 	var/mob/living/carbon/human/H = user
-	if(istype(H))
+	if(ishuman(H))
 		if(H.species.can_shred(H))
 			playsound(src.loc, 'sound/weapons/slash.ogg', 80, 1)
 			health -= rand(10, 20)

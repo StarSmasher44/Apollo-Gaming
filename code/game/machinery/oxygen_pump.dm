@@ -44,7 +44,7 @@
 
 /obj/machinery/oxygen_pump/MouseDrop(var/mob/living/carbon/human/target, src_location, over_location)
 	..()
-	if(istype(target) && CanMouseDrop(target))
+	if(ishuman(target) && CanMouseDrop(target))
 		if(!can_apply_to_target(target, usr)) // There is no point in attempting to apply a mask if it's impossible.
 			return
 		usr.visible_message("\The [usr] begins placing the mask onto [target]..")
@@ -82,7 +82,7 @@
 	ui_interact(user)
 
 /obj/machinery/oxygen_pump/proc/attach_mask(var/mob/living/carbon/C)
-	if(C && istype(C))
+	if(C && iscarbon(C))
 		contained.forceMove(get_turf(C))
 		C.equip_to_slot(contained, slot_wear_mask)
 		if(tank)

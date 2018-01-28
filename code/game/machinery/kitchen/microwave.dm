@@ -103,7 +103,7 @@
 		if (contents.len >= max_n_of_items)
 			to_chat(user, "<span class='warning'>This [src] is full of ingredients, you cannot put more.</span>")
 			return 1
-		if(istype(O, /obj/item/stack)) // This is bad, but I can't think of how to change it
+		if(isstack(O)) // This is bad, but I can't think of how to change it
 			var/obj/item/stack/S = O
 			if(S.get_amount() > 1)
 				new O.type (src)
@@ -153,7 +153,7 @@
 	src.updateUsrDialog()
 
 /obj/machinery/microwave/attack_ai(mob/user as mob)
-	if(istype(user, /mob/living/silicon/robot) && Adjacent(user))
+	if(isrobot(user) && Adjacent(user))
 		attack_hand(user)
 
 /obj/machinery/microwave/attack_hand(mob/user as mob)

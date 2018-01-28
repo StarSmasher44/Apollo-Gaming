@@ -20,19 +20,19 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 		if(istype(clong, /turf/simulated/shuttle)) //Skip shuttles without actually deleting the rod
 			return
 
-		else if (istype(clong, /turf) && !istype(clong, /turf/unsimulated))
+		else if (isturf(clong) && !isunsimturf(clong))
 			if(clong.density)
 				clong.ex_act(2)
 				for (var/mob/O in hearers(src, null))
 					O.show_message("CLANG", 2)
 
-		else if (istype(clong, /obj))
+		else if (isobj(clong))
 			if(clong.density)
 				clong.ex_act(2)
 				for (var/mob/O in hearers(src, null))
 					O.show_message("CLANG", 2)
 
-		else if (istype(clong, /mob))
+		else if (ismob(clong))
 			if(clong.density || prob(10))
 				clong.ex_act(2)
 		else

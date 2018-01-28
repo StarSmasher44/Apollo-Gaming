@@ -79,7 +79,7 @@
 	if(closed_system && (connected_port || holding))
 		environment = air_contents
 	// If atmos input is not there, grab from turf.
-	if(!environment && istype(T)) environment = T.return_air()
+	if(!environment && isturf(T)) environment = T.return_air()
 	if(!environment) return
 
 	// Seed datum handles gasses, light and pressure.

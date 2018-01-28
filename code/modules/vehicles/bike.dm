@@ -58,7 +58,7 @@
 	if(kickstand)
 		usr.visible_message("\The [usr] puts up \the [src]'s kickstand.")
 	else
-		if(istype(src.loc,/turf/space))
+		if(isspace(src.loc))
 			to_chat(usr, "<span class='warning'> You don't think kickstands work in space...</span>")
 			return
 		usr.visible_message("\The [usr] puts down \the [src]'s kickstand.")
@@ -92,7 +92,7 @@
 
 /obj/vehicle/bike/load(var/atom/movable/C)
 	var/mob/living/M = C
-	if(!istype(C)) return 0
+	if(!isliving(C)) return 0
 	if(M.buckled || M.restrained() || !Adjacent(M) || !M.Adjacent(src))
 		return 0
 	return ..(M)
@@ -141,7 +141,7 @@
 	if(kickstand || (world.time <= l_move_time + move_delay)) return
 	//these things like space, not turf. Dragging shouldn't weigh you down.
 	if(!pulledby)
-		if(istype(destination,/turf/space) || pulledby)
+		if(isspace(destination) || pulledby)
 			if(!space_speed)
 				return 0
 			move_delay = space_speed

@@ -101,7 +101,7 @@ steam.start() -- spawns the effect
 	..()
 	playsound(src.loc, "sparks", 100, 1)
 	var/turf/T = src.loc
-	if (istype(T, /turf))
+	if (isturf(T))
 		T.hotspot_expose(1000,100)
 
 /obj/effect/sparks/Initialize()
@@ -114,14 +114,14 @@ steam.start() -- spawns the effect
 
 /obj/effect/sparks/Destroy()
 	var/turf/T = src.loc
-	if (istype(T, /turf))
+	if (isturf(T))
 		T.hotspot_expose(1000,100)
 	return ..()
 
 /obj/effect/sparks/Move()
 	..()
 	var/turf/T = src.loc
-	if (istype(T, /turf))
+	if (isturf(T))
 		T.hotspot_expose(1000,100)
 
 /datum/effect/effect/system/spark_spread
@@ -131,7 +131,7 @@ steam.start() -- spawns the effect
 			n = 10
 		number = n
 		cardinals = c
-		if(istype(loca, /turf/))
+		if(isturf(loca))
 			location = loca
 		else
 			location = get_turf(loca)
@@ -182,16 +182,16 @@ steam.start() -- spawns the effect
 
 /obj/effect/effect/smoke/Crossed(mob/living/carbon/M as mob )
 	..()
-	if(istype(M))
+	if(iscarbon(M))
 		affect(M)
 
 /obj/effect/effect/smoke/proc/affect(var/mob/living/carbon/M)
-	if (istype(M))
+	if (iscarbon(M))
 		return 0
 	if (M.internal != null)
 		if(M.wear_mask && (M.wear_mask.item_flags & AIRTIGHT))
 			return 0
-		if(istype(M,/mob/living/carbon/human))
+		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
 			if(H.head && (H.head.item_flags & AIRTIGHT))
 				return 0
@@ -307,7 +307,7 @@ steam.start() -- spawns the effect
 		n = 10
 	number = n
 	cardinals = c
-	if(istype(loca, /turf/))
+	if(isturf(loca))
 		location = loca
 	else
 		location = get_turf(loca)
@@ -445,7 +445,7 @@ steam.start() -- spawns the effect
 
 	set_up (amt, loc, flash = 0, flash_fact = 0)
 		amount = amt
-		if(istype(loc, /turf/))
+		if(isturf(loc))
 			location = loc
 		else
 			location = get_turf(loc)

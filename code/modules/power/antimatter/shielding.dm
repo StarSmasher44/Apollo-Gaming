@@ -35,7 +35,7 @@ proc/cardinalrange(var/center)
 
 /obj/machinery/am_shielding/proc/controllerscan(var/priorscan = 0)
 	//Make sure we are the only one here
-	if(!istype(src.loc, /turf))
+	if(!isturf(src.loc))
 		qdel(src)
 		return
 	for(var/obj/machinery/am_shielding/AMS in loc.contents)
@@ -122,7 +122,7 @@ proc/cardinalrange(var/center)
 
 
 /obj/machinery/am_shielding/attackby(obj/item/W, mob/user)
-	if(!istype(W) || !user) return
+	if(!isitem(W) || !user) return
 	if(W.force > 10)
 		stability -= W.force/2
 		check_stability()
@@ -199,7 +199,7 @@ proc/cardinalrange(var/center)
 	matter = list(DEFAULT_WALL_MATERIAL = 100, "waste" = 2000)
 
 /obj/item/device/am_shielding_container/attackby(var/obj/item/I, var/mob/user)
-	if(isMultitool(I) && istype(src.loc,/turf))
+	if(isMultitool(I) && isturf(src.loc))
 		new/obj/machinery/am_shielding(src.loc)
 		qdel(src)
 		return

@@ -174,7 +174,7 @@ obj/structure/safe/ex_act(severity)
 /obj/structure/safe/floor/Initialize()
 	. = ..()
 	var/turf/T = loc
-	if(istype(T) && !T.is_plating())
+	if(isturf(T) && !T.is_plating())
 		hide(1)
 	ADD_ICON_QUEUE(src)
 

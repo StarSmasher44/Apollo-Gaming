@@ -58,7 +58,7 @@
 			L = locate("landmark*[C.data]") // use old stype
 
 
-		if(istype(L, /obj/effect/landmark/) && istype(L.loc, /turf))
+		if(istype(L, /obj/effect/landmark/) && isturf(L.loc))
 			to_chat(usr, "You insert the coordinates into the machine.")
 			to_chat(usr, "A message flashes across the screen reminding the traveller that the nuclear authentication disk is to remain on the [station_name()] at all times.")
 			user.drop_item()
@@ -147,7 +147,7 @@
 	set src in oview(1)
 	set desc = "ID Tag:"
 
-	if(stat & (NOPOWER|BROKEN) || !istype(usr,/mob/living))
+	if(stat & (NOPOWER|BROKEN) || !isliving(usr))
 		return
 	if (t)
 		src.id = t
@@ -156,9 +156,9 @@
 /proc/find_loc(obj/R as obj)
 	if (!R)	return null
 	var/turf/T = R.loc
-	while(!istype(T, /turf))
+	while(!isturf(T))
 		T = T.loc
-		if(!T || istype(T, /area))	return null
+		if(!T || isarea(T))	return null
 	return T
 
 /obj/machinery/teleport
@@ -213,7 +213,7 @@
 		for(var/mob/O in viewers(M, null))
 			O.show_message(text("<span class='danger'>The [] bounces off of the portal!</span>", M.name), 1)
 		return
-	if (istype(M, /mob/living))
+	if (isliving(M))
 		var/mob/living/MM = M
 		if(MM.check_contents_for(/obj/item/weapon/disk/nuclear))
 			to_chat(MM, "<span class='warning'>Something you are carrying seems to be unable to pass through the portal. Better drop it if you want to go through.</span>")
@@ -230,7 +230,7 @@
 					disky = 1
 		if (istype(O, /obj/item/weapon/disk/nuclear))
 			disky = 1
-		if (istype(O, /mob/living))
+		if (isliving(O))
 			var/mob/living/MM = O
 			if(MM.check_contents_for(/obj/item/weapon/disk/nuclear))
 				disky = 1

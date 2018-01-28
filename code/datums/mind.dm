@@ -72,7 +72,7 @@
 	..()
 
 /datum/mind/proc/transfer_to(mob/living/new_character)
-	if(!istype(new_character))
+	if(!isliving(new_character))
 		world.log << "## DEBUG: transfer_to(): Some idiot has tried to transfer_to() a non mob/living mob. Please inform Carn"
 	if(current)					//remove ourself from our old body's mind variable
 		if(changeling)
@@ -236,7 +236,7 @@
 
 				var/list/possible_targets = list("Free objective")
 				for(var/datum/mind/possible_target in ticker.minds)
-					if ((possible_target != src) && istype(possible_target.current, /mob/living/carbon/human))
+					if ((possible_target != src) && ishuman(possible_target.current))
 						possible_targets += possible_target.current
 
 				var/mob/def_target = null
@@ -249,7 +249,7 @@
 
 				var/objective_path = text2path("/datum/objective/[new_obj_type]")
 				var/mob/living/M = new_target
-				if (!istype(M) || !M.mind || new_target == "Free objective")
+				if (!isliving(M) || !M.mind || new_target == "Free objective")
 					new_objective = new objective_path
 					new_objective.owner = src
 					new_objective:target = null
@@ -362,7 +362,7 @@
 
 			if("unemag")
 				var/mob/living/silicon/robot/R = current
-				if (istype(R))
+				if (isrobot(R))
 					R.emagged = 0
 					if (R.activated(R.module.emag))
 						R.module_active = null
@@ -378,7 +378,7 @@
 					log_admin("[key_name_admin(usr)] has unemag'ed [R].")
 
 			if("unemagcyborgs")
-				if (istype(current, /mob/living/silicon/ai))
+				if (isAI(current))
 					var/mob/living/silicon/ai/ai = current
 					for (var/mob/living/silicon/robot/R in ai.connected_robots)
 						R.emagged = 0
@@ -441,7 +441,7 @@
 // have to call this periodically for the duration to work properly
 /datum/mind/proc/is_brigged(duration)
 	var/turf/T = current.loc
-	if(!istype(T))
+	if(!isturf(T))
 		brigged_since = -1
 		return 0
 	var/is_currently_brigged = 0

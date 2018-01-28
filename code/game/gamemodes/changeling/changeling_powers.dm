@@ -80,7 +80,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		mind.changeling.absorbed_languages |= language
 
 	var/mob/living/carbon/human/H = src
-	if(istype(H))
+	if(ishuman(H))
 		var/datum/absorbed_dna/newDNA = new(H.real_name, H.dna, H.species.name, H.languages)
 		absorbDNA(newDNA)
 
@@ -151,7 +151,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 		return
 
 	var/mob/living/carbon/human/T = G.affecting
-	if(!istype(T))
+	if(!ishuman(T))
 		to_chat(src, "<span class='warning'>[T] is not compatible with our biology.</span>")
 		return
 
@@ -327,7 +327,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 
 	var/mob/living/carbon/human/H = src
 
-	if(!istype(H) || !H.species.primitive_form)
+	if(!ishuman(H) || !H.species.primitive_form)
 		to_chat(src, "<span class='warning'>We cannot perform this ability in this form!</span>")
 		return
 

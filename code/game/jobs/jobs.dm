@@ -64,7 +64,7 @@ GLOBAL_LIST_EMPTY(unsorted_positions) // for nano manifest
 	return .
 
 /proc/calculate_department_rank(var/mob/living/carbon/human/M)
-	if(istype(M, /mob/living/carbon/human))
+	if(ishuman(M))
 		if(M && M.client && M.CharRecords && M.job)
 			var/oldrank = M.CharRecords.department_rank
 			var/playtime = round(M.CharRecords.department_experience/3600, 0.1) // In hours.

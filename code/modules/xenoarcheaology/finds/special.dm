@@ -32,7 +32,7 @@
 	return ..()
 
 /obj/item/clothing/mask/gas/poltergeist/Process()
-	if(heard_talk.len && istype(src.loc, /mob/living) && prob(10))
+	if(heard_talk.len && isliving(src.loc) && prob(10))
 		var/mob/living/M = src.loc
 		M.say(pick(heard_talk))
 
@@ -41,7 +41,7 @@
 	if(heard_talk.len > max_stored_messages)
 		heard_talk.Remove(pick(heard_talk))
 	heard_talk.Add(text)
-	if(istype(src.loc, /mob/living) && world.time - last_twitch > 50)
+	if(isliving(src.loc) && world.time - last_twitch > 50)
 		last_twitch = world.time
 
 
@@ -136,7 +136,7 @@
 
 /obj/item/weapon/vampiric/proc/bloodcall(var/mob/living/carbon/human/M)
 	last_bloodcall = world.time
-	if(istype(M))
+	if(ishuman(M))
 		playsound(src.loc, pick('sound/hallucinations/wail.ogg','sound/hallucinations/veryfar_noise.ogg','sound/hallucinations/far_noise.ogg'), 50, 1, -3)
 		nearby_mobs.Add(M)
 

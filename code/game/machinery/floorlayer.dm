@@ -77,7 +77,7 @@
 	return
 
 /obj/machinery/floorlayer/proc/dismantleFloor(var/turf/new_turf)
-	if(istype(new_turf, /turf/simulated/floor))
+	if(issimfloor(new_turf))
 		var/turf/simulated/floor/T = new_turf
 		if(!T.is_plating())
 			T.make_plating(!(T.broken || T.burnt))

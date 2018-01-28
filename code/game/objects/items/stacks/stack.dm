@@ -137,7 +137,7 @@
 		if (recipe.goes_in_hands)
 			user.put_in_hands(O)
 
-		if (istype(O, /obj/item/stack))
+		if (isstack(O))
 			var/obj/item/stack/S = O
 			S.amount = produced
 			S.add_to_stacks(user, recipe.goes_in_hands)
@@ -324,7 +324,7 @@
 	return
 
 /obj/item/stack/attackby(obj/item/W as obj, mob/user as mob)
-	if (istype(W, /obj/item/stack))
+	if (isstack(W))
 		var/obj/item/stack/S = W
 		src.transfer_to(S)
 

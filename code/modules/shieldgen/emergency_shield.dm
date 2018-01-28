@@ -163,7 +163,7 @@
 
 /obj/machinery/shieldgen/proc/create_shields()
 	for(var/turf/target_tile in RANGE_TURFS(2, src))
-		if (istype(target_tile,/turf/space) && !(locate(/obj/machinery/shield) in target_tile))
+		if (isspace(target_tile) && !(locate(/obj/machinery/shield) in target_tile))
 			if (malfunction && prob(33) || !malfunction)
 				var/obj/machinery/shield/S = new/obj/machinery/shield(target_tile)
 				deployed_shields += S
@@ -302,7 +302,7 @@
 				src.shields_down()
 			anchored = 0
 		else
-			if(istype(get_turf(src), /turf/space)) return //No wrenching these in space!
+			if(isspace(get_turf(src))) return //No wrenching these in space!
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
 			to_chat(user, "<span class='notice'>You secure the [src] to the floor!</span>")
 			anchored = 1

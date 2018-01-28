@@ -12,7 +12,7 @@
 /turf/proc/post_change()
 	levelupdate()
 	var/turf/simulated/open/T = GetAbove(src)
-	if(istype(T))
+	if(isopenspace(T))
 		T.update_icon()
 
 //Creates a new turf
@@ -21,9 +21,9 @@
 		return
 
 	// This makes sure that turfs are not changed to space when one side is part of a zone
-	if(N == /turf/space)
+	if(isspace(N))
 		var/turf/below = GetBelow(src)
-		if(istype(below) && !istype(below,/turf/space))
+		if(isturf(below) && !isspace(below))
 			N = below.density ? /turf/simulated/floor/airless : /turf/simulated/open
 
 	var/obj/fire/old_fire = fire
@@ -40,7 +40,7 @@
 
 	overlays.Cut()
 	underlays.Cut()
-	if(istype(src,/turf/simulated))
+	if(issimturf(src))
 		//Yeah, we're just going to rebuild the whole thing.
 		//Despite this being called a bunch during explosions,
 		//the zone will only really do heavy lifting once.

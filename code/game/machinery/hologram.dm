@@ -63,7 +63,7 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 	desc = "It's a floor-mounted device for projecting holographic images. Its ID is '[loc.loc]'"
 
 /obj/machinery/hologram/holopad/attack_hand(var/mob/living/carbon/human/user) //Carn: Hologram requests.
-	if(!istype(user))
+	if(!ishuman(user))
 		return
 	if(incoming_connection&&caller_id)
 		visible_message("The pad hums quietly as it establishes a connection.")
@@ -145,7 +145,7 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 	return 0
 
 /obj/machinery/hologram/holopad/attack_ai(mob/living/silicon/ai/user)
-	if (!istype(user))
+	if (!isAI(user))
 		return
 	/*There are pretty much only three ways to interact here.
 	I don't need to check for client since they're clicking on an object.

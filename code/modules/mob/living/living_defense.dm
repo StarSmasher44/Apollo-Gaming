@@ -127,7 +127,7 @@
 
 	if(I.damtype == BRUTE && prob(33)) // Added blood for whacking non-humans too
 		var/turf/simulated/location = get_turf(src)
-		if(istype(location)) location.add_blood_floor(src)
+		if(issimturf(location)) location.add_blood_floor(src)
 
 	return blocked
 
@@ -151,7 +151,7 @@
 
 //this proc handles being hit by a thrown atom
 /mob/living/hitby(atom/movable/AM as mob|obj,var/speed = THROWFORCE_SPEED_DIVISOR)//Standardization and logging -Sieve
-	if(istype(AM,/obj/))
+	if(isobj(AM))
 		var/obj/O = AM
 		var/dtype = O.damtype
 		var/throw_damage = O.throwforce*(speed/THROWFORCE_SPEED_DIVISOR)
@@ -183,7 +183,7 @@
 
 		// Begin BS12 momentum-transfer code.
 		var/mass = 1.5
-		if(istype(O, /obj/item))
+		if(isitem(O))
 			var/obj/item/I = O
 			mass = I.w_class/THROWNOBJ_KNOCKBACK_DIVISOR
 		var/momentum = speed*mass

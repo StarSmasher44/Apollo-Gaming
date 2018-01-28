@@ -323,7 +323,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 	var/select = null
 	var/list/borgs = list()
 	for (var/mob/living/silicon/robot/A in GLOB.player_list)
-		if (A.stat == 2 || A.connected_ai || A.scrambledcodes || istype(A,/mob/living/silicon/robot/drone))
+		if (A.stat == 2 || A.connected_ai || A.scrambledcodes || is_drone(A))
 			continue
 		var/name = "[A.real_name] ([A.modtype] [A.braintype])"
 		borgs[name] = A
@@ -760,7 +760,7 @@ proc/DuplicateObject(obj/original, var/perfectcopy = 0 , var/sameloc = 0)
 
 					for(var/obj/O in T)
 
-						if(!istype(O,/obj) || !O.simulated)
+						if(!isobj(O) || !O.simulated)
 							continue
 
 						objs += O
@@ -775,7 +775,7 @@ proc/DuplicateObject(obj/original, var/perfectcopy = 0 , var/sameloc = 0)
 
 					for(var/mob/M in T)
 
-						if(!istype(M,/mob) || !M.simulated) continue // If we need to check for more mobs, I'll add a variable
+						if(!ismob(M) || !M.simulated) continue // If we need to check for more mobs, I'll add a variable
 						mobs += M
 
 					for(var/mob/M in mobs)
@@ -1046,7 +1046,7 @@ var/list/WALLITEMS = list(
 	return replacetext(replacetext(text,"\proper ",""),"\improper ","")
 
 /proc/topic_link(var/datum/D, var/arglist, var/content)
-	if(istype(arglist,/list))
+	if(islist(arglist))
 		arglist = list2params(arglist)
 	return "<a href='?src=\ref[D];[arglist]'>[content]</a>"
 

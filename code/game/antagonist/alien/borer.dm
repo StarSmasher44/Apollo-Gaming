@@ -41,7 +41,7 @@ var/datum/antagonist/xenos/borer/borers
 				if(head && !(head.robotic >= ORGAN_ROBOT))
 					host = H
 					break
-		if(istype(host))
+		if(ishuman(host))
 			var/obj/item/organ/external/head = host.get_organ(BP_HEAD)
 			if(head)
 				borer.host = host

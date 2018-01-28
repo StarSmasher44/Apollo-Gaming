@@ -6,7 +6,7 @@
 	..(max, parent_mob)
 
 	metabolism_class = met_class
-	if(istype(parent_mob))
+	if(iscarbon(parent_mob))
 		parent = parent_mob
 
 /datum/reagents/metabolism/proc/metabolize()

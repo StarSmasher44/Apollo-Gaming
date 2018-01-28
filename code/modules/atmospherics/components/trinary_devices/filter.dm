@@ -72,7 +72,7 @@
 	if(..())
 		underlays.Cut()
 		var/turf/T = get_turf(src)
-		if(!istype(T))
+		if(!isturf(T))
 			return
 
 		add_underlay(T, node1, turn(dir, -180))

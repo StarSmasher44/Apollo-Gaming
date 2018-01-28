@@ -54,7 +54,7 @@
 	return 1
 
 /obj/item/weapon/reagent_containers/borghypo/attack(var/mob/living/M, var/mob/user, var/target_zone)
-	if(!istype(M))
+	if(!isliving(M))
 		return
 
 	if(!reagent_volumes[reagent_ids[mode]])
@@ -62,7 +62,7 @@
 		return
 
 	var/mob/living/carbon/human/H = M
-	if(istype(H))
+	if(ishuman(H))
 		var/obj/item/organ/external/affected = H.get_organ(target_zone)
 		if(!affected)
 			to_chat(user, "<span class='danger'>\The [H] is missing that limb!</span>")

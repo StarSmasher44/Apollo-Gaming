@@ -8,7 +8,7 @@
 	if(stat == DEAD || paralysis || weakened || stunned || restrained())
 		return
 
-	if(istype(src.loc,/mob/living/carbon))
+	if(iscarbon(src.loc))
 		src.verbs -= /mob/living/carbon/alien/diona/proc/merge
 		return
 
@@ -17,7 +17,7 @@
 
 		if(!(src.Adjacent(C)) || !(C.client)) continue
 
-		if(istype(C,/mob/living/carbon/human))
+		if(ishuman(C))
 			var/mob/living/carbon/human/D = C
 			if(D.species && D.species.name == SPECIES_DIONA)
 				choices += C
@@ -30,7 +30,7 @@
 		to_chat(src, "You fail to merge with \the [M]...")
 
 /mob/living/carbon/alien/diona/proc/do_merge(var/mob/living/carbon/human/H)
-	if(!istype(H) || !src || !(src.Adjacent(H)))
+	if(!ishuman(H) || !src || !(src.Adjacent(H)))
 		return 0
 	to_chat(H, "You feel your being twine with that of \the [src] as it merges with your biomass.")
 	H.status_flags |= PASSEMOTES
@@ -49,7 +49,7 @@
 	if(stat == DEAD || paralysis || weakened || stunned || restrained())
 		return
 
-	if(!(istype(src.loc,/mob/living/carbon)))
+	if(!(iscarbon(src.loc)))
 		src.verbs -= /mob/living/carbon/alien/diona/proc/split
 		return
 
@@ -62,7 +62,7 @@
 	src.verbs -= /mob/living/carbon/alien/diona/proc/split
 	src.verbs += /mob/living/carbon/alien/diona/proc/merge
 
-	if(istype(M))
+	if(isliving(M))
 		for(var/atom/A in M.contents)
 			if(istype(A,/mob/living/simple_animal/borer) || istype(A,/obj/item/weapon/holder))
 				return

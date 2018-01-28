@@ -13,7 +13,7 @@
 	for(var/atom/movable/A in src.cargo)
 		A.loc = loc
 		var/turf/T = loc
-		if(istype(T))
+		if(isturf(T))
 			T.Entered(A)
 		step_rand(A)
 	cargo.Cut()

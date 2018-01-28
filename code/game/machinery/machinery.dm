@@ -215,7 +215,7 @@ Class Procs:
 	return 1
 
 /proc/is_operable(var/obj/machinery/M, var/mob/user)
-	return istype(M) && M.operable()
+	return ismachine(M) && M.operable()
 
 /obj/machinery/proc/operable(var/additional_flags = 0)
 	return !inoperable(additional_flags)
@@ -257,13 +257,13 @@ Class Procs:
 		return 1
 	if(user.lying || user.stat)
 		return 1
-	if ( ! (istype(usr, /mob/living/carbon/human) || \
-			istype(usr, /mob/living/silicon)))
+	if ( ! (ishuman(usr) || \
+			issilicon(usr)))
 		to_chat(usr, "<span class='warning'>You don't have the dexterity to do this!</span>")
 		return 1
 /*
 	//distance checks are made by atom/proc/DblClick
-	if ((get_dist(src, user) > 1 || !istype(src.loc, /turf)) && !istype(user, /mob/living/silicon))
+	if ((get_dist(src, user) > 1 || !isturf(src.loc)) && !issilicon(user))
 		return 1
 */
 	if (ishuman(user))
@@ -316,14 +316,14 @@ Class Procs:
 	return 0
 
 /obj/machinery/proc/default_deconstruction_crowbar(var/mob/user, var/obj/item/weapon/crowbar/C)
-	if(!istype(C))
+	if(!isCrowbar(C))
 		return 0
 	if(!panel_open)
 		return 0
 	. = dismantle()
 
 /obj/machinery/proc/default_deconstruction_screwdriver(var/mob/user, var/obj/item/weapon/screwdriver/S)
-	if(!istype(S))
+	if(!isScrewdriver(S))
 		return 0
 	playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 	panel_open = !panel_open
@@ -388,5 +388,5 @@ Class Procs:
 
 /obj/machinery/CouldUseTopic(var/mob/user)
 	..()
-	if(clicksound && istype(user, /mob/living/carbon))
+	if(clicksound && iscarbon(user))
 		playsound(src, clicksound, clickvol)

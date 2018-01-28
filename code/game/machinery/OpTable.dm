@@ -51,7 +51,7 @@
 /obj/machinery/optable/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
 	if(air_group || (height==0)) return 1
 
-	if(istype(mover) && mover.checkpass(PASSTABLE))
+	if(ismovable(mover) && mover.checkpass(PASSTABLE))
 		return 1
 	else
 		return 0
@@ -107,7 +107,7 @@
 	var/mob/living/M = user
 	if(user.stat || user.restrained() || !check_table(user) || !iscarbon(target))
 		return
-	if(istype(M))
+	if(isliving(M))
 		take_victim(target,user)
 	else
 		return ..()
@@ -119,7 +119,7 @@
 	take_victim(usr,usr)
 
 /obj/machinery/optable/attackby(obj/item/weapon/W as obj, mob/living/carbon/user as mob)
-	if (istype(W, /obj/item/grab))
+	if (isgrab(W))
 		var/obj/item/grab/G = W
 		if(iscarbon(G.affecting) && check_table(G.affecting))
 			take_victim(G.affecting,usr)

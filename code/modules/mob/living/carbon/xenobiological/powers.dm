@@ -30,7 +30,7 @@
 		if(H.species.flags & (NO_POISON|NO_SCAN))
 			//they can't take clone or tox damage, then for the most part they aren't affected by being fed on - and presumably feeding on them would not affect the slime either
 			return "This subject does not have an edible life energy..."
-	if (istype(M, /mob/living/carbon) && M.getCloneLoss() >= M.maxHealth * 1.5 || istype(M, /mob/living/simple_animal) && M.stat == DEAD)
+	if (iscarbon(M) && M.getCloneLoss() >= M.maxHealth * 1.5 || isanimal(M) && M.stat == DEAD)
 		return "This subject does not have an edible life energy..."
 	for(var/mob/living/carbon/slime/met in view())
 		if(met.Victim == M && met != src)
@@ -53,13 +53,13 @@
 			UpdateFeed()
 
 			var/hazmat = blocked_mult(M.getarmor(null, "bio")) //scale feeding rate by overall bio protection
-			if(istype(M, /mob/living/carbon))
+			if(iscarbon(M))
 				Victim.adjustCloneLoss(5 * hazmat)
 				Victim.adjustToxLoss(1 * hazmat)
 				if(Victim.health <= 0)
 					Victim.adjustToxLoss(1 * hazmat)
 
-			else if(istype(M, /mob/living/simple_animal))
+			else if(isanimal(M))
 				Victim.adjustBruteLoss(10 * hazmat)
 
 			else
@@ -67,12 +67,12 @@
 				Feedstop()
 				break
 
-			if(prob(15) && M.client && istype(M, /mob/living/carbon))
+			if(prob(15) && M.client && iscarbon(M))
 				var/painMes = pick("You can feel your body becoming weak!", "You feel like you're about to die!", "You feel every part of your body screaming in agony!", "A low, rolling pain passes through your body!", "Your body feels as if it's falling apart!", "You feel extremely weak!", "A sharp, deep pain bathes every inch of your body!")
 				if (ishuman(M))
 					var/mob/living/carbon/human/H = M
 					H.custom_pain(painMes,100)
-				else if (istype(M, /mob/living/carbon))
+				else if (iscarbon(M))
 					var/mob/living/carbon/C = M
 					if (C.can_feel_pain())
 						to_chat(M, "<span class='danger'>[painMes]</span>")

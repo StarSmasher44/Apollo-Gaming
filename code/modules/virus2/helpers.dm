@@ -1,10 +1,10 @@
 //Returns 1 if mob can be infected, 0 otherwise.
 proc/infection_chance(var/mob/living/carbon/M, var/vector = "Airborne")
-	if (!istype(M))
+	if (!iscarbon(M))
 		return 0
 
 	var/mob/living/carbon/human/H = M
-	if(istype(H) && H.species.get_virus_immune(H))
+	if(ishuman(H) && H.species.get_virus_immune(H))
 		return 0
 
 	var/protection = M.getarmor(null, "bio")	//gets the full body bio armour value, weighted by body part coverage.
@@ -22,7 +22,7 @@ proc/infection_chance(var/mob/living/carbon/M, var/vector = "Airborne")
 					score += 1 //this should be added after
 
 		if("Contact")
-			if(istype(H))
+			if(ishuman(H))
 				//gloves provide a larger bonus
 				if (istype(H.gloves, /obj/item/clothing/gloves))
 					score += 2
@@ -45,7 +45,7 @@ proc/infection_chance(var/mob/living/carbon/M, var/vector = "Airborne")
 
 //Similar to infection check, but used for when M is spreading the virus.
 /proc/infection_spreading_check(var/mob/living/carbon/M, var/vector = "Airborne")
-	if (!istype(M))
+	if (!iscarbon(M))
 		return 0
 
 	var/protection = M.getarmor(null, "bio")	//gets the full body bio armour value, weighted by body part coverage.
@@ -64,7 +64,7 @@ proc/infection_chance(var/mob/living/carbon/M, var/vector = "Airborne")
 	//no infecting from other side of the hallway
 	if(get_dist(source,target) > 5)
 		return FALSE
-	if(istype(source) && istype(target))
+	if(issimturf(source) && issimturf(target))
 		return source.zone == target.zone
 
 //Attemptes to infect mob M with virus. Set forced to 1 to ignore protective clothnig
@@ -72,7 +72,7 @@ proc/infection_chance(var/mob/living/carbon/M, var/vector = "Airborne")
 	if(!istype(disease))
 //		log_debug("Bad virus")
 		return
-	if(!istype(M))
+	if(!iscarbon(M))
 //		log_debug("Bad mob")
 		return
 	if ("[disease.uniqueID]" in M.virus2)

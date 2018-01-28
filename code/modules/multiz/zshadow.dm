@@ -17,7 +17,7 @@
 	return FALSE
 
 /mob/zshadow/New(var/mob/L)
-	if(!istype(L))
+	if(!ismob(L))
 		qdel(src)
 		return
 	..() // I'm cautious about this, but its the right thing to do.

@@ -13,7 +13,7 @@
 	for(var/mob/living/M in SSmobs.mob_list)
 		if(M.z in affected_levels)
 			var/area/A = get_area(M)
-			if(istype(A,/area/space)) //straggler
+			if(isspacearea(A)) //straggler
 				var/turf/T = locate(M.x, M.y, space_zlevel)
 				if(T)
 					M.forceMove(T)

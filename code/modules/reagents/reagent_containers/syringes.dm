@@ -89,8 +89,8 @@
 					if(reagents.has_reagent(/datum/reagent/blood))
 						to_chat(user, "<span class='notice'>There is already a blood sample in this syringe.</span>")
 						return
-					if(istype(target, /mob/living/carbon))
-						if(istype(target, /mob/living/carbon/slime))
+					if(iscarbon(target))
+						if(isslime(target))
 							to_chat(user, "<span class='warning'>You are unable to locate any blood.</span>")
 							return
 						var/amount = reagents.get_free_space()
@@ -219,7 +219,7 @@
 
 	proc/syringestab(mob/living/carbon/target as mob, mob/living/carbon/user as mob)
 
-		if(istype(target, /mob/living/carbon/human))
+		if(ishuman(target))
 
 			var/mob/living/carbon/human/H = target
 

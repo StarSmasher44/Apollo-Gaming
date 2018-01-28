@@ -51,7 +51,7 @@ Frequency:
 	if(!current_location||current_location.z==2)//If turf was not found or they're on z level 2.
 		to_chat(usr, "The [src] is malfunctioning.")
 		return
-	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))))
+	if ((usr.contents.Find(src) || (in_range(src, usr) && isturf(src.loc))))
 		usr.set_machine(src)
 		if (href_list["refresh"])
 			src.temp = "<B>Persistent Signal Locator</B><HR>"
@@ -79,7 +79,7 @@ Frequency:
 
 				src.temp += "<B>Extranneous Signals:</B><BR>"
 				for (var/obj/item/weapon/implant/tracking/W in world)
-					if (!W.implanted || !(istype(W.loc,/obj/item/organ/external) || ismob(W.loc)))
+					if (!W.implanted || !(isorgan(W.loc) || ismob(W.loc)))
 						continue
 					else
 						var/mob/M = W.loc

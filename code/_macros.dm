@@ -5,6 +5,8 @@
 #define get_turf(A) get_step(A,0)
 #define get_area2(A) return A.loc.loc
 
+#define in_range(source, user) (get_dist(source, user) <= 1 && (get_step(source, 0)?:z) == (get_step(user, 0)?:z))
+
 #define isAI(A) istype(A, /mob/living/silicon/ai)
 
 #define isalien(A) istype(A, /mob/living/carbon/alien)
@@ -12,6 +14,8 @@
 #define isanimal(A) istype(A, /mob/living/simple_animal)
 
 #define isairlock(A) istype(A, /obj/machinery/door/airlock)
+
+#define ismachine(A) istype(A, /obj/machinery)
 
 #define isatom(A) istype(A, /atom)
 
@@ -45,6 +49,23 @@
 
 #define isobj(A) istype(A, /obj)
 
+#define isdatum(A) istype(A, /datum)
+
+/*------TURF RELATED TYPECHECKS------*/
+#define isturf(A) istype(A, /turf)
+#define issimturf(A) istype(A, /turf/simulated)
+#define isunsimturf(A) istype(A, /turf/unsimulated)
+#define isunsimwall(A) istype(A, /turf/unsimulated/wall)
+
+#define issimwall(A) istype(A, /turf/simulated/wall)
+#define issimfloor(A) istype(A, /turf/simulated/floor)
+
+#define isgrab(A) istype(A, /obj/item/grab)
+
+#define iszone(A) istype(A, /zone)
+
+#define isstructure(A) istype(A, /obj/structure)
+
 #define isghost(A) istype(A, /mob/observer/ghost)
 
 #define isobserver(A) istype(A, /mob/observer)
@@ -53,7 +74,8 @@
 
 #define isstack(A) istype(A, /obj/item/stack)
 
-#define isspace(A) istype(A, /area/space)
+#define isspacearea(A) istype(A, /area/space)
+#define isspace(A) istype(A, /turf/space)
 
 #define ispAI(A) istype(A, /mob/living/silicon/pai)
 
@@ -63,6 +85,8 @@
 
 #define isslime(A) istype(A, /mob/living/carbon/slime)
 
+#define ismecha(A) istype(A, /obj/mecha)
+
 #define isunderwear(A) istype(A, /obj/item/underwear)
 
 #define isvirtualmob(A) istype(A, /mob/observer/virtual)
@@ -70,8 +94,6 @@
 #define isweakref(A) istype(A, /weakref)
 
 #define attack_animation(A) if(istype(A)) A.do_attack_animation(src)
-
-#define isairlock(A) istype(A, /obj/machinery/door/airlock)
 
 #define isopenspace(A) istype(A, /turf/simulated/open)
 
@@ -129,7 +151,7 @@
 // All of these are null-safe, you can use them without knowing if the list var is initialized yet
 
 //Picks from the list, with some safeties, and returns the "default" arg if it fails
-#define DEFAULTPICK(L, default) ((istype(L, /list) && L:len) ? pick(L) : default)
+#define DEFAULTPICK(L, default) ((islist(L) && L:len) ? pick(L) : default)
 // Ensures L is initailized after this point
 #define LAZYINITLIST(L) if (!L) L = list()
 // Sets a L back to null iff it is empty

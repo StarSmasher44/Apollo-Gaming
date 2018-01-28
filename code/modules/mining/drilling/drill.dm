@@ -260,7 +260,7 @@
 	need_update_field = 0
 
 	var/turf/T = get_turf(src)
-	if(!istype(T)) return
+	if(!isturf(T)) return
 
 	var/tx = T.x - 2
 	var/ty = T.y - 2
@@ -317,7 +317,7 @@
 
 	if(isWrench(W))
 
-		if(istype(get_turf(src), /turf/space))
+		if(isspace(get_turf(src)))
 			to_chat(user, "<span class='notice'>You can't anchor something to empty space. Idiot.</span>")
 			return
 

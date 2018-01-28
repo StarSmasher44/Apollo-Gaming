@@ -72,7 +72,7 @@
 			M.ingested.remove_reagent(R.type, removed * effect)
 
 /datum/reagent/carbon/touch_turf(var/turf/T)
-	if(!istype(T, /turf/space))
+	if(!isspace(T))
 		var/obj/effect/decal/cleanable/dirt/dirtoverlay = locate(/obj/effect/decal/cleanable/dirt, T)
 		if (!dirtoverlay)
 			dirtoverlay = new/obj/effect/decal/cleanable/dirt(T)
@@ -106,7 +106,7 @@
 	glass_desc = "A well-known alcohol with a variety of applications."
 
 /datum/reagent/ethanol/touch_mob(var/mob/living/L, var/amount)
-	if(istype(L))
+	if(isliving(L))
 		L.adjust_fire_stacks(amount / 15)
 
 /datum/reagent/ethanol/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
@@ -213,7 +213,7 @@
 
 /datum/reagent/lithium/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
 	if(alien != IS_DIONA)
-		if(M.canmove && !M.restrained() && istype(M.loc, /turf/space))
+		if(M.canmove && !M.restrained() && isspace(M.loc))
 			step(M, pick(GLOB.cardinal))
 		if(prob(5))
 			M.emote(pick("twitch", "drool", "moan"))
@@ -227,7 +227,7 @@
 
 /datum/reagent/mercury/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
 	if(alien != IS_DIONA)
-		if(M.canmove && !M.restrained() && istype(M.loc, /turf/space))
+		if(M.canmove && !M.restrained() && isspace(M.loc))
 			step(M, pick(GLOB.cardinal))
 		if(prob(5))
 			M.emote(pick("twitch", "drool", "moan"))
@@ -272,7 +272,7 @@
 
 /datum/reagent/radium/touch_turf(var/turf/T)
 	if(volume >= 3)
-		if(!istype(T, /turf/space))
+		if(!isspace(T))
 			var/obj/effect/decal/cleanable/greenglow/glow = locate(/obj/effect/decal/cleanable/greenglow, T)
 			if(!glow)
 				new /obj/effect/decal/cleanable/greenglow(T)
@@ -354,7 +354,7 @@
 /datum/reagent/acid/touch_obj(var/obj/O)
 	if(O.unacidable)
 		return
-	if((istype(O, /obj/item) || istype(O, /obj/effect/vine)) && (volume > meltdose))
+	if((isobj(O) || istype(O, /obj/effect/vine)) && (volume > meltdose))
 		var/obj/effect/decal/cleanable/molten_item/I = new/obj/effect/decal/cleanable/molten_item(O.loc)
 		I.desc = "Looks like this was \an [O] some time ago."
 		for(var/mob/M in viewers(5, O))

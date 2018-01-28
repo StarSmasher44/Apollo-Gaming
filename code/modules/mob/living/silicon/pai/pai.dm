@@ -267,7 +267,7 @@
 	card.screen_loc = null
 
 	var/turf/T = get_turf(src)
-	if(istype(T)) T.visible_message("<b>[src]</b> folds outwards, expanding into a mobile form.")
+	if(isturf(T)) T.visible_message("<b>[src]</b> folds outwards, expanding into a mobile form.")
 
 /mob/living/silicon/pai/verb/fold_up()
 	set category = "pAI Commands"
@@ -358,7 +358,7 @@
 		return
 
 	var/turf/T = get_turf(src)
-	if(istype(T)) T.visible_message("<b>[src]</b> neatly folds inwards, compacting down to a rectangular card.")
+	if(isturf(T)) T.visible_message("<b>[src]</b> neatly folds inwards, compacting down to a rectangular card.")
 
 	src.stop_pulling()
 	src.client.perspective = EYE_PERSPECTIVE

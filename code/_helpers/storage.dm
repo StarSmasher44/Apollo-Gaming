@@ -1,5 +1,5 @@
 /proc/create_objects_in_loc(var/atom/loc, var/atom_paths)
-	if(!istype(loc))
+	if(!isatom(loc))
 		CRASH("Inappropriate loction given.")
 
 	if(istype(atom_paths, /datum/atom_creator))

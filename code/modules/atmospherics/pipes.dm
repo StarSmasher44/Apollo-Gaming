@@ -18,7 +18,7 @@
 	return -1
 
 /obj/machinery/atmospherics/pipe/New()
-	if(istype(get_turf(src), /turf/simulated/wall) || istype(get_turf(src), /turf/simulated/shuttle/wall) || istype(get_turf(src), /turf/unsimulated/wall))
+	if(issimwall(get_turf(src)) || istype(get_turf(src), /turf/simulated/shuttle/wall) || isunsimwall(get_turf(src)))
 		level = 1
 	..()
 
@@ -187,7 +187,7 @@
 			initialize_directions = SOUTH|WEST
 
 /obj/machinery/atmospherics/pipe/simple/hide(var/i)
-	if(istype(loc, /turf/simulated))
+	if(issimturf(loc))
 		set_invisibility(i ? 101 : 0)
 	update_icon()
 
@@ -201,7 +201,7 @@
 
 /obj/machinery/atmospherics/pipe/simple/check_pressure(pressure)
 	// Don't ask me, it happened somehow.
-	if (!istype(loc, /turf))
+	if (!isturf(loc))
 		return 1
 
 	var/datum/gas_mixture/environment = loc.return_air()
@@ -455,7 +455,7 @@
 			initialize_directions = NORTH|EAST|SOUTH
 
 /obj/machinery/atmospherics/pipe/manifold/hide(var/i)
-	if(istype(loc, /turf/simulated))
+	if(issimturf(loc))
 		set_invisibility(i ? 101 : 0)
 	update_icon()
 
@@ -827,7 +827,7 @@
 	update_icon()
 
 /obj/machinery/atmospherics/pipe/manifold4w/hide(var/i)
-	if(istype(loc, /turf/simulated))
+	if(issimturf(loc))
 		set_invisibility(i ? 101 : 0)
 	update_icon()
 
@@ -970,7 +970,7 @@
 	initialize_directions = dir
 
 /obj/machinery/atmospherics/pipe/cap/hide(var/i)
-	if(istype(loc, /turf/simulated))
+	if(issimturf(loc))
 		set_invisibility(i ? 101 : 0)
 	update_icon()
 
@@ -1117,7 +1117,7 @@
 	if(..())
 		underlays.Cut()
 		var/turf/T = get_turf(src)
-		if(!istype(T))
+		if(!isturf(T))
 			return
 		add_underlay(T, node1, dir)
 
@@ -1316,7 +1316,7 @@
 
 /obj/machinery/atmospherics/pipe/vent/hide(var/i) //to make the little pipe section invisible, the icon changes.
 	if(node1)
-		icon_state = "[i == 1 && istype(loc, /turf/simulated) ? "h" : "" ]intact"
+		icon_state = "[i == 1 && issimturf(loc) ? "h" : "" ]intact"
 		set_dir(get_dir(src, node1))
 	else
 		icon_state = "exposed"

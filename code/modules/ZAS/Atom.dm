@@ -10,7 +10,7 @@
 /turf/CanPass(atom/movable/mover, turf/target, height=1.5,air_group=0)
 	if(!target) return 0
 
-	if(istype(mover)) // turf/Enter(...) will perform more advanced checks
+	if(ismovable(mover)) // turf/Enter(...) will perform more advanced checks
 		return !density
 
 	else // Now, doing more detailed checks for air movement and air group formation
@@ -58,9 +58,9 @@ turf/c_airblock(turf/other)
 	#ifdef MULTIZAS
 	if(other.z != src.z)
 		if(other.z < src.z)
-			if(!istype(src, /turf/simulated/open)) return BLOCKED
+			if(!isopenspace(src)) return BLOCKED
 		else
-			if(!istype(other, /turf/simulated/open)) return BLOCKED
+			if(!isopenspace(other)) return BLOCKED
 	#endif
 
 	if(((blocks_air & ZONE_BLOCKED) || (other.blocks_air & ZONE_BLOCKED)))

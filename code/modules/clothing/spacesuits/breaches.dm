@@ -181,7 +181,7 @@
 		if(!repair_power)
 			return
 
-		if(istype(src.loc,/mob/living))
+		if(isliving(src.loc))
 			to_chat(user, "<span class='warning'>How do you intend to patch a hardsuit while someone is wearing it?</span>")
 			return
 
@@ -197,7 +197,7 @@
 
 	else if(isWelder(W))
 
-		if(istype(src.loc,/mob/living))
+		if(isliving(src.loc))
 			to_chat(user, "<span class='warning'>How do you intend to patch a hardsuit while someone is wearing it?</span>")
 			return
 

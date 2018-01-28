@@ -302,7 +302,7 @@
 		jobname = "Cyborg"
 
 	// --- Personal AI (pAI) ---
-	else if (istype(M, /mob/living/silicon/pai))
+	else if (ispAI(M))
 		jobname = "Personal AI"
 
 	// --- Unidentifiable mob ---
@@ -757,5 +757,5 @@
 
 /obj/item/device/radio/CouldUseTopic(var/mob/user)
 	..()
-	if(istype(user, /mob/living/carbon))
+	if(iscarbon(user))
 		playsound(src, "button", 10)

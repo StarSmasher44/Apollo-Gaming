@@ -2,8 +2,8 @@
 /mob/proc/attack_ui(slot)
 	var/obj/item/W = get_active_hand()
 	var/obj/item/E = get_equipped_item(slot)
-	if (istype(E))
-		if(istype(W))
+	if (isitem(E))
+		if(isitem(W))
 			E.attackby(W,src)
 		else
 			E.attack_hand(src)
@@ -23,7 +23,7 @@
 //unset redraw_mob to prevent the mob from being redrawn at the end.
 //set force to replace items in the slot and ignore blocking overwear
 /mob/proc/equip_to_slot_if_possible(obj/item/W as obj, slot, del_on_fail = 0, disable_warning = 0, redraw_mob = 1, force = 0)
-	if(!istype(W)) return 0
+	if(!isitem(W)) return 0
 
 	if(!W.mob_can_equip(src, slot, disable_warning, force))
 		if(del_on_fail)
@@ -79,7 +79,7 @@ var/list/slot_equipment_priority = list( \
 //puts the item "W" into an appropriate slot in a human's inventory
 //returns 0 if it cannot, 1 if successful
 /mob/proc/equip_to_appropriate_slot(obj/item/W)
-	if(!istype(W)) return 0
+	if(!isitem(W)) return 0
 
 	for(var/slot in slot_equipment_priority)
 		if(equip_to_slot_if_possible(W, slot, del_on_fail=0, disable_warning=1, redraw_mob=1))
@@ -237,7 +237,7 @@ var/list/slot_equipment_priority = list( \
 		src.client.screen -= O
 	O.reset_plane_and_layer()
 	O.screen_loc = null
-	if(istype(O, /obj/item))
+	if(isitem(O))
 		var/obj/item/I = O
 		if(target)
 			I.forceMove(target)

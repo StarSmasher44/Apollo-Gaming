@@ -44,9 +44,9 @@
  **/
 /datum/controller/process/tgui/proc/get_open_ui(mob/user, datum/src_object, ui_key)
 	var/src_object_key = "\ref[src_object]"
-	if(isnull(tg_open_uis[src_object_key]) || !istype(tg_open_uis[src_object_key], /list))
+	if(isnull(tg_open_uis[src_object_key]) || !islist(tg_open_uis[src_object_key]))
 		return null // No UIs open.
-	else if(isnull(tg_open_uis[src_object_key][ui_key]) || !istype(tg_open_uis[src_object_key][ui_key], /list))
+	else if(isnull(tg_open_uis[src_object_key][ui_key]) || !islist(tg_open_uis[src_object_key][ui_key]))
 		return null // No UIs open for this object.
 
 	for(var/datum/tgui/ui in tg_open_uis[src_object_key][ui_key]) // Find UIs for this object.
@@ -66,7 +66,7 @@
  **/
 /datum/controller/process/tgui/proc/update_uis(datum/src_object)
 	var/src_object_key = "\ref[src_object]"
-	if(isnull(tg_open_uis[src_object_key]) || !istype(tg_open_uis[src_object_key], /list))
+	if(isnull(tg_open_uis[src_object_key]) || !islist(tg_open_uis[src_object_key]))
 		return 0 // Couldn't find any UIs for this object.
 
 	var/update_count = 0
@@ -88,7 +88,7 @@
  **/
 /datum/controller/process/tgui/proc/close_uis(datum/src_object)
 	var/src_object_key = "\ref[src_object]"
-	if(isnull(tg_open_uis[src_object_key]) || !istype(tg_open_uis[src_object_key], /list))
+	if(isnull(tg_open_uis[src_object_key]) || !islist(tg_open_uis[src_object_key]))
 		return 0 // Couldn't find any UIs for this object.
 
 	var/close_count = 0
@@ -111,7 +111,7 @@
   * return int The number of UIs updated.
  **/
 /datum/controller/process/tgui/proc/update_user_uis(mob/user, datum/src_object = null, ui_key = null)
-	if(isnull(user.tg_open_uis) || !istype(user.tg_open_uis, /list) || tg_open_uis.len == 0)
+	if(isnull(user.tg_open_uis) || !islist(user.tg_open_uis) || tg_open_uis.len == 0)
 		return 0 // Couldn't find any UIs for this user.
 
 	var/update_count = 0
@@ -133,7 +133,7 @@
   * return int The number of UIs closed.
  **/
 /datum/controller/process/tgui/proc/close_user_uis(mob/user, datum/src_object = null, ui_key = null)
-	if(isnull(user.tg_open_uis) || !istype(user.tg_open_uis, /list) || tg_open_uis.len == 0)
+	if(isnull(user.tg_open_uis) || !islist(user.tg_open_uis) || tg_open_uis.len == 0)
 		return 0 // Couldn't find any UIs for this user.
 
 	var/close_count = 0
@@ -152,9 +152,9 @@
  **/
 /datum/controller/process/tgui/proc/on_open(datum/tgui/ui)
 	var/src_object_key = "\ref[ui.src_object]"
-	if(isnull(tg_open_uis[src_object_key]) || !istype(tg_open_uis[src_object_key], /list))
+	if(isnull(tg_open_uis[src_object_key]) || !islist(tg_open_uis[src_object_key]))
 		tg_open_uis[src_object_key] = list(ui.ui_key = list()) // Make a list for the ui_key and src_object.
-	else if(isnull(tg_open_uis[src_object_key][ui.ui_key]) || !istype(tg_open_uis[src_object_key][ui.ui_key], /list))
+	else if(isnull(tg_open_uis[src_object_key][ui.ui_key]) || !islist(tg_open_uis[src_object_key][ui.ui_key]))
 		tg_open_uis[src_object_key][ui.ui_key] = list() // Make a list for the ui_key.
 
 	// Append the UI to all the lists.
@@ -174,9 +174,9 @@
  **/
 /datum/controller/process/tgui/proc/on_close(datum/tgui/ui)
 	var/src_object_key = "\ref[ui.src_object]"
-	if(isnull(tg_open_uis[src_object_key]) || !istype(tg_open_uis[src_object_key], /list))
+	if(isnull(tg_open_uis[src_object_key]) || !islist(tg_open_uis[src_object_key]))
 		return 0 // It wasn't open.
-	else if(isnull(tg_open_uis[src_object_key][ui.ui_key]) || !istype(tg_open_uis[src_object_key][ui.ui_key], /list))
+	else if(isnull(tg_open_uis[src_object_key][ui.ui_key]) || !islist(tg_open_uis[src_object_key][ui.ui_key]))
 		return 0 // It wasn't open.
 
 	processing_uis.Remove(ui) // Remove it from the list of processing UIs.
@@ -216,10 +216,10 @@
   * return bool If the UIs were transferred.
  **/
 /datum/controller/process/tgui/proc/on_transfer(mob/source, mob/target)
-	if(!source || isnull(source.tg_open_uis) || !istype(source.tg_open_uis, /list) || tg_open_uis.len == 0)
+	if(!source || isnull(source.tg_open_uis) || !islist(source.tg_open_uis) || tg_open_uis.len == 0)
 		return 0 // The old mob had no open UIs.
 
-	if(isnull(target.tg_open_uis) || !istype(target.tg_open_uis, /list))
+	if(isnull(target.tg_open_uis) || !islist(target.tg_open_uis))
 		target.tg_open_uis = list() // Create a list for the new mob if needed.
 
 	for(var/datum/tgui/ui in source.tg_open_uis)

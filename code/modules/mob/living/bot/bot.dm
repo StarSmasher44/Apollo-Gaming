@@ -376,7 +376,7 @@
 
 	for(var/d in GLOB.cardinal)
 		var/turf/simulated/T = get_step(src, d)
-		if(istype(T) && !T.density)
+		if(issimturf(T) && !T.density)
 			if(!LinkBlockedWithAccess(src, T, ID))
 				. += T
 	return .

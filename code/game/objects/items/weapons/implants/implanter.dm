@@ -51,7 +51,7 @@
 
 	if(M.incapacitated())
 		return 0
-	if((src in M.contents) || (istype(loc, /turf) && in_range(src, M)))
+	if((src in M.contents) || (isturf(loc) && in_range(src, M)))
 		return 1
 	return 0
 
@@ -65,7 +65,7 @@
 		..()
 
 /obj/item/weapon/implanter/attack(mob/M as mob, mob/user as mob)
-	if (!istype(M, /mob/living/carbon))
+	if (!iscarbon(M))
 		return
 	if (user && src.imp)
 		M.visible_message("<span class='warning'>[user] is attemping to implant [M].</span>")

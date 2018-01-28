@@ -235,7 +235,7 @@
 	set name = "Toggle Shirt Tucking"
 	set category = "Object"
 	set src in usr
-	if(!istype(usr, /mob/living)||usr.stat)
+	if(!isliving(usr)||usr.stat)
 		return
 
 	var/obj/item/clothing/accessory/toggleable/flannel/H = null

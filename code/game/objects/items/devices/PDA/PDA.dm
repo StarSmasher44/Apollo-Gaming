@@ -334,7 +334,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	var/mob/M = loc
 	if(M.stat || M.restrained() || M.paralysis || M.stunned || M.weakened)
 		return 0
-	if((src in M.contents) || ( istype(loc, /turf) && in_range(src, M) ))
+	if((src in M.contents) || ( isturf(loc) && in_range(src, M) ))
 		return 1
 	else
 		return 0
@@ -613,7 +613,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	var/datum/nanoui/ui = GLOB.nanomanager.get_open_ui(user, src, "main")
 	var/mob/living/U = usr
 	//Looking for master was kind of pointless since PDAs don't appear to have one.
-	//if ((src in U.contents) || ( istype(loc, /turf) && in_range(src, U) ) )
+	//if ((src in U.contents) || ( isturf(loc) && in_range(src, U) ) )
 	if (usr.stat == DEAD)
 		return 0
 	if(!can_use()) //Why reinvent the wheel? There's a proc that does exactly that.
@@ -784,7 +784,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		if("Message")
 
 			var/obj/item/device/pda/P = locate(href_list["target"])
-			var/tap = istype(U, /mob/living/carbon)
+			var/tap = iscarbon(U)
 			src.create_message(U, P, tap)
 			if(mode == 2)
 				if(href_list["target"] in conversations)            // Need to make sure the message went through, if not welp.
@@ -1067,7 +1067,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		P.tnote.Add(list(list("sent" = 0, "owner" = "[owner]", "job" = "[ownjob]", "message" = "[t]", "target" = "\ref[src]")))
 		for(var/mob/M in GLOB.player_list)
 			if(M.stat == DEAD && M.get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_SPEECH) // src.client is so that ghosts don't have to listen to mice
-				if(istype(M, /mob/new_player))
+				if(isnewplayer(M))
 					continue
 				M.show_message("<span class='game say'>PDA Message - <span class='name'>[owner]</span> -> <span class='name'>[P.owner]</span>: <span class='message'>[t]</span></span>")
 
@@ -1270,7 +1270,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			to_chat(user, "<span class='notice'>Card scanned.</span>")
 		else
 			//Basic safety check. If either both objects are held by user or PDA is on ground and card is in hand.
-			if(((src in user.contents) && (C in user.contents)) || (istype(loc, /turf) && in_range(src, user) && (C in user.contents)) )
+			if(((src in user.contents) && (C in user.contents)) || (isturf(loc) && in_range(src, user) && (C in user.contents)) )
 				if(id_check(user, 2))
 					to_chat(user, "<span class='notice'>You put the ID into \the [src]'s slot.</span>")
 					updateSelfDialog()//Update self dialog on success.
@@ -1293,7 +1293,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	return
 
 /obj/item/device/pda/attack(mob/living/C as mob, mob/living/user as mob)
-	if (istype(C, /mob/living/carbon))
+	if (iscarbon(C))
 		switch(scanmode)
 			if(1)
 
@@ -1418,7 +1418,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	return ..()
 
 /obj/item/device/pda/clown/Crossed(AM as mob|obj) //Clown PDA is slippery.
-	if (istype(AM, /mob/living))
+	if (isliving(AM))
 		var/mob/living/M = AM
 
 		if(M.slip("the PDA",8) && M.real_name != src.owner && istype(src.cartridge, /obj/item/weapon/cartridge/clown))

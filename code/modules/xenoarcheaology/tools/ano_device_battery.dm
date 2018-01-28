@@ -195,7 +195,7 @@
 	..()
 
 /obj/item/weapon/anodevice/attack(mob/living/M as mob, mob/living/user as mob, def_zone)
-	if (!istype(M))
+	if (!isliving(M))
 		return
 
 	if(activated && inserted_battery.battery_effect.effect == EFFECT_TOUCH && !isnull(inserted_battery))

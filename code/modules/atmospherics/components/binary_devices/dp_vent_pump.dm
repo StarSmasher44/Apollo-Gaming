@@ -64,7 +64,7 @@
 	var/vent_icon = "vent"
 
 	var/turf/T = get_turf(src)
-	if(!istype(T))
+	if(!isturf(T))
 		return
 
 	if(!T.is_plating() && node1 && node2 && node1.level == 1 && node2.level == 1 && istype(node1, /obj/machinery/atmospherics/pipe) && istype(node2, /obj/machinery/atmospherics/pipe))
@@ -81,7 +81,7 @@
 	if(..())
 		underlays.Cut()
 		var/turf/T = get_turf(src)
-		if(!istype(T))
+		if(!isturf(T))
 			return
 		if(!T.is_plating() && node1 && node2 && node1.level == 1 && node2.level == 1 && istype(node1, /obj/machinery/atmospherics/pipe) && istype(node2, /obj/machinery/atmospherics/pipe))
 			return

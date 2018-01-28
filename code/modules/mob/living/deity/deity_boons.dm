@@ -2,14 +2,14 @@
 	if(current_boon)
 		qdel(current_boon)
 	current_boon = boon
-	if(istype(boon, /atom/movable))
+	if(ismovable(boon))
 		var/atom/movable/A = boon
 		A.forceMove(src)
 
 /mob/living/deity/proc/grant_boon(var/mob/living/L)
 	if(istype(current_boon, /spell) && !grant_spell(L, current_boon))
 		return
-	else if(istype(current_boon, /obj/item))
+	else if(isitem(current_boon))
 		var/obj/item/I = current_boon
 		I.forceMove(get_turf(L))
 		var/origin_text = "on the floor"

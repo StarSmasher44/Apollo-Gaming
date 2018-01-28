@@ -249,7 +249,7 @@ meteor_act
 	//getting the weapon bloodied is easier than getting the target covered in blood, so run prob() again
 	if(prob(33 + W.sharp*10))
 		var/turf/location = loc
-		if(istype(location, /turf/simulated))
+		if(issimturf(location))
 			location.add_blood(src)
 		if(ishuman(attacker))
 			var/mob/living/carbon/human/H = attacker
@@ -278,7 +278,7 @@ meteor_act
 		return
 	if(prob(effective_force))
 		var/turf/location = loc
-		if(istype(location, /turf/simulated))
+		if(issimturf(location))
 			location.add_blood(src)
 
 		switch(hit_zone)
@@ -323,7 +323,7 @@ meteor_act
 
 //this proc handles being hit by a thrown atom
 /mob/living/carbon/human/hitby(atom/movable/AM as mob|obj,var/speed = THROWFORCE_SPEED_DIVISOR)
-	if(istype(AM,/obj/))
+	if(isobj(AM))
 		var/obj/O = AM
 
 		if(in_throw_mode && !get_active_hand() && speed <= THROWFORCE_SPEED_DIVISOR)	//empty active hand and we're in throw mode
@@ -338,7 +338,7 @@ meteor_act
 		var/throw_damage = O.throwforce*(speed/THROWFORCE_SPEED_DIVISOR)
 
 		var/zone
-		if (istype(O.thrower, /mob/living))
+		if (isliving(O.thrower))
 			var/mob/living/L = O.thrower
 			zone = check_zone(L.zone_sel.selecting)
 		else
@@ -383,7 +383,7 @@ meteor_act
 				admin_attack_log(M, src, "Threw \an [O] at their victim.", "Had \an [O] thrown at them", "threw \an [O] at")
 
 		//thrown weapon embedded object code.
-		if(dtype == BRUTE && istype(O,/obj/item))
+		if(dtype == BRUTE && isitem(O))
 			var/obj/item/I = O
 			if (!is_robot_module(I))
 				var/sharp = is_sharp(I)
@@ -402,7 +402,7 @@ meteor_act
 
 		// Begin BS12 momentum-transfer code.
 		var/mass = 1.5
-		if(istype(O, /obj/item))
+		if(isitem(O))
 			var/obj/item/I = O
 			mass = I.w_class/THROWNOBJ_KNOCKBACK_DIVISOR
 		var/momentum = speed*mass

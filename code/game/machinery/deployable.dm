@@ -84,7 +84,7 @@ for reference:
 	return material
 
 /obj/structure/barricade/attackby(obj/item/W as obj, mob/user as mob)
-	if (istype(W, /obj/item/stack))
+	if (isstack(W))
 		var/obj/item/stack/D = W
 		if(D.get_material_name() != material.name)
 			return //hitting things with the wrong type of stack usually doesn't produce messages, and probably doesn't need to.

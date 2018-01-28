@@ -74,7 +74,7 @@
 		return 1
 	if(usr.stat || usr.paralysis || usr.stunned || usr.weakened)
 		return 1
-	if (istype(usr.loc,/obj/mecha)) // stops inventory actions in a mech
+	if (ismecha(usr.loc)) // stops inventory actions in a mech
 		return 1
 	if(master)
 		var/obj/item/I = usr.get_active_hand()
@@ -198,7 +198,7 @@
 			usr.hud_used.hidden_inventory_update()
 
 		if("equip")
-			if (istype(usr.loc,/obj/mecha)) // stops inventory actions in a mech
+			if (ismecha(usr.loc)) // stops inventory actions in a mech
 				return 1
 			if(ishuman(usr))
 				var/mob/living/carbon/human/H = usr
@@ -368,15 +368,15 @@
 					to_chat(R, "You haven't selected a module yet.")
 
 		if("module1")
-			if(istype(usr, /mob/living/silicon/robot))
+			if(isrobot(usr))
 				usr:toggle_module(1)
 
 		if("module2")
-			if(istype(usr, /mob/living/silicon/robot))
+			if(isrobot(usr))
 				usr:toggle_module(2)
 
 		if("module3")
-			if(istype(usr, /mob/living/silicon/robot))
+			if(isrobot(usr))
 				usr:toggle_module(3)
 		else
 			return 0
@@ -389,7 +389,7 @@
 		return 1
 	if(usr.stat || usr.paralysis || usr.stunned || usr.weakened)
 		return 1
-	if (istype(usr.loc,/obj/mecha)) // stops inventory actions in a mech
+	if (ismecha(usr.loc)) // stops inventory actions in a mech
 		return 1
 	switch(name)
 		if("r_hand")

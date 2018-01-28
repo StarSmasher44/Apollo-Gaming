@@ -72,7 +72,7 @@
 	if(!canClick()) // in the year 2000...
 		return
 
-	if(istype(loc, /obj/mecha))
+	if(ismecha(loc))
 		if(!locate(/turf) in list(A, A.loc)) // Prevents inventory from being drilled
 			return
 		var/obj/mecha/M = loc
@@ -354,7 +354,7 @@
 
 /obj/screen/click_catcher/Click(location, control, params)
 	var/list/modifiers = params2list(params)
-	if(modifiers["middle"] && istype(usr, /mob/living/carbon))
+	if(modifiers["middle"] && iscarbon(usr))
 		var/mob/living/carbon/C = usr
 		C.swap_hand()
 	else
@@ -393,7 +393,7 @@ var/const/CLICK_HANDLER_ALL                  = (~0)
 /datum/click_handler/Destroy()
 	if(flags & (CLICK_HANDLER_REMOVE_ON_MOB_LOGOUT))
 		GLOB.logged_out_event.unregister(user, src, /datum/click_handler/proc/OnMobLogout)
-	user = null
+	src.user = null
 	. = ..()
 
 /datum/click_handler/proc/Enter()

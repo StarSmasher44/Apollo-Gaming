@@ -14,7 +14,7 @@
 		SPECIES_IPC = /spell/camera_connection)
 
 /obj/item/weapon/magic_rock/attack_self(mob/user)
-	if(!istype(user,/mob/living/carbon/human))
+	if(!ishuman(user))
 		to_chat(user, "\The [src] can do nothing for such a simple being.")
 		return
 	var/mob/living/carbon/human/H = user
@@ -107,7 +107,7 @@
 /spell/messa_shroud/cast(var/list/targets, mob/user)
 	var/turf/T = targets[1]
 
-	if(!istype(T))
+	if(!isturf(T))
 		return
 
 	var/obj/O = new /obj(T)
@@ -215,7 +215,7 @@
 	..()
 	if(istype(spellbook,/obj/item/weapon/spellbook))
 		linked = spellbook
-	if(istype(owner,/mob))
+	if(ismob(owner))
 		contract_master = owner
 
 /obj/item/weapon/contract/apprentice/skrell/attack_self(mob/user as mob)
@@ -306,7 +306,7 @@
 	eyeobj.release(src)
 
 /mob/observer/eye/wizard_eye/Destroy()
-	if(istype(eyeobj.owner, /mob/living))
+	if(isliving(eyeobj.owner))
 		var/mob/living/L = eyeobj.owner
 		L.release_eye()
 	qdel(eyeobj)

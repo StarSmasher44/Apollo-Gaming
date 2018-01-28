@@ -80,12 +80,12 @@
 		for(var/j = low_bound_y, j <= high_bound_y, j++)
 			var/turf/T = locate(i, j, z_level)
 			if(i == low_bound_x || i == high_bound_x || j == low_bound_y || j == high_bound_y)
-				if(ispath(wall_type, /turf))
+				if(isturf(wall_type))
 					T.ChangeTurf(wall_type)
 				else
 					new wall_type(T)
 			else
-				if(ispath(floor_type, /turf))
+				if(isturf(floor_type))
 					T.ChangeTurf(floor_type)
 				else
 					new floor_type(T)

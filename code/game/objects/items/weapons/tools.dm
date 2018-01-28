@@ -326,7 +326,7 @@
 		if(isliving(O))
 			var/mob/living/L = O
 			L.IgniteMob()
-		if (istype(location, /turf))
+		if (isturf(location))
 			location.hotspot_expose(700, 50, 1)
 	return
 
@@ -442,7 +442,7 @@
 //Note: This should probably be moved to mob
 /obj/item/weapon/weldingtool/proc/eyecheck(mob/user as mob)
 	if(!iscarbon(user))	return 1
-	if(istype(user, /mob/living/carbon/human))
+	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		var/obj/item/organ/internal/eyes/E = H.internal_organs_by_name[BP_EYES]
 		if(!E)

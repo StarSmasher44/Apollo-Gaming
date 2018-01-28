@@ -11,7 +11,7 @@ var/repository/admin_pm/admin_pm_repository = new()
 
 /repository/admin_pm/proc/store_pm(var/client/sender, var/client/receiver, var/message)
 	if(receiver)
-		if(istype(receiver))
+		if(isclient(receiver))
 			receiver = client_repository.get_lite_client(receiver)
 		else if(starts_with(receiver, "IRC-"))
 			receiver = get_irc_client(receiver)

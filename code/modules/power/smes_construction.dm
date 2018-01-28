@@ -129,7 +129,7 @@
 		to_chat(usr, "<span class='warning'>Connection error: Destination Unreachable.</span>")
 
 	// Cyborgs standing next to the SMES can play with the wiring.
-	if(istype(usr, /mob/living/silicon/robot) && Adjacent(usr) && panel_open)
+	if(isrobot(usr) && Adjacent(usr) && panel_open)
 		wires.Interact(usr)
 
 // Proc: New()
@@ -193,7 +193,7 @@
 		return
 
 	var/mob/living/carbon/human/h_user = null
-	if (!istype(user, /mob/living/carbon/human))
+	if (!ishuman(user))
 		return
 	else
 		h_user = user

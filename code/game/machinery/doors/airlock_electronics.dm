@@ -19,7 +19,7 @@
 
 
 /obj/item/weapon/airlock_electronics/attack_self(mob/user as mob)
-	if (!ishuman(user) && !istype(user,/mob/living/silicon/robot))
+	if (!ishuman(user) && !isrobot(user))
 		return ..(user)
 
 	tg_ui_interact(user)
@@ -79,7 +79,7 @@
 		if("unlock")
 			if(!lockable)
 				return TRUE
-			if(!req_access || istype(usr,/mob/living/silicon))
+			if(!req_access || issilicon(usr))
 				locked = 0
 				last_configurator = usr.name
 				return TRUE

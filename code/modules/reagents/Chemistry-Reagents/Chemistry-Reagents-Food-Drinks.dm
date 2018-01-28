@@ -118,7 +118,7 @@
 	color = "#ffffff"
 
 /datum/reagent/nutriment/flour/touch_turf(var/turf/simulated/T)
-	if(!istype(T, /turf/space))
+	if(!isspace(T))
 		new /obj/effect/decal/cleanable/flour(T)
 		if(T.wet > 1)
 			T.wet = min(T.wet, 1)
@@ -195,11 +195,11 @@
 	color = "#302000"
 
 /datum/reagent/nutriment/cornoil/touch_turf(var/turf/simulated/T)
-	if(!istype(T))
+	if(!issimturf(T))
 		return
 
 	var/hotspot = (locate(/obj/fire) in T)
-	if(hotspot && !istype(T, /turf/space))
+	if(hotspot && !isspace(T))
 		var/datum/gas_mixture/lowertemp = T.remove_air(T:air:total_moles)
 		lowertemp.temperature = max(min(lowertemp.temperature-2000, lowertemp.temperature / 2), 0)
 		lowertemp.react()
@@ -283,7 +283,7 @@
 	M.bodytemperature = max(M.bodytemperature - 10 * TEMPERATURE_DAMAGE_COEFFICIENT, 0)
 	if(prob(1))
 		M.emote("shiver")
-	if(istype(M, /mob/living/carbon/slime))
+	if(isslime(M))
 		M.bodytemperature = max(M.bodytemperature - rand(10,20), 0)
 	holder.remove_reagent(/datum/reagent/capsaicin, 5)
 
@@ -319,7 +319,7 @@
 		if(prob(5))
 			M.custom_emote(2, "[pick("dry heaves!","coughs!","splutters!")]")
 			to_chat(M, "<span class='danger'>You feel like your insides are burning!</span>")
-	if(istype(M, /mob/living/carbon/slime))
+	if(isslime(M))
 		M.bodytemperature += rand(0, 15) + slime_temp_adj
 	holder.remove_reagent(/datum/reagent/frostoil, 5)
 
@@ -349,7 +349,7 @@
 		effective_strength = 8
 
 	var/list/protection
-	if(istype(M, /mob/living/carbon/human))
+	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 		protection = list(H.head, H.glasses, H.wear_mask)
 		if(!H.can_feel_pain())
@@ -400,7 +400,7 @@
 		M.apply_effect(4, PAIN, 0)
 		if(prob(5))
 			M.visible_message("<span class='warning'>[M] [pick("dry heaves!","coughs!","splutters!")]</span>", "<span class='danger'>You feel like your insides are burning!</span>")
-	if(istype(M, /mob/living/carbon/slime))
+	if(isslime(M))
 		M.bodytemperature += rand(15, 30)
 	holder.remove_reagent(/datum/reagent/frostoil, 5)
 

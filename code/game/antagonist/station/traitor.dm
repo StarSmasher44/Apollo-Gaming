@@ -22,7 +22,7 @@ var/datum/antagonist/traitor/traitors
 	if(!..())
 		return
 
-	if(istype(traitor.current, /mob/living/silicon))
+	if(issilicon(traitor.current))
 		var/datum/objective/assassinate/kill_objective = new
 		kill_objective.owner = traitor
 		kill_objective.find_target()
@@ -73,10 +73,10 @@ var/datum/antagonist/traitor/traitors
 	return
 
 /datum/antagonist/traitor/equip(var/mob/living/carbon/human/traitor_mob)
-	if(istype(traitor_mob, /mob/living/silicon)) // this needs to be here because ..() returns false if the mob isn't human
+	if(issilicon(traitor_mob)) // this needs to be here because ..() returns false if the mob isn't human
 		add_law_zero(traitor_mob)
 		give_intel(traitor_mob)
-		if(istype(traitor_mob, /mob/living/silicon/robot))
+		if(isrobot(traitor_mob))
 			var/mob/living/silicon/robot/R = traitor_mob
 			R.SetLockdown(0)
 		return 1
@@ -106,7 +106,7 @@ var/datum/antagonist/traitor/traitors
 	to_chat(traitor_mob, "Use the code words, preferably in the order provided, during regular conversation, to identify other agents. Proceed with caution, however, as everyone is a potential foe.")
 
 /datum/antagonist/traitor/proc/spawn_uplink(var/mob/living/carbon/human/traitor_mob)
-	if(!istype(traitor_mob))
+	if(!ishuman(traitor_mob))
 		return
 
 	var/loc = ""

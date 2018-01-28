@@ -435,7 +435,7 @@
 
 /obj/machinery/power/apc/attackby(obj/item/W, mob/user)
 
-	if (istype(user, /mob/living/silicon) && get_dist(src,user)>1 || isAdminGhost(user))
+	if (issilicon(user) && get_dist(src,user)>1 || isAdminGhost(user))
 		return src.attack_hand(user)
 	src.add_fingerprint(user)
 	if(isCrowbar(W) && opened)
@@ -535,7 +535,7 @@
 				to_chat(user, "<span class='warning'>Access denied.</span>")
 	else if (istype(W, /obj/item/stack/cable_coil) && !terminal && opened && has_electronics!=2)
 		var/turf/T = loc
-		if(istype(T) && !T.is_plating())
+		if(isturf(T) && !T.is_plating())
 			to_chat(user, "<span class='warning'>You must remove the floor plating in front of the APC first.</span>")
 			return
 		var/obj/item/stack/cable_coil/C = W
@@ -562,7 +562,7 @@
 				terminal.connect_to_network()
 	else if(isWirecutter(W) && terminal && opened && has_electronics!=2)
 		var/turf/T = loc
-		if(istype(T) && !T.is_plating())
+		if(isturf(T) && !T.is_plating())
 			to_chat(user, "<span class='warning'>You must remove the floor plating in front of the APC first.</span>")
 			return
 		user.visible_message("<span class='warning'>[user.name] dismantles the power terminal from [src].</span>", \
@@ -657,7 +657,7 @@
 				"You hear a bang")
 			update_icon()
 		else
-			if (istype(user, /mob/living/silicon) || isAdminGhost(usr))
+			if (issilicon(user) || isAdminGhost(usr))
 				return src.attack_hand(user)
 			if (!opened && wiresexposed && isMultitool(W) || isWirecutter(W) || istype(W, /obj/item/device/assembly/signaler))
 				return src.attack_hand(user)
@@ -695,7 +695,7 @@
 	src.add_fingerprint(user)
 
 	//Human mob special interaction goes here.
-	if(istype(user,/mob/living/carbon/human))
+	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 
 		if(H.species.can_shred(H))
@@ -739,7 +739,7 @@
 	if(!user)
 		return
 
-	if(wiresexposed && !istype(user, /mob/living/silicon/ai))
+	if(wiresexposed && !isAI(user))
 		wires.Interact(user)
 
 	return ui_interact(user)
@@ -765,7 +765,7 @@
 		"totalCharging" = round(lastused_charging),
 		"coverLocked" = coverlocked,
 		"failTime" = failure_timer * 2,
-		"siliconUser" = istype(user, /mob/living/silicon),
+		"siliconUser" = issilicon(user),
 		"powerChannels" = list(
 			list(
 				"title" = "Equipment",
@@ -855,7 +855,7 @@
 		to_chat(user, "<span class='warning'>You must stand to use [src]!</span>")
 		return 0
 	autoflag = 5
-	if (istype(user, /mob/living/silicon))
+	if (issilicon(user))
 		var/permit = 0 // Malfunction variable. If AI hacks APC it can control it even without AI control wire.
 		var/mob/living/silicon/ai/AI = user
 		var/mob/living/silicon/robot/robot = user
@@ -870,10 +870,10 @@
 				to_chat(user, "<span class='danger'>\The [src] have AI control disabled!</span>")
 			return 0
 	else
-		if (!in_range(src, user) || !istype(src.loc, /turf))
+		if (!in_range(src, user) || !isturf(src.loc))
 			return 0
 	var/mob/living/carbon/human/H = user
-	if (istype(H) && prob(H.getBrainLoss()))
+	if (ishuman(H) && prob(H.getBrainLoss()))
 		to_chat(user, "<span class='danger'>You momentarily forget how to use [src].</span>")
 		return 0
 	return 1
@@ -885,7 +885,7 @@
 	if(!can_use(usr, 1))
 		return 1
 
-	if(!istype(usr, /mob/living/silicon) && (locked && !emagged))
+	if(!issilicon(usr) && (locked && !emagged))
 		// Shouldn't happen, this is here to prevent href exploits
 		to_chat(usr, "You must unlock the panel to use this!")
 		return 1
@@ -926,11 +926,11 @@
 		update()
 
 	else if (href_list["overload"])
-		if(istype(usr, /mob/living/silicon) || isAdminGhost(usr))
+		if(issilicon(usr) || isAdminGhost(usr))
 			src.overload_lighting()
 
 	else if (href_list["toggleaccess"])
-		if(istype(usr, /mob/living/silicon) || isAdminGhost(usr))
+		if(issilicon(usr) || isAdminGhost(usr))
 			if(emagged || (stat & (BROKEN|MAINT)))
 				to_chat(usr, "The APC does not respond to the command.")
 			else

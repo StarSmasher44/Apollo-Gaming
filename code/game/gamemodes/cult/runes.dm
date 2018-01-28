@@ -452,7 +452,7 @@
 		//TODO: other rewards?
 		/* old sac code - left there in case someone wants to salvage it
 		var/worth = 0
-		if(istype(H,/mob/living/carbon/human))
+		if(ishuman(H,))
 			var/mob/living/carbon/human/lamb = H
 			if(lamb.species.rarity_value > 3)
 				worth = 1
@@ -498,7 +498,7 @@
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
 
 /obj/effect/rune/drain/proc/heal_user(var/mob/living/carbon/human/user)
-	if(!istype(user))
+	if(!ishuman(user))
 		return list("you feel no different")
 	. = list()
 	var/charges = 20

@@ -28,7 +28,7 @@
 /atom/movable/New()
 	. = ..()
 	var/turf/simulated/T = loc
-	if(istype(T))
+	if(isturf(T))
 		T.opaque_counter += opacity
 
 /atom/proc/update_light()
@@ -41,7 +41,7 @@
 			light.destroy()
 			light = null
 	else
-		if(!istype(loc, /atom/movable))
+		if(!ismovable(loc))
 			. = src
 		else
 			. = loc
@@ -61,7 +61,7 @@
 	. = ..()
 	if(.)
 		var/turf/T = loc
-		if(istype(T))
+		if(isturf(T))
 			T.handle_opacity_change(src)
 
 /atom/movable/Move()

@@ -111,7 +111,7 @@
 	max_duration = 180
 
 /datum/surgery_step/hardsuit/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-	if(!istype(target))
+	if(!ishuman(target))
 		return 0
 	if(isWelder(tool))
 		var/obj/item/weapon/weldingtool/welder = tool

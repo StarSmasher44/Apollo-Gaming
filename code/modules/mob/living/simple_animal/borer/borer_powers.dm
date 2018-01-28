@@ -78,7 +78,7 @@ GLOBAL_LIST_INIT(borer_reagent_types_by_name, setup_borer_reagents())
 		to_chat(src, "You cannot infest someone who is already infested!")
 		return
 
-	if(istype(M,/mob/living/carbon/human))
+	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
 
 		var/obj/item/organ/external/E = H.organs_by_name[BP_HEAD]
@@ -119,7 +119,7 @@ GLOBAL_LIST_INIT(borer_reagent_types_by_name, setup_borer_reagents())
 		if(host.mind)
 			borers.add_antagonist_mind(host.mind, 1, borers.faction_role_text, borers.faction_welcome)
 
-		if(istype(M,/mob/living/carbon/human))
+		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
 			var/obj/item/organ/I = H.internal_organs_by_name[BP_BRAIN]
 			if(!I) // No brain organ, so the borer moves in and replaces it permanently.

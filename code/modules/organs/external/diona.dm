@@ -1,5 +1,5 @@
 /proc/spawn_diona_nymph(var/turf/target)
-	if(!istype(target))
+	if(!isturf(target))
 		return 0
 
 	//This is a terrible hack and I should be ashamed.
@@ -155,7 +155,7 @@
 		return ..()
 	var/mob/living/carbon/human/H = owner
 	..()
-	if(!istype(H) || !H.organs || !H.organs.len)
+	if(!ishuman(H) || !H.organs || !H.organs.len)
 		H.death()
 	if(prob(50) && spawn_diona_nymph(get_turf(src)))
 		qdel(src)
@@ -172,7 +172,7 @@
 		return ..()
 	var/mob/living/carbon/human/H = owner
 	..()
-	if(!istype(H) || !H.organs || !H.organs.len)
+	if(!ishuman(H) || !H.organs || !H.organs.len)
 		H.death()
 	if(prob(50) && spawn_diona_nymph(get_turf(src)))
 		qdel(src)
@@ -188,7 +188,7 @@
 		return ..()
 	var/mob/living/carbon/human/H = owner
 	..()
-	if(!istype(H) || !H.organs || !H.organs.len)
+	if(!ishuman(H) || !H.organs || !H.organs.len)
 		H.death()
 	if(prob(50) && !skip_nymph && spawn_diona_nymph(get_turf(src)))
 		qdel(src)

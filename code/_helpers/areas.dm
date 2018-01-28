@@ -13,7 +13,7 @@
 
 /proc/get_area_turfs(var/area/A, var/list/predicates)
 	. = new/list()
-	A = istype(A) ? A : locate(A)
+	A = isarea(A) ? A : locate(A)
 	if(!A)
 		return
 	for(var/turf/T in A.contents)
@@ -22,7 +22,7 @@
 
 /proc/get_subarea_turfs(var/area/A, var/list/predicates)
 	. = new/list()
-	A = istype(A) ? A.type : A
+	A = isarea(A) ? A.type : A
 	if(!A)
 		return
 	for(var/sub_area_type in typesof(A))
@@ -78,7 +78,7 @@
 	. = isPlayerLevel(A.z)
 
 /proc/is_not_space_area(var/area/A)
-	. = !istype(A,/area/space)
+	. = !isspacearea(A)
 
 /proc/is_not_shuttle_area(var/area/A)
 	. = !istype(A,/area/shuttle)

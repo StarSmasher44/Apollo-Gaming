@@ -206,7 +206,7 @@ var/list/debug_verbs = list (
 
 	var/turf/simulated/location = get_turf(usr)
 
-	if(!istype(location, /turf/simulated))
+	if(!issimturf(location))
 		to_chat(src, "<Span class='warning'>This debug tool can only be used while on a simulated turf.</span>")
 		return
 
@@ -234,8 +234,8 @@ var/list/debug_verbs = list (
 				continue
 			recurse_zone(connected,1)
 
-	for(var/turf/T in range(25,location))
-		if(!istype(T))
+	for(var/turf/T in RANGE_TURFS(25,location))
+		if(!isturf(T))
 			continue
 		if(T in testZAScolors_turfs)
 			continue

@@ -39,7 +39,7 @@
 	if(..())
 		underlays.Cut()
 		var/turf/T = get_turf(src)
-		if(!istype(T))
+		if(!isturf(T))
 			return
 
 		if(istype(src, /obj/machinery/atmospherics/trinary/mixer/t_mixer))

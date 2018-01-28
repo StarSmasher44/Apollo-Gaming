@@ -197,7 +197,7 @@
 			wrapped = null
 			return
 
-	else if(istype(target,/obj/item)) //Check that we're not pocketing a mob.
+	else if(isitem(target)) //Check that we're not pocketing a mob.
 
 		//...and that the item is not in a container.
 		if(!isturf(target.loc))
@@ -238,7 +238,7 @@
 
 				user.visible_message("<span class='danger'>[user] removes the power cell from [A]!</span>", "You remove the power cell.")
 
-	else if(istype(target,/mob/living/silicon/robot))
+	else if(isrobot(target))
 		var/mob/living/silicon/robot/A = target
 		if(A.opened)
 			if(A.cell)
@@ -276,14 +276,14 @@
 
 	//We only want to deal with using this on turfs. Specific items aren't important.
 	var/turf/T = get_turf(target)
-	if(!istype(T))
+	if(!isturf(T))
 		return
 
 	//Used to give the right message.
 	var/grabbed_something = 0
 
 	for(var/mob/M in T)
-		if(istype(M,/mob/living/simple_animal/lizard) || istype(M,/mob/living/simple_animal/mouse))
+		if(istype(M,/mob/living/simple_animal/lizard) || ismouse(M))
 			src.loc.visible_message("<span class='danger'>[src.loc] sucks [M] into its decompiler. There's a horrible crunching noise.</span>","<span class='danger'>It's a bit of a struggle, but you manage to suck [M] into your decompiler. It makes a series of visceral crunching noises.</span>")
 			new/obj/effect/decal/cleanable/blood/splatter(get_turf(src))
 			qdel(M)
@@ -293,11 +293,11 @@
 				plastic.add_charge(2000)
 			return
 
-		else if(istype(M,/mob/living/silicon/robot/drone) && !M.client)
+		else if(is_drone(M) && !M.client)
 
 			var/mob/living/silicon/robot/D = src.loc
 
-			if(!istype(D))
+			if(!isrobot(D))
 				return
 
 			to_chat(D, "<span class='danger'>You begin decompiling [M].</span>")

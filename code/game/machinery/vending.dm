@@ -180,7 +180,7 @@
 	if (I || istype(W, /obj/item/weapon/spacecash))
 		attack_hand(user)
 		return
-	else if(istype(W, /obj/item/weapon/screwdriver))
+	else if(isScrewdriver(W))
 		src.panel_open = !src.panel_open
 		to_chat(user, "You [src.panel_open ? "open" : "close"] the maintenance panel.")
 		src.overlays.Cut()
@@ -391,7 +391,7 @@
 	if(..())
 		return
 
-	if(href_list["remove_coin"] && !istype(usr,/mob/living/silicon))
+	if(href_list["remove_coin"] && !issilicon(usr))
 		if(!coin)
 			to_chat(usr, "There is no coin in this machine.")
 			return
@@ -403,7 +403,7 @@
 		coin = null
 		categories &= ~CAT_COIN
 
-	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))))
+	if ((usr.contents.Find(src) || (in_range(src, usr) && isturf(src.loc))))
 		if ((href_list["vend"]) && (src.vend_ready) && (!currently_vending))
 			if((!allowed(usr)) && !emagged && scan_id)	//For SECURE VENDING MACHINES YEAH
 				to_chat(usr, "<span class='warning'>Access denied.</span>")//Unless emagged of course
@@ -419,7 +419,7 @@
 
 			if(R.price <= 0)
 				src.vend(R, usr)
-			else if(istype(usr,/mob/living/silicon)) //If the item is not free, provide feedback if a synth is trying to buy something.
+			else if(issilicon(usr)) //If the item is not free, provide feedback if a synth is trying to buy something.
 				to_chat(usr, "<span class='danger'>Artificial unit recognized.  Artificial units cannot complete this transaction.  Purchase canceled.</span>")
 				return
 			else

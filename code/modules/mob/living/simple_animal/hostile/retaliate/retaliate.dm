@@ -9,7 +9,7 @@
 			return L
 		else
 			enemies -= weakref(L)
-	else if(istype(A, /obj/mecha))
+	else if(ismecha(A))
 		var/obj/mecha/M = A
 		if(M.occupant)
 			stance = HOSTILE_STANCE_ATTACK
@@ -36,7 +36,7 @@
 			var/mob/living/M = A
 			if(!attack_same && M.faction != faction)
 				enemies |= weakref(M)
-		else if(istype(A, /obj/mecha))
+		else if(ismecha(A))
 			var/obj/mecha/M = A
 			if(M.occupant)
 				enemies |= weakref(M)

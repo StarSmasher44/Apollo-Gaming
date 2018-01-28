@@ -140,8 +140,8 @@
 			if((!W.reinf_material && eatingDuration >= 100) || eatingDuration >= 200) //need 20 ticks to eat an rwall, 10 for a regular one
 				W.dismantle_wall()
 				return 1
-		else if(istype(target,/atom/movable))
-			if(istype(target,/mob) || eatingDuration >= 50) //5 ticks to eat stuff like airlocks
+		else if(ismovable(target))
+			if(ismob(target) || eatingDuration >= 50) //5 ticks to eat stuff like airlocks
 				var/atom/movable/objectOrMob = target
 				contents += objectOrMob
 				return 1
@@ -168,13 +168,13 @@
 	proc/ProcessStomach()
 		for(var/atom/movable/stomachContent in contents)
 			if(prob(digestionProbability))
-				if(istype(stomachContent,/obj/item/stack)) //converts to plasma, keeping the stack value
+				if(isstack(stomachContent)) //converts to plasma, keeping the stack value
 					if(!istype(stomachContent,/obj/item/stack/material/phoron))
 						var/obj/item/stack/oldStack = stomachContent
 						new /obj/item/stack/material/phoron(src, oldStack.get_amount())
 						qdel(oldStack)
 						continue
-				else if(istype(stomachContent,/obj/item)) //converts to plasma, keeping the w_class
+				else if(isitem(stomachContent)) //converts to plasma, keeping the w_class
 					var/obj/item/oldItem = stomachContent
 					new /obj/item/stack/material/phoron(src, oldItem.w_class)
 					qdel(oldItem)

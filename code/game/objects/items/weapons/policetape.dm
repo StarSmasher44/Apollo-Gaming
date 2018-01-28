@@ -204,7 +204,7 @@ var/list/tape_roll_applications = list()
 		while (can_place)
 			if(cur.density == 1)
 				can_place = 0
-			else if (istype(cur, /turf/space))
+			else if (isspace(cur))
 				can_place = 0
 			else
 				for(var/obj/O in cur)
@@ -262,7 +262,7 @@ var/list/tape_roll_applications = list()
 	if(!proximity)
 		return
 
-	if (istype(A, /obj/machinery/door/airlock))
+	if (isairlock(A))
 		var/turf/T = get_turf(A)
 		var/obj/item/tape/P = new tape_type(T)
 		P.update_icon()

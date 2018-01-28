@@ -32,7 +32,7 @@
 	set category = "Object"
 	set src in oview(1)
 
-	if(!istype(usr, /mob/living)) //ew ew ew usr, but it's the only way to check.
+	if(!isliving(usr)) //ew ew ew usr, but it's the only way to check.
 		return
 
 	if( state != 4 )
@@ -91,7 +91,7 @@
 				..()
 		else
 			..()
-	else if(istype(W,/obj/item/grab))
+	else if(isgrab(W))
 		if( (state == 1) && hacked)
 			var/obj/item/grab/G = W
 			if(ishuman(G.assailant) && iscorgi(G.affecting))

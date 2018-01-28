@@ -57,20 +57,20 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 
 /mob/living/simple_animal/hostile/mimic/proc/CopyObject(var/obj/O, var/mob/living/creator)
 
-	if((istype(O, /obj/item) || istype(O, /obj/structure)) && !is_type_in_list(O, protected_objects))
+	if((isitem(O) || isstructure(O)) && !is_type_in_list(O, protected_objects))
 		O.forceMove(src)
 		copy_of = weakref(O)
 		appearance = O
 		icon_living = icon_state
 
-		if(istype(O, /obj/structure))
+		if(isstructure(O))
 			health = (anchored * 50) + 50
 			destroy_objects = 1
 			if(O.density && O.anchored)
 				knockdown_people = 1
 				melee_damage_lower *= 2
 				melee_damage_upper *= 2
-		else if(istype(O, /obj/item))
+		else if(isitem(O))
 			var/obj/item/I = O
 			health = 15 * I.w_class
 			melee_damage_lower = 2 + I.force
@@ -117,7 +117,7 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 	. =..()
 	if(knockdown_people)
 		var/mob/living/L = .
-		if(istype(L))
+		if(isliving(L))
 			if(prob(15))
 				L.Weaken(1)
 				L.visible_message("<span class='danger'>\the [src] knocks down \the [L]!</span>")

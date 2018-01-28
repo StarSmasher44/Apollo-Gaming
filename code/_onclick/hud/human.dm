@@ -4,7 +4,7 @@
 /datum/hud/human/FinalizeInstantiation(var/ui_style='icons/mob/screen1_White.dmi', var/ui_color = "#ffffff", var/ui_alpha = 255)
 	var/mob/living/carbon/human/target = mymob
 	var/datum/hud_data/hud_data
-	if(!istype(target))
+	if(!ishuman(target))
 		hud_data = new()
 	else
 		hud_data = target.species.hud

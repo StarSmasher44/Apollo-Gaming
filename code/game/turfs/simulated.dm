@@ -18,8 +18,8 @@
 /turf/simulated/post_change()
 	..()
 	var/turf/T = GetAbove(src)
-	if(istype(T,/turf/space) || (density && istype(T,/turf/simulated/open)))
-		var/new_turf_type = density ? (istype(T.loc, /area/space) ? /turf/simulated/floor/airless : /turf/simulated/floor/plating) : /turf/simulated/open
+	if(isspace(T) || (density && isopenspace(T)))
+		var/new_turf_type = density ? (isspacearea(T.loc) ? /turf/simulated/floor/airless : /turf/simulated/floor/plating) : /turf/simulated/open
 		T.ChangeTurf(new_turf_type)
 
 // This is not great.
@@ -90,7 +90,7 @@
 	. = ..()
 
 /turf/simulated/Entered(atom/A, atom/OL)
-	if (istype(A,/mob/living))
+	if (isliving(A))
 		var/mob/living/M = A
 		if(M.lying)
 			return ..()
@@ -98,7 +98,7 @@
 		// Dirt overlays.
 		update_dirt()
 
-		if(istype(M, /mob/living/carbon/human))
+		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
 			// Tracking blood
 			var/list/bloodDNA = null
@@ -120,7 +120,7 @@
 			if (bloodDNA)
 				src.AddTracks(H.species.get_move_trail(H),bloodDNA,H.dir,0,bloodcolor) // Coming
 				var/turf/simulated/from = get_step(H,reverse_direction(H.dir))
-				if(istype(from) && from)
+				if(issimturf(from) && from)
 					from.AddTracks(H.species.get_move_trail(H),bloodDNA,0,H.dir,bloodcolor) // Going
 
 				bloodDNA = null
@@ -155,7 +155,7 @@
 	if (!..())
 		return 0
 
-	if(istype(M))
+	if(ishuman(M))
 		for(var/obj/effect/decal/cleanable/blood/B in contents)
 			if(!B.blood_DNA)
 				B.blood_DNA = list()

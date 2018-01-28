@@ -53,7 +53,7 @@
 			continue
 		if(isliving(A))
 			M = A
-		if(istype(A,/obj/mecha))
+		if(ismecha(A))
 			var/obj/mecha/mecha = A
 			if(!mecha.occupant)
 				continue

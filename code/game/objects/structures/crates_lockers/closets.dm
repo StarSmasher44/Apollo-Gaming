@@ -201,10 +201,10 @@
 	if(ismob(AM))
 		var/mob/M = AM
 		return M.mob_size
-	if(istype(AM, /obj/item))
+	if(isitem(AM))
 		var/obj/item/I = AM
 		return (I.w_class / 2)
-	if(istype(AM, /obj/structure) || istype(AM, /obj/machinery))
+	if(isstructure(AM) || ismachine(AM))
 		return MOB_LARGE
 	return 0
 
@@ -332,7 +332,7 @@
 		return
 	if(user.restrained() || user.stat || user.weakened || user.stunned || user.paralysis)
 		return
-	if((!( istype(O, /atom/movable) ) || O.anchored || !Adjacent(user) || !Adjacent(O) || !user.Adjacent(O) || user.contents.Find(src)))
+	if((!( ismovable(O) ) || O.anchored || !Adjacent(user) || !Adjacent(O) || !user.Adjacent(O) || user.contents.Find(src)))
 		return
 	if(!isturf(user.loc)) // are you in a container/closet/pod/etc?
 		return
@@ -347,7 +347,7 @@
 	return
 
 /obj/structure/closet/attack_ai(mob/user)
-	if(istype(user, /mob/living/silicon/robot) && Adjacent(user)) // Robots can open/close it, but not the AI.
+	if(isrobot(user) && Adjacent(user)) // Robots can open/close it, but not the AI.
 		attack_hand(user)
 
 /obj/structure/closet/relaymove(mob/user as mob)

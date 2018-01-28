@@ -453,7 +453,7 @@ var/list/name_to_material
 		return 1
 
 	var/turf/T = user.loc
-	if(!istype(T))
+	if(!isturf(T))
 		to_chat(user, "<span class='warning'>You must be standing on open flooring to build a window.</span>")
 		return 1
 

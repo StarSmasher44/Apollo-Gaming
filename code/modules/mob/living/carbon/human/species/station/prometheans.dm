@@ -86,7 +86,7 @@ var/datum/species/shapeshifter/promethean/prometheans
 /datum/species/shapeshifter/promethean/handle_environment_special(var/mob/living/carbon/human/H)
 
 	var/turf/T = H.loc
-	if(istype(T))
+	if(isturf(T))
 		var/obj/effect/decal/cleanable/C = locate() in T
 		if(C)
 			if(H.nutrition < 300)

@@ -33,7 +33,7 @@
 		receive_communication(communicator, M, "<span class='deadsay'>" + create_text_tag("dead", "DEAD:", M.client) + " [sent_message]</span>")
 
 /decl/dsay_communication/proc/can_communicate(var/client/communicator, var/message)
-	if(!istype(communicator))
+	if(!isclient(communicator))
 		return FALSE
 	if(communicator.mob.stat != DEAD)
 		to_chat(communicator, "<span class='warning'>You're not sufficiently dead to use DSAY!</span>")
@@ -41,11 +41,11 @@
 	return DSAY_ASK_BASE
 
 /decl/dsay_communication/proc/can_receive(var/client/C, var/mob/M)
-	if(istype(C) && C.mob == M)
+	if(isclient(C) && C.mob == M)
 		return TRUE
 	if(M.get_preference_value(/datum/client_preference/show_dsay) == GLOB.PREF_HIDE)
 		return FALSE
-	if(istype(C) && M.is_key_ignored(C.key))
+	if(isclient(C) && M.is_key_ignored(C.key))
 		return FALSE
 	if(M.client.holder && !is_mentor(M.client))
 		return TRUE
@@ -106,7 +106,7 @@
 	..()
 
 /decl/dsay_communication/admin/can_communicate(var/client/communicator, var/message, var/decl/communication_channel/dsay)
-	if(!istype(communicator))
+	if(!isclient(communicator))
 		return FALSE
 	if(!communicator.holder)
 		to_chat(communicator, "<span class='warning'>You do not have sufficent permissions to use DSAY!</span>")

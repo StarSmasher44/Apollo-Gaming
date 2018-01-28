@@ -185,7 +185,7 @@
 		user.visible_message("<span class='danger'>The reactive teleport system flings [user] clear of the attack!</span>")
 		var/list/turfs = new/list()
 		for(var/turf/T in otrange(6, user))
-			if(istype(T,/turf/space)) continue
+			if(isspace(T)) continue
 			if(T.density) continue
 			if(T.x>world.maxx-6 || T.x<6)	continue
 			if(T.y>world.maxy-6 || T.y<6)	continue
@@ -248,12 +248,12 @@
 	set name = "holster"
 	set category = "Object"
 	set src in usr
-	if(!istype(usr, /mob/living)) return
+	if(!isliving(usr)) return
 	if(usr.stat) return
 
 	if(!holster.holstered)
 		var/obj/item/W = usr.get_active_hand()
-		if(!istype(W, /obj/item))
+		if(!isitem(W))
 			to_chat(usr, "<span class='warning'>You need your gun equiped to holster it.</span>")
 			return
 		holster.holster(W, usr)

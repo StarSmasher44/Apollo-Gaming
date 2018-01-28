@@ -134,7 +134,7 @@ var/list/event_last_fired = list()
 		if("Meteor")
 			command_alert("Meteors have been detected on collision course with the [station_name()].", "Meteor Alert")
 			for(var/mob/M in GLOB.player_list)
-				if(!istype(M,/mob/new_player))
+				if(!isnewplayer(M))
 					sound_to(M, sound('sound/AI/torch/meteorstorch.ogg'))
 			spawn(100)
 				meteor_wave(10)
@@ -192,7 +192,7 @@ var/list/event_last_fired = list()
 
 		active_with_role["Any"]++
 
-		if(istype(M, /mob/living/silicon/robot))
+		if(isrobot(M))
 			var/mob/living/silicon/robot/R = M
 			if(R.module)
 				if(istype(R.module, /obj/item/weapon/robot_module/engineering))

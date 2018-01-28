@@ -270,7 +270,7 @@ SUBSYSTEM_DEF(garbage)
 /proc/qdel(datum/D, force=FALSE)
 	if(!D)
 		return
-	if(!istype(D))
+	if(!isdatum(D))
 		crash_with("qdel() can only handle /datum (sub)types, was passed: [log_info_line(D)]")
 		del(D)
 		return
@@ -388,7 +388,7 @@ SUBSYSTEM_DEF(garbage)
 
 /datum/proc/DoSearchVar(X, Xname)
 	if(usr && usr.client && !usr.client.running_find_references) return
-	if(istype(X, /datum))
+	if(isdatum(X))
 		var/datum/D = X
 		if(D.last_find_references == last_find_references)
 			return

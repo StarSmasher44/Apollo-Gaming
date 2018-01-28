@@ -14,17 +14,17 @@ var/global/universe_has_ended = 0
 
 /datum/universal_state/supermatter_cascade/OnTurfChange(var/turf/T)
 	var/turf/space/S = T
-	if(istype(S))
+	if(isspace(S))
 		S.color = "#0066ff"
 	else
 		S.color = initial(S.color)
 
 /datum/universal_state/supermatter_cascade/DecayTurf(var/turf/T)
-	if(istype(T,/turf/simulated/wall))
+	if(issimwall(T))
 		var/turf/simulated/wall/W=T
 		W.melt()
 		return
-	if(istype(T,/turf/simulated/floor))
+	if(issimfloor(T))
 		var/turf/simulated/floor/F=T
 		// Burnt?
 		if(!F.burnt)
@@ -78,7 +78,7 @@ AUTOMATED ALERT: Link to [command_name()] lost.
 
 /datum/universal_state/supermatter_cascade/proc/AreaSet()
 	for(var/area/A)
-		if(!istype(A,/area) || istype(A, /area/space) || istype(A,/area/beach))
+		if(!isarea(A) || isspacearea(A) || istype(A,/area/beach))
 			continue
 		A.update_icon()
 		CHECK_TICK

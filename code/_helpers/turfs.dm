@@ -2,12 +2,12 @@
 // For example, using this on a disk, which is in a bag, on a mob, will return the mob because it's on the turf.
 /proc/get_atom_on_turf(var/atom/movable/M)
 	var/atom/mloc = M
-	while(mloc && mloc.loc && !istype(mloc.loc, /turf/))
+	while(mloc && mloc.loc && !isturf(mloc.loc))
 		mloc = mloc.loc
 	return mloc
 
 /proc/iswall(turf/T)
-	return (istype(T, /turf/simulated/wall) || istype(T, /turf/unsimulated/wall) || istype(T, /turf/simulated/shuttle/wall))
+	return (issimwall(T) || isunsimwall(T) || istype(T, /turf/simulated/shuttle/wall))
 
 /proc/isfloor(turf/T)
 	return (istype(T, /turf/simulated/floor) || istype(T, /turf/unsimulated/floor))
@@ -83,7 +83,7 @@
 	return !!T.return_air()
 
 /proc/IsTurfAtmosUnsafe(var/turf/T)
-	if(istype(T, /turf/space)) // Space tiles
+	if(isspace(T)) // Space tiles
 		return "Spawn location is open to space."
 	var/datum/gas_mixture/air = T.return_air()
 	if(!air)

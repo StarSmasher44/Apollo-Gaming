@@ -144,7 +144,7 @@
 	set category = "Object"
 	set src in oview(1)
 
-	if(!istype(src.loc, /turf) || usr.stat || usr.restrained() )
+	if(!isturf(src.loc) || usr.stat || usr.restrained() )
 		return
 
 	var/turf/T = src.loc
@@ -272,7 +272,7 @@
 
 	//Update two-handing status
 	var/mob/M = loc
-	if(!istype(M))
+	if(!ismob(M))
 		return
 	if(M.l_hand)
 		M.l_hand.update_twohanding()
@@ -409,7 +409,7 @@ var/list/global/slot_flags_enumeration = list(
 		return
 	if(!usr.canmove || usr.stat || usr.restrained() || !Adjacent(usr))
 		return
-	if((!istype(usr, /mob/living/carbon)) || (istype(usr, /mob/living/carbon/brain)))//Is humanoid, and is not a brain
+	if((!iscarbon(usr)) || (isbrain(usr)))//Is humanoid, and is not a brain
 		to_chat(usr, "<span class='warning'>You can't pick things up!</span>")
 		return
 	if( usr.stat || usr.restrained() )//Is not asleep/dead and is not restrained
@@ -424,7 +424,7 @@ var/list/global/slot_flags_enumeration = list(
 	if(usr.hand && usr.l_hand) //Left hand is not full
 		to_chat(usr, "<span class='warning'>Your left hand is full.</span>")
 		return
-	if(!istype(src.loc, /turf)) //Object is on a turf
+	if(!isturf(src.loc)) //Object is on a turf
 		to_chat(usr, "<span class='warning'>You can't pick that up!</span>")
 		return
 	//All checks are done, time to pick it up!
@@ -448,14 +448,14 @@ var/list/global/slot_flags_enumeration = list(
 
 /obj/item/proc/get_loc_turf()
 	var/atom/L = loc
-	while(L && !istype(L, /turf/))
+	while(L && !isturf(L))
 		L = L.loc
 	return loc
 
 /obj/item/proc/eyestab(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 
 	var/mob/living/carbon/human/H = M
-	if(istype(H))
+	if(ishuman(H))
 		for(var/obj/item/protection in list(H.head, H.wear_mask, H.glasses))
 			if(protection && (protection.body_parts_covered & EYES))
 				// you can't stab someone in the eyes wearing a mask!
@@ -481,7 +481,7 @@ var/list/global/slot_flags_enumeration = list(
 		M.adjustBruteLoss(10)
 		*/
 
-	if(istype(H))
+	if(ishuman(H))
 
 		var/obj/item/organ/internal/eyes/eyes = H.internal_organs_by_name[BP_EYES]
 
@@ -551,7 +551,7 @@ var/list/global/slot_flags_enumeration = list(
 		overlays += blood_overlay
 
 	//if this blood isn't already in the list, add it
-	if(istype(M))
+	if(ishuman(M))
 		if(blood_DNA[M.dna.unique_enzymes])
 			return 0 //already bloodied with this blood. Cannot add more.
 		blood_DNA[M.dna.unique_enzymes] = M.dna.b_type

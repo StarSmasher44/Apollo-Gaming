@@ -114,7 +114,7 @@
 	if(dir)
 		src.set_dir(dir)
 
-	if(istype(frame))
+	if(isatom(frame))
 		buildstage = 0
 		wiresexposed = 1
 		pixel_x = (dir & 3)? 0 : (dir == 4 ? -24 : 24)
@@ -149,7 +149,7 @@
 		return
 
 	var/turf/simulated/location = loc
-	if(!istype(location))	return//returns if loc is not simulated
+	if(!issimturf(location))	return//returns if loc is not simulated
 
 	var/datum/gas_mixture/environment = location.return_air()
 
@@ -262,7 +262,7 @@
 /obj/machinery/alarm/proc/breach_detected()
 	var/turf/simulated/location = loc
 
-	if(!istype(location))
+	if(!issimturf(location))
 		return 0
 
 	if(breach_detection	== 0)
@@ -1017,7 +1017,7 @@ FIRE ALARM
 	var/d2
 
 	var/decl/security_state/security_state = decls_repository.get_decl(GLOB.using_map.security_state)
-	if (istype(user, /mob/living/carbon/human) || istype(user, /mob/living/silicon))
+	if (ishuman(user) || issilicon(user))
 		if (MyArea.fire)
 			d1 = text("<A href='?src=\ref[];reset=1'>Reset - Lockdown</A>", src)
 		else
@@ -1055,7 +1055,7 @@ FIRE ALARM
 	if (buildstage != 2)
 		return
 
-	if ((usr.contents.Find(src) || ((get_dist(src, usr) <= 1) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon)) || isAdminGhost(usr))
+	if ((usr.contents.Find(src) || ((get_dist(src, usr) <= 1) && isturf(src.loc))) || (issilicon(usr)) || isAdminGhost(usr))
 		usr.set_machine(src)
 		if (href_list["reset"])
 			src.reset()
@@ -1103,7 +1103,7 @@ FIRE ALARM
 	if(dir)
 		src.set_dir(dir)
 
-	if(istype(frame))
+	if(isatom(frame))
 		buildstage = 0
 		wiresexposed = 1
 		pixel_x = (dir & 3)? 0 : (dir == 4 ? -24 : 24)

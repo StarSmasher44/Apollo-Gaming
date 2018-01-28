@@ -43,7 +43,7 @@ var/list/mechtoys = list(
 		)
 
 /obj/structure/plasticflaps/CanPass(atom/A, turf/T)
-	if(istype(A) && A.checkpass(PASSGLASS))
+	if(isatom(A) && A.checkpass(PASSGLASS))
 		return prob(60)
 
 	var/obj/structure/bed/B = A
@@ -54,7 +54,7 @@ var/list/mechtoys = list(
 		return 0
 
 	var/mob/living/M = A
-	if(istype(M))
+	if(isliving(M))
 		if(M.lying)
 			return ..()
 		for(var/mob_type in mobs_can_pass)
@@ -162,7 +162,7 @@ var/list/point_source_descriptions = list(
 
 	//To stop things being sent to centcomm which should not be sent to centcomm. Recursively checks for these types.
 	proc/forbidden_atoms_check(atom/A)
-		if(istype(A,/mob/living))
+		if(isliving(A))
 			return 1
 		if(istype(A,/obj/item/weapon/disk/nuclear))
 			return 1
@@ -203,7 +203,7 @@ var/list/point_source_descriptions = list(
 							continue
 
 						// Sell phoron and platinum
-						if(istype(A, /obj/item/stack))
+						if(isstack(A))
 							var/obj/item/stack/P = A
 							switch(P.get_material_name())
 								if("phoron") phoron_count += P.get_amount()

@@ -5,7 +5,7 @@
 	var/mob/living/silicon/ai/owner = null		// AI which owns this.
 
 /datum/malf_hardware/proc/install()
-	if(owner && istype(owner))
+	if(owner && isAI(owner))
 		owner.hardware = src
 		if(driver)
 			owner.verbs += driver

@@ -17,7 +17,7 @@
 	return ..()
 
 /obj/structure/deity/altar/attackby(var/obj/item/I, var/mob/user)
-	if(istype(I, /obj/item/grab))
+	if(isgrab(I))
 		var/obj/item/grab/G = I
 		if(G.force_danger())
 			G.affecting.forceMove(get_turf(src))

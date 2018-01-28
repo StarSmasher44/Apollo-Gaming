@@ -1,11 +1,11 @@
 //Removing the lock and the buttons.
 /obj/item/weapon/gun/dropped(var/mob/living/user)
-	if(istype(user))
+	if(isliving(user))
 		user.stop_aiming(src)
 	return ..()
 
 /obj/item/weapon/gun/equipped(var/mob/living/user, var/slot)
-	if(istype(user) && (slot != slot_l_hand && slot != slot_r_hand))
+	if(isliving(user) && (slot != slot_l_hand && slot != slot_r_hand))
 		user.stop_aiming(src)
 	return ..()
 

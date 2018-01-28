@@ -53,7 +53,7 @@
 
 
 /turf/simulated/wall/proc/update_thermal(var/turf/simulated/source)
-	if(istype(source))
+	if(issimturf(source))
 		if(density && opacity)
 			source.thermal_conductivity = WALL_HEAT_TRANSFER_COEFFICIENT
 		else
@@ -109,7 +109,7 @@
 /turf/simulated/wall/attack_generic(var/mob/user, var/damage, var/attack_message, var/wallbreaker)
 
 	radiate()
-	if(!istype(user))
+	if(!ismob(user))
 		return
 
 	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
@@ -136,7 +136,7 @@
 		return
 
 	//get the user's location
-	if(!istype(user.loc, /turf))	return	//can't do this stuff whilst inside objects and such
+	if(!isturf(user.loc))	return	//can't do this stuff whilst inside objects and such
 
 	if(W)
 		radiate()

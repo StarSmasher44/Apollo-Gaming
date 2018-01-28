@@ -224,7 +224,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 
 	if(!(stat & (NOPOWER|BROKEN)))
 		var/turf/simulated/L = loc
-		if(istype(L))
+		if(issimturf(L))
 			var/datum/gas_mixture/env = L.return_air()
 
 			var/transfer_moles = 0.25 * env.total_moles
@@ -574,7 +574,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 
 				log.parameters["race"] = race
 
-				if(!istype(M, /mob/new_player) && M)
+				if(M && !isnewplayer(M))
 					log.parameters["uspeech"] = M.universal_speak
 				else
 					log.parameters["uspeech"] = 0

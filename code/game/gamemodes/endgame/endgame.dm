@@ -26,11 +26,11 @@
 
 // Actually decay the turf.
 /datum/universal_state/proc/DecayTurf(var/turf/T)
-	if(istype(T,/turf/simulated/wall))
+	if(issimwall(T))
 		var/turf/simulated/wall/W=T
 		W.melt()
 		return
-	if(istype(T,/turf/simulated/floor))
+	if(issimfloor(T))
 		var/turf/simulated/floor/F=T
 		// Burnt?
 		if(!F.burnt)

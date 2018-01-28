@@ -215,7 +215,7 @@
 				new_record.set_rank(I.military_rank.name)
 	else
 		var/mob/living/carbon/human/H = user
-		var/age = istype(H) ? H.age : 30
+		var/age = ishuman(H) ? H.age : 30
 		var/assignment = GetAssignment(user)
 		new_record.set_name(user.real_name)
 		new_record.set_sex(capitalize(user.gender))

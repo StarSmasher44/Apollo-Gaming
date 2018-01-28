@@ -477,7 +477,7 @@ var/list/turret_icons
 			secondarytargets += L
 
 /obj/machinery/porta_turret/proc/assess_living(var/mob/living/L)
-	if(!istype(L))
+	if(!isliving(L))
 		return TURRET_NOT_TARGET
 
 	if(L.invisibility >= INVISIBILITY_LEVEL_ONE) // Cannot see him. see_invisible is a mob-var
@@ -528,7 +528,7 @@ var/list/turret_icons
 	return TURRET_PRIORITY_TARGET	//if the perp has passed all previous tests, congrats, it is now a "shoot-me!" nominee
 
 /obj/machinery/porta_turret/proc/assess_perp(var/mob/living/carbon/human/H)
-	if(!H || !istype(H))
+	if(!H || !ishuman(H))
 		return 0
 
 	if(emagged)
@@ -616,7 +616,7 @@ var/list/turret_icons
 
 	var/turf/T = get_turf(src)
 	var/turf/U = get_turf(target)
-	if(!istype(T) || !istype(U))
+	if(!isturf(T) || !isturf(U))
 		return
 
 	if(!raised) //the turret has to be raised in order to fire - makes sense, right?
@@ -715,7 +715,7 @@ var/list/turret_icons
 					to_chat(user, "<span class='warning'>You need two sheets of metal to continue construction.</span>")
 				return
 
-			else if(istype(I, /obj/item/weapon/wrench))
+			else if(isWrench(I))
 				playsound(loc, 'sound/items/Ratchet.ogg', 75, 1)
 				to_chat(user, "<span class='notice'>You unfasten the external bolts.</span>")
 				anchored = 0
@@ -724,7 +724,7 @@ var/list/turret_icons
 
 
 		if(2)
-			if(istype(I, /obj/item/weapon/wrench))
+			if(isWrench(I))
 				playsound(loc, 'sound/items/Ratchet.ogg', 100, 1)
 				to_chat(user, "<span class='notice'>You bolt the metal armor into place.</span>")
 				build_step = 3
@@ -765,7 +765,7 @@ var/list/turret_icons
 				qdel(I) //delete the gun :(
 				return
 
-			else if(istype(I, /obj/item/weapon/wrench))
+			else if(isWrench(I))
 				playsound(loc, 'sound/items/Ratchet.ogg', 100, 1)
 				to_chat(user, "<span class='notice'>You remove the turret's metal armor bolts.</span>")
 				build_step = 2
@@ -802,7 +802,7 @@ var/list/turret_icons
 					to_chat(user, "<span class='warning'>You need two sheets of metal to continue construction.</span>")
 				return
 
-			else if(istype(I, /obj/item/weapon/screwdriver))
+			else if(isScrewdriver(I))
 				playsound(loc, 'sound/items/Screwdriver.ogg', 100, 1)
 				build_step = 5
 				to_chat(user, "<span class='notice'>You open the internal access hatch.</span>")

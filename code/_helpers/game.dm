@@ -48,13 +48,13 @@
 	var/area/A = get_area(O)
 	if (isarea(A))
 		return A
-
+/*
 /proc/in_range(source, user)
 	if(get_dist(source, user) <= 1)
 		return 1
 
 	return 0 //not in range and not telekinetic
-
+*/
 // Like view but bypasses luminosity check
 
 /proc/hear(var/range, var/atom/source)
@@ -302,7 +302,7 @@
 					else
 						. |= I
 
-		else if(istype(I,/obj/))
+		else if(isobj(I))
 			if(!sight_check || isInSight(I, O))
 				. |= recursive_content_check(I, ., recursion_limit - 1, client_check, sight_check, include_mobs, include_objects)
 				if(include_objects)
@@ -329,7 +329,7 @@
 				var/mob/M = I
 				if(M.client)
 					. += M
-		else if(istype(I,/obj/))
+		else if(isobj(I))
 			. |= recursive_content_check(I, ., 3, 1, 0, include_mobs, include_objects)
 			if(include_objects)
 				. += I
@@ -630,11 +630,11 @@ datum/projectile_data
 	for(var/dir in GLOB.cardinal)
 		var/turf/simulated/T=get_turf(get_step(loc,dir))
 		var/cp=0
-		if(T && istype(T) && T.zone)
+		if(T && issimturf(T) && T.zone)
 			var/datum/gas_mixture/environment = T.return_air()
 			cp = environment.return_pressure()
 		else
-			if(istype(T,/turf/simulated))
+			if(issimturf(T))
 				continue
 		if(cp<minp)minp=cp
 		if(cp>maxp)maxp=cp
@@ -661,16 +661,16 @@ datum/projectile_data
 				direction = 4
 		var/turf/simulated/T=get_turf(get_step(loc,dir))
 		var/list/rstats = new /list(stats.len)
-		if(T && istype(T) && T.zone)
+		if(T && issimturf(T) && T.zone)
 			var/datum/gas_mixture/environment = T.return_air()
 			for(var/i=1;i<=stats.len;i++)
 				if(stats[i] == "pressure")
 					rstats[i] = environment.return_pressure()
 				else
 					rstats[i] = environment.vars[stats[i]]
-		else if(istype(T, /turf/simulated))
+		else if(issimturf(T))
 			rstats = null // Exclude zone (wall, door, etc).
-		else if(istype(T, /turf))
+		else if(isturf(T))
 			// Should still work.  (/turf/return_air())
 			var/datum/gas_mixture/environment = T.return_air()
 			for(var/i=1;i<=stats.len;i++)

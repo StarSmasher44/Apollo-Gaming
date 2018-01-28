@@ -17,7 +17,7 @@
 /obj/screen/gun/move/Click(location, control, params)
 	if(..())
 		var/mob/living/user = usr
-		if(istype(user))
+		if(isliving(user))
 			if(!user.aiming) user.aiming = new(user)
 			user.aiming.toggle_permission(TARGET_CAN_MOVE)
 		return 1
@@ -31,7 +31,7 @@
 /obj/screen/gun/item/Click(location, control, params)
 	if(..())
 		var/mob/living/user = usr
-		if(istype(user))
+		if(isliving(user))
 			if(!user.aiming) user.aiming = new(user)
 			user.aiming.toggle_permission(TARGET_CAN_CLICK)
 		return 1
@@ -45,7 +45,7 @@
 /obj/screen/gun/mode/Click(location, control, params)
 	if(..())
 		var/mob/living/user = usr
-		if(istype(user))
+		if(isliving(user))
 			if(!user.aiming) user.aiming = new(user)
 			user.aiming.toggle_active()
 		return 1
@@ -59,7 +59,7 @@
 /obj/screen/gun/radio/Click(location, control, params)
 	if(..())
 		var/mob/living/user = usr
-		if(istype(user))
+		if(isliving(user))
 			if(!user.aiming) user.aiming = new(user)
 			user.aiming.toggle_permission(TARGET_CAN_RADIO)
 		return 1

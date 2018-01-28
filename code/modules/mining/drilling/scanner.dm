@@ -81,7 +81,7 @@
 	set src in usr
 
 	var/mob/M = usr
-	if(!istype(M))
+	if(!ismob(M))
 		return
 	if(M.incapacitated())
 		return

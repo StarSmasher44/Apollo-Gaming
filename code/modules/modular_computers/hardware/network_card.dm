@@ -80,7 +80,7 @@ var/global/ntnet_card_uid = 1
 
 	if(holder2)
 		var/turf/T = get_turf(holder2)
-		if(!istype(T)) //no reception in nullspace
+		if(!isturf(T)) //no reception in nullspace
 			return 0
 		if(T.z in GLOB.using_map.station_levels)
 			// Computer is on station. Low/High signal depending on what type of network card you have

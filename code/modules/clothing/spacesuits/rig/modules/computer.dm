@@ -77,7 +77,7 @@
 
 	// Check if there's actually an AI to deal with.
 	var/mob/living/silicon/ai/target_ai
-	if(istype(input_device, /mob/living/silicon/ai))
+	if(isAI(input_device))
 		target_ai = input_device
 	else
 		target_ai = locate(/mob/living/silicon/ai) in input_device.contents
@@ -85,7 +85,7 @@
 	var/obj/item/weapon/aicard/card = ai_card
 
 	// Downloading from/loading to a terminal.
-	if(istype(input_device,/mob/living/silicon/ai) || istype(input_device,/obj/structure/AIcore/deactivated))
+	if(isAI(input_device) || istype(input_device,/obj/structure/AIcore/deactivated))
 
 		// If we're stealing an AI, make sure we have a card for it.
 		if(!card)
@@ -274,7 +274,7 @@
 		return 1
 
 	// I fucking hate R&D code. This typecheck spam would be totally unnecessary in a sane setup.
-	else if(istype(input_device,/obj/machinery))
+	else if(ismachine(input_device))
 		var/datum/research/incoming_files
 		if(istype(input_device,/obj/machinery/computer/rdconsole))
 			var/obj/machinery/computer/rdconsole/input_machine = input_device

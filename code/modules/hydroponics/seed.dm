@@ -83,7 +83,7 @@
 /datum/seed/proc/create_spores(var/turf/T)
 	if(!T)
 		return
-	if(!istype(T))
+	if(!isturf(T))
 		T = get_turf(T)
 	if(!T)
 		return
@@ -106,8 +106,8 @@
 	if(!get_trait(TRAIT_CARNIVOROUS))
 		return
 
-	if(!istype(target))
-		if(istype(target, /mob/living/simple_animal/mouse))
+	if(!ishuman(target))
+		if(ismouse(target))
 			new /obj/item/remains/mouse(get_turf(target))
 			qdel(target)
 		else if(istype(target, /mob/living/simple_animal/lizard))
@@ -228,7 +228,7 @@
 				var/turf/neighbor = get_step(T,dir)
 				if(!neighbor || (neighbor in closed_turfs) || (neighbor in open_turfs))
 					continue
-				if(neighbor.density || get_dist(neighbor,origin_turf) > flood_dist || istype(neighbor,/turf/space))
+				if(neighbor.density || get_dist(neighbor,origin_turf) > flood_dist || isspace(neighbor))
 					closed_turfs |= neighbor
 					continue
 				// Check for windows.
@@ -255,9 +255,9 @@
 		qdel(thrown)
 		return
 
-	if(istype(target,/mob/living))
+	if(isliving(target))
 		splatted = apply_special_effect(target,thrown)
-	else if(istype(target,/turf))
+	else if(isturf(target))
 		splatted = 1
 		for(var/mob/living/M in target.contents)
 			apply_special_effect(M)
@@ -738,7 +738,7 @@
 				product.set_light(get_trait(TRAIT_BIOLUM), l_color = clr)
 
 			//Handle spawning in living, mobile products (like dionaea).
-			if(istype(product,/mob/living))
+			if(isliving(product))
 				product.visible_message("<span class='notice'>The pod disgorges [product]!</span>")
 				handle_living_product(product)
 				if(istype(product,/mob/living/simple_animal/mushroom)) // Gross.

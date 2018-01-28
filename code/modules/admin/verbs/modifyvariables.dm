@@ -120,7 +120,7 @@
 
 /client/proc/mod_list(var/list/L, atom/O, original_name, objectvar)
 	if(!check_rights(R_VAREDIT))	return
-	if(!istype(L,/list)) to_chat(src, "Not a List.")
+	if(!islist(L)) to_chat(src, "Not a List.")
 	if(L.len > 1000)
 		var/confirm = alert(src, "The list you're trying to edit is very long, continuing may crash the server.", "Warning", "Continue", "Abort")
 		if(confirm != "Continue")
@@ -184,15 +184,15 @@
 		variable = "\icon[variable]"
 		default = "icon"
 
-	else if(istype(variable,/atom) || istype(variable,/datum))
+	else if(isatom(variable) || isdatum(variable))
 		to_chat(usr, "Variable appears to be <b>TYPE</b>.")
 		default = "type"
 
-	else if(istype(variable,/list))
+	else if(islist(variable))
 		to_chat(usr, "Variable appears to be <b>LIST</b>.")
 		default = "list"
 
-	else if(istype(variable,/client))
+	else if(isclient(variable))
 		to_chat(usr, "Variable appears to be <b>CLIENT</b>.")
 		default = "cancel"
 
@@ -380,15 +380,15 @@
 				var_value = "\icon[var_value]"
 				class = "icon"
 
-			else if(istype(var_value,/atom) || istype(var_value,/datum))
+			else if(isatom(var_value) || isdatum(var_value))
 				to_chat(usr, "Variable appears to be <b>TYPE</b>.")
 				class = "type"
 
-			else if(istype(var_value,/list))
+			else if(islist(var_value))
 				to_chat(usr, "Variable appears to be <b>LIST</b>.")
 				class = "list"
 
-			else if(istype(var_value,/client))
+			else if(isclient(var_value))
 				to_chat(usr, "Variable appears to be <b>CLIENT</b>.")
 				class = "cancel"
 
@@ -435,15 +435,15 @@
 			var_value = "\icon[var_value]"
 			default = "icon"
 
-		else if(istype(var_value,/atom) || istype(var_value,/datum))
+		else if(isatom(var_value) || isdatum(var_value))
 			to_chat(usr, "Variable appears to be <b>TYPE</b>.")
 			default = "type"
 
-		else if(istype(var_value,/list))
+		else if(islist(var_value))
 			to_chat(usr, "Variable appears to be <b>LIST</b>.")
 			default = "list"
 
-		else if(istype(var_value,/client))
+		else if(isclient(var_value))
 			to_chat(usr, "Variable appears to be <b>CLIENT</b>.")
 			default = "cancel"
 

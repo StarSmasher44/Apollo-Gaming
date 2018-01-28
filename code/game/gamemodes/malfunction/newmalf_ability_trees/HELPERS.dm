@@ -100,7 +100,7 @@
 /proc/ability_prechecks(var/mob/living/silicon/ai/user = null, var/check_price = 0, var/override = 0)
 	if(!user)
 		return 0
-	if(!istype(user))
+	if(!isAI(user))
 		to_chat(user, "GAME ERROR: You tried to use ability that is only available for malfunctioning AIs, but you are not AI! Please report this.")
 		return 0
 	if(!user.malfunctioning)
@@ -187,12 +187,12 @@
 
 // Helper procs which return lists of relevant mobs.
 /proc/get_unlinked_cyborgs(var/mob/living/silicon/ai/A)
-	if(!A || !istype(A))
+	if(!A || !isAI(A))
 		return
 
 	.= list()
 	for(var/mob/living/silicon/robot/RB in SSmobs.mob_list)
-		if(istype(RB, /mob/living/silicon/robot/drone))
+		if(is_drone(RB))
 			continue
 		if(RB.connected_ai == A)
 			continue
@@ -200,12 +200,12 @@
 	return .
 
 /proc/get_linked_cyborgs(var/mob/living/silicon/ai/A)
-	if(!A || !istype(A))
+	if(!A || !isAI(A))
 		return
 	return A.connected_robots
 
 /proc/get_other_ais(var/mob/living/silicon/ai/A)
-	if(!A || !istype(A))
+	if(!A || !isAI(A))
 		return
 
 	. = list()

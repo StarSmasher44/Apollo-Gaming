@@ -31,7 +31,7 @@
 		shuttle_area = list(shuttle_area)
 	for(var/T in shuttle_area)
 		var/area/A = locate(T)
-		if(!istype(A))
+		if(!isarea(A))
 			CRASH("Shuttle \"[name]\" couldn't locate area [T].")
 		areas += A
 	shuttle_area = areas
@@ -124,10 +124,10 @@
 
 	if(!destination.is_valid(src))
 		return FALSE
-	testing("[src] moving to [destination]. Areas are [english_list(shuttle_area)]")
+//	testing("[src] moving to [destination]. Areas are [english_list(shuttle_area)]")
 	var/list/translation = list()
 	for(var/area/A in shuttle_area)
-		testing("Moving [A]")
+//		testing("Moving [A]")
 		translation += get_turf_translation(get_turf(current_location), get_turf(destination), A.contents)
 	shuttle_moved(destination, translation)
 	return TRUE
@@ -170,7 +170,7 @@
 						else
 							to_chat(M, "<span class='warning'>The floor lurches beneath you!</span>")
 							shake_camera(M, 10, 1)
-				if(istype(M, /mob/living/carbon))
+				if(iscarbon(M))
 					if(!M.buckled)
 						M.Weaken(3)
 
@@ -185,7 +185,7 @@
 		for(var/area/A in shuttle_area)
 			for(var/turf/TD in A.contents)
 				var/turf/TA = GetAbove(TD)
-				if(istype(TA, get_base_turf_by_area(TA)) || istype(TA, /turf/simulated/open))
+				if(istype(TA, get_base_turf_by_area(TA)) || isopenspace(TA))
 					TA.ChangeTurf(ceiling_type, 1, 1)
 
 	// Remove all powernets that were affected, and rebuild them.

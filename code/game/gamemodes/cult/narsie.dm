@@ -143,7 +143,7 @@ var/global/list/narsie_list = list()
 	return 1
 
 /obj/singularity/narsie/proc/narsiefloor(var/turf/T)//leaving "footprints"
-	if(!(istype(T, /turf/simulated/wall/cult)||istype(T, /turf/space)))
+	if(!(istype(T, /turf/simulated/wall/cult)||isspace(T)))
 		if(T.icon_state != "cult-narsie")
 			T.desc = "something that goes beyond your understanding went this way"
 			T.icon = 'icons/turf/flooring/cult.dmi'
@@ -169,7 +169,7 @@ var/global/list/narsie_list = list()
 		old_narsie(A)
 
 /obj/singularity/narsie/proc/new_narsie(const/atom/A)
-	if (istype(A, /mob/) && (get_dist(A, src) <= 7))
+	if (ismob(A) && (get_dist(A, src) <= 7))
 		var/mob/M = A
 
 		if(M.status_flags & GODMODE)
@@ -186,7 +186,7 @@ var/global/list/narsie_list = list()
 				consume(AM)
 				continue
 
-		if (dist <= consume_range && !istype(A, /turf/space))
+		if (dist <= consume_range && !isspace(A))
 			var/turf/T = A
 			if(T.holy)
 				T.holy = 0 //Nar-Sie doesn't give a shit about sacred grounds.
@@ -196,7 +196,7 @@ var/global/list/narsie_list = list()
 	if(!(A.singuloCanEat()))
 		return 0
 
-	if (istype(A, /mob/living/))
+	if (isliving(A))
 		var/mob/living/C2 = A
 
 		if(C2.status_flags & GODMODE)
@@ -204,7 +204,7 @@ var/global/list/narsie_list = list()
 
 		C2.dust() // Changed from gib(), just for less lag.
 
-	else if (istype(A, /obj/))
+	else if (isobj(A))
 		qdel(A)
 
 		if (A)
@@ -228,7 +228,7 @@ var/global/list/narsie_list = list()
 	if(!(A.singuloCanEat()))
 		return 0
 
-	if (istype(A, /mob/living/))
+	if (isliving(A))
 		var/mob/living/C2 = A
 
 		if(C2.status_flags & GODMODE)
@@ -236,7 +236,7 @@ var/global/list/narsie_list = list()
 
 		C2.dust() // Changed from gib(), just for less lag.
 
-	else if (istype(A, /obj/))
+	else if (isobj(A))
 		qdel(A)
 
 		if (A)

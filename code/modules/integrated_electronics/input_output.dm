@@ -157,7 +157,7 @@
 
 	var/obj/item/device/electronic_assembly/assembly = get_assembly(loc)
 	if(assembly) // Check to make sure we're actually in a machine.
-		if(istype(assembly.loc, /mob/living)) // Now check if someone's holding us.
+		if(isliving(assembly.loc)) // Now check if someone's holding us.
 			new_data = weakref(assembly.loc)
 
 	set_pin_data(IC_OUTPUT, 1, new_data)

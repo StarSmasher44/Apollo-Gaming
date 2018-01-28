@@ -51,7 +51,7 @@
 	for(var/datum/uplink_item/UI in get_random_uplink_items(U, U.uses, loc))
 		UI.purchase_log(U)
 		var/obj/item/I = UI.get_goods(U, loc)
-		if(istype(I))
+		if(isitem(I))
 			. += I
 
 	return .

@@ -65,7 +65,7 @@ var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 		var/datum/reagents/R = I.reagents
 		R.remove_reagent(reagent,5)
 	else
-		if(istype(I,/obj/item/stack))
+		if(isstack(I))
 			var/obj/item/stack/S = I
 			if(S.amount < S.max_amount)
 				to_chat(usr, "<span class='warning'>You must sacrifice [S.max_amount] stacks of [S]!</span>")
@@ -158,7 +158,7 @@ var/list/artefact_feedback = list(/obj/structure/closet/wizard/armor = 		"HS",
 	if(H.stat || H.restrained())
 		return
 
-	if(!istype(H))
+	if(!ishuman(H))
 		return
 
 	if(H.mind && spellbook.book_flags & LOCKED && H.mind.special_role == "apprentice") //make sure no scrubs get behind the lock

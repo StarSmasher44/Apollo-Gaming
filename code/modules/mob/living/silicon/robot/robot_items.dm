@@ -84,7 +84,7 @@
 		return
 	if(!isturf(target.loc)) // Don't load up stuff if it's inside a container or mob!
 		return
-	if(istype(target,/obj/item))
+	if(isitem(target))
 		if(loaded_item)
 			to_chat(user, "Your [src] already has something inside.  Analyze or eject it first.")
 			return
@@ -140,7 +140,7 @@
 		return
 	// pick up items, mostly copied from base tray pickup proc
 	// see code/game/objects/items/weapons/kitchen.dm line 241
-	if ( istype(target,/obj/item))
+	if ( isitem(target))
 		if ( !isturf(target.loc) ) // Don't load up stuff if it's inside a container or mob!
 			return
 		var turf/pickup = target.loc
@@ -342,7 +342,7 @@
 	if(!user.Adjacent(A))
 		to_chat(user, "You can't reach!")
 		return
-	if(istype(A, /turf))
+	if(isturf(A))
 		try_deploy_inflatable(A, user)
 	if(istype(A, /obj/item/inflatable) || istype(A, /obj/structure/inflatable))
 		pick_up(A, user)
@@ -353,7 +353,7 @@
 			to_chat(user, "\The [src] is out of doors!")
 			return
 
-		if(T && istype(T))
+		if(T && isturf(T))
 			new /obj/structure/inflatable/door(T)
 			stored_doors--
 
@@ -362,7 +362,7 @@
 			to_chat(user, "\The [src] is out of walls!")
 			return
 
-		if(T && istype(T))
+		if(T && isturf(T))
 			new /obj/structure/inflatable/wall(T)
 			stored_walls--
 

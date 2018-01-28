@@ -104,7 +104,7 @@
 
 				var/mob/living/carbon/human/T = attached
 
-				if(!istype(T)) return
+				if(!ishuman(T)) return
 				if(!T.dna)
 					return
 				if(NOCLONE in T.mutations)
@@ -140,7 +140,7 @@ obj/machinery/iv_drip/attack_ai(mob/user as mob)
 	set name = "Toggle Mode"
 	set src in view(1)
 
-	if(!istype(usr, /mob/living))
+	if(!isliving(usr))
 		to_chat(usr, "<span class='warning'>You can't do that.</span>")
 		return
 
@@ -167,6 +167,6 @@ obj/machinery/iv_drip/attack_ai(mob/user as mob)
 	to_chat(usr, "<span class='notice'>[attached ? attached : "No one"] is attached.</span>")
 
 /obj/machinery/iv_drip/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(height && istype(mover) && mover.checkpass(PASSTABLE)) //allow bullets, beams, thrown objects, mice, drones, and the like through.
+	if(height && ismovable(mover) && mover.checkpass(PASSTABLE)) //allow bullets, beams, thrown objects, mice, drones, and the like through.
 		return 1
 	return ..()

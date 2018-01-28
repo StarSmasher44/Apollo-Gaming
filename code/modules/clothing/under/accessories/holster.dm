@@ -38,7 +38,7 @@
 	if(!holstered)
 		return
 
-	if(istype(user.get_active_hand(),/obj) && istype(user.get_inactive_hand(),/obj))
+	if(isobj(user.get_active_hand()) && isobj(user.get_inactive_hand()))
 		to_chat(user, "<span class='warning'>You need an empty hand to draw \the [holstered]!</span>")
 	else
 		if(user.a_intent == I_HURT)
@@ -85,7 +85,7 @@
 	set name = "Holster"
 	set category = "Object"
 	set src in usr
-	if(!istype(usr, /mob/living)) return
+	if(!isliving(usr)) return
 	if(usr.stat) return
 
 	//can't we just use src here?
@@ -102,7 +102,7 @@
 
 	if(!H.holstered)
 		var/obj/item/W = usr.get_active_hand()
-		if(!istype(W, /obj/item))
+		if(!isitem(W))
 			to_chat(usr, "<span class='warning'>You're not holding anything to holster.</span>")
 			return
 		H.holster(W, usr)

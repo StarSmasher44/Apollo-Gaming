@@ -64,7 +64,7 @@
 	if(air_group || (height==0)) return 1
 	if(istype(mover, /mob/living/simple_animal/hostile/giant_spider))
 		return 1
-	else if(istype(mover, /mob/living))
+	else if(isliving(mover))
 		if(prob(50))
 			to_chat(mover, "<span class='warning'>You get stuck in \the [src] for a moment.</span>")
 			return 0
@@ -90,7 +90,7 @@
 
 /obj/effect/spider/eggcluster/Destroy()
 	STOP_PROCESSING(SSobj, src)
-	if(istype(loc, /obj/item/organ/external))
+	if(isorgan(loc))
 		var/obj/item/organ/external/O = loc
 		O.implants -= src
 	. = ..()
@@ -100,7 +100,7 @@
 	if(amount_grown >= 100)
 		var/num = rand(6,24)
 		var/obj/item/organ/external/O = null
-		if(istype(loc, /obj/item/organ/external))
+		if(isorgan(loc))
 			O = loc
 
 		for(var/i=0, i<num, i++)
@@ -192,7 +192,7 @@
 
 /obj/effect/spider/spiderling/Process()
 	if(travelling_in_vent)
-		if(istype(src.loc, /turf))
+		if(isturf(src.loc))
 			travelling_in_vent = 0
 			entry_vent = null
 	else if(entry_vent)

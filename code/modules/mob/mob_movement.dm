@@ -80,9 +80,9 @@
 
 /client/verb/swap_hand()
 	set hidden = 1
-	if(istype(mob, /mob/living/carbon))
+	if(iscarbon(mob))
 		mob:swap_hand()
-	if(istype(mob,/mob/living/silicon/robot))
+	if(isrobot(mob))
 		var/mob/living/silicon/robot/R = mob
 		R.cycle_modules()
 	return
@@ -98,7 +98,7 @@
 
 /client/verb/toggle_throw_mode()
 	set hidden = 1
-	if(!istype(mob, /mob/living/carbon))
+	if(!iscarbon(mob))
 		return
 	if (!mob.stat && isturf(mob.loc) && !mob.restrained())
 		mob:toggle_throw_mode()
@@ -241,7 +241,7 @@
 
 
 
-	//if(istype(mob.loc, /turf/space) || (mob.flags & NOGRAV))
+	//if(isspace(mob.loc) || (mob.flags & NOGRAV))
 	//	if(!mob.Allow_Spacemove(0))	return 0
 
 	if(!mob.lastarea)
@@ -303,12 +303,12 @@
 				direct = turn(direct, pick(90, -90))
 			return mob.buckled.relaymove(mob,direct)
 
-		if(istype(mob.machine, /obj/machinery))
+		if(ismachine(mob.machine))
 			if(mob.machine.relaymove(mob,direct))
 				return
 
 		if(mob.pulledby || mob.buckled) // Wheelchair driving!
-			if(istype(mob.loc, /turf/space))
+			if(isspace(mob.loc))
 				return // No wheelchair driving in space
 			if(istype(mob.pulledby, /obj/structure/bed/chair/wheelchair))
 				return mob.pulledby.relaymove(mob, direct)
@@ -339,7 +339,7 @@
 			for (var/obj/item/grab/G in mob)
 				move_delay = max(move_delay, world.time + G.grab_slowdown())
 				var/list/L = mob.ret_grab()
-				if(istype(L, /list))
+				if(islist(L))
 					if(L.len == 2)
 						L -= mob
 						var/mob/M = L[1]
@@ -442,7 +442,7 @@
 //If there's no gravity then there's no up or down so naturally you can't stand on anything.
 //For the same reason lattices in space don't count - those are things you grip, presumably.
 /mob/proc/check_solid_ground()
-	if(istype(loc, /turf/space))
+	if(isspace(loc))
 		return 0
 
 	if(!lastarea)

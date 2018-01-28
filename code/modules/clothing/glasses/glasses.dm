@@ -30,7 +30,7 @@
 
 /obj/item/clothing/glasses/emp_act(severity)
 	if(electric)
-		if(istype(src.loc, /mob/living/carbon/human))
+		if(ishuman(src.loc))
 			var/mob/living/carbon/human/M = src.loc
 			to_chat(M, "<span class='danger'>Your [name] malfunction[gender != PLURAL ? "s":""], blinding you!</span>")
 			if(M.glasses == src)

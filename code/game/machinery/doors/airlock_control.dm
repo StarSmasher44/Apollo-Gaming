@@ -120,7 +120,7 @@ obj/machinery/door/airlock/close(surpress_send)
 
 obj/machinery/door/airlock/Bumped(atom/AM)
 	..(AM)
-	if(istype(AM, /obj/mecha))
+	if(ismecha(AM))
 		var/obj/mecha/mecha = AM
 		if(density && radio_connection && mecha.occupant && (src.allowed(mecha.occupant) || src.check_access_list(mecha.operation_req_access)))
 			send_status(1)

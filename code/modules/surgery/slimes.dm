@@ -9,7 +9,7 @@
 /datum/surgery_step/slime
 
 /datum/surgery_step/slime/is_valid_target(mob/living/carbon/slime/target)
-	return istype(target, /mob/living/carbon/slime/)
+	return isslime(target)
 
 /datum/surgery_step/slime/can_use(mob/living/user, mob/living/carbon/slime/target, target_zone, obj/item/tool)
 	return target.stat == 2
@@ -26,7 +26,7 @@
 	max_duration = 70
 
 /datum/surgery_step/slime/manager_saw_core/can_use(mob/living/user, mob/living/carbon/slime/target, target_zone, obj/item/tool)
-	return ..() && (istype(target) && target.cores > 0) //This is being passed a human as target, unsure why.
+	return ..() && (isslime(target) && target.cores > 0) //This is being passed a human as target, unsure why.
 
 /datum/surgery_step/slime/manager_saw_core/begin_step(mob/user, mob/living/carbon/slime/target, target_zone, obj/item/tool)
 	user.visible_message("[user] starts cutting out one of [target]'s cores with \the [tool].", \
@@ -65,7 +65,7 @@
 	max_duration = 50
 
 /datum/surgery_step/slime/cut_flesh/can_use(mob/living/user, mob/living/carbon/slime/target, target_zone, obj/item/tool)
-	return ..() && istype(target) && target.core_removal_stage == 0
+	return ..() && isslime(target) && target.core_removal_stage == 0
 
 /datum/surgery_step/slime/cut_flesh/begin_step(mob/user, mob/living/carbon/slime/target, target_zone, obj/item/tool)
 	user.visible_message("[user] starts cutting through [target]'s flesh with \the [tool].", \
@@ -94,7 +94,7 @@
 	max_duration = 50
 
 /datum/surgery_step/slime/cut_innards/can_use(mob/living/user, mob/living/carbon/slime/target, target_zone, obj/item/tool)
-	return ..() && istype(target) && target.core_removal_stage == 1
+	return ..() && isslime(target) && target.core_removal_stage == 1
 
 /datum/surgery_step/slime/cut_innards/begin_step(mob/user, mob/living/carbon/slime/target, target_zone, obj/item/tool)
 	user.visible_message("[user] starts cutting [target]'s silky innards apart with \the [tool].", \
@@ -122,7 +122,7 @@
 	max_duration = 70
 
 /datum/surgery_step/slime/saw_core/can_use(mob/living/user, mob/living/carbon/slime/target, target_zone, obj/item/tool)
-	return ..() && (istype(target) && target.core_removal_stage == 2 && target.cores > 0) //This is being passed a human as target, unsure why.
+	return ..() && (isslime(target) && target.core_removal_stage == 2 && target.cores > 0) //This is being passed a human as target, unsure why.
 
 /datum/surgery_step/slime/saw_core/begin_step(mob/user, mob/living/carbon/slime/target, target_zone, obj/item/tool)
 	user.visible_message("[user] starts cutting out one of [target]'s cores with \the [tool].", \

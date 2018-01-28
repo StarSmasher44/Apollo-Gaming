@@ -88,7 +88,7 @@
 //return flags that should be added to the viewer's sight var.
 //Otherwise return a negative number to indicate that the view should be cancelled.
 /atom/proc/check_eye(user as mob)
-	if (istype(user, /mob/living/silicon/ai)) // WHYYYY
+	if (isAI(user)) // WHYYYY
 		return 0
 	return -1
 
@@ -304,12 +304,12 @@ its easier to just keep the beam vertical.
 	if(flags & NOBLOODY)
 		return 0
 
-	if(!blood_DNA || !istype(blood_DNA, /list))	//if our list of DNA doesn't exist yet (or isn't a list) initialise it.
+	if(!blood_DNA || !islist(blood_DNA))	//if our list of DNA doesn't exist yet (or isn't a list) initialise it.
 		blood_DNA = list()
 
 	was_bloodied = 1
 	blood_color = COLOR_BLOOD_HUMAN
-	if(istype(M))
+	if(ishuman(M))
 		if (!istype(M.dna, /datum/dna))
 			M.dna = new /datum/dna(null)
 			M.dna.real_name = M.real_name
@@ -319,7 +319,7 @@ its easier to just keep the beam vertical.
 	return 1
 
 /atom/proc/add_vomit_floor(mob/living/carbon/M as mob, var/toxvomit = 0)
-	if( istype(src, /turf/simulated) )
+	if(issimturf(src))
 		var/obj/effect/decal/cleanable/vomit/this = new /obj/effect/decal/cleanable/vomit(src)
 
 		// Make toxins vomit look different
@@ -331,7 +331,7 @@ its easier to just keep the beam vertical.
 		return
 	fluorescent = 0
 	src.germ_level = 0
-	if(istype(blood_DNA, /list))
+	if(islist(blood_DNA))
 		blood_DNA = null
 		return 1
 
@@ -356,7 +356,7 @@ its easier to just keep the beam vertical.
 	return pass_flags&passflag
 
 /atom/proc/isinspace()
-	if(istype(get_turf(src), /turf/space))
+	if(isspace(get_turf(src)))
 		return 1
 	else
 		return 0
@@ -402,9 +402,9 @@ its easier to just keep the beam vertical.
 		O.show_message(message,2,deaf_message,1)
 
 /atom/movable/proc/dropInto(var/atom/destination)
-	while(istype(destination))
+	while(isatom(destination))
 		var/atom/drop_destination = destination.onDropInto(src)
-		if(!istype(drop_destination) || drop_destination == destination)
+		if(!isatom(drop_destination) || drop_destination == destination)
 			return forceMove(destination)
 		destination = drop_destination
 	return forceMove(null)
@@ -467,7 +467,7 @@ its easier to just keep the beam vertical.
 
 /atom/proc/turf_is_crowded()
 	var/turf/T = get_turf(src)
-	if(!T || !istype(T))
+	if(!T || !isturf(T))
 		return 0
 	for(var/obj/O in T.contents)
 		if(O.flags & OBJ_CLIMBABLE) continue
@@ -512,7 +512,7 @@ its easier to just keep the beam vertical.
 
 			var/damage = rand(15,30)
 			var/mob/living/carbon/human/H = M
-			if(!istype(H))
+			if(!ishuman(H))
 				to_chat(H, "<span class='danger'>You land heavily!</span>")
 				M.adjustBruteLoss(damage)
 				return
@@ -537,7 +537,7 @@ its easier to just keep the beam vertical.
 
 /atom/MouseDrop_T(mob/target, mob/user)
 	var/mob/living/H = user
-	if(istype(H) && can_climb(H) && target == user)
+	if(isliving(H) && can_climb(H) && target == user)
 		do_climb(target)
 	else
 		return ..()

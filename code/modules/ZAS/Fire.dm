@@ -82,7 +82,7 @@ turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 			fuel_objs -= fuel
 			if(remove_fire)
 				var/turf/T = fuel.loc
-				if(istype(T) && T.fire) qdel(T.fire)
+				if(isturf(T) && T.fire) qdel(T.fire)
 			qdel(fuel)
 
 /turf/proc/create_fire(fl)
@@ -125,7 +125,7 @@ turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 	. = 1
 
 	var/turf/simulated/my_tile = loc
-	if(!istype(my_tile) || !my_tile.zone)
+	if(!issimturf(my_tile) || !my_tile.zone)
 		if(my_tile && my_tile.fire == src)
 			my_tile.fire = null
 		RemoveFire()
@@ -154,7 +154,7 @@ turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 	for(var/direction in GLOB.cardinal)
 		var/turf/simulated/enemy_tile = get_step(my_tile, direction)
 
-		if(istype(enemy_tile))
+		if(issimturf(enemy_tile))
 			if(my_tile.open_directions & direction) //Grab all valid bordering tiles
 				if(!enemy_tile.zone || enemy_tile.fire)
 					continue
@@ -184,7 +184,7 @@ turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 /obj/fire/New(newLoc,fl)
 	..()
 
-	if(!istype(loc, /turf))
+	if(!isturf(loc))
 		qdel(src)
 		return
 
@@ -208,7 +208,7 @@ turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 
 /obj/fire/proc/RemoveFire()
 	var/turf/T = loc
-	if (istype(T))
+	if (isturf(T))
 		set_light(0)
 
 		T.fire = null

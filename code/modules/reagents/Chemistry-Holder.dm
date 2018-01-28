@@ -8,7 +8,7 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 
 /datum/reagents/New(var/maximum_volume = 120, var/atom/my_atom)
 	if(!my_atom)	return
-	if(!istype(my_atom))
+	if(!isatom(my_atom))
 		CRASH("Invalid reagents holder: [log_info_line(my_atom)]")
 	..()
 	src.my_atom = my_atom
@@ -326,7 +326,7 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 	return
 
 /datum/reagents/proc/touch_mob(var/mob/target)
-	if(!target || !istype(target) || !target.simulated)
+	if(!target || !ismob(target) || !target.simulated)
 		return
 
 	for(var/datum/reagent/current in reagent_list)
@@ -335,7 +335,7 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 	update_total()
 
 /datum/reagents/proc/touch_turf(var/turf/target)
-	if(!target || !istype(target) || !target.simulated)
+	if(!target || !isturf(target) || !target.simulated)
 		return
 
 	for(var/datum/reagent/current in reagent_list)
@@ -344,7 +344,7 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 	update_total()
 
 /datum/reagents/proc/touch_obj(var/obj/target)
-	if(!target || !istype(target) || !target.simulated)
+	if(!target || !isobj(target) || !target.simulated)
 		return
 
 	for(var/datum/reagent/current in reagent_list)
@@ -363,7 +363,7 @@ GLOBAL_DATUM_INIT(temp_reagents_holder, /obj, new)
 	return trans_to_mob(target, amount * perm, CHEM_TOUCH, 1, copy)
 
 /datum/reagents/proc/trans_to_mob(var/mob/target, var/amount = 1, var/type = CHEM_BLOOD, var/multiplier = 1, var/copy = 0) // Transfer after checking into which holder...
-	if(!target || !istype(target) || !target.simulated)
+	if(!target || !ismob(target) || !target.simulated)
 		return
 	if(iscarbon(target))
 		var/mob/living/carbon/C = target

@@ -51,7 +51,7 @@
 			else
 				display_msg = pick("grows dull!","fades in intensity!","suddenly becomes very still!","suddenly becomes very quiet!")
 			var/atom/toplevelholder = holder
-			while(!istype(toplevelholder.loc, /turf))
+			while(!isturf(toplevelholder.loc))
 				toplevelholder = toplevelholder.loc
 			toplevelholder.visible_message("<span class='warning'>\icon[toplevelholder] [toplevelholder] [display_msg]</span>")
 
@@ -117,7 +117,7 @@
 
 //returns 0..1, with 1 being no protection and 0 being fully protected
 /proc/GetAnomalySusceptibility(var/mob/living/carbon/human/H)
-	if(!istype(H))
+	if(!ishuman(H))
 		return 1
 
 	var/protected = 0

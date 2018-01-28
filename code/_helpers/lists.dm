@@ -19,7 +19,7 @@
 
 //Returns list element or null. Should prevent "index out of bounds" error.
 proc/listgetindex(var/list/list,index)
-	if(istype(list) && list.len)
+	if(islist(list) && list.len)
 		if(isnum(index))
 			if(InRange(index,1,list.len))
 				return list[index]
@@ -67,7 +67,7 @@ proc/clearlist(var/list/L)
 
 //Removes any null entries from the list
 proc/listclearnulls(list/list)
-	if(istype(list))
+	if(islist(list))
 		while(null in list)
 			list -= null
 	return
@@ -332,7 +332,7 @@ proc/listclearnulls(list/list)
 //Converts a bitfield to a list of numbers (or words if a wordlist is provided)
 /proc/bitfield2list(bitfield = 0, list/wordlist)
 	. = list()
-	if(istype(wordlist,/list))
+	if(islist(wordlist))
 		var/max = min(wordlist.len,16)
 		var/bit = 1
 		for(var/i=1, i<=max, i++)
@@ -609,7 +609,7 @@ proc/dd_sortedTextList(list/incoming)
 //creates every subtype of prototype (excluding prototype) and adds it to list L.
 //if no list/L is provided, one is created.
 /proc/init_subtypes(prototype, var/list/L = list())
-	if(!istype(L))	L = list()
+	if(!islist(L))	L = list()
 	for(var/path in subtypesof(prototype))
 		L += new path()
 	return L
@@ -617,7 +617,7 @@ proc/dd_sortedTextList(list/incoming)
 //creates every subtype of prototype (excluding prototype) and adds it to list L as a type/instance pair.
 //if no list/L is provided, one is created.
 /proc/init_subtypes_assoc(prototype, var/list/L = list())
-	if(!istype(L))	L = list()
+	if(!islist(L))	L = list()
 	for(var/path in subtypesof(prototype))
 		L[path] = new path()
 	return L

@@ -30,7 +30,7 @@
 	if(..())
 		underlays.Cut()
 		var/turf/T = get_turf(src)
-		if(!istype(T))
+		if(!isturf(T))
 			return
 		add_underlay(T, node1, get_dir(src, node1), node1 ? node1.icon_connect_type : "")
 		add_underlay(T, node2, get_dir(src, node2), node2 ? node2.icon_connect_type : "")

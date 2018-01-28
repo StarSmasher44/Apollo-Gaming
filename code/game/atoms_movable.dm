@@ -77,7 +77,7 @@
 
 //called when src is thrown into hit_atom
 /atom/movable/proc/throw_impact(atom/hit_atom, var/speed)
-	if(istype(hit_atom,/mob/living))
+	if(isliving(hit_atom))
 		var/mob/living/M = hit_atom
 		M.hitby(src,speed)
 
@@ -97,7 +97,7 @@
 	if(src.throwing)
 		for(var/atom/A in get_turf(src))
 			if(A == src) continue
-			if(istype(A,/mob/living))
+			if(isliving(A))
 				if(A:lying) continue
 				src.throw_impact(A,speed)
 			if(isobj(A))
@@ -140,7 +140,7 @@
 
 
 
-		while(src && target &&((((src.x < target.x && dx == EAST) || (src.x > target.x && dx == WEST)) && dist_travelled < range) || (a && a.has_gravity == 0)  || istype(src.loc, /turf/space)) && src.throwing && istype(src.loc, /turf))
+		while(src && target &&((((src.x < target.x && dx == EAST) || (src.x > target.x && dx == WEST)) && dist_travelled < range) || (a && a.has_gravity == 0)  || isspace(src.loc)) && src.throwing && isturf(src.loc))
 			// only stop when we've gone the whole distance (or max throw range) and are on a non-space tile, or hit something, or hit the end of the map, or someone picks it up
 			if(error < 0)
 				var/atom/step = get_step(src, dy)
@@ -169,7 +169,7 @@
 			a = get_area(src.loc)
 	else
 		var/error = dist_y/2 - dist_x
-		while(src && target &&((((src.y < target.y && dy == NORTH) || (src.y > target.y && dy == SOUTH)) && dist_travelled < range) || (a && a.has_gravity == 0)  || istype(src.loc, /turf/space)) && src.throwing && istype(src.loc, /turf))
+		while(src && target &&((((src.y < target.y && dy == NORTH) || (src.y > target.y && dy == SOUTH)) && dist_travelled < range) || (a && a.has_gravity == 0)  || isspace(src.loc)) && src.throwing && isturf(src.loc))
 			// only stop when we've gone the whole distance (or max throw range) and are on a non-space tile, or hit something, or hit the end of the map, or someone picks it up
 			if(error < 0)
 				var/atom/step = get_step(src, dx)

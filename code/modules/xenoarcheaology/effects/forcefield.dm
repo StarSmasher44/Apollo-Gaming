@@ -21,7 +21,7 @@
 			qdel(F)
 	else if(holder)
 		var/turf/T = get_turf(holder)
-		if(!istype(T))
+		if(!isturf(T))
 			return
 		while(created_field.len < 16)
 			var/obj/effect/energy_field/E = new (locate(T.x,T.y,T.z))

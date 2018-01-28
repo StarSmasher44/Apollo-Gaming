@@ -393,7 +393,6 @@
 // These two procs determine tiles that should be shielded given the field range. They are quite CPU intensive and may trigger BYOND infinite loop checks, therefore they are set
 // as background procs to prevent locking up the server. They are only called when the field is generated, or when hull mode is toggled on/off.
 /obj/machinery/power/shield_generator/proc/fieldtype_square()
-	set background = BACKGROUND_ENABLED
 	. = list()
 	var/list/base_turfs = get_base_turfs()
 
@@ -428,13 +427,13 @@
 		var/area/TA = null // Variable for area checking. Defining it here so memory does not have to be allocated repeatedly.
 		for(var/turf/T in RANGE_TURFS(field_radius, gen_turf))
 			// Don't expand to space or on shuttle areas.
-			if(istype(T, /turf/space) || istype(T, /turf/simulated/open))
+			if(isspace(T) || isopenspace(T))
 				continue
 
 			// Find adjacent space/shuttle tiles and cover them. Shuttles won't be blocked if shield diffuser is mapped in and turned on.
 			for(var/turf/TN in otrange(1, T))
 				TA = get_area(TN)
-				if ((istype(TN, /turf/space) || (istype(TN, /turf/simulated/open) && (istype(TA, /area/space) || TA.flags & AREA_EXTERNAL))))
+				if ((isspace(TN) || (isopenspace(TN) && (isspacearea(TA) || TA.flags & AREA_EXTERNAL))))
 					. |= TN
 					continue
 
@@ -443,7 +442,7 @@
 	. = list()
 	var/turf/T = get_turf(src)
 
-	if(!istype(T))
+	if(!isturf(T))
 		return
 
 	. += T
@@ -454,14 +453,14 @@
 
 	while(HasAbove(T.z))
 		T = GetAbove(T)
-		if(istype(T))
+		if(isturf(T))
 			. += T
 
 	T = get_turf(src)
 
 	while(HasBelow(T.z))
 		T = GetBelow(T)
-		if(istype(T))
+		if(isturf(T))
 			. += T
 
 	return .

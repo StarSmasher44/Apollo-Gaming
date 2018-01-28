@@ -41,7 +41,7 @@
 /obj/machinery/turretid/Destroy()
 	if(control_area)
 		var/area/A = control_area
-		if(A && istype(A))
+		if(A && isarea(A))
 			A.turret_controls -= src
 	. = ..()
 
@@ -56,7 +56,7 @@
 
 	if(control_area)
 		var/area/A = control_area
-		if(istype(A))
+		if(isarea(A))
 			A.turret_controls += src
 		else
 			control_area = null

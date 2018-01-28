@@ -30,9 +30,9 @@
 	if(..())
 		return 1
 	var/mob/living/carbon/human/H = usr
-	if (!( istype(H, /mob/living/carbon/human)))
+	if (!( ishuman(H)))
 		return 1
-	if ((usr == src.loc || (in_range(src, usr) && istype(src.loc, /turf))))
+	if ((usr == src.loc || (in_range(src, usr) && isturf(src.loc))))
 		usr.set_machine(src)
 		if (href_list["spell_teleport"])
 			if (src.uses >= 1)

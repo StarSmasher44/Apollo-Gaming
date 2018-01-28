@@ -80,7 +80,7 @@
 
 /obj/item/weapon/pen/reagent/attack(mob/living/M, mob/user, var/target_zone)
 
-	if(!istype(M))
+	if(!isliving(M))
 		return
 
 	. = ..()

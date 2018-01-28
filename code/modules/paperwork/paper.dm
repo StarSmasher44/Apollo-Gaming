@@ -70,8 +70,8 @@
 		to_chat(user, "<span class='notice'>You have to go closer if you want to read it.</span>")
 
 /obj/item/weapon/paper/proc/show_content(mob/user, forceshow)
-	var/can_read = (istype(user, /mob/living/carbon/human) || isghost(user) || istype(user, /mob/living/silicon)) || forceshow
-	if(!forceshow && istype(user,/mob/living/silicon/ai))
+	var/can_read = (ishuman(user) || isghost(user) || issilicon(user)) || forceshow
+	if(!forceshow && isAI(user))
 		var/mob/living/silicon/ai/AI = user
 		can_read = get_dist(src, AI.camera) < 2
 	user << browse("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY bgcolor='[color]'>[can_read ? info : stars(info)][stamps]</BODY></HTML>", "window=[name]")

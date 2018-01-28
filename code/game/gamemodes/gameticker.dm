@@ -314,7 +314,7 @@ var/global/datum/controller/gameticker/ticker
 					equip_custom_items(player)
 		if(captainless)
 			for(var/mob/M in GLOB.player_list)
-				if(!istype(M,/mob/new_player))
+				if(!isnewplayer(M))
 					to_chat(M, "Captainship not forced on anyone.")
 
 
@@ -477,7 +477,7 @@ var/global/datum/controller/gameticker/ticker
 
 	for (var/mob/living/silicon/robot/robo in SSmobs.mob_list)
 
-		if(istype(robo,/mob/living/silicon/robot/drone))
+		if(is_drone(robo))
 			dronecount++
 			continue
 

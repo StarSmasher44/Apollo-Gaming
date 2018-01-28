@@ -34,7 +34,7 @@
 	if(!(A.singuloCanEat()))
 		return 0
 
-	if (istype(A, /mob/living/))
+	if (isliving(A))
 		var/mob/living/L = A
 		if(L.buckled && istype(L.buckled,/obj/structure/bed/))
 			var/turf/O = L.buckled
@@ -43,7 +43,7 @@
 		else
 			do_teleport(L, pick(endgame_safespawns)) //dead-on precision
 
-	else if (istype(A, /obj/mecha/))
+	else if (ismecha(A))
 		do_teleport(A, pick(endgame_safespawns)) //dead-on precision
 
 	else if (isturf(A))

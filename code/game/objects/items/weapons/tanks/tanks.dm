@@ -225,9 +225,9 @@ var/list/global/tank_gauge_cache = list()
 	var/mob/living/carbon/location = null
 
 	if(istype(loc, /obj/item/weapon/rig))		// check for tanks in rigs
-		if(istype(loc.loc, /mob/living/carbon))
+		if(iscarbon(loc.loc))
 			location = loc.loc
-	else if(istype(loc, /mob/living/carbon))
+	else if(iscarbon(loc))
 		location = loc
 
 	var/using_internal
@@ -259,7 +259,7 @@ var/list/global/tank_gauge_cache = list()
 		if(mask_check)
 			if(location.wear_mask && (location.wear_mask.item_flags & AIRTIGHT))
 				data["maskConnected"] = 1
-			else if(istype(location, /mob/living/carbon/human))
+			else if(ishuman(location))
 				var/mob/living/carbon/human/H = location
 				if(H.head && (H.head.item_flags & AIRTIGHT))
 					data["maskConnected"] = 1
@@ -300,7 +300,7 @@ var/list/global/tank_gauge_cache = list()
 	return 1
 
 /obj/item/weapon/tank/proc/toggle_valve(var/mob/user)
-	if(istype(loc,/mob/living/carbon))
+	if(iscarbon(loc))
 		var/mob/living/carbon/location = loc
 		if(location.internal == src)
 			location.internal = null
@@ -312,7 +312,7 @@ var/list/global/tank_gauge_cache = list()
 			var/can_open_valve
 			if(location.wear_mask && (location.wear_mask.item_flags & AIRTIGHT))
 				can_open_valve = 1
-			else if(istype(location,/mob/living/carbon/human))
+			else if(ishuman(location))
 				var/mob/living/carbon/human/H = location
 				if(H.head && (H.head.item_flags & AIRTIGHT))
 					can_open_valve = 1

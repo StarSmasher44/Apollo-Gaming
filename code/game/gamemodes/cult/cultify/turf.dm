@@ -31,7 +31,7 @@
 
 /turf/proc/cultify_wall()
 	var/turf/simulated/wall/wall = src
-	if(!istype(wall))
+	if(!issimwall(wall))
 		return
 	if(wall.reinf_material)
 		ChangeTurf(/turf/simulated/wall/cult/reinf)

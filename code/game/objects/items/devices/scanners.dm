@@ -492,7 +492,7 @@ proc/get_wound_severity(var/damage_ratio, var/vital = 0)
 		return
 
 	user.visible_message("\The [user] scans \the [target] with \the [src]")
-	if(istype(target, /mob/living/carbon/human))
+	if(ishuman(target))
 		var/mob/living/carbon/human/H = target
 		user.show_message("<span class='notice'>Data for [H]:</span>")
 		user.show_message("Species:\t[H.species]")
@@ -501,14 +501,14 @@ proc/get_wound_severity(var/damage_ratio, var/vital = 0)
 		user.show_message("Known toxins:\t[gas_data.name[H.species.poison_type]]")
 		user.show_message("Temperature comfort zone:\t[H.species.cold_discomfort_level] K to [H.species.heat_discomfort_level] K")
 		user.show_message("Pressure comfort zone:\t[H.species.warning_low_pressure] kPa to [H.species.warning_high_pressure] kPa")
-	else if(istype(target, /mob/living/simple_animal))
+	else if(isanimal(target))
 		var/mob/living/simple_animal/A = target
 		user.show_message("<span class='notice'>Data for [A]:</span>")
 		user.show_message("Species:\t[initial(A.name)]")
 		user.show_message("Breathes:\t[list_gases(A.min_gas)]")
 		user.show_message("Known toxins:\t[list_gases(A.max_gas)]")
 		user.show_message("Temperature comfort zone:\t[A.minbodytemp] K to [A.maxbodytemp] K")
-	else if(istype(target, /mob/living/carbon/slime/))
+	else if(isslime(target))
 		var/mob/living/carbon/slime/T = target
 		user.show_message("<span class='notice'>Slime scan result for \the [T]:</span>")
 		user.show_message("[T.colour] [T.is_adult ? "adult" : "baby"] slime")

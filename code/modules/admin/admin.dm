@@ -50,7 +50,7 @@ var/global/floorIsLava = 0
 		body += " played by <b>[M.client]</b> "
 		body += "\[<A href='?src=\ref[src];editrights=show'>[M.client.holder ? M.client.holder.rank : "Player"]</A>\]"
 
-	if(istype(M, /mob/new_player))
+	if(isnewplayer(M))
 		body += " <B>Hasn't Entered Game</B> "
 	else
 		body += " \[<A href='?src=\ref[src];revive=\ref[M]'>Heal</A>\] "
@@ -100,7 +100,7 @@ var/global/floorIsLava = 0
 	"}
 
 	if (M.client)
-		if(!istype(M, /mob/new_player))
+		if(!isnewplayer(M))
 			body += "<br><br>"
 			body += "<b>Transformation:</b>"
 			body += "<br>"
@@ -1101,7 +1101,7 @@ var/global/floorIsLava = 0
 		if(!chosen)
 			return
 
-	if(ispath(chosen,/turf))
+	if(isturf(chosen))
 		var/turf/T = get_turf(usr.loc)
 		T.ChangeTurf(chosen)
 	else
@@ -1279,7 +1279,7 @@ var/global/floorIsLava = 0
 		return "<b>(*null*)</b>"
 	var/mob/M
 	var/client/C
-	if(istype(whom, /client))
+	if(isclient(whom))
 		C = whom
 		M = C.mob
 	else if(istype(whom, /mob))
@@ -1312,7 +1312,7 @@ var/global/floorIsLava = 0
 		return 0
 	var/client/C
 	var/mob/M
-	if(istype(whom, /client))
+	if(isclient(whom))
 		C = whom
 	if(istype(whom, /mob))
 		M = whom

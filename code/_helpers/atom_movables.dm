@@ -1,5 +1,5 @@
 /proc/get_turf_pixel(atom/movable/AM)
-	if(!istype(AM))
+	if(!ismovable(AM))
 		return
 
 	//Find AM's matrix so we can use it's X/Y pixel shifts
@@ -29,6 +29,6 @@
 
 // Walks up the loc tree until it finds a holder of the given holder_type
 /proc/get_holder_of_type(atom/A, holder_type)
-	if(!istype(A)) return
+	if(!isatom(A)) return
 	for(A, A && !istype(A, holder_type), A=A.loc);
 	return A

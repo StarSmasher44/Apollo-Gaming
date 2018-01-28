@@ -24,7 +24,7 @@
 	desc = "Blueprints of the [station_name()]. There is a \"Classified\" stamp and several coffee stains on it."
 
 /obj/item/blueprints/attack_self(mob/M as mob)
-	if (!istype(M,/mob/living/carbon/human))
+	if (!ishuman(M))
 		to_chat(M, "This stack of blue paper means nothing to you.")//monkeys cannot into projecting
 
 		return
@@ -95,7 +95,7 @@ move an amendment</a> to the drawing, or <a href='?src=\ref[src];action=delete_a
 	return A
 
 /obj/item/blueprints/proc/get_area_type(var/area/A = get_area())
-	if(istype(A, /area/space))
+	if(isspacearea(A))
 		return AREA_SPACE
 
 	var/list/SPECIALS = list(
@@ -114,7 +114,7 @@ move an amendment</a> to the drawing, or <a href='?src=\ref[src];action=delete_a
 //	log_debug("create_area")
 
 	var/res = detect_room(get_turf(usr))
-	if(!istype(res,/list))
+	if(!islist(res))
 		switch(res)
 			if(ROOM_ERR_SPACE)
 				to_chat(usr, "<span class='warning'>The new area must be completely airtight!</span>")
@@ -207,7 +207,7 @@ move an amendment</a> to the drawing, or <a href='?src=\ref[src];action=delete_a
 	//TODO: much much more. Unnamed airlocks, cameras, etc.
 
 /obj/item/blueprints/proc/check_tile_is_border(var/turf/T2,var/dir)
-	if (istype(T2, /turf/space))
+	if (isspace(T2))
 		return BORDER_SPACE //omg hull breach we all going to die here
 	if (istype(T2, /turf/simulated/shuttle))
 		return BORDER_SPACE
@@ -215,7 +215,7 @@ move an amendment</a> to the drawing, or <a href='?src=\ref[src];action=delete_a
 		return BORDER_BETWEEN
 	if (istype(T2, /turf/simulated/wall))
 		return BORDER_2NDTILE
-	if (!istype(T2, /turf/simulated))
+	if (!issimturf(T2))
 		return BORDER_BETWEEN
 
 	for (var/obj/structure/window/W in T2)

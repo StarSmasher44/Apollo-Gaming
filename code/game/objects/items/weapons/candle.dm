@@ -60,7 +60,7 @@
 	if(!wax)
 		new/obj/item/trash/candle(src.loc)
 		qdel(src)
-	if(istype(loc, /turf)) //start a fire if possible
+	if(isturf(loc)) //start a fire if possible
 		var/turf/T = loc
 		T.hotspot_expose(700, 5)
 
