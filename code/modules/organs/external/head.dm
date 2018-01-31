@@ -54,6 +54,9 @@
 				disfigure("brute")
 		if (burn_dam > 40)
 			disfigure("burn")
+	if(brute_dam > 80 || burn_dam > 80)
+		if(prob(33))
+			owner.adjustBrainLoss(rand(1, 2))
 
 /obj/item/organ/external/head/no_eyes
 	eye_icon = "blank_eyes"

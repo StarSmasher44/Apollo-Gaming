@@ -27,8 +27,8 @@
 #define DAM_EDGE  (1<<1)
 #define DAM_LASER (1<<2)
 
-#define FIRE_DAMAGE_MODIFIER 0.0215 // Higher values result in more external fire damage to the skin. (default 0.0215)
-#define  AIR_DAMAGE_MODIFIER 2.025  // More means less damage from hot air scalding lungs, less = more damage. (default 2.025)
+#define FIRE_DAMAGE_MODIFIER 0.0220 // Higher values result in more external fire damage to the skin. (default 0.0215)
+#define  AIR_DAMAGE_MODIFIER 2.010  // More means less damage from hot air scalding lungs, less = more damage. (default 2.025)
 
 // Organ defines.
 #define ORGAN_CUT_AWAY   (1<<0)
@@ -52,8 +52,8 @@
 // that dealing just enough burn damage to kill the player will cause the given
 // proportion of their max blood volume to be lost
 // (e.g. 0.6 == 60% lost if 200 burn damage is taken).
-#define FLUIDLOSS_WIDE_BURN 0.6 //for burns from heat applied over a wider area, like from fire
-#define FLUIDLOSS_CONC_BURN 0.4 //for concentrated burns, like from lasers
+#define FLUIDLOSS_WIDE_BURN 0.5 //for burns from heat applied over a wider area, like from fire
+#define FLUIDLOSS_CONC_BURN 0.3 //for concentrated burns, like from lasers
 
 // Damage above this value must be repaired with surgery.
 #define ROBOLIMB_SELF_REPAIR_CAP 30
