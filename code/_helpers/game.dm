@@ -338,9 +338,6 @@
 
 
 /proc/get_mobs_in_radio_ranges(var/list/obj/item/device/radio/radios)
-
-	set background = BACKGROUND_ENABLED
-
 	. = list()
 	// Returns a list of mobs who can hear any of the radios given in @radios
 	var/list/speaker_coverage = list()

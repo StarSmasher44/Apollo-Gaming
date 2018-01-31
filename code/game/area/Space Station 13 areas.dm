@@ -223,7 +223,6 @@ area/space/atmosalert()
 			sound_to(M, mysound)
 
 /area/beach/proc/process()
-	set background = 1
 
 	var/sound/S = null
 	var/sound_delay = 0

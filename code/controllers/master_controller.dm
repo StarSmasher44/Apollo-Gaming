@@ -47,8 +47,6 @@ datum/controller/game_controller/proc/setup()
 	initialization_stage |= INITIALIZATION_COMPLETE
 
 datum/controller/game_controller/proc/setup_objects()
-	set background = 1
-
 	// Do these first since character setup will rely on them
 
 	initialization_stage |= INITIALIZATION_HAS_BEGUN

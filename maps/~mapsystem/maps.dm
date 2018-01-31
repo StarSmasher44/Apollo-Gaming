@@ -203,8 +203,6 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 
 // Used to apply various post-compile procedural effects to the map.
 /datum/map/proc/refresh_mining_turfs(var/zlevel)
-
-	set background = 1
 	set waitfor = 0
 
 	for(var/thing in mining_walls["[zlevel]"])

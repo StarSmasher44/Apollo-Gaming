@@ -149,8 +149,6 @@ else { \
 			propagate_network(PC,PC.powernet)
 
 datum/controller/subsystem/machines/proc/setup_atmos_machinery(list/machines)
-	set background=1
-
 	report_progress("Initializing atmos machinery")
 	for(var/obj/machinery/atmospherics/A in machines)
 		A.atmos_init()

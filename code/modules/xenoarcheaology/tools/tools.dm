@@ -268,7 +268,6 @@
 			scan_ticks++
 			if(prob(scan_ticks * 10))
 				spawn(0)
-					set background = BACKGROUND_ENABLED
 					if(src in SSobj.processing)
 						//scan radios in the world to try and find one
 						var/cur_dist = 999
