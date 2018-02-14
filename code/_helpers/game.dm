@@ -6,6 +6,14 @@
 	locate(min(CENTER.x+(RADIUS),world.maxx), min(CENTER.y+(RADIUS),world.maxy), CENTER.z) \
 	)
 
+#define O_RANGE_TURFS(RADIUS, CENTER) \
+	block( \
+	locate(max(CENTER.x-(RADIUS),1),          max(CENTER.y-(RADIUS),1),          CENTER.z), \
+	locate(min(CENTER.x+(RADIUS),world.maxx), min(CENTER.y+(RADIUS),world.maxy), CENTER.z) \
+	)-CENTER
+
+#define Z_TURFS(ZLEVEL) block(locate(1,1,ZLEVEL), locate(world.maxx, world.maxy, ZLEVEL))
+
 /proc/dopage(src,target)
 	var/href_list
 	var/href
@@ -92,7 +100,8 @@
 	. = list()
 	var/rsq = radius * (radius+0.5)
 
-	for(var/atom/T in RANGE_TURFS(radius, centerturf))
+	for(var/TA in RANGE_TURFS(radius, centerturf))
+		var/turf/T = TA
 		var/dx = T.x - centerturf.x
 		var/dy = T.y - centerturf.y
 		if(dx*dx + dy*dy <= rsq)
@@ -124,6 +133,7 @@
 	var/turf/x2y2 = locate(((centre.x+rad)>world.maxx ? world.maxx : centre.x+rad),((centre.y+rad)>world.maxy ? world.maxy : centre.y+rad),centre.z)
 	return block(x1y1,x2y2)
 */
+/*
 /proc/otrange(rad = 0, turf/centre = null) //alternative to range (ONLY processes turfs and thus less intensive)
 	if(!centre)
 		return
@@ -131,7 +141,7 @@
 	var/turf/x1y1 = locate(((centre.x-rad)<1 ? 1 : centre.x-rad),((centre.y-rad)<1 ? 1 : centre.y-rad),centre.z)
 	var/turf/x2y2 = locate(((centre.x+rad)>world.maxx ? world.maxx : centre.x+rad),((centre.y+rad)>world.maxy ? world.maxy : centre.y+rad),centre.z)
 	return block(x1y1,x2y2)-centre
-
+*/
 /proc/get_dist_euclidian(atom/Loc1 as turf|mob|obj,atom/Loc2 as turf|mob|obj)
 	var/dx = Loc1.x - Loc2.x
 	var/dy = Loc1.y - Loc2.y
@@ -146,7 +156,8 @@
 	. = list()
 	var/rsq = radius * (radius+0.5)
 
-	for(var/turf/T in RANGE_TURFS(radius, centerturf))
+	for(var/TA in RANGE_TURFS(radius, centerturf))
+		var/turf/T = TA
 		var/dx = T.x - centerturf.x
 		var/dy = T.y - centerturf.y
 		if(dx*dx + dy*dy <= rsq)
@@ -372,17 +383,16 @@
 
 /proc/get_mobs_and_objs_in_view_fast(var/turf/T, var/range, var/list/mobs, var/list/objs, var/checkghosts = null)
 
-	var/list/hear = dview(range,T,INVISIBILITY_MAXIMUM)
+//	var/list/hear = FOR_DVIEW(var/atom/A, range,T,INVISIBILITY_MAXIMUM)
 	var/list/hearturfs = list()
-
-	for(var/atom/movable/AM in hear)
+	FOR_DVIEW(var/atom/movable/AM, range, T, INVISIBILITY_MAXIMUM)
 		if(ismob(AM))
 			mobs += AM
 			hearturfs += get_turf(AM)
 		else if(isobj(AM))
 			objs += AM
 			hearturfs += get_turf(AM)
-
+//		END_FOR_DVIEW
 	for(var/mob/M in GLOB.player_list)
 		if(checkghosts && M.stat == DEAD && M.get_preference_value(checkghosts) != GLOB.PREF_NEARBY)
 			mobs |= M

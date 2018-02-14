@@ -111,10 +111,11 @@
 /obj/item/device/t_scanner/proc/get_scanned_objects(var/scan_dist)
 	. = list()
 
-	var/turf/center = get_turf(src.loc)
-	if(!center) return
+	var/turf/center = src.loc
+	if(!center || !isturf(center)) return
 
-	for(var/turf/T in RANGE_TURFS(scan_range, center))
+	for(var/TA in RANGE_TURFS(scan_range, center))
+		var/turf/T = TA
 		if(!!T.is_plating())
 			continue
 

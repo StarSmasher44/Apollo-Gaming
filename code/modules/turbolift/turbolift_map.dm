@@ -213,7 +213,7 @@
 		var/area_path = areas_to_use[az]
 		for(var/thing in floor_turfs)
 			new area_path(thing)
-		var/area/A = locate(area_path)
+		var/area/A = locate(area_path) in all_areas
 		cfloor.set_area_ref("\ref[A]")
 		az++
 

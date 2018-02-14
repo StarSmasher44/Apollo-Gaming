@@ -131,7 +131,7 @@
 
 
 /proc/launch_mauraders()
-	var/area/centcom/specops/special_ops = locate()//Where is the specops area located?
+	var/area/centcom/specops/special_ops = locate() in all_areas//Where is the specops area located?
 	//Begin Marauder launchpad.
 	spawn(0)//So it parallel processes it.
 		for(var/obj/machinery/door/blast/M in special_ops)

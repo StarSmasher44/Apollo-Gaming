@@ -326,7 +326,7 @@
 	var/turf/location = loc
 	. = ..()
 	for(var/obj/structure/window/W in orange(location, 1))
-		ADD_ICON_QUEUE(W)
+		update_icon()
 
 
 /obj/structure/window/Move()

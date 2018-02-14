@@ -410,7 +410,7 @@ var/global/datum/controller/occupations/job_master
 		if(!joined_late || job.latejoin_at_spawnpoints)
 			var/obj/S = get_roundstart_spawnpoint(rank)
 
-			if(istype(S, /obj/effect/landmark/start) && istype(S.loc, /turf))
+			if(istype(S, /obj/effect/landmark/start) && isturf(S.loc))
 				H.forceMove(S.loc)
 			else
 				var/datum/spawnpoint/spawnpoint = get_spawnpoint_for(H.client, rank)
@@ -451,7 +451,7 @@ var/global/datum/controller/occupations/job_master
 		for(var/datum/gear/G in spawn_in_storage)
 			G.spawn_in_storage_or_drop(H, H.client.prefs.Gear()[G.display_name])
 
-		if(istype(H)) //give humans wheelchairs, if they need them.
+		if(ishuman(H)) //give humans wheelchairs, if they need them.
 			var/obj/item/organ/external/l_foot = H.get_organ(BP_L_FOOT)
 			var/obj/item/organ/external/r_foot = H.get_organ(BP_R_FOOT)
 			if(!l_foot || !r_foot)

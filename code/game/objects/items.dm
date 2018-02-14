@@ -569,6 +569,7 @@ var/list/global/slot_flags_enumeration = list(
 	for(var/obj/item/A in world)
 		if(A.type == type && !A.blood_overlay)
 			A.blood_overlay = image(I)
+		CHECK_TICK
 
 /obj/item/proc/showoff(mob/user)
 	for (var/mob/M in view(user))

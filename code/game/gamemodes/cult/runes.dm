@@ -352,7 +352,8 @@
 
 /obj/effect/rune/defile/cast(var/mob/living/user)
 	user.say("Ia! Ia! Zasan therium viortia!")
-	for(var/turf/T in RANGE_TURFS(1, src))
+	for(var/TA in RANGE_TURFS(1, src))
+		var/turf/T = TA
 		if(T.holy)
 			T.holy = 0
 		else
@@ -603,7 +604,8 @@
 	else
 		for(var/mob/living/M in cultists)
 			M.say("Ia! Ia! Zasan therium viortia! Razan gilamrua kioha!")
-		for(var/turf/T in RANGE_TURFS(5, src))
+		for(var/TA in RANGE_TURFS(5, src))
+			var/turf/T = TA
 			if(T.holy)
 				T.holy = 0
 			else
@@ -779,7 +781,8 @@
 			if(prob(5))
 				M.say(pick("Hakkrutju gopoenjim.", "Nherasai pivroiashan.", "Firjji prhiv mazenhor.", "Tanah eh wakantahe.", "Obliyae na oraie.", "Miyf hon vnor'c.", "Wakabai hij fen juswix."))
 
-		for(var/turf/T in RANGE_TURFS(min(the_end_comes, 15), src))
+		for(var/TA in RANGE_TURFS(min(the_end_comes, 15), src))
+			var/turf/T = TA
 			if(prob(the_end_comes / 3))
 				T.cultify()
 		sleep(10)

@@ -109,7 +109,7 @@
 			msg+="!"
 
 	var/list/listening = viewers(holder_atom)
-	for(var/mob/M in SSmobs.mob_list)
+	for(var/mob/M in GLOB.player_list)
 		if (!M.client)
 			continue //skip monkeys and leavers
 		if (isnewplayer(M))

@@ -21,10 +21,7 @@
 /proc/mobs_in_view(var/range, var/source)
 	. = list()
 	for(var/atom/movable/AM in view(range, source))
-		var/M = AM.get_mob()
-		if(M)
-			. += M
-
+		if(AM.get_mob())	. += AM
 	return .
 
 proc/random_hair_style(gender, species = SPECIES_HUMAN)

@@ -165,7 +165,7 @@ var/global/datum/controller/gameticker/ticker
 		Holiday_Game_Start()
 
 	var/admins_number = 0
-	for(var/client/C)
+	for(var/client/C in GLOB.clients)
 		if(C.holder)
 			admins_number++
 	if(admins_number == 0)
@@ -409,7 +409,7 @@ var/global/datum/controller/gameticker/ticker
 
 /datum/controller/gameticker/proc/declare_completion()
 	to_world("<br><br><br><H1>A round of [mode.name] has ended!</H1>")
-	for(var/client/C)
+	for(var/client/C in GLOB.clients)
 		if(!C.credits)
 			C.RollCredits()
 	for(var/mob/Player in GLOB.player_list)

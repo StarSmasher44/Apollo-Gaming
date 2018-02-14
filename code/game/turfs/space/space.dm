@@ -54,7 +54,7 @@
 /turf/space/proc/update_starlight()
 	if(!config.starlight)
 		return
-	if(locate(/turf/simulated) in otrange(1,src))
+	if(locate(/turf/simulated) in O_RANGE_TURFS(1,src))
 		set_light(config.starlight)
 	else
 		set_light(0)

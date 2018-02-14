@@ -70,7 +70,7 @@ var/global/list/narsie_list = list()
 		mezzer()
 
 /obj/singularity/narsie/large/eat()
-	for (var/turf/A in otrange(consume_range, src))
+	for (var/A in O_RANGE_TURFS(consume_range, src))
 		consume(A)
 		CHECK_TICK
 
@@ -349,7 +349,7 @@ var/global/list/narsie_list = list()
 	grav_pull = 0
 
 /obj/singularity/narsie/wizard/eat()
-	for (var/turf/T in RANGE_TURFS(consume_range, src))
+	for (var/T in RANGE_TURFS(consume_range, src))
 		consume(T)
 
 /obj/singularity/narsie/proc/narsie_spawn_animation()

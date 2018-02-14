@@ -184,13 +184,14 @@
 	if(prob(50))
 		user.visible_message("<span class='danger'>The reactive teleport system flings [user] clear of the attack!</span>")
 		var/list/turfs = new/list()
-		for(var/turf/T in otrange(6, user))
+		for(var/TA in O_RANGE_TURFS(6, user))
+			var/turf/T = TA
 			if(isspace(T)) continue
 			if(T.density) continue
 			if(T.x>world.maxx-6 || T.x<6)	continue
 			if(T.y>world.maxy-6 || T.y<6)	continue
 			turfs += T
-		if(!turfs.len) turfs += pick(/turf in otrange(6))
+		if(!turfs.len) turfs += pick(/turf in O_RANGE_TURFS(6, src.loc))
 		var/turf/picked = pick(turfs)
 		if(!isturf(picked)) return
 

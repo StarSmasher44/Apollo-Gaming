@@ -287,12 +287,14 @@
 /datum/light_source/proc/smart_vis_update()
 	var/list/datum/lighting_corner/corners = list()
 	var/list/turf/turfs                    = list()
-	FOR_DVIEW(var/turf/T, light_range, source_turf, 0)
+//	FOR_DVIEW(var/turf/T, light_range, source_turf, 0)
+
+	for(var/TA in RANGE_TURFS(light_range,source_turf))
+		var/turf/T = TA
 		if(!T.lighting_corners_initialised)
 			T.generate_missing_corners()
 		corners |= T.get_corners()
 		turfs   += T
-
 		var/turf/simulated/open/O = T
 		if(isopenspace(O) && O.below)
 			// Consider the turf below us as well. (Z-lights)

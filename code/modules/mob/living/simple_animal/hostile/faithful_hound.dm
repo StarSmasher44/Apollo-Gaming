@@ -37,11 +37,10 @@
 		var/list/mobs = list()
 		var/list/objs = list()
 		get_mobs_and_objs_in_view_fast(get_turf(src),5, mobs, objs, 0)
-		for(var/mob/living/m in mobs)
-			if((m == src) || (m in allowed_mobs) || m.faction == faction)
+		for(var/mob/living/M in mobs)
+			if((M == src) || (M in allowed_mobs) || M.faction == faction)
 				continue
 			var/new_aggress = 1
-			var/mob/living/M = m
 			var/dist = get_dist(M, src)
 			if(dist < 2) //Attack! Attack!
 				M.attack_generic(src,10,"bitten")

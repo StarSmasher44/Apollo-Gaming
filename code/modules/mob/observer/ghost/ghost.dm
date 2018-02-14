@@ -110,7 +110,7 @@ Works together with spawning an observer, noted above.
 
 	if(antagHUD)
 		var/list/target_list = list()
-		for(var/mob/living/target in oview(src, 14))
+		for(var/mob/living/target in oview(src, 10))
 			if(target.mind && target.mind.special_role)
 				target_list += target
 		if(target_list.len)
@@ -121,7 +121,7 @@ Works together with spawning an observer, noted above.
 
 /mob/observer/ghost/proc/process_medHUD(var/mob/M)
 	var/client/C = M.client
-	for(var/mob/living/carbon/human/patient in oview(M, 14))
+	for(var/mob/living/carbon/human/patient in oview(M, 10))
 		C.images += patient.hud_list[HEALTH_HUD]
 		C.images += patient.hud_list[STATUS_HUD_OOC]
 

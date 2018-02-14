@@ -310,7 +310,7 @@ var/list/mining_floors = list()
 		var/pain = 0
 		if(prob(50))
 			pain = 1
-		for(var/mob/living/M in range(src, 200))
+		for(var/mob/living/M in range(src, 150))
 			to_chat(M, "<font color='red'><b>[pick("A high pitched [pick("keening","wailing","whistle")]","A rumbling noise like [pick("thunder","heavy machinery")]")] somehow penetrates your mind before fading away!</b></font>")
 			if(pain)
 				flick("pain",M.pain)
@@ -542,8 +542,8 @@ var/list/mining_floors = list()
 		overlays |= floor_decal
 
 	if(update_neighbors)
-		var/list/all_step_directions = list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,SOUTHWEST,WEST,NORTHWEST)
-		for(var/direction in all_step_directions)
+//		var/list/all_step_directions = list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,SOUTHWEST,WEST,NORTHWEST)
+		for(var/direction in GLOB.alldirs)
 			var/turf/simulated/floor/asteroid/A
 			if(istype(get_step(src, direction), /turf/simulated/floor/asteroid))
 				A = get_step(src, direction)

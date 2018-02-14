@@ -179,7 +179,7 @@ var/const/enterloopsanity = 100
 
 /turf/proc/AdjacentTurfs(var/check_blockage = TRUE)
 	. = list()
-	for(var/turf/t in (RANGE_TURFS(1,src) - src))
+	for(var/turf/t in (O_RANGE_TURFS(1,src)))
 		if(check_blockage)
 			if(!t.density)
 				if(!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
@@ -204,7 +204,8 @@ var/const/enterloopsanity = 100
 
 /turf/proc/AdjacentTurfsSpace()
 	. = list()
-	for(var/turf/t in otrange(src,1))
+	for(var/ta in O_RANGE_TURFS(1,src))
+		var/turf/t = ta
 		if(!t.density)
 			if(!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
 				. += t

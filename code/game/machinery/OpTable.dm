@@ -15,8 +15,7 @@
 
 /obj/machinery/optable/Initialize()
 	. = ..()
-	for(dir in list(NORTH,EAST,SOUTH,WEST))
-		computer = locate(/obj/machinery/computer/operating, get_step(src, dir))
+	for(var/obj/machinery/computer/operating/computer in range(1, src))
 		if (computer)
 			computer.table = src
 			break

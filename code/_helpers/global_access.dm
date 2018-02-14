@@ -1094,8 +1094,8 @@
 			global.SSlegacy=newval;
 		if("SSmachines")
 			global.SSmachines=newval;
-		if("SSlighting")
-			global.SSlighting=newval;
+//		if("SSlighting")
+//			global.SSlighting=newval;
 //		if("SSmapping")
 //			global.SSmapping=newval;
 		if("SSmobs")

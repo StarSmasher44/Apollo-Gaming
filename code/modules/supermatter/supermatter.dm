@@ -495,7 +495,7 @@
 
 
 /proc/supermatter_pull(var/atom/target, var/pull_range = 255, var/pull_power = STAGE_FIVE)
-	for(var/atom/A in range(pull_range, target))
+	for(var/atom/movable/A in orange(pull_range, target)) //Range
 		A.singularity_pull(target, pull_power)
 		CHECK_TICK
 

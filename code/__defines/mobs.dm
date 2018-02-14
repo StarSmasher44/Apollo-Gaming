@@ -269,3 +269,4 @@
 #define SURGERY_RETRACTED 2
 #define SURGERY_ENCASED 3
 
+#define GET_BODY_TYPE(MOB) (MOB.cached_bodytype || (MOB.cached_bodytype = species.get_bodytype(MOB)))

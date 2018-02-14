@@ -97,7 +97,7 @@
 	if(!material)
 		return
 	. = list()
-	for(var/turf/simulated/wall/W in otrange(1, src))
+	for(var/turf/simulated/wall/W in O_RANGE_TURFS(1, src))
 		if(!W.material)
 			continue
 		if(propagate)

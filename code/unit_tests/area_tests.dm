@@ -82,7 +82,7 @@
 			continue
 		if(is_path_in_list(area_type, GLOB.using_map.area_usage_test_exempted_root_areas))
 			continue
-		var/area/located_area = locate(area_type)
+		var/area/located_area = locate(area_type) in all_areas
 		if(located_area && !located_area.z)
 			log_bad("[log_info_line(located_area)] is unused.")
 			unused_areas++

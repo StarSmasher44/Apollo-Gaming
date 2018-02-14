@@ -1,4 +1,4 @@
-#define CREDIT_ROLL_SPEED 125
+#define CREDIT_ROLL_SPEED 100
 #define CREDIT_SPAWN_SPEED 10
 #define CREDIT_ANIMATE_HEIGHT (14 * world.icon_size)
 #define CREDIT_EASE_DURATION 22
@@ -75,6 +75,7 @@ client
 			animate(src, alpha = 0, transform = target, time = CREDIT_EASE_DURATION)
 			sleep(CREDIT_EASE_DURATION)
 			qdel(src)
+		CHECK_TICK
 	parent.screen += src
 
 /obj/screen/credit/Destroy()
@@ -101,7 +102,7 @@ client
 	possible_titles += "[pick("SPACE", "SEXY", "DRAGON", "WARLOCK", "LAUNDRY", "GUN", "ADVERTISING", "DOG", "CARBON MONOXIDE", "NINJA", "WIZARD", "SOCRATIC", "JUVENILE DELIQUENCY", "POLITICALLY MOTIVATED", "RADTACULAR SICKNASTY")] [pick("QUEST", "FORCE", "ADVENTURE")]"
 	possible_titles += "[pick("THE DAY [uppertext(GLOB.using_map.station_short)] STOOD STILL", "HUNT FOR THE GREEN WEENIE", "ALIEN VS VENDOMAT", "SPACE TRACK")]"
 	titles += "<center><h1>EPISODE [rand(1,1000)]<br>[pick(possible_titles)]<h1></h1></h1></center>"
-	for(var/mob/living/carbon/human/H in world)
+	for(var/mob/living/carbon/human/H in SSmobs.mob_list)
 		if(findtext(H.real_name,"(mannequin)"))
 			continue
 		if(H.isMonkey() && findtext(H.real_name,"[lowertext(H.species.name)]")) //no monki
@@ -128,6 +129,7 @@ client
 			cast += "<center>[jointext(chunk,"<br>")]</center>"
 			chunk.Cut()
 			chunksize = 0
+		CHECK_TICK
 	if(chunk.len)
 		cast += "<center>[jointext(chunk,"<br>")]</center>"
 
@@ -149,7 +151,7 @@ client
 	var/list/staff = list("PRODUCTION STAFF:")
 	var/list/staffjobs = list("Coffe Fetcher", "Cameraman", "Angry Yeller", "Chair Operator", "Choreographer", "Historical Consultant", "Costume Designer", "Chief Editor", "Executive Assistant")
 	var/list/goodboys = list()
-	for(var/client/C)
+	for(var/client/C in GLOB.clients)
 		if(!C.holder)
 			continue
 		if(C.holder.rights & (R_DEBUG|R_ADMIN))
@@ -158,6 +160,7 @@ client
 			staff += "[uppertext(pick(staffjobs))] - [S.get_random_name(g)] a.k.a. '[C.key]'"
 		else if(C.holder.rights & R_MOD)
 			goodboys += "[C.key]"
+		CHECK_TICK
 
 	titles += "<center>[jointext(staff,"<br>")]</center>"
 	if(goodboys.len)

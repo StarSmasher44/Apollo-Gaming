@@ -81,8 +81,8 @@
 	material = null
 	reinforced = null
 	update_connections(1) // Update tables around us to ignore us (material=null forces no connections)
-	for(var/obj/structure/table/T in oview(src, 1))
-		ADD_ICON_QUEUE(T)
+	for(var/obj/structure/table/T in orange(src, 1))
+		update_icon()
 	. = ..()
 
 /obj/structure/table/examine(mob/user)
@@ -128,7 +128,7 @@
 		if(!material)
 			update_connections(1)
 			update_icon()
-			for(var/obj/structure/table/T in oview(src, 1))
+			for(var/obj/structure/table/T in orange(src, 1))
 				ADD_ICON_QUEUE(T)
 			update_desc()
 			update_material()
@@ -372,7 +372,7 @@
 		connections = list("0", "0", "0", "0")
 
 		if(propagate)
-			for(var/obj/structure/table/T in oview(src, 1))
+			for(var/obj/structure/table/T in orange(src, 1))
 				T.update_connections()
 		return
 

@@ -162,7 +162,8 @@
 	update_use_power(src, 0)
 
 /obj/machinery/shieldgen/proc/create_shields()
-	for(var/turf/target_tile in RANGE_TURFS(2, src))
+	for(var/TA in RANGE_TURFS(2, src))
+		var/turf/target_tile = TA
 		if (isspace(target_tile) && !(locate(/obj/machinery/shield) in target_tile))
 			if (malfunction && prob(33) || !malfunction)
 				var/obj/machinery/shield/S = new/obj/machinery/shield(target_tile)

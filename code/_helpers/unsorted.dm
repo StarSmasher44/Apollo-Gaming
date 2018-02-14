@@ -836,11 +836,11 @@ proc/oview_or_orange(distance = world.view , center = usr , type)
 	return
 
 proc/get_mob_with_client_list()
-	var/list/mobs = list()
+	. = list()
 	for(var/mob/M in SSmobs.mob_list)
 		if (M.client)
-			mobs += M
-	return mobs
+			. += M
+	return .
 
 
 /proc/parse_zone(zone)

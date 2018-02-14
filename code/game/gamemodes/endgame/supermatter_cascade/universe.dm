@@ -77,25 +77,24 @@ AUTOMATED ALERT: Link to [command_name()] lost.
 		return
 
 /datum/universal_state/supermatter_cascade/proc/AreaSet()
-	for(var/area/A)
+	for(var/area/A in all_areas)
 		if(!isarea(A) || isspacearea(A) || istype(A,/area/beach))
 			continue
 		A.update_icon()
 		CHECK_TICK
 
 /datum/universal_state/supermatter_cascade/OverlayAndAmbientSet()
-	spawn(0)
 //		convert_all_parallax()
-		for(var/datum/lighting_corner/L in world)
-			if(L.z in GLOB.using_map.admin_levels)
-				L.update_lumcount(1,1,1)
-			else
-				L.update_lumcount(0.0, 0.4, 1)
-			CHECK_TICK
+	for(var/datum/lighting_corner/L in world)
+		if(L.z in GLOB.using_map.admin_levels)
+			L.update_lumcount(1,1,1)
+		else
+			L.update_lumcount(0.0, 0.4, 1)
+		CHECK_TICK
 
-		for(var/turf/space/T)
-			OnTurfChange(T)
-			CHECK_TICK
+	for(var/turf/space/T in turfs)
+		OnTurfChange(T)
+		CHECK_TICK
 /*
 /datum/universal_state/supermatter_cascade/proc/convert_all_parallax()
 	for(var/client/C in GLOB.clients)
@@ -123,7 +122,7 @@ AUTOMATED ALERT: Link to [command_name()] lost.
 
 /datum/universal_state/supermatter_cascade/proc/PlayerSet()
 	for(var/datum/mind/M in GLOB.player_list)
-		if(!istype(M.current,/mob/living))
+		if(!isliving(M.current))
 			continue
 		if(M.current.stat!=2)
 			M.current.Weaken(10)

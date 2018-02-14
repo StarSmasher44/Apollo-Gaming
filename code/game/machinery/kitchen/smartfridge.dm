@@ -323,7 +323,7 @@
 
 /obj/machinery/smartfridge/proc/throw_item()
 	var/obj/throw_item = null
-	var/mob/living/target = locate() in view(7,src)
+	var/mob/living/target = locate() in viewers(6,src)
 	if(!target)
 		return 0
 

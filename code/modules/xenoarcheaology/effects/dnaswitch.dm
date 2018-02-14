@@ -40,7 +40,8 @@
 /datum/artifact_effect/dnaswitch/DoEffectPulse()
 	if(holder)
 		var/turf/T = get_turf(holder)
-		for(var/mob/living/carbon/human/H in range(200, T))
+		for(var/mob/living/carbon/human/H in SSmobs.mob_list) // range(200, T) ?? Wtf
+			if(!H.z == T.z)	continue
 			var/weakness = GetAnomalySusceptibility(H)
 			if(prob(weakness * 100))
 				if(prob(75))

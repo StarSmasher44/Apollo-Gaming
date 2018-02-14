@@ -84,10 +84,9 @@
 		var/turf/T = get_turf(H)
 
 		if(T)
-			var/list/hear = hear(7, T)
 			var/list/hearturfs = list()
 
-			for(var/I in hear)
+			for(var/I in hear(7, T))
 				if(ismob(I))
 					var/mob/M = I
 					listening += M

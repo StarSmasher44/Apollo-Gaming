@@ -7,13 +7,13 @@
 		return
 	if(!islist(predicates))
 		predicates = list(predicates)
-	for(var/area/A)
+	for(var/area/A in all_areas)
 		if(all_predicates_true(list(A), predicates))
 			. += A
 
 /proc/get_area_turfs(var/area/A, var/list/predicates)
 	. = new/list()
-	A = isarea(A) ? A : locate(A)
+	A = isarea(A) ? A : locate(A) in all_areas
 	if(!A)
 		return
 	for(var/turf/T in A.contents)

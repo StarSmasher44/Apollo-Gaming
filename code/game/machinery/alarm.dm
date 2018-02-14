@@ -85,6 +85,7 @@
 	var/other_dangerlevel = 0
 
 	var/report_danger_level = 1
+	var/next_process_time = 0
 
 /obj/machinery/alarm/cold
 	target_temperature = T0C+4
@@ -155,34 +156,36 @@
 
 	//Handle temperature adjustment here.
 	handle_heating_cooling(environment)
+	if(next_process_time <= world.time)
+		next_process_time = world.time + 30		// 3 second delays between process updates
 
-	var/old_level = danger_level
-	var/old_pressurelevel = pressure_dangerlevel
-	danger_level = overall_danger_level(environment)
+		var/old_level = danger_level
+		var/old_pressurelevel = pressure_dangerlevel
+		danger_level = overall_danger_level(environment)
 
-	if (old_level != danger_level)
-		apply_danger_level(danger_level)
+		if (old_level != danger_level)
+			apply_danger_level(danger_level)
 
-	if (old_pressurelevel != pressure_dangerlevel)
-		if (breach_detected())
-			mode = AALARM_MODE_OFF
+		if (old_pressurelevel != pressure_dangerlevel)
+			if (breach_detected())
+				mode = AALARM_MODE_OFF
+				apply_mode()
+
+		if (mode==AALARM_MODE_CYCLE && environment.return_pressure()<ONE_ATMOSPHERE*0.05)
+			mode=AALARM_MODE_FILL
 			apply_mode()
 
-	if (mode==AALARM_MODE_CYCLE && environment.return_pressure()<ONE_ATMOSPHERE*0.05)
-		mode=AALARM_MODE_FILL
-		apply_mode()
-
-	//atmos computer remote controll stuff
-	switch(rcon_setting)
-		if(RCON_NO)
-			remote_control = 0
-		if(RCON_AUTO)
-			if(danger_level == 2)
-				remote_control = 1
-			else
+		//atmos computer remote controll stuff
+		switch(rcon_setting)
+			if(RCON_NO)
 				remote_control = 0
-		if(RCON_YES)
-			remote_control = 1
+			if(RCON_AUTO)
+				if(danger_level == 2)
+					remote_control = 1
+				else
+					remote_control = 0
+			if(RCON_YES)
+				remote_control = 1
 
 	return
 

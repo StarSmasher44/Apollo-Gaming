@@ -9,7 +9,7 @@
 #define ARTIFACTSPAWNNUM_UPPER 12
 
 /datum/controller/game_controller/proc/SetupXenoarch()
-	for(var/turf/simulated/mineral/M in world)
+	for(var/turf/simulated/mineral/M in Z_TURFS(6))
 		if(!M.density)
 			continue
 
@@ -22,7 +22,7 @@
 		var/farEnough = 1
 		for(var/A in digsite_spawning_turfs)
 			var/turf/T = A
-			if(T in range(5, M))
+			if(T in RANGE_TURFS(5, M))
 				farEnough = 0
 				break
 		if(!farEnough)
@@ -38,7 +38,7 @@
 
 		var/list/viable_adjacent_turfs = list()
 		if(target_digsite_size > 1)
-			for(var/turf/simulated/mineral/T in otrange(2, M))
+			for(var/turf/simulated/mineral/T in O_RANGE_TURFS(2, M))
 				if(!T.density)
 					continue
 				if(T.finds)
