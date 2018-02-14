@@ -24,6 +24,8 @@
 /obj/machinery/portable_atmospherics/Destroy()
 	QDEL_NULL(air_contents)
 	QDEL_NULL(holding)
+	if(connected_port)
+		connected_port = null
 	. = ..()
 
 /obj/machinery/portable_atmospherics/Initialize()

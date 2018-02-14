@@ -30,6 +30,9 @@
 /datum/action/Destroy()
 	if(owner)
 		Remove(owner)
+	target = null
+	qdel(button)
+	button = null
 
 /datum/action/proc/Grant(mob/living/T)
 	if(owner)

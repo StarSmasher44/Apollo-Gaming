@@ -258,6 +258,11 @@
 	..()
 	src.module = module
 
+/stat_rig_module/Destroy()
+	module.stat_modules.Cut()
+	. = ..()
+
+
 /stat_rig_module/proc/AddHref(var/list/href_list)
 	return
 

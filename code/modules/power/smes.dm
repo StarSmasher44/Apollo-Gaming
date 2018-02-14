@@ -62,11 +62,6 @@
 	return smes_amt / CELLRATE
 
 
-/obj/machinery/power/smes/New()
-	..()
-	if(!should_be_mapped)
-		warning("Non-buildable or Non-magical SMES at [src.x]X [src.y]Y [src.z]Z")
-
 /obj/machinery/power/smes/Initialize()
 	. = ..()
 	for(var/d in GLOB.cardinal)
@@ -79,6 +74,8 @@
 	if(!terminals.len)
 		stat |= BROKEN
 		return
+	if(!should_be_mapped)
+		warning("Non-buildable or Non-magical SMES at [src.x]X [src.y]Y [src.z]Z")
 	ADD_ICON_QUEUE(src)
 
 /obj/machinery/power/smes/add_avail(var/amount)

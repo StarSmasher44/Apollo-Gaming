@@ -63,12 +63,10 @@
 	return parent.return_network(reference)
 
 /obj/machinery/atmospherics/pipe/Destroy()
-	if(parent)
-		qdel(parent)
-	parent = null
+	QDEL_NULL(parent)
 	if(air_temporary)
 		loc.assume_air(air_temporary)
-	air_temporary = null
+		qdel(air_temporary)
 	. = ..()
 
 /obj/machinery/atmospherics/pipe/attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
@@ -985,6 +983,7 @@
 /obj/machinery/atmospherics/pipe/cap/Destroy()
 	if(node)
 		node.disconnect(src)
+		node = null
 
 	. = ..()
 
@@ -1107,7 +1106,7 @@
 /obj/machinery/atmospherics/pipe/tank/Destroy()
 	if(node1)
 		node1.disconnect(src)
-
+		node1 = null
 	. = ..()
 
 /obj/machinery/atmospherics/pipe/tank/pipeline_expansion()
@@ -1277,6 +1276,7 @@
 /obj/machinery/atmospherics/pipe/vent/Destroy()
 	if(node1)
 		node1.disconnect(src)
+		node1 = null
 
 	. = ..()
 

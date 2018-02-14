@@ -50,7 +50,8 @@
 
 /obj/item/weapon/pinpointer/Destroy()
 	active = 0
-	..()
+	the_disk = null
+	. = ..()
 
 /obj/item/weapon/pinpointer/advpinpointer
 	name = "Advanced Pinpointer"

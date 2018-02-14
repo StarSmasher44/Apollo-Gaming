@@ -33,6 +33,14 @@
 	spark_system.set_up(5, 0, src)
 	spark_system.attach(src)
 
+/obj/machinery/atm/Destroy()
+	if(held_card)
+		held_card.loc = src.loc
+		held_card = null
+	authenticated_account = null
+	account_security_level = 0
+	. = ..()
+
 /obj/machinery/atm/Process()
 	if(stat & NOPOWER)
 		return

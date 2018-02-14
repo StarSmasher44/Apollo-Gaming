@@ -25,6 +25,8 @@
 	if(ispath(mytape))
 		mytape = new mytape(src)
 	GLOB.listening_objects += src
+	ADD_ICON_QUEUE(src)
+
 /obj/item/device/taperecorder/empty
 	mytape = null
 

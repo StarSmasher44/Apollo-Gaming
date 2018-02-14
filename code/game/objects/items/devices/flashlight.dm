@@ -20,6 +20,10 @@
 	. = ..()
 	ADD_ICON_QUEUE(src)
 
+/obj/item/device/flashlight/Destroy()
+	set_light(0)
+	. = ..()
+
 /obj/item/device/flashlight/update_icon()
 	if(on)
 		icon_state = "[initial(icon_state)]-on"
