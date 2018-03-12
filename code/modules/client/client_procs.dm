@@ -331,11 +331,8 @@
 	// Add always-visible stat panel calls here, to define a consistent display order.
 	statpanel("Status")
 	. = ..()
-	if (holder)
-		sleep(1)
-	else
-		sleep(5)
-		stoplag()
+	winset(src, null, "command=.update_ping+[world.time+world.tick_lag*TICK_USAGE_REAL/100]")
+	stat("Ping: [round(src.lastping, 1)]ms (Average: [round(src.avgping, 1)]ms)")
 
 //send resources to the client. It's here in its own proc so we can move it around easiliy if need be
 /client/proc/send_resources()
