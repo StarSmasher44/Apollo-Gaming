@@ -386,7 +386,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 		if (SS_flags & SS_NO_FIRE)
 			subsystemstocheck -= SS
 			continue
-		if (!(SS_flags & SS_TICKER) && (SS_flags & SS_KEEP_TIMING) && SS.last_fire + (SS.wait * 0.75) > world.time)
+		if ((SS_flags & (SS_TICKER|SS_KEEP_TIMING)) == SS_KEEP_TIMING && SS.last_fire + (SS.wait * 0.75) > world.time)
 			continue
 		SS.enqueue()
 	. = 1
@@ -499,7 +499,8 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 			queue_node.times_fired++
 
 			if (queue_node_flags & SS_TICKER)
-				queue_node.next_fire = world.time + (world.tick_lag * (queue_node.wait + (queue_node.tick_overrun/100)))
+//				queue_node.next_fire = world.time + (world.tick_lag * (queue_node.wait + (queue_node.tick_overrun/100)))
+				queue_node.next_fire = world.time + (world.tick_lag * queue_node.wait)
 			else if (queue_node_flags & SS_POST_FIRE_TIMING)
 				queue_node.next_fire = world.time + queue_node.wait + (world.tick_lag * (queue_node.tick_overrun/100))
 			else if (queue_node_flags & SS_KEEP_TIMING)
