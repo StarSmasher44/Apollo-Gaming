@@ -111,26 +111,54 @@ datum/preferences
 		close_load_dialog(user)
 		return
 
-	var/dat = "<html><body><center>"
+	var/dat = ""
 
-	if(path)
-		dat += "Slot - "
-		dat += "<a href='?src=\ref[src];load=1'>Load slot</a> - "
-		dat += "<a href='?src=\ref[src];save=1'>Save slot</a> - "
-		dat += "<a href='?src=\ref[src];resetslot=1'>Reset slot</a> - "
-		dat += "<a href='?src=\ref[src];reload=1'>Reload slot</a>"
+//	if(path)
+//		dat += "Slot - "
+//		dat += "<a href='?src=\ref[src];load=1'>Load slot</a> - "
+//		dat += "<a href='?src=\ref[src];save=1'>Save slot</a> - "
+//		if(char_lock)
+//			dat += "<span style='color:green'>Lock Character (LOCKED)</span> -"
+//		else
+//			dat += "<span style='color:red'><a href='?src=\ref[src];lockchar=1'>Lock Character (UNLOCKED)</a></span> -"
+//		dat += "<a href='?src=\ref[src];resetslot=1'>Reset slot</a> - "
+//		dat += "<a href='?src=\ref[src];reload=1'>Reload slot</a>"
+/*		dat += {"
+			<html><body>
 
-	else
+			<nav class='vNav'>
+			<ul>
+			<li><a href='?src=\ref[src];page=1'>Character</a>
+			<li><a class='active' href='?src=\ref[src];page=2'>Occupation</a>
+			<li><a href='?src=\ref[src];page=3'>Loadout</a>
+			<li><a href='?src=\ref[src];page=4'>Local Preferences</a>
+			<li><hr>
+			<li><a href='?src=\ref[src];page=9'>Records</a>
+			<li><hr>
+			<li><a href='?src=\ref[src];page=8'>Global Preferences</a>
+			</ul>
+			</nav>
+
+			<div class='main' style='width:650px; font-size: medium;'>
+			"}
+*/
+	if(!path)
 		dat += "Please create an account to save your preferences."
 
-	dat += "<br>"
-	dat += player_setup.header()
-	dat += "<br><HR></center>"
+//	dat += "<hr>"
+	dat += player_setup.header(user)
+	dat += "<p>"
 	dat += player_setup.content(user)
+	dat += "</p>"
+//	usr << browse_rsc('html/images/uiBackground.png', "uiBackground.png")
+	dat += player_setup.footer(user)
 
 	dat += "</html></body>"
-	var/datum/browser/popup = new(user, "Character Setup","Character Setup", 1200, 800, src)
+	var/datum/browser/popup = new(user, "Character Setup","", 1200, 800, src)
 	popup.set_content(dat)
+	popup.add_stylesheet("parallax", 'html/browser/space-parallax.css')
+	popup.add_stylesheet("common", 'html/browser/menu.css')
+//	popup.add_stylesheet("playermenu", 'html/browser/playermenu.css')
 	popup.open()
 
 /datum/preferences/proc/process_link(mob/user, list/href_list)

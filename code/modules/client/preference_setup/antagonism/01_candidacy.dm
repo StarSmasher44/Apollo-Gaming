@@ -38,6 +38,7 @@
 
 /datum/category_item/player_setup_item/antagonism/candidacy/content(var/mob/user)
 	. = list()
+//	. += "<div class='main' style='width:650px; font-size: small;'>"
 	. += "<b>Special Role Availability:</b><br>"
 	. += "<table>"
 	var/list/all_antag_types = all_antag_types()

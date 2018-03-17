@@ -18,6 +18,8 @@
 	pref.uplinklocation	= sanitize_inlist(pref.uplinklocation, GLOB.uplink_locations, initial(pref.uplinklocation))
 
 /datum/category_item/player_setup_item/antagonism/basic/content(var/mob/user)
+	. += "</div>"
+	. += "<div class='secondary'>"
 	. +="<b>Antag Setup:</b><br>"
 	. +="Uplink Type: <a href='?src=\ref[src];antagtask=1'>[pref.uplinklocation]</a><br>"
 	. +="Exploitable information:<br>"
@@ -25,7 +27,7 @@
 		. += "<b>You are banned from using character records.</b><br>"
 	else
 		. +="<a href='?src=\ref[src];exploitable_record=1'>[TextPreview(pref.exploit_record,40)]</a><br>"
-
+	. += "</div>"
 /datum/category_item/player_setup_item/antagonism/basic/OnTopic(var/href,var/list/href_list, var/mob/user)
 	if (href_list["antagtask"])
 		pref.uplinklocation = next_in_list(pref.uplinklocation, GLOB.uplink_locations)

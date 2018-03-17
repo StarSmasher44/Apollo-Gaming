@@ -103,6 +103,7 @@ var/list/gear_datums = list()
 
 /datum/category_item/player_setup_item/loadout/content()
 	. = list()
+//	. += "<div class='main' style='width:650px; overflow-y:scroll;'>"
 	var/total_cost = 0
 	var/list/gears = pref.gear_list[pref.gear_slot]
 	for(var/i = 1; i <= gears.len; i++)

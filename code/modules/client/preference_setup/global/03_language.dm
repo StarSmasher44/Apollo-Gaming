@@ -15,6 +15,8 @@
 /datum/category_item/player_setup_item/player_global/language/content(var/mob/user)
 	. += "<b>Language Keys</b><br>"
 	. += " [jointext(pref.language_prefixes, " ")] <a href='?src=\ref[src];change_prefix=1'>Change</a> <a href='?src=\ref[src];reset_prefix=1'>Reset</a><br>"
+	. += "</div>"
+	. += "<div class='secondary'>"
 
 /datum/category_item/player_setup_item/player_global/language/OnTopic(var/href, var/list/href_list, var/mob/user)
 	if(href_list["change_prefix"])

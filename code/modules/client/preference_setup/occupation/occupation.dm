@@ -81,6 +81,7 @@
 	var/datum/mil_rank/player_rank = null
 
 	. = list()
+	. += "<div class='main' style='width:700px; font-size: medium;'>"
 	. += "<tt><center>"
 	. += "<b>Choose occupation chances</b><br>Unavailable occupations are crossed out.<br>"
 //	if(GLOB.using_map.flags & MAP_HAS_BRANCH)
@@ -199,7 +200,7 @@
 			. += "<u><a href='?src=\ref[src];job_alternative=1'>Return to lobby if preference unavailable</a></u>"
 
 	. += "<a href='?src=\ref[src];reset_jobs=1'>\[Reset\]</a></center>"
-	. += "</tt>"
+	. += "</tt></div>"
 	. = jointext(.,null)
 
 /datum/category_item/player_setup_item/occupation/OnTopic(href, href_list, user)

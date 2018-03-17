@@ -87,18 +87,60 @@
 	for(var/datum/category_group/player_setup_category/PS in categories)
 		. = PS.update_setup(preferences, character) || .
 
-/datum/category_collection/player_setup_collection/proc/header()
-	var/dat = ""
+/datum/category_collection/player_setup_collection/proc/header(var/mob/user)
+	var/dat = {"
+		<html><body>
+		<div id='stars'></div>
+		<div id='stars2'></div>
+		<div id='stars3'></div>
+		<nav class='vNav'>
+		<ul>"}
 	for(var/datum/category_group/player_setup_category/PS in categories)
 		if(PS == selected_category)
-			dat += "[PS.name] "	// TODO: Check how to properly mark a href/button selected in a classic browser window
+//			dat += "[PS.name] "	// TODO: Check how to properly mark a href/button selected in a classic browser window
+			dat += "<li><a class='active'>[PS.name]</a>"
 		else
-			dat += "<a href='?src=\ref[src];category=\ref[PS]'>[PS.name]</a> "
+			dat += "<li><a href='?src=\ref[src];category=\ref[PS]'>[PS.name]</a>"
+	dat += "</ul></nav>"
+	dat += {"
+		<nav class='hNav'>"
+		<ul>
+		<li><a href='?src=\ref[src];save=1'>Save</a>
+		<li><a href='?src=\ref[src];load=1'>Load</a>
+		<li><a href='?src=\ref[src];delete=1'>Reset</a>
+		<li><a href='?src=\ref[src];reload=1'>Reload</a>
+		"}
+	if(user.client.prefs.char_lock)
+		dat += "<li><a href='?src=\ref[src];lockchar=0'>Lock Character (LOCKED)</a></span>"
+	else
+		dat += "<li><a href='?src=\ref[src];lockchar=1'>Lock Character (UNLOCKED)</a></span>"
+	dat += {"</ul>
+	</nav>
+	"}
 	return dat
 
+
 /datum/category_collection/player_setup_collection/proc/content(var/mob/user)
-	if(selected_category)
-		return selected_category.content(user)
+	var/dat
+//	dat += {"
+//	<div id='stars'></div>
+//	<div id='stars2'></div>
+//	<div id='stars3'></div>"}
+
+//	dat += "<div class='main' style='width:650px; font-size: medium;'>"
+	dat += "<div class='main' style='font-size: medium;>" // font-size: medium;>"
+	dat += selected_category.content(user)
+	return jointext(dat,null)
+
+/datum/category_collection/player_setup_collection/proc/footer(var/mob/user)
+	var/dat = {"
+		</div>
+		</body></html>
+		"}
+//		<div class='secondary'></div>
+//		</body></html>
+//		"}
+	return dat
 
 /datum/category_collection/player_setup_collection/Topic(var/href,var/list/href_list)
 	if(..())
@@ -106,13 +148,47 @@
 	var/mob/user = usr
 	if(!user.client)
 		return 1
-
+	var/datum/preferences/usrprefs = usr.client.prefs
 	if(href_list["category"])
 		var/category = locate(href_list["category"])
 		if(category && category in categories)
 			selected_category = category
 		. = 1
 
+	else if(href_list["save"])
+		usrprefs.save_preferences()
+		usrprefs.save_character()
+	else if(href_list["lockchar"] == 1)
+		if(!usrprefs.char_lock)
+			switch(alert("Are you sure you wish to lock your character? The only way back is a reset!", "Character Lock", "Yes", "No"))
+				if("Yes")
+					usrprefs.save_preferences()
+					usrprefs.save_character()
+					usrprefs.char_lock = 1
+		else
+			to_chat(usr, "<span clas='notice'>Character is already locked.</span>")
+			return
+	else if(href_list["reload"])
+		usrprefs.load_preferences()
+		usrprefs.load_character()
+		usrprefs.sanitize_preferences()
+	else if(href_list["load"])
+		if(!IsGuestKey(usr.key))
+			usrprefs.open_load_dialog(usr)
+			return 1
+	else if(href_list["changeslot"])
+		usrprefs.load_character(text2num(href_list["changeslot"]))
+		usrprefs.sanitize_preferences()
+		usrprefs.close_load_dialog(usr)
+	else if(href_list["resetslot"])
+		if(usrprefs.real_name != input("This will reset the current slot. Enter the character's full name to confirm."))
+			return 0
+		usrprefs.load_character(SAVE_RESET)
+		usrprefs.sanitize_preferences()
+		usrprefs.char_lock = 0 //Reset char lock just so we're sure.
+		usrprefs.save_character()
+	else
+		return 0
 	if(.)
 		user.client.prefs.ShowChoices(user)
 

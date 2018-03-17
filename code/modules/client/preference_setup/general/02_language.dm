@@ -17,6 +17,8 @@
 	sanitize_alt_languages()
 
 /datum/category_item/player_setup_item/general/language/content()
+//	. += "<div class='main' style='width:650px; font-size: medium;'>"
+	. += "</div><div class='secondary' style='font-size: medium;'>"
 	. += "<b>Languages</b><br>"
 	var/datum/species/S = all_species[pref.species]
 	if(S.language)
@@ -33,6 +35,7 @@
 			. += "- <a href='?src=\ref[src];add_language=1'>add</a> ([S.num_alternate_languages - pref.alternate_languages.len] remaining)<br>"
 	else
 		. += "- [pref.species] cannot choose secondary languages.<br>"
+	. += "</div>"
 
 /datum/category_item/player_setup_item/general/language/OnTopic(var/href,var/list/href_list, var/mob/user)
 	if(href_list["remove_language"])
