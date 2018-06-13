@@ -9,7 +9,7 @@
 	set category = "OOC"
 
 	if(donator)		//swippity swoppity
-		src << "You are registed as a donator, Thanks a lot!"
+		src << "You are registered as a Tier [donator] donator, thanks a lot!"
 	else
 		src << "You are not a registered donator. If you have donated please contact a member of staff to enquire."
 
@@ -31,4 +31,4 @@
 	log_admin("DON: [key_name(src)] : [msg]")
 	for(var/client/C in GLOB.clients)
 		if((C.holder && (C.holder.rights & R_ADMIN || C.holder.rights & R_MOD)) || C.donator)
-			C << "<span class='donator'>" + create_text_tag("don", "DON:", C) + " <b>[src]: </b><span class='message'>[msg]</span></span>"
+			C << "<span class='donator[C.donator]'>" + create_text_tag("don", "DON:", C) + " <b>[src]: </b><span class='message'>[msg]</span></span>"

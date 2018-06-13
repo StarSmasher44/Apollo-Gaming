@@ -26,7 +26,12 @@ em						{font-style: normal;font-weight: bold;}
 .ooc .admin				{color: #b82e00;}
 .ooc .aooc				{color: #960018;}
 .ooc .donator			{color: #8D2B96;}
-.donator				{color: #8D2B96;}
+.ooc .apveteran			{color: #41676d,}
+.apveteran				{color: #41676d;}
+/* Slightly darker color per tier */
+.donator1				{color: #C639C6;}
+.donator2				{color: #9E2E9E;}
+.donator3				{color: #91279B;}
 
 .staffwarn				{color: #ff0000; font-weight:bold; font-size: 150%;}
 /* Admin: Private Messages */
