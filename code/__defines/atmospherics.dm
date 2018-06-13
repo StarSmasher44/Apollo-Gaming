@@ -61,3 +61,9 @@
 #define CONNECT_TYPE_SUPPLY		2
 #define CONNECT_TYPE_SCRUBBER	4
 #define CONNECT_TYPE_HE			8
+
+//used for device_type vars
+#define UNARY_D		1
+#define BINARY_D 		2
+#define TRINARY_D		3
+#define QUATERNARY_D	4

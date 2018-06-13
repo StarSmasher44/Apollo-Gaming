@@ -8,6 +8,7 @@
 	use_power = 1
 	initialize_directions = 0
 	level = 1
+	device_type = QUATERNARY_D
 
 	var/configuring = 0
 	//var/target_pressure = ONE_ATMOSPHERE	//a base type as abstract as this should NOT be making these kinds of assumptions

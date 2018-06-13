@@ -1,6 +1,7 @@
 /obj/machinery/atmospherics/unary
 	dir = SOUTH
 	initialize_directions = SOUTH
+	device_type = UNARY_D
 
 	layer = ABOVE_TILE_LAYER
 

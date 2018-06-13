@@ -25,6 +25,7 @@ Pipelines + Other Objects -> Pipe network
 
 	var/initialize_directions = 0
 	var/pipe_color
+	var/device_type
 
 	var/global/datum/pipe_icon_manager/icon_manager
 	var/obj/machinery/atmospherics/node1

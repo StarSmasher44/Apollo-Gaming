@@ -26,17 +26,20 @@
 /datum/pipeline/Process()//This use to be called called from the pipe networks
 
 	//Check to see if pressure is within acceptable limits
+	if(!air)	return
 	var/pressure = air.return_pressure()
 	if(pressure > alert_pressure)
-		for(var/obj/machinery/atmospherics/pipe/member in members)
-			if(!member.check_pressure(pressure))
+		for(var/M in members)
+			var/obj/machinery/atmospherics/pipe/member = M
+			if(member && !member.check_pressure(pressure))
 				members.Remove(member)
 				break //Only delete 1 pipe per process
 
 /datum/pipeline/proc/temporarily_store_air()
 	//Update individual gas_mixtures by volume ratio
 
-	for(var/obj/machinery/atmospherics/pipe/member in members)
+	for(var/M in members)
+		var/obj/machinery/atmospherics/pipe/member = M
 		member.air_temporary = new
 		member.air_temporary.copy_from(air)
 		member.air_temporary.volume = member.volume

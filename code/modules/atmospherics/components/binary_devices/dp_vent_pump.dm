@@ -59,23 +59,23 @@
 	if(!check_icon_cache())
 		return
 
-	overlays.Cut()
+//	overlays.Cut()
 
-	var/vent_icon = "vent"
+	var/istate = ""
 
 	var/turf/T = get_turf(src)
 	if(!isturf(T))
 		return
 
 	if(!T.is_plating() && node1 && node2 && node1.level == 1 && node2.level == 1 && istype(node1, /obj/machinery/atmospherics/pipe) && istype(node2, /obj/machinery/atmospherics/pipe))
-		vent_icon += "h"
+		istate += "h"
 
 	if(!powered())
-		vent_icon += "off"
+		istate += "off"
 	else
-		vent_icon += "[use_power ? "[pump_direction ? "out" : "in"]" : "off"]"
+		istate += "[use_power ? "[pump_direction ? "out" : "in"]" : "off"]"
 
-	overlays += icon_manager.get_atmos_icon("device", , , vent_icon)
+	icon_state = istate
 
 /obj/machinery/atmospherics/binary/dp_vent_pump/update_underlays()
 	if(..())
@@ -119,7 +119,8 @@
 		if(pump_direction) //internal -> external
 			if (node1 && (environment.temperature || air1.temperature))
 				var/transfer_moles = calculate_transfer_moles(air1, environment, pressure_delta)
-				power_draw = pump_gas(src, air1, environment, transfer_moles, power_rating)
+				if(transfer_moles)
+					power_draw = pump_gas(src, air1, environment, transfer_moles, power_rating)
 
 				if(power_draw >= 0 && network1)
 					network1.update = 1
@@ -129,7 +130,8 @@
 
 				//limit flow rate from turfs
 				transfer_moles = min(transfer_moles, environment.total_moles*air2.volume/environment.volume)	//group_multiplier gets divided out here
-				power_draw = pump_gas(src, environment, air2, transfer_moles, power_rating)
+				if(transfer_moles)
+					power_draw = pump_gas(src, environment, air2, transfer_moles, power_rating)
 
 				if(power_draw >= 0 && network2)
 					network2.update = 1

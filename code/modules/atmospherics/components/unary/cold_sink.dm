@@ -146,8 +146,6 @@
 		else
 			cooling = 0
 
-		ADD_ICON_QUEUE(src)
-
 //upgrading parts
 /obj/machinery/atmospherics/unary/freezer/RefreshParts()
 	..()

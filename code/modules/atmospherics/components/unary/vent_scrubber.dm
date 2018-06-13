@@ -30,8 +30,8 @@
 	var/welded = 0
 
 /obj/machinery/atmospherics/unary/vent_scrubber/on
-	use_power = 1
-	icon_state = "map_scrubber_on"
+//	use_power = 0
+	icon_state = "map_scrubber_on" //~Laz: Sinde 3/24, I have disabled these through the AA to be activated when needed.... Just tricking everyone with this.
 
 /obj/machinery/atmospherics/unary/vent_scrubber/New()
 	..()
@@ -154,13 +154,13 @@
 	if(scrubbing)
 		//limit flow rate from turfs
 		var/transfer_moles = min(environment.total_moles, environment.total_moles*MAX_SCRUBBER_FLOWRATE/environment.volume)	//group_multiplier gets divided out here
-
-		power_draw = scrub_gas(src, scrubbing_gas, environment, air_contents, transfer_moles, power_rating)
+		if(transfer_moles)
+			power_draw = scrub_gas(src, scrubbing_gas, environment, air_contents, transfer_moles, power_rating)
 	else //Just siphon all air
 		//limit flow rate from turfs
 		var/transfer_moles = min(environment.total_moles, environment.total_moles*MAX_SIPHON_FLOWRATE/environment.volume)	//group_multiplier gets divided out here
-
-		power_draw = pump_gas(src, environment, air_contents, transfer_moles, power_rating)
+		if(transfer_moles)
+			power_draw = pump_gas(src, environment, air_contents, transfer_moles, power_rating)
 
 	if(scrubbing && power_draw <= 0)	//99% of all scrubbers
 		//Fucking hibernate because you ain't doing shit.

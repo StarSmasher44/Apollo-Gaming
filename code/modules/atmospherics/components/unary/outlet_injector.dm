@@ -55,7 +55,8 @@
 
 	if(environment && air_contents.temperature > 0)
 		var/transfer_moles = (volume_rate/air_contents.volume)*air_contents.total_moles //apply flow rate limit
-		power_draw = pump_gas(src, air_contents, environment, transfer_moles, power_rating)
+		if(transfer_moles)
+			power_draw = pump_gas(src, air_contents, environment, transfer_moles, power_rating)
 
 	if (power_draw >= 0)
 		last_power_draw = power_draw

@@ -94,8 +94,6 @@
 	if (last_flow_rate)
 		flowing = 1
 
-	ADD_ICON_QUEUE(src)
-
 
 //Radio remote control
 
@@ -131,6 +129,7 @@
 	. = ..()
 	if(frequency)
 		set_frequency(frequency)
+	ADD_ICON_QUEUE(src)
 
 /obj/machinery/atmospherics/binary/passive_gate/receive_signal(datum/signal/signal)
 	if(!signal.data["tag"] || (signal.data["tag"] != id) || (signal.data["sigtype"]!="command"))

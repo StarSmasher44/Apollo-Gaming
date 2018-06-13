@@ -115,6 +115,7 @@ obj/machinery/atmospherics/mains_pipe/simple
 
 	dir = SOUTH
 	initialize_mains_directions = SOUTH|NORTH
+	device_type = BINARY_D
 
 	New()
 		nodes.len = 2
@@ -197,6 +198,7 @@ obj/machinery/atmospherics/mains_pipe/manifold
 	dir = SOUTH
 	initialize_mains_directions = EAST|NORTH|WEST
 	volume = 105
+	device_type = TRINARY_D
 
 	New()
 		nodes.len = 3
@@ -262,6 +264,7 @@ obj/machinery/atmospherics/mains_pipe/manifold4w
 	dir = SOUTH
 	initialize_mains_directions = EAST|NORTH|WEST|SOUTH
 	volume = 105
+	device_type = QUATERNARY_D
 
 	New()
 		nodes.len = 4
@@ -312,6 +315,7 @@ obj/machinery/atmospherics/mains_pipe/split
 	var/obj/machinery/atmospherics/pipe/mains_component/split_node
 	var/obj/machinery/atmospherics/node3
 	var/icon_type
+	device_type = TRINARY_D
 
 	New()
 		nodes.len = 2
@@ -410,6 +414,7 @@ obj/machinery/atmospherics/mains_pipe/split3
 	name = "triple mains splitter"
 	desc = "A splitter for connecting to the 3 pipes on a mainline."
 
+	device_type = QUATERNARY_D
 	var/obj/machinery/atmospherics/supply_node
 	var/obj/machinery/atmospherics/scrubbers_node
 	var/obj/machinery/atmospherics/aux_node

@@ -16,6 +16,7 @@ obj/machinery/atmospherics/pipe/simple/heat_exchanging
 	maximum_pressure = 360*ONE_ATMOSPHERE
 	fatigue_pressure = 300*ONE_ATMOSPHERE
 	alert_pressure = 360*ONE_ATMOSPHERE
+	device_type = BINARY_D
 
 	can_buckle = 1
 	buckle_lying = 1

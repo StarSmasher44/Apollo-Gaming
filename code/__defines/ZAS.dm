@@ -115,3 +115,11 @@ var/list/gzn_check = list(NORTH, SOUTH, EAST, WEST)
 	}
 
 #endif
+/*THIS IS WHERE WE START REDEFINING (lol) THE ZAS/XGM STUFF.*/
+#define return_pressure2(GM) \
+	if (GM.volume) { \
+		return (total_moles * R_IDEAL_GAS_EQUATION * temperature / volume); \
+	} \
+	else { \
+		return 0; \
+	}

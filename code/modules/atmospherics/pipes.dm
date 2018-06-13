@@ -5,6 +5,7 @@
 	var/volume = 0
 	var/leaking = 0
 	use_power = 0
+	device_type = BINARY_D
 
 	var/alert_pressure = 170*ONE_ATMOSPHERE
 	var/in_stasis = 0
@@ -152,6 +153,7 @@
 
 	dir = SOUTH
 	initialize_directions = SOUTH|NORTH
+	device_type = BINARY_D
 
 	var/minimum_temperature_difference = 300
 	var/thermal_conductivity = 0 //WALL_HEAT_TRANSFER_COEFFICIENT No
@@ -432,6 +434,7 @@
 
 	dir = SOUTH
 	initialize_directions = EAST|NORTH|WEST
+	device_type = TRINARY_D
 
 	var/obj/machinery/atmospherics/node3
 
@@ -694,6 +697,7 @@
 
 	dir = SOUTH
 	initialize_directions = NORTH|SOUTH|EAST|WEST
+	device_type = QUATERNARY_D
 
 	var/obj/machinery/atmospherics/node3
 	var/obj/machinery/atmospherics/node4

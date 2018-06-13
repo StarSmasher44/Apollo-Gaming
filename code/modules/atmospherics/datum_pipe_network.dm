@@ -21,7 +21,7 @@
 	//Equalize gases amongst pipe if called for
 	if(update)
 		update = 0
-		reconcile_air() //equalize_gases(gases)
+		equalize_gases(gases) //reconcile_air()
 
 	//Give pipelines their process call for pressure checking and what not. Have to remove pressure checks for the time being as pipes dont radiate heat - Mport
 	//for(var/datum/pipeline/line_member in line_members)
@@ -63,18 +63,21 @@
 /datum/pipe_network/proc/update_network_gases()
 	//Go through membership roster and make sure gases is up to date
 
-	gases = list()
+	. = list()
 	volume = 0
 
-	for(var/obj/machinery/atmospherics/normal_member in normal_members)
+	for(var/NM in normal_members)
+		var/obj/machinery/atmospherics/normal_member = NM
 		var/result = normal_member.return_network_air(src)
-		if(result) gases += result
+		if(result) . += result
 
-	for(var/datum/pipeline/line_member in line_members)
-		gases += line_member.air
+	for(var/LM in line_members)
+		var/datum/pipeline/line_member = LM
+		. += line_member.air
 
-	for(var/datum/gas_mixture/air in gases)
+	for(var/datum/gas_mixture/air in .)
 		volume += air.volume
+	gases = .
 
 /datum/pipe_network/proc/reconcile_air()
 	equalize_gases(gases)

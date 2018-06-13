@@ -84,7 +84,6 @@
 		else
 			heating = 0
 
-		ADD_ICON_QUEUE(src)
 
 /obj/machinery/atmospherics/unary/heater/attack_ai(mob/user as mob)
 	ui_interact(user)
@@ -133,6 +132,7 @@
 			set_temperature = min(set_temperature + amount, max_temperature)
 		else
 			set_temperature = max(set_temperature + amount, 0)
+		ADD_ICON_QUEUE(src)
 	if(href_list["setPower"]) //setting power to 0 is redundant anyways
 		var/new_setting = between(0, text2num(href_list["setPower"]), 100)
 		set_power_level(new_setting)
