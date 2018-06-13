@@ -237,7 +237,8 @@
 
 //similar function to RANGE_TURFS(), but will search spiralling outwards from the center (like the above, but only turfs)
 /proc/spiral_range_turfs(dist=0, center=usr, orange=0, list/outlist = list(), tick_checked)
-	outlist.Cut()
+	LAZYINITLIST(outlist)
+	LAZYCLEARLIST(outlist)
 	if(!dist)
 		outlist += center
 		return outlist

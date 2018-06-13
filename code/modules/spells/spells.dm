@@ -6,7 +6,7 @@
 	if(. && ability_master && ability_master.spell_objects)
 		for(var/obj/screen/ability/spell/screen in ability_master.spell_objects)
 			var/spell/S = screen.spell
-			if((!S.connected_button) || !statpanel(S.panel))
+			if(S && (!S.connected_button) || !statpanel(S.panel))
 				continue //Not showing the noclothes spell
 			switch(S.charge_type)
 				if(Sp_RECHARGE)

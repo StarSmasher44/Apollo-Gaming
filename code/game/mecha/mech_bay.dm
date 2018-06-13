@@ -18,7 +18,7 @@
 
 /obj/machinery/mech_recharger/New()
 	..()
-	component_parts = list()
+	LAZYINITLIST(component_parts)
 
 	component_parts += new /obj/item/weapon/circuitboard/mech_recharger(src)
 	component_parts += new /obj/item/weapon/stock_parts/capacitor(src)

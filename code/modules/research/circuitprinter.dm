@@ -23,7 +23,7 @@ using metal and glass, it uses glass and reagents (usually sulphuric acid).
 	materials = default_material_composition.Copy()
 
 	. = ..()
-	component_parts = list()
+	LAZYINITLIST(component_parts)
 	component_parts += new /obj/item/weapon/circuitboard/circuit_imprinter(src)
 	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
 	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)

@@ -121,7 +121,7 @@ DBQuery/proc/GetRowData()
 	var/list/columns = Columns()
 	var/list/results
 	if(columns.len)
-		results = list()
+		LAZYINITLIST(results)
 		for(var/C in columns)
 			results+=C
 			var/DBColumn/cur_col = columns[C]

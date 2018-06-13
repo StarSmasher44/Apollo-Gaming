@@ -270,7 +270,7 @@
 // is to avoid filling the list with nulls, as place_shard won't place shards of certain materials (holo-wood, holo-steel)
 
 /obj/structure/table/proc/break_to_parts(full_return = 0)
-	. = list()
+	LAZYINITLIST(.)
 	var/obj/item/weapon/material/shard/S = null
 	if(reinforced)
 		if(reinforced.stack_type && (full_return || prob(20)))

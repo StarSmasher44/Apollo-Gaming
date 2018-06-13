@@ -27,8 +27,8 @@
 		src.name = _name
 
 	var/list/areas = list()
-	if(!islist(shuttle_area))
-		shuttle_area = list(shuttle_area)
+	LAZYINITLIST(shuttle_area)
+	shuttle_area = list(shuttle_area)
 	for(var/T in shuttle_area)
 		var/area/A = locate(T)
 		if(!isarea(A))

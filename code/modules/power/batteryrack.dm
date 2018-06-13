@@ -32,7 +32,7 @@
 	RefreshParts()
 
 /obj/machinery/power/smes/batteryrack/proc/add_parts()
-	component_parts = list()
+	LAZYINITLIST(component_parts)
 	component_parts += new /obj/item/weapon/circuitboard/batteryrack
 	component_parts += new /obj/item/weapon/stock_parts/capacitor/				// Capacitors: Maximal I/O
 	component_parts += new /obj/item/weapon/stock_parts/capacitor/

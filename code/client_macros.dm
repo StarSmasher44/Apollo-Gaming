@@ -22,8 +22,7 @@ var/list/registered_macros_by_ckey_
 	log_and_message_admins("attempted to use the disabled [macro] macro.")
 
 /proc/get_registered_macros()
-	if(!registered_macros_by_ckey_)
-		registered_macros_by_ckey_ = list()
+	LAZYINITLIST(registered_macros_by_ckey_)
 	return registered_macros_by_ckey_
 
 /proc/is_macro_use_registered(var/ckey, var/macro)
@@ -33,7 +32,6 @@ var/list/registered_macros_by_ckey_
 /proc/register_macro_use(var/ckey, var/macro)
 	var/list/registered_macros_by_ckey = get_registered_macros()
 	var/list/registered_macros = registered_macros_by_ckey[ckey]
-	if(!registered_macros)
-		registered_macros = list()
-		registered_macros_by_ckey[ckey] = registered_macros
+	LAZYINITLIST(registered_macros)
+	registered_macros_by_ckey[ckey] = registered_macros
 	registered_macros |= macro

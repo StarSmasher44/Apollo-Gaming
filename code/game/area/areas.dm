@@ -37,7 +37,7 @@
 	return contents
 
 /area/proc/initmachinelist()
-	machinecache = list()
+	LAZYINITLIST(machinecache)
 	for(var/obj/machinery/M in src)	// for each machine in the area
 		machinecache += M
 

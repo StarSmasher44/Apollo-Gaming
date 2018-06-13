@@ -52,6 +52,7 @@
 	worn_underwear = null
 	for(var/organ in organs)
 		qdel(organ)
+	LAZYCLEARLIST(hud_list)
 	return ..()
 
 /mob/living/carbon/human/Stat()

@@ -9,6 +9,7 @@ var/list/default_material_composition = list("steel" = 0, "glass" = 0, "gold" = 
 	density = 1
 	anchored = 1
 	use_power = 1
+	unacidable = 1
 	var/busy = 0
 	var/obj/machinery/computer/rdconsole/linked_console
 

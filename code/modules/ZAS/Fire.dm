@@ -8,7 +8,7 @@ If it gains pressure too slowly, it may leak or just rupture instead of explodin
 
 //#define FIREDBG
 
-/turf/var/obj/fire/fire = null
+/turf/var/tmp/obj/fire/fire = null
 
 //Some legacy definitions so fires can be started.
 atom/proc/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
@@ -37,33 +37,37 @@ turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 	return igniting
 
 /zone/proc/process_fire()
-	var/datum/gas_mixture/burn_gas = air.remove_ratio(vsc.fire_consuption_rate, fire_tiles.len)
+	var/datum/gas_mixture/burn_gas = air.remove_ratio(vsc.fire_consuption_rate, LAZYLEN(fire_tiles))
 
-	var/firelevel = burn_gas.zburn(src, fire_tiles, force_burn = 1, no_check = 1)
+	var/firelevel = burn_gas.react(src, fire_tiles, force_burn = 1, no_check = 1)
 
 	air.merge(burn_gas)
 
 	if(firelevel)
-		for(var/turf/T in fire_tiles)
+		for(var/TA in fire_tiles)
+			var/turf/T = TA
 			if(T.fire)
 				T.fire.firelevel = firelevel
 			else
 				var/obj/effect/decal/cleanable/liquid_fuel/fuel = locate() in T
-				fire_tiles -= T
-				fuel_objs -= fuel
+				LAZYREMOVE(fire_tiles, T)
+				LAZYREMOVE(fuel_objs, fuel)
 	else
-		for(var/turf/simulated/T in fire_tiles)
+		for(var/TA in fire_tiles)
+			var/turf/simulated/T = TA
 			if(istype(T.fire))
 				T.fire.RemoveFire()
 			T.fire = null
-		fire_tiles.Cut()
-		fuel_objs.Cut()
+		LAZYCLEARLIST(fire_tiles)
+		LAZYCLEARLIST(fuel_objs)
+		UNSETEMPTY(fire_tiles)
+		UNSETEMPTY(fuel_objs)
 
-	if(!fire_tiles.len)
-		SSair.active_fire_zones.Remove(src)
+	if(!LAZYLEN(fire_tiles))
+		SSair.active_fire_zones -= src
 
 /zone/proc/remove_liquidfuel(var/used_liquid_fuel, var/remove_fire=0)
-	if(!fuel_objs.len)
+	if(!LAZYLEN(fuel_objs))
 		return
 
 	//As a simplification, we remove fuel equally from all fuel sources. It might be that some fuel sources have more fuel,
@@ -74,12 +78,12 @@ turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 	for(var/O in fuel_objs)
 		var/obj/effect/decal/cleanable/liquid_fuel/fuel = O
 		if(!istype(fuel))
-			fuel_objs -= fuel
+			LAZYREMOVE(fuel_objs, fuel)
 			continue
 
 		fuel.amount -= fuel_to_remove
 		if(fuel.amount <= 0)
-			fuel_objs -= fuel
+			LAZYREMOVE(fuel_objs, fuel)
 			if(remove_fire)
 				var/turf/T = fuel.loc
 				if(isturf(T) && T.fire) qdel(T.fire)
@@ -222,7 +226,7 @@ turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 	fire_protection = world.time
 
 //Returns the firelevel
-/datum/gas_mixture/proc/zburn(zone/zone, force_burn, no_check = 0)
+/datum/gas_mixture/proc/react(zone/zone, force_burn, no_check = 0)
 	. = 0
 	if((temperature > PHORON_MINIMUM_BURN_TEMPERATURE || force_burn) && (no_check ||check_recombustability(zone? zone.fuel_objs : null)))
 

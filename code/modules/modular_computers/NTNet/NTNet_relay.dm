@@ -95,7 +95,7 @@
 /obj/machinery/ntnet_relay/New()
 	uid = gl_uid
 	gl_uid++
-	component_parts = list()
+	LAZYINITLIST(component_parts)
 	component_parts += new /obj/item/stack/cable_coil(src,15)
 	component_parts += new /obj/item/weapon/circuitboard/ntnet_relay(src)
 

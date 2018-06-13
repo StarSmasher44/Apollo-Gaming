@@ -112,8 +112,8 @@
 
 	// Special exception: there isn't enough air around to be worth processing this edge next tick, zap both to zero.
 	if(total_moles + sharer.total_moles <= MINIMUM_AIR_TO_SUSPEND)
-		gas.Cut()
-		sharer.gas.Cut()
+		LAZYCLEARLIST(gas)
+		LAZYCLEARLIST(sharer.gas)
 
 	for(var/g in gas|sharer.gas)
 		var/comb = gas[g] + sharer.gas[g]
@@ -340,28 +340,19 @@
 
 	return 1
 
-
-/datum/gas_mixture/proc/react()
-	zburn(null, force_burn=0, no_check=0) //could probably just call zburn() here with no args but I like being explicit.
-
-
 //Rechecks the gas_mixture and adjusts the graphic list if needed.
 //Two lists can be passed by reference if you need know specifically which graphics were added and removed.
 /datum/gas_mixture/proc/check_tile_graphic(list/graphic_add = null, list/graphic_remove = null)
+	var/list/cur_graphic = graphic
 	for(var/g in gas_data.overlay_limit)
-		if(graphic.Find(gas_data.tile_overlay[g]))
+		if(cur_graphic.Find(gas_data.tile_overlay[g]))
 			//Overlay is already applied for this gas, check if it's still valid.
 			if(gas[g] <= gas_data.overlay_limit[g])
-				if(!graphic_remove)
-					graphic_remove = list()
-				graphic_remove += gas_data.tile_overlay[g]
+				LAZYADD(graphic_remove, gas_data.tile_overlay[g])
 		else
 			//Overlay isn't applied for this gas, check if it's valid and needs to be added.
 			if(gas[g] > gas_data.overlay_limit[g])
-				if(!graphic_add)
-					graphic_add = list()
-				graphic_add += gas_data.tile_overlay[g]
-
+				LAZYADD(graphic_add, gas_data.tile_overlay[g])
 	. = 0
 	//Apply changes
 	if(graphic_add && graphic_add.len)

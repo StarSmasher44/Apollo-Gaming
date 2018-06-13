@@ -304,8 +304,8 @@ its easier to just keep the beam vertical.
 	if(flags & NOBLOODY)
 		return 0
 
-	if(!blood_DNA || !islist(blood_DNA))	//if our list of DNA doesn't exist yet (or isn't a list) initialise it.
-		blood_DNA = list()
+//	if(!islist(blood_DNA))	//if our list of DNA doesn't exist yet (or isn't a list) initialise it.
+	LAZYINITLIST(blood_DNA)
 
 	was_bloodied = 1
 	blood_color = COLOR_BLOOD_HUMAN

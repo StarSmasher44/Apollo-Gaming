@@ -126,7 +126,7 @@
 
 /obj/machinery/power/port_gen/pacman/New()
 	..()
-	component_parts = list()
+	LAZYINITLIST(component_parts)
 	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
 	component_parts += new /obj/item/weapon/stock_parts/micro_laser(src)
 	component_parts += new /obj/item/stack/cable_coil(src)

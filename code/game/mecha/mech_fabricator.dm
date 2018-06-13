@@ -28,7 +28,7 @@
 /obj/machinery/mecha_part_fabricator/New()
 	..()
 
-	component_parts = list()
+	LAZYINITLIST(component_parts)
 	component_parts += new /obj/item/weapon/circuitboard/mechfab(src)
 	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
 	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)

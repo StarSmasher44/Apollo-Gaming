@@ -108,9 +108,9 @@
 							var/obj/machinery/new_machine = new src.circuit.build_path(src.loc, src.dir)
 
 							if(new_machine.component_parts)
-								new_machine.component_parts.Cut()
+								LAZYCLEARLIST(new_machine.component_parts)
 							else
-								new_machine.component_parts = list()
+								LAZYINITLIST(new_machine.component_parts)
 
 							src.circuit.construct(new_machine)
 

@@ -16,7 +16,7 @@
 
 /obj/machinery/r_n_d/server/Initialize()
 	. = ..()
-	component_parts = list()
+	LAZYINITLIST(component_parts)
 	component_parts += new /obj/item/weapon/circuitboard/rdserver(src)
 	component_parts += new /obj/item/weapon/stock_parts/scanning_module(src)
 	component_parts += new /obj/item/stack/cable_coil(src)

@@ -10,6 +10,7 @@ var/global/list/pendingdeptrequests = list()
 	var/ckey
 	var/real_name
 	var/score = 0 //Added to make sure score is saved.
+	var/time = ""
 
 /datum/ntrequest/New()
 	requestid = rand(0, 1000) //Basically 1000 requests per time.
@@ -29,20 +30,18 @@ var/global/list/pendingdeptrequests = list()
 	requesttext = requesttext2
 	requesttype = requesttype2
 	score = score2
+	time = "[stationdate2text()]-[time2text()]"
 	world << "ADDED: [DM], [requesttype2], [fchar], [tchar], [requesttext2]"
 	pendingdeptrequests.Add(src) // "REQUEST|[requesttype], Sent by [fromchar:job] [fromchar:real_name], Sent to [tochar:job] [tochar:real_name] For [requesttext]"
 	DM.save_requests()
 
 /obj/machinery/computer/department_manager/proc/save_requests()
-	if(!pendingdeptrequests)	pendingdeptrequests = list()
+	LAZYINITLIST(pendingdeptrequests)
 	DeptRequests["pendinglist"] << pendingdeptrequests
 	return 1
 
 /obj/machinery/computer/department_manager/proc/load_requests()
-	var/newrequests = list()
+	var/list/newrequests = list()
 	DeptRequests["pendinglist"] >> newrequests
-	if(!pendingdeptrequests) //If list exsists, we carefully add it to prevent memory issues
-		pendingdeptrequests = list()
-	else
-		pendingdeptrequests |= newrequests
+	LAZYDISTINCTADD(pendingdeptrequests, newrequests)
 	return 1

@@ -25,7 +25,7 @@
 /obj/machinery/recharge_station/Initialize()
 	. = ..()
 
-	component_parts = list()
+	LAZYINITLIST(component_parts)
 	component_parts += new /obj/item/weapon/circuitboard/recharge_station(src)
 	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)
 	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)

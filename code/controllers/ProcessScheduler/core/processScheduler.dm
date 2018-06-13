@@ -282,6 +282,7 @@ var/global/datum/controller/processScheduler/processScheduler
 		highest_run_time[process] = time
 
 	var/list/lastTwenty = last_twenty_run_times[process]
+	LAZYINITLIST(lastTwenty)
 	if (lastTwenty.len == 20)
 		lastTwenty.Cut(1, 2)
 	lastTwenty.len++

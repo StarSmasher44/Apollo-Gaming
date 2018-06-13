@@ -1068,8 +1068,7 @@ var/list/multi_point_spawns
 	. = ..()
 	weight = max(1, round(weight))
 
-	if(!multi_point_spawns)
-		multi_point_spawns = list()
+	LAZYINITLIST(multi_point_spawns)
 	var/list/spawnpoints = multi_point_spawns[id]
 	if(!spawnpoints)
 		spawnpoints = list()

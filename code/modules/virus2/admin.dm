@@ -16,7 +16,7 @@
 		return 1
 
 /datum/disease2/disease/get_view_variables_header()
-	. = list()
+	LAZYINITLIST(.)
 	for(var/datum/disease2/effect/E in effects)
 		. += "[E.stage]: [E.name]"
 	return {"

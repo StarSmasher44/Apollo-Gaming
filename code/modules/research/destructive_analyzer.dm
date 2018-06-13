@@ -18,7 +18,7 @@ Note: Must be placed within 3 tiles of the R&D Console
 
 /obj/machinery/r_n_d/destructive_analyzer/Initialize()
 	. = ..()
-	component_parts = list()
+	LAZYINITLIST(component_parts)
 	component_parts += new /obj/item/weapon/circuitboard/destructive_analyzer(src)
 	component_parts += new /obj/item/weapon/stock_parts/scanning_module(src)
 	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)

@@ -23,7 +23,7 @@
 /obj/machinery/atmospherics/unary/freezer/New()
 	..()
 	initialize_directions = dir
-	component_parts = list()
+	LAZYINITLIST(component_parts)
 	component_parts += new /obj/item/weapon/circuitboard/unary_atmos/cooler(src)
 	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
 	component_parts += new /obj/item/weapon/stock_parts/capacitor(src)

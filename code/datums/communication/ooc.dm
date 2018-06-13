@@ -27,7 +27,9 @@
 
 	var/ooc_style = "everyone"
 	if(C.donator)
-		ooc_style = "donator"
+		ooc_style = "donator[C.donator]"
+	if(C.ap_veteran)
+		ooc_style = "apveteran"
 	if(holder && !is_stealthed)
 		ooc_style = "elevated"
 		if(holder.rights & R_MOD)

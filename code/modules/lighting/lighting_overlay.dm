@@ -67,10 +67,10 @@
 
 	// See LIGHTING_CORNER_DIAGONAL in lighting_corner.dm for why these values are what they are.
 	// No I seriously cannot think of a more efficient method, fuck off Comic.
-	var/datum/lighting_corner/cr = myturf.corners[3] || dummy_lighting_corner
-	var/datum/lighting_corner/cg = myturf.corners[2] || dummy_lighting_corner
-	var/datum/lighting_corner/cb = myturf.corners[4] || dummy_lighting_corner
-	var/datum/lighting_corner/ca = myturf.corners[1] || dummy_lighting_corner
+	var/datum/lighting_corner/cr = LAZYACCESS(myturf.corners, 3) || dummy_lighting_corner
+	var/datum/lighting_corner/cg = LAZYACCESS(myturf.corners, 2) || dummy_lighting_corner
+	var/datum/lighting_corner/cb = LAZYACCESS(myturf.corners, 4) || dummy_lighting_corner
+	var/datum/lighting_corner/ca = LAZYACCESS(myturf.corners, 1) || dummy_lighting_corner
 
 	var/max = max(cr.cache_mx, cg.cache_mx, cb.cache_mx, ca.cache_mx)
 
@@ -127,7 +127,7 @@
 /atom/movable/lighting_overlay/Destroy()
 	total_lighting_overlays--
 	global.lighting_update_overlays     -= src
-	global.lighting_update_overlays_old -= src
+	LAZYREMOVE(SSlighting.currentrun, src)
 
 	if (loc != myturf)
 		warning("A lighting object was qdeleted with a different loc then it is suppose to have (REDAC -> REDAC)")

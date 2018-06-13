@@ -3,6 +3,11 @@
 
 /turf/var/needs_air_update = 0
 /turf/var/datum/gas_mixture/air
+/turf/simulated/proc/update_graphic(list/graphic_add = null, list/graphic_remove = null)
+	if(LAZYLEN(graphic_add))
+		overlays += graphic_add
+	if(LAZYLEN(graphic_remove))
+		overlays -= graphic_remove
 
 /turf/simulated/proc/update_graphic(list/graphic_add = null, list/graphic_remove = null)
 	if(graphic_add && graphic_add.len)
@@ -11,7 +16,8 @@
 		vis_contents -= graphic_remove
 
 /turf/proc/update_air_properties()
-	var/block = c_airblock(src)
+	var/block
+	ATMOS_CANPASS_TURF(block, src, src)
 	if(block & AIR_BLOCKED)
 		//dbg(blocked)
 		return 1
@@ -27,20 +33,20 @@
 		if(!unsim)
 			continue
 
-		block = unsim.c_airblock(src)
+		ATMOS_CANPASS_TURF(block, unsim, src)
 
 		if(block & AIR_BLOCKED)
 			//unsim.dbg(air_blocked, turn(180,d))
 			continue
 
-		var/r_block = c_airblock(unsim)
-
+		var/r_block
+		ATMOS_CANPASS_TURF(r_block, src, unsim)
 		if(r_block & AIR_BLOCKED)
 			continue
 
 		if(issimturf(unsim))
 
-			var/turf/simulated/sim = unsim
+			var/tmp/turf/simulated/sim = unsim
 			if(TURF_HAS_VALID_ZONE(sim))
 				SSair.connect(sim, src)
 
@@ -49,12 +55,28 @@
 	Instead of analyzing the entire zone, we only check the nearest 3x3 turfs surrounding the src turf.
 	This implementation may produce false negatives but it (hopefully) will not produce any false postiives.
 */
+// Helper for can_safely_remove_from_zone().
+#define GET_ZONE_NEIGHBOURS(T, ret) \
+	ret = 0; \
+	if (T.zone) { \
+		for (var/_gzn_dir in gzn_check) { \
+			var/turf/simulated/other = get_step(T, _gzn_dir); \
+			if (istype(other) && other.zone == T.zone) { \
+				var/block; \
+				ATMOS_CANPASS_TURF(block, other, T); \
+				if (!(block & AIR_BLOCKED)) { \
+					ret |= _gzn_dir; \
+				} \
+			} \
+		} \
+	} \
 
 /turf/simulated/proc/can_safely_remove_from_zone()
 	if(!zone) return 1
 
-	var/check_dirs = get_zone_neighbours(src)
-	var/unconnected_dirs = check_dirs
+	var/check_dirs
+	GET_ZONE_NEIGHBOURS(src, check_dirs)
+	. = check_dirs
 
 	#ifdef MULTIZAS
 	var/to_check = GLOB.cornerdirsz
@@ -67,12 +89,17 @@
 		//for each pair of "adjacent" cardinals (e.g. NORTH and WEST, but not NORTH and SOUTH)
 		if((dir & check_dirs) == dir)
 			//check that they are connected by the corner turf
-			var/connected_dirs = get_zone_neighbours(get_step(src, dir))
+			var/turf/simulated/T = get_step(src, dir)
+			var/connected_dirs
+			GET_ZONE_NEIGHBOURS(T, connected_dirs)
 			if(connected_dirs && (dir & GLOB.reverse_dir[connected_dirs]) == dir)
-				unconnected_dirs &= ~dir //they are, so unflag the cardinals in question
+				. &= ~dir //they are, so unflag the cardinals in question
 
 	//it is safe to remove src from the zone if all cardinals are connected by corner turfs
-	return !unconnected_dirs
+	. = !.
+
+
+#undef GET_ZONE_NEIGHBOURS
 
 //helper for can_safely_remove_from_zone()
 /turf/simulated/proc/get_zone_neighbours(turf/simulated/T)
@@ -85,8 +112,11 @@
 		#endif
 		for(var/dir in to_check)
 			var/turf/simulated/other = get_step(T, dir)
-			if(issimturf(other) && other.zone == T.zone && !(other.c_airblock(T) & AIR_BLOCKED) && get_dist(src, other) <= 1)
-				. |= dir
+			if(issimturf(other) && other.zone == T.zone)
+				var/block
+				ATMOS_CANPASS_TURF(block, other, T)
+				if (!(block & AIR_BLOCKED) && get_dist(src, other) <= 1)
+					. |= dir
 
 /turf/simulated/update_air_properties()
 
@@ -94,7 +124,8 @@
 		c_copy_air() //not very efficient :(
 		zone = null //Easier than iterating through the list at the zone.
 
-	var/s_block = c_airblock(src)
+	var/s_block
+	ATMOS_CANPASS_TURF(s_block, src, src)
 	if(s_block & AIR_BLOCKED)
 		#ifdef ZASDBG
 		if(verbose) log_debug("Self-blocked.")
@@ -126,9 +157,9 @@
 		if(!unsim) //edge of map
 			continue
 
-		var/block = unsim.c_airblock(src)
+		var/block
+		ATMOS_CANPASS_TURF(block, unsim, src)
 		if(block & AIR_BLOCKED)
-
 			#ifdef ZASDBG
 			if(verbose) log_debug("[d] is blocked.")
 			//unsim.dbg(air_blocked, turn(180,d))
@@ -136,7 +167,8 @@
 
 			continue
 
-		var/r_block = c_airblock(unsim)
+		var/r_block
+		ATMOS_CANPASS_TURF(r_block, src, unsim)
 		if(r_block & AIR_BLOCKED)
 
 			#ifdef ZASDBG
@@ -207,8 +239,7 @@
 		else
 
 			//Postponing connections to tiles until a zone is assured.
-			if(!postponed) postponed = list()
-			postponed.Add(unsim)
+			LAZYADD(postponed, unsim)
 
 	if(!TURF_HAS_VALID_ZONE(src)) //Still no zone, make a new one.
 		var/zone/newzone = new/zone()
@@ -222,8 +253,9 @@
 
 	//At this point, a zone should have happened. If it hasn't, don't add more checks, fix the bug.
 
-	for(var/turf/T in postponed)
-		SSair.connect(src, T)
+	for(var/TA in postponed)
+//		var/turf/T = TA
+		SSair.connect(src, TA)
 
 /turf/proc/post_update_air_properties()
 	if(connections) connections.update_all()

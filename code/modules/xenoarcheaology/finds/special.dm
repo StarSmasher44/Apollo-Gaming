@@ -145,7 +145,7 @@
 		to_chat(M, "<span class='warning'>The skin on your [parse_zone(target)] feels like it's ripping apart, and a stream of blood flies out.</span>")
 		var/obj/effect/decal/cleanable/blood/splatter/animated/B = new(M.loc)
 		B.target_turf = pick(range(1, src))
-		B.blood_DNA = list()
+		LAZYINITLIST(B.blood_DNA)
 		B.blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
 		M.vessel.remove_reagent(/datum/reagent/blood,rand(25,50))
 

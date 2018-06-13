@@ -47,7 +47,7 @@
 	create_reagents(1000)
 	beaker = new /obj/item/weapon/reagent_containers/glass/bottle(src)
 
-	component_parts = list()
+	LAZYINITLIST(component_parts)
 	component_parts += new /obj/item/weapon/circuitboard/biogenerator(src)
 	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
 	component_parts += new /obj/item/weapon/stock_parts/manipulator(src)

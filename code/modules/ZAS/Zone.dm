@@ -43,17 +43,17 @@ Class Procs:
 /zone/var/name
 /zone/var/invalid = 0
 /zone/var/list/contents = list()
-/zone/var/list/fire_tiles = list()
-/zone/var/list/fuel_objs = list()
+/zone/var/list/fire_tiles
+/zone/var/list/fuel_objs
 
 /zone/var/needs_update = 0
 
-/zone/var/list/edges = list()
+/zone/var/list/edges
 
 /zone/var/datum/gas_mixture/air = new
 
-/zone/var/list/graphic_add = list()
-/zone/var/list/graphic_remove = list()
+/zone/var/list/graphic_add
+/zone/var/list/graphic_remove
 
 /zone/New()
 	SSair.add_zone(src)
@@ -74,9 +74,10 @@ Class Procs:
 	contents.Add(T)
 	if(T.fire)
 		var/obj/effect/decal/cleanable/liquid_fuel/fuel = locate() in T
-		fire_tiles.Add(T)
+		LAZYADD(fire_tiles, T)
 		SSair.active_fire_zones |= src
-		if(fuel) fuel_objs += fuel
+		if(fuel)
+			LAZYADD(fuel_objs, fuel)
 	T.update_graphic(air.graphic)
 
 /zone/proc/remove(turf/simulated/T)
@@ -86,11 +87,11 @@ Class Procs:
 	ASSERT(T.zone == src)
 	soft_assert(T in contents, "Lists are weird broseph")
 #endif
-	contents.Remove(T)
-	fire_tiles.Remove(T)
+	contents -= T
+	LAZYREMOVE(fire_tiles, T)
 	if(T.fire)
 		var/obj/effect/decal/cleanable/liquid_fuel/fuel = locate() in T
-		fuel_objs -= fuel
+		LAZYREMOVE(fuel_objs, fuel)
 	T.zone = null
 	T.update_graphic(graphic_remove = air.graphic)
 	if(contents.len)
@@ -106,7 +107,8 @@ Class Procs:
 	ASSERT(!into.invalid)
 #endif
 	c_invalidate()
-	for(var/turf/simulated/T in contents)
+	for(var/TA in contents)
+		var/turf/simulated/T = TA
 		into.add(T)
 		T.update_graphic(graphic_remove = air.graphic)
 		#ifdef ZASDBG
@@ -114,10 +116,12 @@ Class Procs:
 		#endif
 
 	//rebuild the old zone's edges so that they will be possessed by the new zone
-	for(var/connection_edge/E in edges)
+	for(var/ED in edges)
+		var/connection_edge/E = ED
 		if(E.contains_zone(into))
 			continue //don't need to rebuild this edge
-		for(var/turf/T in E.connecting_turfs)
+		for(var/TA in E.connecting_turfs)
+			var/turf/T = TA
 			SSair.mark_for_update(T)
 
 /zone/proc/c_invalidate()
@@ -131,7 +135,8 @@ Class Procs:
 /zone/proc/rebuild()
 	if(invalid) return //Short circuit for explosions where rebuild is called many times over.
 	c_invalidate()
-	for(var/turf/simulated/T in contents)
+	for(var/TA in contents)
+		var/turf/simulated/T = TA
 		T.update_graphic(graphic_remove = air.graphic) //we need to remove the overlays so they're not doubled when the zone is rebuilt
 		//T.dbg(invalid_zone)
 		T.needs_air_update = 0 //Reset the marker so that it will be added to the list.
@@ -146,18 +151,27 @@ Class Procs:
 	air.group_multiplier = contents.len+1
 
 /zone/proc/tick()
+	var/list/contents = src.contents
+	var/list/edges = src.edges
+
 	if(air.temperature >= PHORON_FLASHPOINT && !(src in SSair.active_fire_zones) && air.check_combustability() && contents.len)
 		var/turf/T = pick(contents)
 		if(isturf(T))
 			T.create_fire(vsc.fire_firelevel_multiplier)
-
+	LAZYINITLIST(graphic_add)
+	LAZYINITLIST(graphic_remove)
 	if(air.check_tile_graphic(graphic_add, graphic_remove))
-		for(var/turf/simulated/T in contents)
-			T.update_graphic(graphic_add, graphic_remove)
-		graphic_add.len = 0
-		graphic_remove.len = 0
+		for(var/T in contents)
+			var/turf/simulated/Turf = T
+			Turf.update_graphic(graphic_add, graphic_remove)
 
-	for(var/connection_edge/E in edges)
+		LAZYCLEARLIST(graphic_add)
+		LAZYCLEARLIST(graphic_remove)
+		UNSETEMPTY(graphic_add)
+		UNSETEMPTY(graphic_remove)
+
+	for(var/ED in edges)
+		var/connection_edge/E = ED
 		if(E.sleeping)
 			E.recheck()
 

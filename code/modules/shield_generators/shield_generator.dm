@@ -37,7 +37,7 @@
 
 /obj/machinery/power/shield_generator/New()
 	..()
-	component_parts = list()
+	LAZYINITLIST(component_parts)
 	component_parts += new /obj/item/weapon/circuitboard/shield_generator(src)
 	component_parts += new /obj/item/weapon/stock_parts/capacitor(src)			// Capacitor. Improves shield mitigation when better part is used.
 	component_parts += new /obj/item/weapon/stock_parts/micro_laser(src)

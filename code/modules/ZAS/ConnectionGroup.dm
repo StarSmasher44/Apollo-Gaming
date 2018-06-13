@@ -128,33 +128,34 @@ Class Procs:
 
 	src.A = A
 	src.B = B
-	A.edges.Add(src)
-	B.edges.Add(src)
+	LAZYADD(A.edges, src)
+	LAZYADD(B.edges, src)
 	//id = edge_id(A,B)
 //	log_debug("New edge between [A] and [B]")
 
 
 /connection_edge/zone/add_connection(connection/c)
 	. = ..()
-	connecting_turfs.Add(c.A)
+	connecting_turfs += c.A
 
 /connection_edge/zone/remove_connection(connection/c)
-	connecting_turfs.Remove(c.A)
+	connecting_turfs -= c.A
 	. = ..()
 
 /connection_edge/zone/contains_zone(zone/Z)
 	return A == Z || B == Z
 
 /connection_edge/zone/erase()
-	A.edges.Remove(src)
-	B.edges.Remove(src)
+	LAZYREMOVE(A.edges, src)
+	LAZYREMOVE(B.edges, src)
 	. = ..()
 
 /connection_edge/zone/tick()
+	var/zone/A = src.A
+	var/zone/B = src.B
 	if(A.invalid || B.invalid)
 		erase()
 		return
-
 	var/equiv = A.air.share_ratio(B.air, coefficient)
 
 	var/differential = A.air.return_pressure() - B.air.return_pressure()
@@ -199,7 +200,7 @@ Class Procs:
 /connection_edge/unsimulated/New(zone/A, turf/B)
 	src.A = A
 	src.B = B
-	A.edges.Add(src)
+	LAZYADD(A.edges, src)
 	air = B.return_air()
 	//id = 52*A.id
 //	log_debug("New edge from [A] to [B].")
@@ -216,13 +217,14 @@ Class Procs:
 	. = ..()
 
 /connection_edge/unsimulated/erase()
-	A.edges.Remove(src)
+	LAZYREMOVE(A.edges, src)
 	. = ..()
 
 /connection_edge/unsimulated/contains_zone(zone/Z)
 	return A == Z
 
 /connection_edge/unsimulated/tick()
+	var/zone/A = src.A
 	if(A.invalid)
 		erase()
 		return

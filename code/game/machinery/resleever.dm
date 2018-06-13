@@ -28,7 +28,7 @@
 
 /obj/machinery/resleever/Initialize()
 	. = ..()
-	component_parts = list()
+	LAZYINITLIST(component_parts)
 	component_parts += new /obj/item/stack/cable_coil(src, 2)
 	component_parts += new /obj/item/weapon/stock_parts/scanning_module(src)
 	component_parts += new /obj/item/weapon/stock_parts/manipulator(src, 3)

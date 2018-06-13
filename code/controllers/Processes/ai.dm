@@ -1,9 +1,11 @@
-var/list/datum/list_of_ais = list()
+var/list/datum/list_of_ais
 
 /datum/controller/process/ai/setup()
 	name = "ai"
 	schedule_interval = 2 SECONDS
 	start_delay = 17
+
+	LAZYINITLIST(list_of_ais)
 
 /datum/controller/process/ai/doWork()
 	for(last_object in list_of_ais)

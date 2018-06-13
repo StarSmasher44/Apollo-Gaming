@@ -136,7 +136,7 @@
 // Parameters: None
 // Description: Adds standard components for this SMES, and forces recalculation of properties.
 /obj/machinery/power/smes/buildable/New()
-	component_parts = list()
+	LAZYINITLIST(component_parts)
 	component_parts += new /obj/item/stack/cable_coil(src,30)
 	component_parts += new /obj/item/weapon/circuitboard/smes(src)
 	src.wires = new /datum/wires/smes(src)

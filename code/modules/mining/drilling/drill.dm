@@ -43,7 +43,7 @@
 /obj/machinery/mining/drill/Initialize()
 	. = ..()
 
-	component_parts = list()
+	LAZYINITLIST(component_parts)
 	component_parts += new /obj/item/weapon/circuitboard/miningdrill(src)
 	component_parts += new /obj/item/weapon/stock_parts/matter_bin(src)
 	component_parts += new /obj/item/weapon/stock_parts/capacitor(src)
@@ -302,7 +302,7 @@
 /obj/machinery/mining/brace/Initialize()
 	. = ..()
 
-	component_parts = list()
+	LAZYINITLIST(component_parts)
 	component_parts += new /obj/item/weapon/circuitboard/miningdrillbrace(src)
 
 /obj/machinery/mining/brace/attackby(obj/item/weapon/W as obj, mob/user as mob)
