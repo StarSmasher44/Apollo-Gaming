@@ -15,6 +15,7 @@ var/datum/evacuation_controller/evacuation_controller
 	var/recall
 	var/auto_recall_time
 	var/emergency_evacuation
+	var/evacuation_reason = "" //Workaround for making the escape shuttle take a reason.
 
 	var/evac_prep_delay =   10 MINUTES
 	var/evac_launch_delay =  3 MINUTES
@@ -58,6 +59,8 @@ var/datum/evacuation_controller/evacuation_controller
 
 	if(!can_evacuate(user, forced))
 		return 0
+	if(!evacuation_reason)
+		evacuation_reason = "N/A"
 
 	emergency_evacuation = _emergency_evac
 
@@ -93,7 +96,7 @@ var/datum/evacuation_controller/evacuation_controller
 			GLOB.using_map.emergency_shuttle_called_announcement()
 	else
 		if(!skip_announce)
-			priority_announcement.Announce(replacetext(replacetext(GLOB.using_map.shuttle_called_message, "%dock_name%", "[GLOB.using_map.dock_name]"),  "%ETA%", "[round(get_eta()/60)] minute\s"))
+			priority_announcement.Announce(replacetext(replacetext(GLOB.using_map.shuttle_called_message, "%dock_name%", "[GLOB.using_map.dock_name]"),  "%ETA%", "[round(get_eta()/60)] minute\s") + "Reason stated: [evacuation_reason]")
 
 	return 1
 

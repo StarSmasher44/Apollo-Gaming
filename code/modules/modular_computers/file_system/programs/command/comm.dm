@@ -190,6 +190,12 @@
 					return
 				var/confirm = alert("Are you sure you want to [selected_evac_option.option_desc]?", name, "No", "Yes")
 				if (confirm == "Yes" && can_still_topic())
+					var/reason = input("Please state a reason for the shuttle call.", "NT Shuttle Request") as text
+					if(!reason)
+						to_chat(usr, "Please state a reason for shuttle call.")
+						return
+					else
+						evacuation_controller.evacuation_reason = reason
 					evacuation_controller.handle_evac_option(selected_evac_option.option_target, user)
 		if("setstatus")
 			. = 1
@@ -323,7 +329,7 @@ var/last_message_id = 0
 			return 1
 	return 0
 
-/proc/call_shuttle_proc(var/mob/user, var/emergency)
+/proc/call_shuttle_proc(var/mob/user, var/emergency, var/reason)
 	if (!ticker || !evacuation_controller)
 		return
 
@@ -350,7 +356,7 @@ var/last_message_id = 0
 		return
 
 	if(evacuation_controller.call_evacuation(user, _emergency_evac = emergency))
-		log_and_message_admins("[user? key_name(user) : "Autotransfer"] has called the shuttle.")
+		log_and_message_admins("[user? key_name(user) : "Autotransfer"] has called the shuttle. Reason: [evacuation_controller.evacuation_reason]")
 
 /proc/init_autotransfer()
 	if (!ticker || !evacuation_controller)

@@ -353,6 +353,12 @@ var/list/ai_verbs_default = list(
 	if(check_unable(AI_CHECK_WIRELESS))
 		return
 
+	var/reason = input("Reason for shuttle call?", "Shuttle call Request") as text
+	if(!reason)
+		to_chat(src, "No reason was specified, please specify reason.")
+		return
+	else
+		evacuation_controller.evacuation_reason = reason
 	if(confirm == "Yes")
 		call_shuttle_proc(src)
 
