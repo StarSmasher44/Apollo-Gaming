@@ -1,0 +1,30 @@
+body 
+{ 
+	background-color: #272727;
+	font-size: 12px;
+	color: #ffffff;
+}
+
+hr
+{
+	background-color: #40628a;
+	height: 1px;
+}
+
+table 
+{
+	font-family: arial, sans-serif;
+	border-collapse: collapse;
+	width: 100%;
+}
+
+td, th 
+{
+	border: 1px solid #dddddd;
+	text-align: left;
+	padding: 8px;
+}
+div 
+{
+    column-count: 3;
+}

@@ -156,7 +156,7 @@
 	var/mob/living/carbon/human/assailant = G.assailant
 	var/adir = get_dir(assailant, affecting)
 
-	if(same_tile)
+	if(same_tile && ismob(affecting))
 		affecting.forceMove(assailant.loc)
 		adir = assailant.dir
 		affecting.set_dir(assailant.dir)

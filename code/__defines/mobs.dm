@@ -92,8 +92,8 @@
 #define APPEARANCE_ALL       0xFFFF
 
 // Click cooldown
-#define DEFAULT_ATTACK_COOLDOWN 8 //Default timeout for aggressive actions
-#define DEFAULT_QUICK_COOLDOWN  4
+#define DEFAULT_ATTACK_COOLDOWN 10 //Default timeout for aggressive actions
+#define DEFAULT_QUICK_COOLDOWN  6
 
 
 #define MIN_SUPPLIED_LAW_NUMBER 15

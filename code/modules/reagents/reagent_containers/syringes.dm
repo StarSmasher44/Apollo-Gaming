@@ -33,7 +33,7 @@
 
 	dropped(mob/user)
 		..()
-		ADD_ICON_QUEUE(src)
+		update_icon()
 
 	attack_self(mob/user as mob)
 

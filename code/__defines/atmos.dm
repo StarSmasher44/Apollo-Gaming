@@ -15,7 +15,7 @@
 #define MIN_TOXIN_DAMAGE 1
 #define MAX_TOXIN_DAMAGE 12
 
-#define BREATH_VOLUME       5 // Liters in a normal breath.
+#define BREATH_VOLUME       2 // Liters in a normal breath.
 #define BREATH_MOLES        (ONE_ATMOSPHERE * BREATH_VOLUME / (T20C * R_IDEAL_GAS_EQUATION)) // Amount of air to take a from a tile
 #define BREATH_PERCENTAGE   (BREATH_VOLUME / CELL_VOLUME)                                    // Amount of air needed before pass out/suffocation commences.
 #define HUMAN_NEEDED_OXYGEN (MOLES_CELLSTANDARD * BREATH_PERCENTAGE * 0.16)
@@ -42,7 +42,7 @@
 // Must be between 0 and 1. Values closer to 1 equalize temperature faster. Should not exceed 0.4, else strange heat flow occurs.
 #define  FLOOR_HEAT_TRANSFER_COEFFICIENT 0.4
 #define   WALL_HEAT_TRANSFER_COEFFICIENT 0.0
-#define   DOOR_HEAT_TRANSFER_COEFFICIENT 0.0
+#define   DOOR_HEAT_TRANSFER_COEFFICIENT 0.05 //Very small heat radiation.
 #define  SPACE_HEAT_TRANSFER_COEFFICIENT 0.2 // A hack to partly simulate radiative heat.
 #define   OPEN_HEAT_TRANSFER_COEFFICIENT 0.4
 #define WINDOW_HEAT_TRANSFER_COEFFICIENT 0.1 // A hack for now.

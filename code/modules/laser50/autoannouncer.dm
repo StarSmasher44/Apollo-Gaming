@@ -7,7 +7,7 @@ var/list/announcemessages = list(
 	"End-Round Griefing is disallowed on this server, please remember this!",
 	"We'd like to thank all of our Donators for keeping the server and its community alive!",
 	"Feel free to join our steam group: http://steamcommunity.com/groups/ApolloGamingSS13",
-	"We're still looking for donators to help us on our quest for expansion and server improvements.<br> Interested? Check out our donator system here: http://www.apollo-gaming.net/index.php?action=treasury",
+	"We're still looking for donators to help us on our quest for expansion and server improvements.<br> Interested? Check out our donator system here: https://www.patreon.com/ApolloGaming",
 	"Need help or wish to report a player? Please use adminhelp (Or hit F1)",
 	"Remember that this is a Med-Heavy Role-Play Server, act accordingly!",
 	"",

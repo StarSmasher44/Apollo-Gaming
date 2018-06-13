@@ -40,7 +40,7 @@ var/const/HOLOPAD_MODE = RANGE_BASED
 	layer = ABOVE_TILE_LAYER
 
 	var/power_per_hologram = 500 //per usage per hologram
-	idle_power_usage = 5
+	idle_power_usage = 10
 	use_power = 1
 
 	var/list/mob/living/silicon/ai/masters = new() //List of AIs that use the holopad

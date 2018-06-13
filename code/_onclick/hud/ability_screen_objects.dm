@@ -152,7 +152,7 @@
 /obj/screen/movable/ability_master/proc/get_ability_by_spell(var/spell/s)
 	for(var/screen in spell_objects)
 		var/obj/screen/ability/spell/S = screen
-		if(S.spell == s)
+		if(S && S.spell == s)
 			return S
 	return null
 

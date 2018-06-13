@@ -66,7 +66,7 @@
 		remove_display()
 		return
 	if(next_process_time <= world.time)
-		next_process_time = world.time + 40		// 4 second delays between process updates
+		next_process_time = world.time + 50		// 5 second delays between process updates
 		update()
 
 /obj/machinery/status_display/emp_act(severity)

@@ -433,6 +433,8 @@ var/list/mining_floors = list()
 	if (!mining_floors["[src.z]"])
 		mining_floors["[src.z]"] = list()
 	mining_floors["[src.z]"] += src
+
+/turf/simulated/floor/asteroid/Initialize()
 	if(prob(20))
 		overlay_detail = "asteroid[rand(0,9)]"
 

@@ -77,7 +77,7 @@
 	for (var/mob/living/O in viewers(src, null))
 		if (get_dist(src, O) > src.range)
 			continue
-
+		if(isAI(O))	return
 		var/flash_time = strength
 		if (ishuman(O))
 			var/mob/living/carbon/human/H = O

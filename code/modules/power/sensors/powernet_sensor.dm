@@ -19,12 +19,17 @@
 	var/name_tag = "#UNKN#" // ID tag displayed in list of powernet sensors. Each sensor should have it's own tag!
 	var/long_range = 0		// If 1, sensor reading will show on all computers, regardless of Zlevel
 
-// Proc: New()
+// Proc: New() (Now Initialize)
 // Parameters: None
 // Description: Automatically assigns name according to ID tag.
-/obj/machinery/power/sensor/New()
-	..()
+/obj/machinery/power/sensor/Initialize()
+	. = ..()
 	auto_set_name()
+	SSmachines.power_sensors += src
+
+/obj/machinery/power/sensor/Destroy()
+	. = ..()
+	SSmachines.power_sensors -= src
 
 // Proc: auto_set_name()
 // Parameters: None
@@ -41,13 +46,14 @@
 		if(powernet.problem)
 			return 1
 	return 0
-
+/*
 // Proc: process()
 // Parameters: None
 // Description: This has to be here because we need sensors to remain in Machines list.
 /obj/machinery/power/sensor/Process()
 	return 1
-
+Removed too, FUCK THIS TOO.
+*/
 // Proc: reading_to_text()
 // Parameters: 1 (amount - Power in Watts to be converted to W, kW or MW)
 // Description: Helper proc that converts reading in Watts to kW or MW (returns string version of amount parameter)

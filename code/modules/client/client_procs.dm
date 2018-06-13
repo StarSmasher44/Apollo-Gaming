@@ -65,7 +65,7 @@
 			to_chat(usr, "<span class='warning'>You are no longer able to use this, it's been more then 10 minutes since an admin on IRC has responded to you</span>")
 			return
 		if(mute_irc)
-			to_chat(usr, "<span class='warning'You cannot use this as your client has been muted from sending messages to the admins on IRC</span>")
+			to_chat(usr, "<span class='warning'>You cannot use this as your client has been muted from sending messages to the admins on IRC</span>")
 			return
 		cmd_admin_irc_pm(href_list["irc_msg"])
 		return
@@ -89,6 +89,10 @@
 		if("usr")		hsrc = mob
 		if("prefs")		return prefs.process_link(usr,href_list)
 		if("vars")		return view_var_Topic(href,href_list,hsrc)
+
+	var/datum/real_src = hsrc
+	if(QDELETED(real_src))
+		return
 
 	..()	//redirect to hsrc.Topic()
 
@@ -129,7 +133,7 @@
 			log_admin("[ckey] tried to join and was turned away due to the server being full (player_limit=[config.player_limit])")
 			qdel(src)
 			return
-
+	while(!finished_init)	sleep(10) //Clients will not fully load until the server is initialized.
 	// Change the way they should download resources.
 //	if(config.resource_urls && config.resource_urls.len)
 //		src.preload_rsc = pick(config.resource_urls)
@@ -187,8 +191,7 @@
 	loadclientdb(src.key) // Load their files.
 	player_age = get_player_age()
 
-	spawn(30)
-		Login()
+	Login()
 
 	if(prefs.lastchangelog != changelog_hash) //bolds the changelog button on the interface so we know there are updates.
 		to_chat(src, "<span class='info'>You have unread updates in the changelog.</span>")
@@ -331,7 +334,6 @@
 	// Add always-visible stat panel calls here, to define a consistent display order.
 	statpanel("Status")
 	. = ..()
-	winset(src, null, "command=.update_ping+[world.time+world.tick_lag*TICK_USAGE_REAL/100]")
 	stat("Ping: [round(src.lastping, 1)]ms (Average: [round(src.avgping, 1)]ms)")
 
 //send resources to the client. It's here in its own proc so we can move it around easiliy if need be
@@ -372,3 +374,5 @@ client/verb/character_setup()
 /client/proc/apply_fps(var/client_fps)
 	if(world.byond_version >= 511 && byond_version >= 511 && client_fps >= CLIENT_MIN_FPS && client_fps <= CLIENT_MAX_FPS)
 		vars["fps"] = prefs.clientfps
+		if(prefs.clientfps == 0 || prefs.clientfps < 30)
+			fps = 50

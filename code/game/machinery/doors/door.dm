@@ -400,7 +400,7 @@
 
 /obj/machinery/door/proc/close_door_in(var/time = 5 SECONDS)
 	while(close_door_at)
-		if(close_door_at && world.time >= close_door_at)
+		if(world.time > close_door_at)
 			if(autoclose)
 				close_door_at = next_close_time()
 				close()
@@ -411,7 +411,7 @@
 		sleep(10)
 
 /obj/machinery/door/proc/next_close_time()
-	return world.time + (normalspeed ? 150 : 5)
+	return world.time + (normalspeed ? 150 : 50)
 
 /obj/machinery/door/proc/close(var/forced = 0)
 	if(!can_close(forced))

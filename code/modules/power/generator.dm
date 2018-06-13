@@ -6,10 +6,10 @@
 	anchored = 0
 
 	use_power = 1
-	idle_power_usage = 100 //Watts, I hope.  Just enough to do the computer and display things.
+	idle_power_usage = 150 //Watts, I hope.  Just enough to do the computer and display things.
 
 	var/max_power = 500000
-	var/thermal_efficiency = 0.65
+	var/thermal_efficiency = 0.50
 
 	var/obj/machinery/atmospherics/binary/circulator/circ1
 	var/obj/machinery/atmospherics/binary/circulator/circ2
@@ -23,8 +23,8 @@
 	var/effective_gen = 0
 	var/lastgenlev = 0
 
-/obj/machinery/power/generator/New()
-	..()
+/obj/machinery/power/generator/Initialize()
+	. = ..()
 	desc = initial(desc) + " Rated for [round(max_power/1000)] kW."
 	spawn(1)
 		reconnect()

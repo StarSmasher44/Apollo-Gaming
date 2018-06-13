@@ -39,6 +39,12 @@
 	show_browser(src, file(LORE_FILE), "window=lore;size=480x320")
 #undef LORE_FILE
 
+/client/verb/appatreon()
+	set name = "Patreon"
+	set desc = "Links to our patreon, used for donations."
+	set hidden = 1
+	src << link("https://www.patreon.com/ApolloGaming")
+
 /client/verb/hotkeys_help()
 	set name = "Hotkeys Help"
 	set category = "OOC"
@@ -166,3 +172,20 @@ Any-Mode: (hotkey doesn't need to be on)
 		to_chat(src, other)
 	if(holder)
 		to_chat(src, admin)
+
+/client/verb/nearestneighbor()
+	set hidden = 1
+	set desc = "Changes the way the game renders."
+	to_chat(usr, "Set to Nearest-Neighbor rendering")
+	winset(usr, null, "mapwindow.map.zoom-mode=distort")
+
+/client/verb/pointsample()
+	set hidden = 1
+	set desc = "Changes the way the game renders."
+	to_chat(usr, "Set to Point Sample rendering")
+	winset(usr, null, "mapwindow.map.zoom-mode=normal")
+/client/verb/bilinear()
+	set hidden = 1
+	set desc = "Changes the way the game renders."
+	to_chat(usr, "Set to Bilinear rendering")
+	winset(usr, null, "mapwindow.map.zoom-mode=blur")

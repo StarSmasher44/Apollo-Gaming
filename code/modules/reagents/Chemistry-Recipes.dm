@@ -78,8 +78,7 @@
 	var/atom/container = holder.my_atom
 	if(mix_message && container && !ismob(container))
 		var/turf/T = get_turf(container)
-		var/list/seen = viewers(4, T)
-		for(var/mob/M in seen)
+		for(var/mob/M in viewers(4, T))
 			M.show_message("<span class='notice'>\icon[container] [mix_message]</span>", 1)
 		playsound(T, reaction_sound, 80, 1)
 

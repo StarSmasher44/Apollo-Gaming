@@ -1,7 +1,9 @@
-/proc/count_drones()
+/proc/count_drones(var/total = 0)
 	var/drones = 0
 	for(var/mob/living/silicon/robot/drone/D in GLOB.silicon_mob_list)
 		if(D.key && D.client)
+			drones++
+		else if(total) //Total counts total drones, duh.
 			drones++
 	return drones
 
@@ -13,7 +15,7 @@
 	density = 1
 	anchored = 1
 	use_power = 1
-	idle_power_usage = 20
+	idle_power_usage = 35
 	active_power_usage = 5000
 
 	var/fabricator_tag = "Exodus"

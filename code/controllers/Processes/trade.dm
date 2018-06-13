@@ -14,17 +14,17 @@
 		generateTrader()
 
 /datum/controller/process/trade/proc/generateTrader(var/stations = 0)
-	var/list/possible = list()
+	. = list()
 	if(stations)
-		possible += subtypesof(/datum/trader) - typesof(/datum/trader/ship)
+		. += subtypesof(/datum/trader) - typesof(/datum/trader/ship)
 	else
 		if(prob(5))
-			possible += subtypesof(/datum/trader/ship/unique)
+			. += subtypesof(/datum/trader/ship/unique)
 		else
-			possible += subtypesof(/datum/trader/ship) - typesof(/datum/trader/ship/unique)
+			. += subtypesof(/datum/trader/ship) - typesof(/datum/trader/ship/unique)
 
 	for(var/i in 1 to 10)
-		var/type = pick(possible)
+		var/type = pick(.)
 		var/bad = 0
 		for(var/trader in GLOB.traders)
 			if(istype(trader,type))

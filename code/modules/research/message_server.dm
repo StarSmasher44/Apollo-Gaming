@@ -53,7 +53,7 @@
 	anchored = 1.0
 	use_power = 1
 	idle_power_usage = 10
-	active_power_usage = 100
+	active_power_usage = 125
 
 	var/list/datum/data_pda_msg/pda_msgs = list()
 	var/list/datum/data_rc_msg/rc_msgs = list()
@@ -233,7 +233,7 @@ var/obj/machinery/blackbox_recorder/blackbox
 	anchored = 1.0
 	use_power = 1
 	idle_power_usage = 10
-	active_power_usage = 100
+	active_power_usage = 125
 	var/list/messages = list()		//Stores messages of non-standard frequencies
 	var/list/messages_admin = list()
 
@@ -280,7 +280,7 @@ var/obj/machinery/blackbox_recorder/blackbox
 		BR.messages_admin = messages_admin
 		if(blackbox != BR)
 			blackbox = BR
-	..()
+	. = ..()
 
 /obj/machinery/blackbox_recorder/proc/find_feedback_datum(var/variable)
 	for(var/datum/feedback_variable/FV in feedback)

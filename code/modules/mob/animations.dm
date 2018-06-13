@@ -18,8 +18,7 @@ below 100 is not dizzy
 	dizziness = min(1000, dizziness + amount)	// store what will be new value
 													// clamped to max 1000
 	if(dizziness > 100 && !is_dizzy)
-		spawn(0)
-			dizzy_process()
+		dizzy_process()
 
 
 /*
@@ -28,6 +27,7 @@ spawned from make_dizzy(), will terminate automatically when dizziness gets <100
 note dizziness decrements automatically in the mob's Life() proc.
 */
 /mob/proc/dizzy_process()
+	set waitfor = 0
 	is_dizzy = 1
 	while(dizziness > 100)
 		if(client)
@@ -57,11 +57,11 @@ note dizziness decrements automatically in the mob's Life() proc.
 	jitteriness = min(1000, jitteriness + amount)	// store what will be new value
 													// clamped to max 1000
 	if(jitteriness > 100 && !is_jittery)
-		spawn(0)
-			jittery_process()
+		jittery_process()
 
 // Typo from the original coder here, below lies the jitteriness process. So make of his code what you will, the previous comment here was just a copypaste of the above.
 /mob/proc/jittery_process()
+	set waitfor = 0
 	is_jittery = 1
 	while(jitteriness > 100)
 		var/amplitude = min(4, jitteriness / 100)
@@ -199,21 +199,21 @@ note dizziness decrements automatically in the mob's Life() proc.
 	animate(I, alpha = 175, pixel_x = 0, pixel_y = 0, pixel_z = 0, time = 3)
 
 /mob/proc/spin(spintime, speed)
-	spawn()
-		var/D = dir
-		while(spintime >= speed)
-			sleep(speed)
-			switch(D)
-				if(NORTH)
-					D = EAST
-				if(SOUTH)
-					D = WEST
-				if(EAST)
-					D = SOUTH
-				if(WEST)
-					D = NORTH
-			set_dir(D)
-			spintime -= speed
+	set waitfor = 0
+	var/D = dir
+	while(spintime >= speed)
+		sleep(speed)
+		switch(D)
+			if(NORTH)
+				D = EAST
+			if(SOUTH)
+				D = WEST
+			if(EAST)
+				D = SOUTH
+			if(WEST)
+				D = NORTH
+		set_dir(D)
+		spintime -= speed
 	return
 
 /mob/proc/phase_in(var/turf/T)

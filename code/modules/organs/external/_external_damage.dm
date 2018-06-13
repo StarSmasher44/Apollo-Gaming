@@ -220,6 +220,7 @@
 	else if(is_dislocated())
 		lasting_pain += 5
 	var/tox_dam = 0
+	var/list/internal_organs = src.internal_organs
 	for(var/obj/item/organ/internal/I in internal_organs)
 		tox_dam += I.getToxLoss()
 	return pain + lasting_pain + 0.7 * brute_dam + 0.8 * burn_dam + 0.3 * tox_dam + 0.5 * get_genetic_damage()

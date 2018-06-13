@@ -39,8 +39,7 @@
 		/obj/machinery/smartfridge/,
 		/obj/machinery/biogenerator,
 		/obj/machinery/constructable_frame,
-		/obj/machinery/radiocarbon_spectrometer
-	)
+		/obj/machinery/radiocarbon_spectrometer)
 
 	Initialize()
 		. = ..()
@@ -125,7 +124,7 @@
 
 	dropped(mob/user)
 		..()
-		ADD_ICON_QUEUE(src)
+		update_icon()
 
 	attack_hand()
 		..()

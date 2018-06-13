@@ -14,8 +14,8 @@
 	anchored = 1
 
 
-/obj/machinery/power/terminal/New()
-	..()
+/obj/machinery/power/terminal/Initialize()
+	. = ..()
 	var/turf/T = src.loc
 	if(level==1) hide(!T.is_plating())
 	return
@@ -32,8 +32,10 @@
 		layer = WIRE_TERMINAL_LAYER
 	else
 		reset_plane_and_layer()
-
+/*
 // Needed so terminals are not removed from machines list.
 // Powernet rebuilds need this to work properly.
 /obj/machinery/power/terminal/Process()
 	return 1
+Wtf not needed at all go away you drunk.
+*/

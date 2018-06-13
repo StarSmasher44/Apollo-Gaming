@@ -238,7 +238,7 @@ swapmap
 					T.Write(S)
 					S.cd=".."
 				S.cd=".."
-			sleep()
+			stoplag()
 			S.cd=oldcd
 		locked=0
 		qdel(areas)
@@ -294,7 +294,7 @@ swapmap
 					T.Read(S)
 					S.cd=".."
 				S.cd=".."
-			sleep()
+			stoplag()
 			S.cd=oldcd
 		locked=0
 		qdel(areas)

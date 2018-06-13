@@ -8,7 +8,7 @@
 	anchored = 1
 	use_power = 1
 	idle_power_usage = 2
-	active_power_usage = 4
+	active_power_usage = 40
 	var/_wifi_id
 	var/datum/wifi/receiver/button/igniter/wifi_receiver
 
@@ -67,7 +67,7 @@
 	anchored = 1
 	use_power = 1
 	idle_power_usage = 2
-	active_power_usage = 4
+	active_power_usage = 40
 	var/_wifi_id
 	var/datum/wifi/receiver/button/sparker/wifi_receiver
 

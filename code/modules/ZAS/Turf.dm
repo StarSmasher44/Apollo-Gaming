@@ -3,18 +3,30 @@
 
 /turf/var/needs_air_update = 0
 /turf/var/datum/gas_mixture/air
+/*
+/turf/simulated/proc/update_graphic(list/graphic_add = null, list/graphic_remove = null)
+	if (LAZYLEN(graphic_add))
+//		overlays += graphic_add
+		src.vis_contents += graphic_add
+//		vis_contents += graphic_add
+	if(LAZYLEN(graphic_remove))
+//		overlays -= graphic_remove
+		src.vis_contents -= graphic_remove
+//		vis_contents += graphic_remove
+*/
 /turf/simulated/proc/update_graphic(list/graphic_add = null, list/graphic_remove = null)
 	if(LAZYLEN(graphic_add))
 		overlays += graphic_add
 	if(LAZYLEN(graphic_remove))
 		overlays -= graphic_remove
 
+/*
 /turf/simulated/proc/update_graphic(list/graphic_add = null, list/graphic_remove = null)
 	if(graphic_add && graphic_add.len)
 		vis_contents += graphic_add
 	if(graphic_remove && graphic_remove.len)
 		vis_contents -= graphic_remove
-
+*/
 /turf/proc/update_air_properties()
 	var/block
 	ATMOS_CANPASS_TURF(block, src, src)

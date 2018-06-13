@@ -631,7 +631,7 @@
 			stat("Local Time", stationtime2text())
 			stat("Local Date", stationdate2text())
 			stat("Round Duration", roundduration2text())
-			stat("CPU Status", cpustate)
+			stat("CPU Status", gamesys.cpustate)
 
 		if(client.holder || isghost(client.mob))
 			stat("Location:", "([x], [y], [z]) [loc]")

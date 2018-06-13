@@ -3,6 +3,8 @@
 #define CLAMP01(x) 		(Clamp(x, 0, 1))
 
 #define get_turf(A) get_step(A,0)
+#define get_area_def(A) (isarea(A) ? A : A.loc.loc)
+
 #define get_area2(A) return A.loc.loc
 
 #define in_range(source, user) (get_dist(source, user) <= 1 && (get_step(source, 0)?:z) == (get_step(user, 0)?:z))

@@ -20,7 +20,7 @@
 /obj/item/weapon/reagent_containers/food/drinks/bottle/Destroy()
 	if(rag)
 		rag.forceMove(src.loc)
-	rag = null
+	QDEL_NULL(rag)
 	return ..()
 
 //when thrown on impact, bottles smash and spill their contents

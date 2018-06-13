@@ -69,7 +69,7 @@ var/list/flooring_cache = list()
 
 /turf/simulated/floor/proc/get_damage_overlay(var/cache_key, var/blend)
 	if(!flooring_cache[cache_key])
-		var/image/I = image(icon = 'icons/turf/flooring/damage.dmi', icon_state = cache_key)
+		var/mutable_appearance/I = mutable_appearance('icons/turf/flooring/damage.dmi', cache_key)
 		if(blend)
 			I.blend_mode = blend
 		I.turf_decal_layerise()

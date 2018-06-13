@@ -8,11 +8,13 @@
 // Normal
 #define SS_PRIORITY_MOB            100	// Mob Life().
 #define SS_PRIORITY_MACHINERY      100	// Machinery + powernet ticks.
-#define SS_PRIORITY_AIR            80	// ZAS processing.
-#define SS_PRIORITY_AIRFLOW        20	// Object movement from ZAS airflow.
+#define SS_PRIORITY_AIR            65	// ZAS processing.
+#define SS_PRIORITY_AIRFLOW        25	// Object movement from ZAS airflow.
 
 // SS_BACKGROUND
 #define SS_PRIORITY_PROCESSING    25	// Generic datum processor. Replaces objects processor.
+#define SS_PRIORITY_PERSISTENT    20	// Persistency runner
 #define SS_PRIORITY_OBJECTS       15	// processing_objects processing.
 #define SS_PRIORITY_GARBAGE       15	// Garbage collection.
 #define SS_PRIORITY_VINES         15	// Spreading vine effects.
+#define SS_PRIORITY_LOWGROUND     10	// Everything that shouldn't need a lot of power.

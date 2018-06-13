@@ -1,0 +1,203 @@
+body {
+    margin: 0;
+}
+
+#main {
+    position: absolute;
+    top: 30px;
+    left: 120px;
+    width: calc(100% - 140px);
+    height: calc(100% - 90px);
+    border: 1px solid black;
+    border-radius: 25px;
+    color: white;
+}
+
+#main:after {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    height: calc(100% - 10px);
+    width: calc(100% - 10px);
+    background:rgba(255, 255, 255, 0.025);
+    border-radius: 20px;
+    z-index: -10;
+}
+
+#header {
+    position: absolute;
+    top:0;
+    color: white;
+    width: 100vw;
+    height: 30px;
+    border: 1px solid black;
+    border-radius: 0 0 25px 25px;
+    text-align: center;
+}
+
+#header:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 5px;
+    z-index: -1;
+    width: calc(100vw - 10px);
+    height: 25px;
+    background:rgba(255, 255, 255, 0.025);
+    border-radius: 0 0 25px 25px;
+}
+
+#vNav {
+    height: calc(100% - 81px);
+    width: 100px;
+    position: absolute;
+    top: 30px;
+    border: solid black 1px;
+    border-bottom: none;
+    border-left: none;
+    border-radius: 0px 25px 0px 0px;
+}
+
+#vNav:after {
+    content: "";
+    position: absolute;
+    top: 5px;
+    z-index: -1;
+    left: 5px;
+    height: calc(100% - 5px);
+    width: calc(100% - 10px);
+    background:rgba(255, 255, 255, 0.025);
+    border-radius: 0px 20px 0px 0px;
+}
+
+#vNav li a {
+    display: block;
+    background-color: rgba(67, 67, 67, 0.75);
+    margin: 5px;
+    padding: 20px 5px 20px 5px;
+    border: solid black 1px;
+    color: white;
+}
+
+#hNav {
+    width: calc(100% - 106px);
+    position: absolute;
+    bottom: -1px;
+    right: 5px;
+    border: solid black 1px;
+    border-left: none;
+    border-bottom: none;
+    border-radius: 0px 25px 0px 0px;
+}
+
+#hNav:after {
+    content: "";
+    position: absolute;
+    top: 5px;
+    height: calc(100% - 5px);
+    width: calc(100% - 5px);
+    background:rgba(255, 255, 255, 0.025);
+    border-radius: 0px 20px 0px 0px;
+    z-index: -1;
+}
+
+#hNav li a {
+    display: block;
+    background-color: rgba(67, 67, 67, 0.75);
+    margin: 5px;
+    padding: 10px 20px 10px 20px;
+    border: solid black 1px;
+    color: white;
+    float: right;
+    
+}
+
+#navJoin {
+    width: 100px;
+    height: 50px;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+}
+
+#navJoin:after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    height: 100%;
+    width: calc(100% - 5px);
+    background:radial-gradient(circle at 100% 0, rgba(204,0,0,0) 5px, rgba(255, 255, 255, 0.025)  5px);
+}
+
+#name {
+    background-color: rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+    color: white;
+    width: calc(100% - 90px);
+    border: black 1px solid;
+    outline: none;
+}
+
+#name:focus {
+    background-color: rgba(0, 0, 0, 0);
+    border: rgba(0, 0, 0, 0.5) 1px solid;
+}
+
+#species {
+    background-color: rgba(0, 0, 0, 0.15);
+    color: white;
+    width: calc(100% - 90px);
+    outline: none;
+    border: black 1px solid;
+}
+
+#species:focus {
+    background-color: rgba(0, 0, 0, 0);
+    border: rgba(0, 0, 0, 0.5) 1px solid;
+}
+
+#age {
+    background-color: rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+    color: white;
+    width: calc(100% - 90px);
+    outline: none;
+    border: black 1px solid;
+}
+
+#age:focus {
+    background-color: rgba(0, 0, 0, 0);
+    border: rgba(0, 0, 0, 0.5) 1px solid;
+}
+
+.f1 {
+    width: 70px;
+    display: inline-block;
+    padding: 5px;
+}
+
+form {
+    margin: 15px;
+    background-color: rgba(139, 208, 255, 0.15);
+    width: 40%;
+    border-radius: 5px;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    background-color: #85754A !important;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.navFirst {
+    border-radius: 0px 20px 0px 0px;
+}

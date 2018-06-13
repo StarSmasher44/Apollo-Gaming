@@ -27,7 +27,7 @@
 		return null
 	var/atom/T = null
 	stop_automated_movement = 0
-	for(var/atom/A in ListTargets(10))
+	for(var/A in ListTargets(10))
 
 		if(A == src)
 			continue
@@ -122,7 +122,7 @@
 
 
 /mob/living/simple_animal/hostile/proc/ListTargets(var/dist = 7)
-	. = hearers(src, dist) - src
+	. = ohearers(src, dist)
 
 	for (var/obj/mecha/M in mechas_list)
 		if (M.z == src.z && get_dist(src, M) <= dist)
@@ -146,7 +146,8 @@
 		if(!stat)
 			switch(stance)
 				if(HOSTILE_STANCE_IDLE)
-					target_mob = FindTarget()
+					if(prob(66))
+						target_mob = FindTarget()
 
 				if(HOSTILE_STANCE_ATTACK)
 					if(destroy_surroundings)

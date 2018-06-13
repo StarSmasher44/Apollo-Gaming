@@ -62,7 +62,10 @@
 /datum/wound/proc/can_autoheal()
 	if(embedded_objects.len)
 		return 0
-	return (wound_damage() <= autoheal_cutoff) ? 1 : is_treated()
+	if(wound_damage() <= autoheal_cutoff)
+		return 1
+	else if(is_treated())
+		return 1
 
 // checks whether the wound has been appropriately treated
 /datum/wound/proc/is_treated()

@@ -63,9 +63,8 @@
 	set_trait(TRAIT_PLANT_COLOUR,         "#46b543")    // Colour of the plant icon.
 
 	spawn(5)
-		sleep(-1)
 		update_growth_stages()
-	
+
 	uid = plant_controller.seeds.len + 1
 
 /datum/seed/proc/get_trait(var/trait)

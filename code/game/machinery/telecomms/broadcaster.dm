@@ -18,7 +18,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 	density = 1
 	anchored = 1
 	use_power = 1
-	idle_power_usage = 25
+	idle_power_usage = 30
 	machinetype = 5
 	produces_heat = 0
 	delay = 7
@@ -247,7 +247,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 
 		for (var/obj/item/device/radio/R in connection.devices["[RADIO_CHAT]"])
 
-			if(istype(R, /obj/item/device/radio/headset))
+			if(istype(R, /obj/item/device/radio/headset) && !R.adhoc_fallback)
 				continue
 
 			if(R.receive_range(display_freq, level) > -1)

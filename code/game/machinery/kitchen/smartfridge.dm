@@ -9,8 +9,8 @@
 	density = 1
 	anchored = 1
 	use_power = 1
-	idle_power_usage = 5
-	active_power_usage = 100
+	idle_power_usage = 20
+	active_power_usage = 125
 	flags = NOREACT
 	var/global/max_n_of_items = 999 // Sorry but the BYOND infinite loop detector doesn't look things over 1000.
 	var/icon_on = "smartfridge"

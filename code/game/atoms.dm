@@ -232,7 +232,7 @@ its easier to just keep the beam vertical.
 					Pixel_y+=32
 			X.pixel_x=Pixel_x
 			X.pixel_y=Pixel_y
-		sleep(3)	//Changing this to a lower value will cause the beam to follow more smoothly with movement, but it will also be more laggy.
+		sleep(2)	//Changing this to a lower value will cause the beam to follow more smoothly with movement, but it will also be more laggy.
 					//I've found that 3 ticks provided a nice balance for my use.
 	for(var/obj/effect/overlay/beam/O in orange(10,src)) if(O.BeamSource==src) qdel(O)
 
@@ -281,6 +281,7 @@ its easier to just keep the beam vertical.
 	return
 
 /atom/proc/ex_act()
+	set waitfor = FALSE
 	return
 
 /atom/proc/emag_act(var/remaining_charges, var/mob/user, var/emag_source)

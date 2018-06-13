@@ -5,8 +5,8 @@
 	density = 1
 	anchored = 1
 	use_power = 1
-	idle_power_usage = 10
-	active_power_usage = 2000
+	idle_power_usage = 25
+	active_power_usage = 2500
 	clicksound = "keyboard"
 	clickvol = 30
 

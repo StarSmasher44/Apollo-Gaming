@@ -11,7 +11,7 @@
 	anchored = 1
 
 	use_power = 1
-	idle_power_usage = 60
+	idle_power_usage = 75
 	active_power_usage = 10000	//10 kW. It's a big all-body scanner.
 
 /obj/machinery/bodyscanner/relaymove(mob/user as mob)
@@ -301,7 +301,7 @@
 			pulse_result = H.get_pulse(1)
 	else
 		pulse_result = "ERROR - Nonstandard biology"
-	dat += "<b>Pulse rate:</b> [pulse_result]bpm."
+	dat += "<b>Pulse rate:</b> [pulse_result] bpm."
 
 	// Blood pressure. Based on the idea of a normal blood pressure being 120 over 80.
 	if(H.get_blood_volume() <= 70)

@@ -8,7 +8,7 @@
 	anchored = 1
 	use_power = 1
 	idle_power_usage = 5
-	active_power_usage = 100
+	active_power_usage = 200
 	flags = OPENCONTAINER | NOREACT
 	var/operating = 0 // Is it on?
 	var/dirty = 0 // = {0..100} Does it need cleaning?

@@ -10,8 +10,8 @@
 	anchored = 1
 	density = 1
 	use_power = 1
-	idle_power_usage = 40
-	active_power_usage = 300
+	idle_power_usage = 50
+	active_power_usage = 1000
 
 	var/stored_matter = 0
 	var/max_stored_matter = 0

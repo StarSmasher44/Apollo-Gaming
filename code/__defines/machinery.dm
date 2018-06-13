@@ -81,14 +81,14 @@ var/list/restricted_camera_networks = list(NETWORK_ERT,NETWORK_MERCENARY,"Secret
 #define ATMOS_FILTER_EFFICIENCY 2.5
 
 // Will not bother pumping or filtering if the gas source as fewer than this amount of moles, to help with performance.
-#define MINIMUM_MOLES_TO_PUMP   0.04
-#define MINIMUM_MOLES_TO_FILTER 0.04
+#define MINIMUM_MOLES_TO_PUMP   0.1
+#define MINIMUM_MOLES_TO_FILTER 0.1
 
 // The flow rate/effectiveness of various atmos devices is limited by their internal volume,
 // so for many atmos devices these will control maximum flow rates in L/s.
 #define ATMOS_DEFAULT_VOLUME_PUMP   200 // Liters.
-#define ATMOS_DEFAULT_VOLUME_FILTER 200 // L.
-#define ATMOS_DEFAULT_VOLUME_MIXER  200 // L.
+#define ATMOS_DEFAULT_VOLUME_FILTER 300 // L.
+#define ATMOS_DEFAULT_VOLUME_MIXER  300 // L.
 #define ATMOS_DEFAULT_VOLUME_PIPE   70  // L.
 
 #define TELECOMMS_RECEPTION_NONE 0

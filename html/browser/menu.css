@@ -1,11 +1,10 @@
 body {
-	margin: 0;
+  margin: 0;
 	padding: 0;
 	position: absolute;
-	height: 900px;
-	font-size: 14px;
+	height: 700px;
+	font-size: 16px;
 	overflow: hidden;
-	scroll: hidden;
 }
 
 hr {
@@ -60,6 +59,7 @@ nav.vNav {
 	top: 32px;
 	width: 100px;
 	height: 100%;
+	opacity: 0.9;
 }
 
 nav.vNav li a {
@@ -73,6 +73,7 @@ nav.hNav {
 	position: fixed;
 	bottom: 0;
 	width: 100%;
+	opacity: 0.9;
 }
 nav.hNav li {
 	float: right;
@@ -89,34 +90,41 @@ nav.hNav li a {
 
 div.main {
 	margin-left: 125px;
-	margin-top: 50px;
+	margin-top: 32px;
 	color: #ffffff;
 	position: fixed;
-	height: 700px;
-	width: 350px;
+	width: 275px;
 }
 
-div.main a, div.main a:visited, div.secondary a, div.secondary a:visited{
+div.main a, div.main a:visited, div.secondary a, div.secondary a:visited, div.secondarymid a, div.secondarymid a:visited{
 	text-decoration: none;
 	color: #DEDEDE;
 	white-space: nowrap;
 }
 
-div.main a:hover, div.secondary a:hover, div.main a:active, div.secondary a:active{
+div.main a:hover, div.secondary a:hover, div.main a:active, div.secondary a:active, div.secondarymid a:hover, div.secondarymid a:active{
 	color: #B3B3B3;
 }
 
-div.main a:active, div.secondary a:active {
+div.main a:active, div.secondary a:active, div.secondarymid a:active {
 	background-color: #8A803F;
 }
-
 div.secondary {
 	position: fixed;
-	top: 50px;
-	right: 25px;
+	top: 32px;
+	right: 125px;
 	color: #FFFFFF;
 	text-align: right;
-	width: 225px;
+	width: 275px;
+}
+
+div.secondarymid {
+	position: fixed;
+	top: 32px;
+	right: 400px;	
+	color: #FFFFFF;
+	text-align: center;
+	width: 275px;
 }
 
 div.background {

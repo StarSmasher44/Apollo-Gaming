@@ -54,7 +54,6 @@ var/global/universe_has_ended = 0
 	cult.allow_narsie = 0
 
 	PlayerSet()
-	CHECK_TICK
 	new /obj/singularity/narsie/large/exit(pick(endgame_exits))
 	spawn(rand(30,60) SECONDS)
 		var/txt = {"

@@ -104,8 +104,10 @@ turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 	SSair.active_fire_zones |= zone
 
 	var/obj/effect/decal/cleanable/liquid_fuel/fuel = locate() in src
+	LAZYINITLIST(zone.fire_tiles)
 	zone.fire_tiles |= src
-	if(fuel) zone.fuel_objs += fuel
+	if(fuel)
+		LAZYADD(zone.fuel_objs, fuel)
 
 	return 0
 
@@ -199,7 +201,7 @@ turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 	set_light(3, 1, color)
 
 	firelevel = fl
-	SSair.active_hotspots.Add(src)
+	SSair.active_hotspots += src
 
 /obj/fire/proc/fire_color(var/env_temperature)
 	var/temperature = max(4000*sqrt(firelevel/vsc.fire_firelevel_multiplier), env_temperature)
@@ -217,10 +219,10 @@ turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 
 		T.fire = null
 		loc = null
-	SSair.active_hotspots.Remove(src)
+	SSair.active_hotspots -= src
 
 
-/turf/simulated/var/fire_protection = 0 //Protects newly extinguished tiles from being overrun again.
+/turf/simulated/var/tmp/fire_protection = 0 //Protects newly extinguished tiles from being overrun again.
 /turf/proc/apply_fire_protection()
 /turf/simulated/apply_fire_protection()
 	fire_protection = world.time
@@ -228,12 +230,13 @@ turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 //Returns the firelevel
 /datum/gas_mixture/proc/react(zone/zone, force_burn, no_check = 0)
 	. = 0
-	if((temperature > PHORON_MINIMUM_BURN_TEMPERATURE || force_burn) && (no_check ||check_recombustability(zone? zone.fuel_objs : null)))
+	if(volume > 0.5 && (temperature > PHORON_MINIMUM_BURN_TEMPERATURE || force_burn) && (no_check ||check_recombustability(zone? zone.fuel_objs : null)))
 
 		#ifdef FIREDBG
 		log_debug("***************** FIREDBG *****************")
 		log_debug("Burning [zone? zone.name : "zoneless gas_mixture"]!")
 		#endif
+		var/list/gas2 = gas
 
 		var/gas_fuel = 0
 		var/liquid_fuel = 0
@@ -241,7 +244,7 @@ turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 		var/total_oxidizers = 0
 
 		//*** Get the fuel and oxidizer amounts
-		for(var/g in gas)
+		for(var/g in gas2)
 			if(gas_data.flags[g] & XGM_GAS_FUEL)
 				gas_fuel += gas[g]
 			if(gas_data.flags[g] & XGM_GAS_OXIDIZER)
@@ -257,7 +260,7 @@ turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 				fuel_area++
 
 		total_fuel = gas_fuel + liquid_fuel
-		if(total_fuel <= 0.005)
+		if(total_fuel <= 0.05)
 			return 0
 
 		//*** Determine how fast the fire burns
@@ -323,13 +326,12 @@ turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 		log_debug("used_gas_fuel = [used_gas_fuel]; used_liquid_fuel = [used_liquid_fuel]; total = [used_fuel]")
 		log_debug("new temperature = [temperature]; new pressure = [return_pressure()]")
 		#endif
-
 		return firelevel
 
 datum/gas_mixture/proc/check_recombustability(list/fuel_objs)
 	. = 0
 	for(var/g in gas)
-		if(gas_data.flags[g] & XGM_GAS_OXIDIZER && gas[g] >= 0.1)
+		if(gas_data.flags[g] & XGM_GAS_OXIDIZER && gas[g] >= 0.3)
 			. = 1
 			break
 
@@ -341,7 +343,7 @@ datum/gas_mixture/proc/check_recombustability(list/fuel_objs)
 
 	. = 0
 	for(var/g in gas)
-		if(gas_data.flags[g] & XGM_GAS_FUEL && gas[g] >= 0.1)
+		if(gas_data.flags[g] & XGM_GAS_FUEL && gas[g] >= 0.3)
 			. = 1
 			break
 

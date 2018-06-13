@@ -5,7 +5,7 @@
 	icon_state = "ccharger0"
 	anchored = 1
 	use_power = 1
-	idle_power_usage = 5
+	idle_power_usage = 10
 	active_power_usage = 60 KILOWATTS	//This is the power drawn when charging
 	power_channel = EQUIP
 	var/obj/item/weapon/cell/charging = null

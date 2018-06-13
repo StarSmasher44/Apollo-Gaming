@@ -176,7 +176,7 @@
 	dir = 4
 	use_power = 1
 	idle_power_usage = 10
-	active_power_usage = 2000
+	active_power_usage = 3000
 	var/obj/machinery/computer/teleporter/com
 
 
@@ -300,7 +300,7 @@
 	var/engaged = 0
 	use_power = 1
 	idle_power_usage = 10
-	active_power_usage = 2000
+	active_power_usage = 3000
 	var/obj/machinery/teleport/hub/com
 
 /obj/machinery/teleport/station/New()

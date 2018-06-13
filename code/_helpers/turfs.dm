@@ -24,29 +24,29 @@
 	if(!start_turfs.len)
 		return null
 
-	var/list/available_turfs = list()
+	. = list()
 	for(var/start_turf in start_turfs)
 		var/mob/M = locate() in start_turf
 		if(!M)
-			available_turfs += start_turf
-	if(!available_turfs.len)
-		available_turfs = start_turfs
-	return pick(available_turfs)
+			. += start_turf
+	if(!.)
+		. = start_turfs
+	return pick(.)
 
 /proc/get_random_turf_in_range(var/atom/origin, var/outer_range, var/inner_range)
 	origin = get_turf(origin)
 	if(!origin)
 		return
-	var/list/turfs = list()
+	. = list()
 	for(var/TA in O_RANGE_TURFS(outer_range, origin))
 		var/turf/T = TA
 		if(!(T.z in GLOB.using_map.sealed_levels)) // Picking a turf outside the map edge isn't recommended
 			if(T.x >= world.maxx-TRANSITIONEDGE || T.x <= TRANSITIONEDGE)	continue
 			if(T.y >= world.maxy-TRANSITIONEDGE || T.y <= TRANSITIONEDGE)	continue
 		if(!inner_range || get_dist(origin, T) >= inner_range)
-			turfs += T
-	if(turfs.len)
-		return pick(turfs)
+			. += T
+	if(.)
+		return pick(.)
 
 /proc/screen_loc2turf(text, turf/origin)
 	if(!origin)

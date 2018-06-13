@@ -172,18 +172,20 @@
 	..(loc)
 	if(!id)
 		id = newid
-	update_icon()
+	ADD_ICON_QUEUE(src)
 	button_machines.Add(src)
 
-	spawn(5)		// allow map load
-		conveyors = list()
-		for(var/obj/machinery/conveyor/C in world)
-			if(C.id == id)
-				conveyors += C
+/obj/machinery/conveyor_switch/Initialize()
+	..(loc)
+	LAZYINITLIST(conveyors)
+	for(var/obj/machinery/conveyor/C in world) //Pls this is retarded
+		if(C.id == id)
+			conveyors += C
+		CHECK_TICK
 
 
 /obj/machinery/conveyor_switch/Destroy()
-	button_machines.Remove(src)
+	button_machines -= src
 	. = ..()
 
 // update the icon depending on the position
@@ -205,9 +207,10 @@
 		return
 	operated = 0
 
-	for(var/obj/machinery/conveyor/C in conveyors)
-		C.operating = position
-		C.setmove()
+	for(var/C in conveyors)
+		var/obj/machinery/conveyor/CA = C
+		CA.operating = position
+		CA.setmove()
 
 // attack with hand, switch position
 /obj/machinery/conveyor_switch/attack_hand(mob/user)

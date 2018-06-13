@@ -222,7 +222,7 @@
 		if(id == C.comp_id)
 			compressor = C
 	doors = new /list()
-	for(var/obj/machinery/door/blast/P in SSmachines.machinery)
+	for(var/obj/machinery/door/blast/P in button_machines)
 		if(P.id == id)
 			doors += P
 
@@ -297,13 +297,11 @@
 	else if (href_list["doors"])
 		for(var/obj/machinery/door/blast/D in src.doors)
 			if (door_status == 0)
-				spawn( 0 )
-					D.open()
-					door_status = 1
+				D.open()
+				door_status = 1
 			else
-				spawn( 0 )
-					D.close()
-					door_status = 0
+				D.close()
+				door_status = 0
 	else if( href_list["close"] )
 		usr << browse(null, "window=computer")
 		return

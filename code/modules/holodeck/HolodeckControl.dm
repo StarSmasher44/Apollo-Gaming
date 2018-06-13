@@ -7,7 +7,7 @@
 	var/islocked = 0
 
 	use_power = 1
-	active_power_usage = 8000 //8kW for the scenery + 500W per holoitem
+	active_power_usage = 10000 //8kW-~L now 10-- for the scenery + 500W per holoitem
 
 	circuit = /obj/item/weapon/circuitboard/holodeckcontrol
 

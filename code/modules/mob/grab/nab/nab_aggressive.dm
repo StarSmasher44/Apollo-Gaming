@@ -15,5 +15,4 @@
 
 /datum/grab/nab/aggressive/process_effect(var/obj/item/grab/G)
 	var/mob/living/carbon/human/affecting = G.affecting
-
-	affecting.Stun(3)
+	if(ismob(affecting))	affecting.Stun(3)

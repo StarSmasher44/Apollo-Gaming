@@ -3,12 +3,13 @@
 //
 
 GLOBAL_VAR_INIT(open_space_initialised, FALSE)
-GLOBAL_DATUM_INIT(over_OS_darkness, /image, image('icons/turf/open_space.dmi', "black_open"))
+GLOBAL_DATUM_INIT(over_OS_darkness, /mutable_appearance, mutable_appearance('icons/turf/open_space.dmi', "black_open"))
 
 
 SUBSYSTEM_DEF(open_space)
 	name = "openspace"
 	init_order = INIT_OPEN_SPACE
+	priority = 15
 	var/list/turfs_to_process = list()		// List of turfs queued for update.
 	var/list/turfs_to_process_old = list()  //List of previous turfs that is set to update
 	var counter = 1 //Can't use .len because we need to iterate in order

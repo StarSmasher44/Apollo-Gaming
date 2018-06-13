@@ -342,7 +342,7 @@
 /obj/item/clothing/suit/storage/vest/nt/warden
 	name = "warden heavy armored vest"
 	desc = "A synthetic armor vest with WARDEN printed in silver lettering on the chest. This one has added webbing and ballistic plates."
-	icon_state = "secwebvest"
+	icon_state = "webvest"
 
 /obj/item/clothing/suit/storage/vest/nt/hos
 	name = "commander heavy armored vest"

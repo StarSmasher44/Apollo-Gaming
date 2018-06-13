@@ -1,8 +1,8 @@
 #define NITROGEN_RETARDATION_FACTOR 0.15	//Higher == N2 slows reaction more
 #define THERMAL_RELEASE_MODIFIER 10000		//Higher == more heat released during reaction
 #define PHORON_RELEASE_MODIFIER 1500		//Higher == less phoron released by reaction
-#define OXYGEN_RELEASE_MODIFIER 15000		//Higher == less oxygen released at high temperature/power
-#define REACTION_POWER_MODIFIER 1.1			//Higher == more overall power
+#define OXYGEN_RELEASE_MODIFIER 12000		//Higher == less oxygen released at high temperature/power
+#define REACTION_POWER_MODIFIER 1			//Higher == more overall power
 
 /*
 	How to tweak the SM
@@ -16,7 +16,7 @@
 
 //Controls how much power is produced by each collector in range - this is the main parameter for tweaking SM balance, as it basically controls how the power variable relates to the rest of the game.
 #define POWER_FACTOR 1.0
-#define DECAY_FACTOR 700			//Affects how fast the supermatter power decays
+#define DECAY_FACTOR 725			//Affects how fast the supermatter power decays
 #define CRITICAL_TEMPERATURE 5000	//K
 #define CHARGING_FACTOR 0.05
 #define DAMAGE_RATE_LIMIT 4.5		//damage rate cap at power = 300, scales linearly with power
@@ -49,7 +49,7 @@
 
 	layer = ABOVE_OBJ_LAYER
 
-	var/gasefficency = 0.25
+	var/gasefficency = 0.23
 
 	var/base_icon_state = "darkmatter"
 
@@ -107,6 +107,7 @@
 /obj/machinery/power/supermatter/Initialize()
 	. = ..()
 	uid = gl_uid++
+	explosion_power = rand(8, 12)
 
 /obj/machinery/power/supermatter/proc/handle_admin_warnings()
 	if(disable_adminwarn)

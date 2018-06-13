@@ -101,7 +101,7 @@ obj/machinery/computer/general_air_control/Destroy()
 
 /obj/machinery/computer/general_air_control/Process()
 	..()
-	src.updateUsrDialog()
+	updateUsrDialog()
 
 /obj/machinery/computer/general_air_control/receive_signal(datum/signal/signal)
 	if(!signal || signal.encryption) return
@@ -225,15 +225,13 @@ Max Output Pressure: [output_pressure] kPa<BR>"}
 	if(href_list["adj_pressure"])
 		var/change = text2num(href_list["adj_pressure"])
 		pressure_setting = between(0, pressure_setting + change, MAX_PUMP_PRESSURE)
-		spawn(1)
-			src.updateUsrDialog()
+		updateUsrDialog()
 		return 1
 
 	if(href_list["adj_input_flow_rate"])
 		var/change = text2num(href_list["adj_input_flow_rate"])
 		input_flow_setting = between(0, input_flow_setting + change, ATMOS_DEFAULT_VOLUME_PUMP + 500) //default flow rate limit for air injectors
-		spawn(1)
-			src.updateUsrDialog()
+		updateUsrDialog()
 		return 1
 
 	if(!radio_connection)
@@ -274,8 +272,7 @@ Max Output Pressure: [output_pressure] kPa<BR>"}
 	signal.data["sigtype"]="command"
 	radio_connection.post_signal(src, signal, filter = RADIO_ATMOSIA)
 
-	spawn(5)
-		src.updateUsrDialog()
+	updateUsrDialog()
 
 /obj/machinery/computer/general_air_control/supermatter_core
 	icon = 'icons/obj/computer.dmi'
@@ -344,15 +341,13 @@ Min Core Pressure: [pressure_limit] kPa<BR>"}
 	if(href_list["adj_pressure"])
 		var/change = text2num(href_list["adj_pressure"])
 		pressure_setting = between(0, pressure_setting + change, MAX_PUMP_PRESSURE)
-		spawn(1)
-			src.updateUsrDialog()
+		src.updateUsrDialog()
 		return 1
 
 	if(href_list["adj_input_flow_rate"])
 		var/change = text2num(href_list["adj_input_flow_rate"])
 		input_flow_setting = between(0, input_flow_setting + change, ATMOS_DEFAULT_VOLUME_PUMP + 500) //default flow rate limit for air injectors
-		spawn(1)
-			src.updateUsrDialog()
+		src.updateUsrDialog()
 		return 1
 
 	if(!radio_connection)
@@ -393,8 +388,7 @@ Min Core Pressure: [pressure_limit] kPa<BR>"}
 	signal.data["sigtype"]="command"
 	radio_connection.post_signal(src, signal, filter = RADIO_ATMOSIA)
 
-	spawn(5)
-		src.updateUsrDialog()
+	src.updateUsrDialog()
 
 /obj/machinery/computer/general_air_control/fuel_injection
 	icon = 'icons/obj/computer.dmi'

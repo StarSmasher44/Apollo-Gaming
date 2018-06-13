@@ -12,6 +12,7 @@
 	var/projectile_type = /obj/item/projectile/beam/practice
 	var/modifystate
 	var/charge_meter = 1	//if set, the icon state will be chosen based on the current charge
+	var/old_ratio = 0
 
 	//self-recharging
 	var/self_recharge = 0	//if set, the weapon will recharge itself
@@ -45,7 +46,7 @@
 	return ..()
 
 /obj/item/weapon/gun/energy/Process()
-	if(self_recharge) //Every [recharge_time] ticks, recharge a shot for the cyborg
+	if(self_recharge && power_supply && power_supply.percent() < 100) //Every [recharge_time] ticks, recharge a shot for the cyborg
 		charge_tick++
 		if(charge_tick < recharge_time) return 0
 		charge_tick = 0
@@ -89,10 +90,12 @@
 	return
 
 /obj/item/weapon/gun/energy/update_icon()
-	..()
+//	..()
 	if(charge_meter)
 		var/ratio = power_supply.percent()
-
+		if(ratio == old_ratio)
+			return
+		old_ratio = ratio
 		//make sure that rounding down will not give us the empty state even if we have charge for a shot left.
 		if(power_supply.charge < charge_cost)
 			ratio = 0

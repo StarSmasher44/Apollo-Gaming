@@ -443,15 +443,10 @@ var/list/turret_icons
 /obj/machinery/porta_turret/Process()
 	//the main machinery process
 
-	if(stat & (NOPOWER|BROKEN))
-		//if the turret has no power or is broken, make the turret pop down if it hasn't already
-		popDown()
+	if(!enabled || (stat & (NOPOWER|BROKEN)) || disabled)
+		pop_down()
 		return
 
-	if(!enabled)
-		//if the turret is off, make it pop down
-		popDown()
-		return
 	if(next_process_time <= world.time)
 		next_process_time = world.time + 30		// 3 second delays between process updates
 		var/list/targets = list()			//list of primary targets

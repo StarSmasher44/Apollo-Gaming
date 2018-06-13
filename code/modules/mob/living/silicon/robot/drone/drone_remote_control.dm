@@ -54,7 +54,7 @@
 		to_chat(user, "<span class='warning'>\The [src] is not ready to produce a new drone.</span>")
 		return
 
-	if(count_drones() >= config.max_maint_drones)
+	if(count_drones(1) >= config.max_maint_drones)
 		to_chat(user, "<span class='warning'>The drone control subsystems are tasked to capacity; they cannot support any more drones.</span>")
 		return
 

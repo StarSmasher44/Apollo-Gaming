@@ -46,8 +46,7 @@
 			to_chat(user, "<span class='notice'>How are you going to label that?</span>")
 			return
 		tray.labelled = label
-		spawn(1)
-			ADD_ICON_QUEUE(tray)
+		ADD_ICON_QUEUE(tray)
 
 	user.visible_message("<span class='notice'>[user] labels [A] as [label].</span>", \
 						 "<span class='notice'>You label [A] as [label].</span>")

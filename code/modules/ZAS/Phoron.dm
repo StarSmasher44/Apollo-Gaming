@@ -1,4 +1,4 @@
-var/image/contamination_overlay = image('icons/effects/contamination.dmi')
+var/mutable_appearance/contamination_overlay = mutable_appearance('icons/effects/contamination.dmi')
 
 /pl_control
 	var/PHORON_DMG = 3

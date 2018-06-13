@@ -171,7 +171,7 @@
 	active = 1
 	update_icon()
 
-	for(var/obj/machinery/door/blast/M in SSmachines.machinery)
+	for(var/obj/machinery/door/blast/M in button_machines)
 		if (M.id == src.id)
 			spawn( 0 )
 				M.open()
@@ -185,7 +185,7 @@
 
 	sleep(50)
 
-	for(var/obj/machinery/door/blast/M in SSmachines.machinery)
+	for(var/obj/machinery/door/blast/M in button_machines)
 		if (M.id == src.id)
 			spawn(0)
 				M.close()

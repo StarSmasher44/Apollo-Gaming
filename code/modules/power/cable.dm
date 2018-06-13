@@ -508,7 +508,7 @@ obj/structure/cable/proc/cableColor(var/colorC)
 	src.amount = length
 	if (param_color) // It should be red by default, so only recolor it if parameter was specified.
 		color = param_color
-	update_icon()
+	ADD_ICON_QUEUE(src)
 	update_wclass()
 
 ///////////////////////////////////
@@ -802,7 +802,7 @@ obj/structure/cable/proc/cableColor(var/colorC)
 /obj/item/stack/cable_coil/cut/New(loc)
 	..()
 	src.amount = rand(1,2)
-	update_icon()
+	ADD_ICON_QUEUE(src)
 	update_wclass()
 
 /obj/item/stack/cable_coil/yellow
@@ -826,6 +826,6 @@ obj/structure/cable/proc/cableColor(var/colorC)
 /obj/item/stack/cable_coil/white
 	color = COLOR_WHITE
 
-/obj/item/stack/cable_coil/random/New()
+/obj/item/stack/cable_coil/random/Initialize()
 	color = possible_cable_coil_colours[pick(possible_cable_coil_colours)]
-	..()
+	. = ..()

@@ -344,8 +344,31 @@
 
 	if (!def_zone)
 		def_zone = pick(BP_L_HAND, BP_R_HAND)
-
+//	if(.)
+//		electrocution_animation(40)
 	return ..(shock_damage, source, base_siemens_coeff, def_zone)
+/*
+//Turns a mob black, flashes a skeleton overlay
+//Just like a cartoon!
+/mob/living/carbon/human/proc/electrocution_animation(anim_duration)
+	//Handle mutant parts if possible
+	if(species)
+		add_atom_colour("#000000", TEMPORARY_COLOUR_PRIORITY)
+		var/static/mutable_appearance/electrocution_skeleton_anim
+		if(!electrocution_skeleton_anim)
+			electrocution_skeleton_anim = mutable_appearance(icon, "electrocuted_base")
+			electrocution_skeleton_anim.appearance_flags |= RESET_COLOR|KEEP_APART
+		add_overlay(electrocution_skeleton_anim)
+		spawn(anim_duration)
+			end_electrocution_animation(electrocution_skeleton_anim)
+
+	else //or just do a generic animation
+		flick_overlay_view(image(icon,src,"electrocuted_generic",ABOVE_MOB_LAYER), src, anim_duration)
+
+/mob/living/carbon/human/proc/end_electrocution_animation(mutable_appearance/MA)
+	remove_atom_colour(TEMPORARY_COLOUR_PRIORITY, "#000000")
+	cut_overlay(MA)
+*/
 
 /mob/living/carbon/human/apply_shock(var/shock_damage, var/def_zone, var/base_siemens_coeff = 1.0)
 	var/obj/item/organ/external/initial_organ = get_organ(check_zone(def_zone))
@@ -1058,7 +1081,7 @@
 	if(!(gender in species.genders))
 		gender = species.genders[1]
 
-	icon_state = lowertext(species.name)
+//	icon_state = lowertext(species.name)
 
 	species.create_organs(src)
 	species.handle_post_spawn(src)

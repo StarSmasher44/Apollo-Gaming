@@ -279,7 +279,7 @@ var/global/list/datum/stack_recipe/wax_recipes = list( \
 	name = "beekeeping crate"
 	desc = "All you need to set up your own beehive."
 
-/obj/structure/closet/crate/hydroponics/beekeeping/New()
+/obj/structure/closet/crate/hydroponics/beekeeping/Initialize()
 	..()
 	new /obj/item/beehive_assembly(src)
 	new /obj/item/bee_smoker(src)

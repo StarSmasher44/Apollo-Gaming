@@ -1,5 +1,5 @@
 #define TICK_LIMIT_RUNNING 80
-#define TICK_LIMIT_TO_RUN 70
+#define TICK_LIMIT_TO_RUN 72
 #define TICK_LIMIT_MC 70
 #define TICK_LIMIT_MC_INIT_DEFAULT 98
 
@@ -20,3 +20,9 @@
 //for when you need a reliable time number that doesn't depend on byond time.
 #define REALTIMEOFDAY (world.timeofday + (MIDNIGHT_ROLLOVER * MIDNIGHT_ROLLOVER_CHECK))
 #define MIDNIGHT_ROLLOVER_CHECK ( GLOB.rollovercheck_last_timeofday != world.timeofday ? update_midnight_rollover() : GLOB.midnight_rollovers )
+
+#define TICKS *world.tick_lag
+
+#define DS2TICKS(DS) ((DS)/world.tick_lag)
+
+#define TICKS2DS(T) ((T) TICKS)

@@ -14,15 +14,8 @@
 
 /turf/space/Initialize()
 	. = ..()
-	if((icon_state == "0") && (!keep_sprite))
-		icon_state = "[((x + y) ^ ~(x * y)) % 25]"
+	appearance = SSicon_cache.space_cache["[((x + y) ^ ~(x * y) + z) % 25]"]
 	update_starlight()
-	var/image/I = image('icons/turf/space_parallax1.dmi',"[icon_state]")
-	I.plane = PLANE_SPACE_DUST
-	I.alpha = 75
-	I.blend_mode = BLEND_ADD
-	overlays += I
-
 	if(!HasBelow(z))
 		return
 	var/turf/below = GetBelow(src)

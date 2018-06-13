@@ -81,7 +81,7 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 	var/end = locate(endx, endy, 1)
 	spawn(0)
 		walk_towards(immrod, end,1)
-	sleep(1)
+	stoplag(1)
 	while (immrod)
 		if (isNotStationLevel(immrod.z))
 			immrod.z = pick(GLOB.using_map.station_levels)

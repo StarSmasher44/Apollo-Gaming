@@ -14,8 +14,8 @@
 	var/pump
 
 	use_power = 1
-	idle_power_usage = 15
-	active_power_usage = 200 //builtin health analyzer, dialysis machine, injectors.
+	idle_power_usage = 20
+	active_power_usage = 225 //builtin health analyzer, dialysis machine, injectors.
 
 /obj/machinery/sleeper/Initialize()
 	. = ..()

@@ -50,6 +50,7 @@ SUBSYSTEM_DEF(machines)
 	var/list/machinery     = list()
 	var/list/powernets     = list()
 	var/list/power_objects = list()
+	var/list/power_sensors = list()
 
 	var/list/processing
 	var/list/current_run = list()
@@ -82,7 +83,7 @@ if (ismachine(Machine) && Machine.special_power_checks) { \
 else { \
 	if(Machine.use_power) { \
 		if(!Machine.MyArea) { \
-			Machine.MyArea = Machine.loc.loc; \
+			Machine.MyArea = get_area_def(Machine); \
 		} \
 	} \
 		switch(Machine.use_power) { \

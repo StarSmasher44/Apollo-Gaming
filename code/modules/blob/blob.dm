@@ -121,7 +121,7 @@
 
 /obj/effect/blob/proc/pulse(var/forceLeft, var/list/dirs)
 	regen()
-	sleep(4)
+	stoplag(4)
 	var/pushDir = pick(dirs)
 	var/turf/T = get_step(src, pushDir)
 	var/obj/effect/blob/B = (locate() in T)
@@ -199,7 +199,7 @@
 	if(!blob_may_process)
 		return
 	blob_may_process = 0
-	sleep(0)
+	stoplag()
 	pulse(20, list(NORTH, EAST))
 	pulse(20, list(NORTH, WEST))
 	pulse(20, list(SOUTH, EAST))

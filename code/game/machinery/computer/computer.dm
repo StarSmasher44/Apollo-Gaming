@@ -6,7 +6,7 @@
 	anchored = 1.0
 	use_power = 1
 	idle_power_usage = 300
-	active_power_usage = 300
+	active_power_usage = 325
 	var/circuit = null //The path to the circuit board type. If circuit==null, the computer can't be disassembled.
 	var/processing = 0
 

@@ -267,24 +267,22 @@
 			icon_state = "pinonnull"
 			scan_ticks++
 			if(prob(scan_ticks * 10))
-				spawn(0)
-					if(src in SSobj.processing)
-						//scan radios in the world to try and find one
-						var/cur_dist = 999
-						for(var/obj/item/device/radio/beacon/R in world)
-							if(R.z == src.z && R.frequency == src.frequency)
-								var/check_dist = get_dist(src,R)
-								if(check_dist < cur_dist)
-									cur_dist = check_dist
-									target_radio = R
-							CHECK_TICK
+				if(src in SSobj.processing)
+					//scan radios in the world to try and find one
+					var/cur_dist = 999
+					for(var/obj/item/device/radio/beacon/R in GLOB.listening_objects)
+						if(R.z == src.z && R.frequency == src.frequency)
+							var/check_dist = get_dist(src,R)
+							if(check_dist < cur_dist)
+								cur_dist = check_dist
+								target_radio = R
 
-						scan_ticks = 0
-						var/turf/T = get_turf(src)
-						if(target_radio)
-							T.visible_message("\icon[src] [src] [pick("chirps","chirrups","cheeps")] happily.")
-						else
-							T.visible_message("\icon[src] [src] [pick("chirps","chirrups","cheeps")] sadly.")
+					scan_ticks = 0
+					var/turf/T = get_turf(src)
+					if(target_radio)
+						T.visible_message("\icon[src] [src] [pick("chirps","chirrups","cheeps")] happily.")
+					else
+						T.visible_message("\icon[src] [src] [pick("chirps","chirrups","cheeps")] sadly.")
 		else
 			icon_state = "pinoff"
 

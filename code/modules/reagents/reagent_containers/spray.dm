@@ -22,6 +22,10 @@
 	..()
 	src.verbs -= /obj/item/weapon/reagent_containers/verb/set_APTFT
 
+/obj/item/weapon/reagent_containers/spray/Initialize()
+	. = ..()
+	ADD_ICON_QUEUE(src)
+
 /obj/item/weapon/reagent_containers/spray/afterattack(atom/A as mob|obj, mob/user as mob, proximity)
 	if(istype(A, /obj/item/weapon/storage) || istype(A, /obj/structure/table) || istype(A, /obj/structure/closet) || istype(A, /obj/item/weapon/reagent_containers) || istype(A, /obj/structure/sink) || istype(A, /obj/structure/janitorialcart))
 		return
@@ -53,20 +57,20 @@
 	return
 
 /obj/item/weapon/reagent_containers/spray/proc/Spray_at(atom/A as mob|obj, mob/user as mob, proximity)
+	set waitfor = 0
 	playsound(src.loc, 'sound/effects/spray2.ogg', 50, 1, -6)
 	if (A.density && proximity)
 		A.visible_message("[usr] sprays [A] with [src].")
 		reagents.splash(A, amount_per_transfer_from_this)
 	else
-		spawn(0)
-			var/obj/effect/effect/water/chempuff/D = new/obj/effect/effect/water/chempuff(get_turf(src))
-			var/turf/my_target = get_turf(A)
-			D.create_reagents(amount_per_transfer_from_this)
-			if(!src)
-				return
-			reagents.trans_to_obj(D, amount_per_transfer_from_this)
-			D.set_color()
-			D.set_up(my_target, spray_size, step_delay)
+		var/obj/effect/effect/water/chempuff/D = new/obj/effect/effect/water/chempuff(get_turf(src))
+		var/turf/my_target = get_turf(A)
+		D.create_reagents(amount_per_transfer_from_this)
+		if(!src)
+			return
+		reagents.trans_to_obj(D, amount_per_transfer_from_this)
+		D.set_color()
+		D.set_up(my_target, spray_size, step_delay)
 	return
 
 /obj/item/weapon/reagent_containers/spray/attack_self(var/mob/user)
@@ -176,6 +180,7 @@
 	step_delay = 8
 
 /obj/item/weapon/reagent_containers/spray/chemsprayer/Spray_at(atom/A as mob|obj)
+	set waitfor = 0
 	var/direction = get_dir(src, A)
 	var/turf/T = get_turf(A)
 	var/turf/T1 = get_step(T,turn(direction, 90))
@@ -183,16 +188,15 @@
 	var/list/the_targets = list(T, T1, T2)
 
 	for(var/a = 1 to 3)
-		spawn(0)
-			if(reagents.total_volume < 1) break
-			var/obj/effect/effect/water/chempuff/D = new/obj/effect/effect/water/chempuff(get_turf(src))
-			var/turf/my_target = the_targets[a]
-			D.create_reagents(amount_per_transfer_from_this)
-			if(!src)
-				return
-			reagents.trans_to_obj(D, amount_per_transfer_from_this)
-			D.set_color()
-			D.set_up(my_target, rand(6, 8), 2)
+		if(reagents.total_volume < 1) break
+		var/obj/effect/effect/water/chempuff/D = new/obj/effect/effect/water/chempuff(get_turf(src))
+		var/turf/my_target = the_targets[a]
+		D.create_reagents(amount_per_transfer_from_this)
+		if(!src)
+			return
+		reagents.trans_to_obj(D, amount_per_transfer_from_this)
+		D.set_color()
+		D.set_up(my_target, rand(6, 8), 2)
 	return
 
 /obj/item/weapon/reagent_containers/spray/plantbgone

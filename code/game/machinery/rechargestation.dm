@@ -81,10 +81,11 @@
 
 	if(!has_cell_power())
 		return 0
-	if(src.use_power == 1)
-		cell.use(idle_power_usage * CELLRATE)
-	else if(src.use_power >= 2)
-		cell.use(active_power_usage * CELLRATE)
+	switch(use_power)
+		if(1)
+			cell.use(idle_power_usage * CELLRATE)
+		if(2 to 10)
+			cell.use(active_power_usage * CELLRATE)
 	return 1
 
 //Processes the occupant, drawing from the internal power cell if needed.

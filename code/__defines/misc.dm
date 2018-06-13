@@ -194,6 +194,9 @@
 
 #define MIDNIGHT_ROLLOVER		864000	//number of deciseconds in a day
 
+//subtypesof(), typesof() without the parent path
+#define subtypesof(typepath) ( typesof(typepath) - typepath )
+
 //Virus badness defines
 #define VIRUS_MILD			1
 #define VIRUS_COMMON		2	//Random events don't go higher (mutations aside)
@@ -221,3 +224,8 @@
 
 #define SUPPLY_SECURITY_ELEVATED 1
 #define SUPPLY_SECURITY_HIGH 2
+
+#define PARALLAX_SPACE 0x1
+#define PARALLAX_DUST  0x2
+#define PROGRESS_BARS  0x4
+#define PARALLAX_IS_STATIC 0x8

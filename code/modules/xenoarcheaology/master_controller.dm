@@ -56,23 +56,22 @@
 			var/turf/simulated/mineral/archeo_turf = pop(turfs_to_process)
 
 			processed_turfs.Add(archeo_turf)
-			if(isnull(archeo_turf.finds))
-				archeo_turf.finds = list()
-				if(prob(50))
-					archeo_turf.finds.Add(new /datum/find(digsite, rand(10, 190)))
-				else if(prob(75))
-					archeo_turf.finds.Add(new /datum/find(digsite, rand(10, 90)))
-					archeo_turf.finds.Add(new /datum/find(digsite, rand(110, 190)))
-				else
-					archeo_turf.finds.Add(new /datum/find(digsite, rand(10, 50)))
-					archeo_turf.finds.Add(new /datum/find(digsite, rand(60, 140)))
-					archeo_turf.finds.Add(new /datum/find(digsite, rand(150, 190)))
+			LAZYINITLIST(archeo_turf.finds)
+			if(prob(50))
+				archeo_turf.finds.Add(new /datum/find(digsite, rand(10, 190)))
+			else if(prob(75))
+				archeo_turf.finds.Add(new /datum/find(digsite, rand(10, 90)))
+				archeo_turf.finds.Add(new /datum/find(digsite, rand(110, 190)))
+			else
+				archeo_turf.finds.Add(new /datum/find(digsite, rand(10, 50)))
+				archeo_turf.finds.Add(new /datum/find(digsite, rand(60, 140)))
+				archeo_turf.finds.Add(new /datum/find(digsite, rand(150, 190)))
 
-				//sometimes a find will be close enough to the surface to show
-				var/datum/find/F = archeo_turf.finds[1]
-				if(F.excavation_required <= F.view_range)
-					archeo_turf.archaeo_overlay = "overlay_archaeo[rand(1,3)]"
-					ADD_ICON_QUEUE(archeo_turf)
+			//sometimes a find will be close enough to the surface to show
+			var/datum/find/F = archeo_turf.finds[1]
+			if(F.excavation_required <= F.view_range)
+				archeo_turf.archaeo_overlay = "overlay_archaeo[rand(1,3)]"
+				ADD_ICON_QUEUE(archeo_turf)
 
 			//have a chance for an artifact to spawn here, but not in animal or plant digsites
 			if(isnull(M.artifact_find) && digsite != DIGSITE_GARDEN && digsite != DIGSITE_ANIMAL)

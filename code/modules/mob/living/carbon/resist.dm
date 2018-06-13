@@ -22,9 +22,10 @@
 		return TRUE
 
 	if(handcuffed)
-		spawn() escape_handcuffs()
+		escape_handcuffs()
 
 /mob/living/carbon/proc/escape_handcuffs()
+	set waitfor = 0
 	//if(!(last_special <= world.time)) return
 
 	//This line represent a significant buff to grabs...
