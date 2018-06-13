@@ -2,7 +2,8 @@
 	title = "Chief Engineer"
 	head_position = 1
 	department = "Engineering"
-	department_flag = ENG|COM
+	department_flag = ENG
+	department_flag2 = COM
 
 	total_positions = 1
 	spawn_positions = 1
@@ -10,7 +11,7 @@
 	selection_color = "#7f6e2c"
 	req_admin_notify = 1
 	economic_modifier = 10
-	base_pay = 24
+	base_pay = 23
 
 	ideal_character_age = 50
 
@@ -37,7 +38,7 @@
 	selection_color = "#5b4d20"
 	economic_modifier = 5
 	minimal_player_age = 7
-	base_pay = 16.5
+	base_pay = 14.5
 	access = list(access_eva, access_engine, access_engine_equip, access_tech_storage, access_maint_tunnels, access_external_airlocks, access_construction, access_atmospherics, access_emergency_storage)
 	minimal_access = list(access_eva, access_engine, access_engine_equip, access_tech_storage, access_maint_tunnels, access_external_airlocks, access_construction, access_atmospherics, access_emergency_storage)
 	alt_titles = list("Maintenance Technician","Engine Technician","Electrician",
@@ -54,7 +55,7 @@
 	supervisors = "the chief engineer"
 	selection_color = "#5b4d20"
 	economic_modifier = 5
-	base_pay = 16.5
+	base_pay = 14.5
 	minimal_player_age = 7
 	access = list(access_eva, access_engine, access_engine_equip, access_tech_storage, access_maint_tunnels, access_external_airlocks, access_construction, access_atmospherics, access_emergency_storage)
 	minimal_access = list(access_eva, access_engine, access_engine_equip, access_tech_storage, access_maint_tunnels, access_external_airlocks, access_construction, access_atmospherics, access_emergency_storage)

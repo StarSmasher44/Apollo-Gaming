@@ -34,6 +34,8 @@ GLOBAL_LIST_EMPTY(supply_positions)
 
 GLOBAL_LIST_EMPTY(support_positions)
 
+GLOBAL_LIST_EMPTY(nanotrasen_positions)
+
 GLOBAL_LIST_EMPTY(exploration_positions)
 
 GLOBAL_LIST_EMPTY(unsorted_positions) // for nano manifest

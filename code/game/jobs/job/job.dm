@@ -7,6 +7,7 @@
 	var/list/access = list()              // Useful for servers which either have fewer players, so each person needs to fill more than one role, or servers which like to give more access, so players can't hide forever in their super secure departments (I'm looking at you, chemistry!)
 	var/list/software_on_spawn = list()   // Defines the software files that spawn on tablets and labtops
 	var/department_flag = 0
+	var/department_flag2 = 0
 	var/total_positions = 0               // How many players can be this job
 	var/spawn_positions = 0               // How many players can spawn in as this job
 	var/current_positions = 0             // How many players have this job
@@ -25,7 +26,7 @@
 
 	var/account_allowed = 1				  // Does this job type come with a station account?
 	var/economic_modifier = 2			  // With how much does this job modify the initial account amount?
-	var/base_pay = 12 					  // Always minimum wage at all times. Also base = 1 hr, paychecks calculate base * 4
+	var/base_pay = 10 					  // Always minimum wage at all times. Also base = 1 hr, paychecks calculate base * 4
 	var/outfit_type                       // The outfit the employee will be dressed in, if any
 	var/intern = 0                        // If this job is an intern or not? (Assistants)
 

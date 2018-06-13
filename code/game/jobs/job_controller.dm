@@ -6,7 +6,7 @@ var/global/datum/controller/occupations/job_master
 
 /datum/controller/occupations
 		//List of all jobs
-	var/list/occupations = list()
+	var/list/occupations
 		//Associative list of all jobs, by type
 	var/list/occupations_by_type
 	//Associative list of all jobs, by title
@@ -35,21 +35,23 @@ var/global/datum/controller/occupations/job_master
 			for(var/alt_title in job.alt_titles)
 				occupations_by_title[alt_title] = job
 			if(!setup_titles) continue
-			if(job.department_flag & COM)
+			if(job.department_flag & COM || job.department_flag2 & COM)
 				GLOB.command_positions |= job.title
 			if(job.department_flag & SPT)
 				GLOB.support_positions |= job.title
 			if(job.department_flag & SEC)
 				GLOB.security_positions |= job.title
 			if(job.department_flag & ENG)
-				GLOB.engineering_positions += job.title
+				GLOB.engineering_positions |= job.title
 			if(job.department_flag & MED)
 				GLOB.medical_positions |= job.title
 			if(job.department_flag & SCI)
 				GLOB.science_positions |= job.title
+			if(job.department_flag & NTO)
+				GLOB.nanotrasen_positions |= job.title
 			if(job.department_flag & EXP)
 				GLOB.exploration_positions |= job.title
-			if(job.department_flag & SUP)
+			if(job.department_flag & LOG)
 				GLOB.supply_positions |= job.title
 			if(job.department_flag & SRV)
 				GLOB.service_positions |= job.title

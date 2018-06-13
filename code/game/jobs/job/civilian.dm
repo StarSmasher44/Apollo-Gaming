@@ -39,15 +39,15 @@
 
 //Cargo
 /datum/job/qm
-	title = "Quartermaster"
-	department = "Supply"
-	department_flag = SUP
+	title = "Head of Logistics"
+	department = "Logistics"
+	department_flag = COM|LOG
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the head of personnel"
-	selection_color = "#515151"
+	selection_color = "#916e22"
 	economic_modifier = 5
-	base_pay = 14
+	base_pay = 16
 	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
 	minimal_access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
 	minimal_player_age = 3
@@ -55,13 +55,17 @@
 	outfit_type = /decl/hierarchy/outfit/job/cargo/qm
 
 /datum/job/cargo_tech
-	title = "Cargo Technician"
-	department = "Supply"
-	department_flag = SUP
+	title = "Logistics Technician"
+	department = "Logistics"
+	department_flag = LOG
 	total_positions = 2
 	spawn_positions = 2
-	supervisors = "the quartermaster and the head of personnel"
-	selection_color = "#515151"
+	supervisors = "the Head of Logistics and the head of personnel"
+	selection_color = "#916e22"
+	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
+	minimal_access = list(access_maint_tunnels, access_cargo, access_cargo_bot, access_mailsorting)
+	outfit_type = /decl/hierarchy/outfit/job/cargo/cargo_tech
+
 /datum/job/cargo_tech_intern
 	title = "Logistics Intern"
 	department = "Logistics"
@@ -77,12 +81,12 @@
 
 /datum/job/mining
 	title = "Shaft Miner"
-	department = "Supply"
-	department_flag = SUP
+	department = "Logistics"
+	department_flag = LOG
 	total_positions = 3
 	spawn_positions = 3
-	supervisors = "the quartermaster and the head of personnel"
-	selection_color = "#515151"
+	supervisors = "the Head of Logistics and the head of personnel"
+	selection_color = "#916e22"
 	economic_modifier = 5
 	base_pay = 12.5
 	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
