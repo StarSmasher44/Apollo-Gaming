@@ -432,7 +432,8 @@
 				continue
 
 			// Find adjacent space/shuttle tiles and cover them. Shuttles won't be blocked if shield diffuser is mapped in and turned on.
-			for(var/TN in O_RANGE_TURFS(1, T))
+			for(var/TN2 in O_RANGE_TURFS(1, T))
+				var/turf/TN = TN2
 				TA = get_area(TN)
 				if ((isspace(TN) || (isopenspace(TN) && (isspacearea(TA) || TA.flags & AREA_EXTERNAL))))
 					. |= TN

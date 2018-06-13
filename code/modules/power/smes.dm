@@ -126,7 +126,8 @@
 		inputting = 1
 	// else inputting = 0, as set in process()
 
-	for(var/obj/machinery/power/terminal/term in terminals)
+	for(var/te in terminals)
+		var/obj/machinery/power/terminal/term = te
 		var/inputted = term.powernet.draw_power(to_input)
 		add_charge(inputted)
 		input_available += inputted
@@ -158,7 +159,8 @@
 	if(input_attempt && (!input_pulsed && !input_cut))
 		target_load = min((capacity-charge)/CELLRATE, input_level)	// Amount we will request from the powernet.
 		var/input_available = FALSE
-		for(var/obj/machinery/power/terminal/term in terminals)
+		for(var/te in terminals)
+			var/obj/machinery/power/terminal/term = te
 			if(!term.powernet)
 				continue
 			input_available = TRUE
@@ -252,7 +254,8 @@
 
 /obj/machinery/power/smes/draw_power(var/amount)
 	var/drained = 0
-	for(var/obj/machinery/power/terminal/term in terminals)
+	for(var/te in terminals)
+		var/obj/machinery/power/terminal/term = te
 		if(!term.powernet)
 			continue
 		if((amount - drained) <= 0)

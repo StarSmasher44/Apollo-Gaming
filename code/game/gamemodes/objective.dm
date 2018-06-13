@@ -806,7 +806,7 @@ datum/objective/heist/salvage
 		return 0
 	for(var/datum/mind/cult_mind in cult.current_antagonists)
 		if (cult_mind.current && cult_mind.current.stat!=2)
-			var/area/A = get_area(cult_mind.current )
+			var/area/A = get_area(cult_mind.current)
 			if ( is_type_in_list(A, GLOB.using_map.post_round_safe_areas))
 				acolytes_survived++
 	if(acolytes_survived >= target_amount)

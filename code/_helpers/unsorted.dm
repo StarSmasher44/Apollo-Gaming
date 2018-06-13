@@ -615,7 +615,7 @@ proc/GaussRandRound(var/sigma,var/roundto)
 		areatype = areatemp.type
 
 	. = list()
-	for(var/area/N in all_areas)
+	for(var/N in all_areas)
 		if(istype(N, areatype)) . += N
 	return .
 
@@ -629,7 +629,7 @@ proc/GaussRandRound(var/sigma,var/roundto)
 		areatype = areatemp.type
 
 	. = list()
-	for(var/area/N in all_areas)
+	for(var/N in all_areas)
 		if(istype(N, areatype))
 			for(var/atom/A in N)
 				. += A
@@ -870,17 +870,17 @@ proc/get_mob_with_client_list()
 
 
 //Quick type checks for some tools
-var/global/list/common_tools = list(
+var/static/list/common_tools = typecacheof(list(
 /obj/item/stack/cable_coil,
 /obj/item/weapon/wrench,
 /obj/item/weapon/weldingtool,
 /obj/item/weapon/screwdriver,
 /obj/item/weapon/wirecutters,
 /obj/item/device/multitool,
-/obj/item/weapon/crowbar)
+/obj/item/weapon/crowbar))
 
 /proc/istool(O)
-	if(O && is_type_in_list(O, common_tools))
+	if(O && is_type_in_typecache(O, common_tools))
 		return 1
 	return 0
 

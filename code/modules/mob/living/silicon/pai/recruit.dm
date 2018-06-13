@@ -361,13 +361,13 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 				question(O.client)
 
 /datum/paiController/proc/question(var/client/C)
-	spawn(0)
-		if(!C)	return
-		asked.Add(C.key)
-		asked[C.key] = world.time
-		var/response = alert(C, "[inquirer] is requesting a pAI personality. Would you like to play as a personal AI?", "pAI Request", "Yes", "No", "Never for this round")
-		if(!C)	return		//handle logouts that happen whilst the alert is waiting for a response.
-		if(response == "Yes")
-			recruitWindow(C.mob)
-		else if (response == "Never for this round")
-			C.prefs.be_special_role -= BE_PAI
+	set waitfor = 0
+	if(!C)	return
+	asked.Add(C.key)
+	asked[C.key] = world.time
+	var/response = alert(C, "[inquirer] is requesting a pAI personality. Would you like to play as a personal AI?", "pAI Request", "Yes", "No", "Never for this round")
+	if(!C)	return		//handle logouts that happen whilst the alert is waiting for a response.
+	if(response == "Yes")
+		recruitWindow(C.mob)
+	else if (response == "Never for this round")
+		C.prefs.be_special_role -= BE_PAI

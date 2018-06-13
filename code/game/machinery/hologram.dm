@@ -287,7 +287,8 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 
 
 /obj/machinery/hologram/holopad/Process()
-	for (var/mob/living/silicon/ai/master in masters)
+	for (var/M in masters)
+		var/list/mob/living/silicon/ai/master = M
 		var/active_ai = (master && !master.incapacitated() && master.client && master.eyeobj)//If there is an AI with an eye attached, it's not incapacitated, and it has a client
 		if((stat & NOPOWER) || !active_ai)
 			clear_holo(master)

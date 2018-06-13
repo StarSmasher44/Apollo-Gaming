@@ -31,7 +31,7 @@
 	var/destroyed       // Whether we are destroyed and need to stop emitting light.
 	var/force_update
 
-/datum/light_source/New(var/atom/owner, var/atom/top)
+/datum/light_source/New(atom/owner, atom/top)
 	total_lighting_sources++
 	source_atom = owner // Set our new owner.
 	if(!source_atom.light_sources)
@@ -82,7 +82,7 @@
 	}
 
 // This proc will cause the light source to update the top atom, and add itself to the update queue.
-/datum/light_source/proc/update(var/atom/new_top_atom)
+/datum/light_source/proc/update(atom/new_top_atom)
 	// This top atom is different.
 	if(new_top_atom && new_top_atom != top_atom)
 		if(top_atom != source_atom) // Remove ourselves from the light sources of that top atom.
@@ -91,10 +91,8 @@
 		top_atom = new_top_atom
 
 		if(top_atom != source_atom)
-			if(!top_atom.light_sources)
-				top_atom.light_sources = list()
-
-			top_atom.light_sources += src // Add ourselves to the light sources of our new top atom.
+			LAZYADD(top_atom.light_sources, src)	// Add ourselves to the light sources of our new top atom.
+//			top_atom.light_sources += src // Add ourselves to the light sources of our new top atom.
 
 	effect_update(null)
 
@@ -197,8 +195,11 @@
 	FOR_DVIEW(var/turf/T, light_range, source_turf, INVISIBILITY_LIGHTING)
 		if(!T.lighting_corners_initialised)
 			T.generate_missing_corners()
-
-		for(var/datum/lighting_corner/C in T.get_corners())
+		var/list/corners2
+		if(!T.opaque_counter)
+			corners2 = T.corners
+		for(var/CA in corners2)
+			var/datum/lighting_corner/C = CA
 			if(C.update_gen == update_gen)
 				continue
 
@@ -212,9 +213,7 @@
 			APPLY_CORNER(C)
 
 
-
-		if(!T.affecting_lights)
-			T.affecting_lights = list()
+		LAZYINITLIST(T.affecting_lights)
 
 		T.affecting_lights += src
 		affecting_turfs    += T
@@ -234,7 +233,8 @@
 	if(!T.lighting_corners_initialised)
 		T.generate_missing_corners()
 
-	for(var/datum/lighting_corner/C in T.get_corners())
+	for(var/CA in T.get_corners())
+		var/datum/lighting_corner/C = CA
 		if(C.update_gen == update_gen)
 			continue
 
@@ -262,23 +262,25 @@
 
 /datum/light_source/proc/remove_lum()
 	applied = FALSE
-
-	for(var/turf/T in affecting_turfs)
-		if(!T.affecting_lights)
-			T.affecting_lights = list()
+	var/list/affecting_turfs = src.affecting_turfs
+	for(var/T in affecting_turfs)
+		var/turf/TA = T
+		if(!TA.affecting_lights)
+			TA.affecting_lights = list()
 		else
-			T.affecting_lights -= src
+			TA.affecting_lights -= src
 
 	affecting_turfs.Cut()
 
-	for(var/datum/lighting_corner/C in effect_str)
+	for(var/CA in effect_str)
+		var/datum/lighting_corner/C = CA
 		REMOVE_CORNER(C)
 
 		C.affecting -= src
 
 	effect_str.Cut()
 
-/datum/light_source/proc/recalc_corner(var/datum/lighting_corner/C)
+/datum/light_source/proc/recalc_corner(datum/lighting_corner/C)
 	if(effect_str.Find(C)) // Already have one.
 		REMOVE_CORNER(C)
 

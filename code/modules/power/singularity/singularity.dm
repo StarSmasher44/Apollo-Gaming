@@ -457,8 +457,9 @@
 	return
 
 /obj/singularity/proc/pulse()
-	for(var/obj/machinery/power/rad_collector/R in rad_collectors)
-		if (get_dist(R, src) <= 15) //Better than using orange() every process.
+	for(var/RA in rad_collectors)
+		if (get_dist(RA, src) <= 15) //Better than using orange() every process.
+			var/obj/machinery/power/rad_collector/R = RA
 			R.receive_pulse(energy)
 
 /obj/singularity/proc/on_capture()

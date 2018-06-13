@@ -347,9 +347,9 @@ default behaviour is:
 		return .
 
 /mob/living/proc/check_contents_for(A)
-	var/list/L = src.get_contents()
+	. = src.get_contents()
 
-	for(var/obj/B in L)
+	for(var/obj/B in .)
 		if(B.type == A)
 			return 1
 	return 0

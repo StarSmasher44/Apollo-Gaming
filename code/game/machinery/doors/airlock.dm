@@ -484,7 +484,8 @@ About the new airlock wires panel:
 	// If backup power is permanently disabled then activate in 10 seconds if possible, otherwise it's already enabled or a timer is already running
 	if(backup_power_lost_until == -1 && !backupPowerCablesCut())
 		backup_power_lost_until = world.time + SecondsToTicks(10)
-
+	if(backup_power_lost_until == 0 && !backupPowerCablesCut()) //If we lose main power but we still got juice, close it down. Security raisins.
+		close()
 	// Disable electricity if required
 	if(electrified_until && isAllPowerLoss())
 		electrify(0)
@@ -506,14 +507,14 @@ About the new airlock wires panel:
 		// If backup power is currently active then disable, otherwise let it count down and disable itself later
 		if(!backup_power_lost_until)
 			backup_power_lost_until = -1
-		close_door_at = next_close_time()
-		close_door_in()
+		close()
 	ADD_ICON_QUEUE(src)
 
 /obj/machinery/door/airlock/proc/regainBackupPower()
 	if(!backupPowerCablesCut())
 		// Restore backup power only if main power is offline, otherwise permanently disable
 		backup_power_lost_until = main_power_lost_until == 0 ? -1 : 0
+		close()
 
 	ADD_ICON_QUEUE(src)
 
@@ -590,7 +591,7 @@ About the new airlock wires panel:
 
 /obj/machinery/door/airlock/update_icon()
 	set_light(0)
-	if(overlays) overlays.Cut()
+	if(overlays) overlays.len = 0
 	if(density)
 		if(locked && lights && src.arePowerSystemsOn())
 			icon_state = "door_locked"
@@ -1255,8 +1256,7 @@ About the new airlock wires panel:
 
 /obj/machinery/door/airlock/emp_act(var/severity)
 	if(prob(20/severity))
-		spawn(0)
-			open()
+		open()
 	if(prob(40/severity))
 		var/duration = SecondsToTicks(30 / severity)
 		if(electrified_until > -1 && (duration + world.time) > electrified_until)

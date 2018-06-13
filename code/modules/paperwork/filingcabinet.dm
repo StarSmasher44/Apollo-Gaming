@@ -17,12 +17,12 @@
 	density = 1
 	anchored = 1
 	flags = OBJ_ANCHORABLE|OBJ_CLIMBABLE
-	var/list/can_hold = list(
+	var/static/list/can_hold = typecacheof(list(
 		/obj/item/weapon/paper,
 		/obj/item/weapon/folder,
 		/obj/item/weapon/photo,
 		/obj/item/weapon/paper_bundle,
-		/obj/item/weapon/sample)
+		/obj/item/weapon/sample))
 
 /obj/structure/filingcabinet/chestdrawer
 	name = "chest drawer"
@@ -47,7 +47,7 @@
 	. = ..()
 
 /obj/structure/filingcabinet/attackby(obj/item/P as obj, mob/user as mob)
-	if(is_type_in_list(P, can_hold))
+	if(is_type_in_typecache(P, can_hold))
 		add_fingerprint(user)
 		to_chat(user, "<span class='notice'>You put [P] in [src].</span>")
 		user.drop_item()

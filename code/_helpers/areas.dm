@@ -7,7 +7,7 @@
 		return
 	if(!islist(predicates))
 		predicates = list(predicates)
-	for(var/area/A in all_areas)
+	for(var/A in all_areas)
 		if(all_predicates_true(list(A), predicates))
 			. += A
 

@@ -110,7 +110,7 @@ Works together with spawning an observer, noted above.
 
 	if(antagHUD)
 		var/list/target_list = list()
-		for(var/mob/living/target in oview(src, 10))
+		for(var/mob/living/target in oview(src, 8))
 			if(target.mind && target.mind.special_role)
 				target_list += target
 		if(target_list.len)
@@ -121,16 +121,17 @@ Works together with spawning an observer, noted above.
 
 /mob/observer/ghost/proc/process_medHUD(var/mob/M)
 	var/client/C = M.client
-	for(var/mob/living/carbon/human/patient in oview(M, 10))
+	for(var/mob/living/carbon/human/patient in oview(M, 8))
 		C.images += patient.hud_list[HEALTH_HUD]
 		C.images += patient.hud_list[STATUS_HUD_OOC]
 
 /mob/observer/ghost/proc/assess_targets(list/target_list, mob/observer/ghost/U)
 	var/client/C = U.client
 	for(var/mob/living/carbon/human/target in target_list)
-		C.images += target.hud_list[SPECIALROLE_HUD]
-	for(var/mob/living/silicon/target in target_list)
-		C.images += target.hud_list[SPECIALROLE_HUD]
+		if(ishuman(target))
+			C.images += target.hud_list[SPECIALROLE_HUD]
+		if(issilicon(target))
+			C.images += target.hud_list[SPECIALROLE_HUD]
 	return 1
 
 /mob/proc/ghostize(var/can_reenter_corpse = CORPSE_CAN_REENTER)
@@ -503,6 +504,11 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		if(feedback)
 			to_chat(src, "<span class='warning'>antagHUD restrictions prevent you from respawning.</span>")
 		return 0
+	if(!started_as_observer && client && client.prefs.permadeath)
+		if(mind && mind.current.stat == DEAD) //Permadeath and dead.
+			to_chat(src, "<span class='warning'>Due to having perma-death enabled, respawns are disabled to prevent cheating.</span>")
+			return 0
+
 
 	var/timedifference = world.time - timeofdeath
 	if(!client.holder && respawn_time && timeofdeath && timedifference < respawn_time MINUTES)
@@ -564,5 +570,6 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	announce_ghost_joinleave(client, 0)
 
 	var/mob/new_player/M = new /mob/new_player()
+	M.old_name = src.real_name
 	M.key = key
 	log_and_message_admins("has respawned.", M)

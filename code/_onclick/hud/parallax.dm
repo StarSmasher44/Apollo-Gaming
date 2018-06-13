@@ -4,11 +4,8 @@
 #define PARALLAX_IMAGE_WIDTH 8
 #define PARALLAX_IMAGE_TILES (PARALLAX_IMAGE_WIDTH**2)
 #define GRID_WIDTH 3
-
-var/list/parallax_on_clients = list()
-var/parallax_initialized = 0
-var/space_color = "#050505"
-var/list/parallax_icon[(GRID_WIDTH**2)*3]
+#define PARALLAX_SCALED_WIDTH (PARALLAX_IMAGE_WIDTH*WORLD_ICON_SIZE)
+#define PARALLAX_SCALED_GRID_WIDTH (PARALLAX_SCALED_WIDTH*GRID_WIDTH)
 
 /obj/screen/parallax
 	var/base_offset_x = 0
@@ -33,19 +30,21 @@ var/list/parallax_icon[(GRID_WIDTH**2)*3]
 	plane = PLANE_SPACE_PARALLAX
 	blend_mode = BLEND_MULTIPLY
 	color = list(
-	1,0,0,0,
-	0,1,0,0,
-	0,0,1,0,
-	0,0,0,0,
-	0,0,0,1)
+		1,0,0,0,
+		0,1,0,0,
+		0,0,1,0,
+		0,0,0,0,
+		0,0,0,1
+	)
 
 /obj/screen/plane_master/parallax_spacemaster //Turns space white, causing the parallax to only show in areas with opacity. Somehow
 	plane = SPACE_PLANE
 	color = list(
-	0,0,0,0,
-	0,0,0,0,
-	0,0,0,0,
-	1,1,1,1)
+		0,0,0,0,
+		0,0,0,0,
+		0,0,0,0,
+		1,1,1,1
+	)
 
 /obj/screen/plane_master/parallax_spacemaster/New()
 	..()
@@ -56,7 +55,7 @@ var/list/parallax_icon[(GRID_WIDTH**2)*3]
 	color = list(0,0,0,0)
 
 /datum/hud/proc/update_parallax_existence()
-	if(!parallax_initialized)
+	if(!SSicon_cache.parallax_initialized)
 		return
 	initialize_parallax()
 	update_parallax()
@@ -73,7 +72,7 @@ var/list/parallax_icon[(GRID_WIDTH**2)*3]
 		C.parallax_dustmaster = new /obj/screen/plane_master/parallax_dustmaster
 
 	if(!C.parallax.len)
-		for(var/obj/screen/parallax/bgobj in parallax_icon)
+		for(var/obj/screen/parallax/bgobj in SSicon_cache.parallax_icon)
 			var/obj/screen/parallax/parallax_layer = new /obj/screen/parallax
 			parallax_layer.appearance = bgobj.appearance
 			parallax_layer.base_offset_x = bgobj.base_offset_x
@@ -84,64 +83,66 @@ var/list/parallax_icon[(GRID_WIDTH**2)*3]
 			if(bgobj.parallax_speed)
 				C.parallax_movable += parallax_layer
 
-	if(!C.parallax_offset.len)
-		C.parallax_offset["horizontal"] = 0
-		C.parallax_offset["vertical"] = 0
-
 	C.screen |= C.parallax_dustmaster
 
 /datum/hud/proc/update_parallax()
 	var/client/C = mymob.client
-
-	parallax_on_clients |= C
 	for(var/obj/screen/parallax/bgobj in C.parallax)
 		C.screen |= bgobj
 	C.screen |= C.parallax_master
 	C.screen |= C.parallax_spacemaster
 	C.parallax_dustmaster.color = list(
-		1,0,0,0,
-		0,1,0,0,
-		0,0,1,0,
-		0,0,0,1)
+	1,0,0,0,
+	0,1,0,0,
+	0,0,1,0,
+	0,0,0,1)
 
 /datum/hud/proc/update_parallax_values()
-	if(mymob && mymob.client)
-		var/client/C = mymob.client
-		if(!parallax_initialized)
-			return
-		var/turf/loc = get_turf(C.eye)
-		if(!(locate(/turf/space) in RANGE_TURFS(C.view,loc)))
-			return
+	if(!mymob)
+		return
+	var/client/C = mymob.client
+	if(!SSicon_cache.parallax_initialized)
+		return
 
-		//ACTUALLY MOVING THE PARALLAX
-		var/turf/posobj = get_turf(C.eye)
+//	if (C.prefs.toggles_secondary & PARALLAX_IS_STATIC)
+//		return
 
-		if(!C.previous_turf || (C.previous_turf.z != posobj.z))
-			C.previous_turf = posobj
+	//ACTUALLY MOVING THE PARALLAX
+	var/turf/posobj = C.eye ? C.eye:loc : C.mob:loc
+	if (!isturf(posobj))
+		posobj = get_turf(posobj)
 
-		//Doing it this way prevents parallax layers from "jumping" when you change Z-Levels.
-		var/offsetx = C.parallax_offset["horizontal"] + posobj.x - C.previous_turf.x
-		var/offsety = C.parallax_offset["vertical"] + posobj.y - C.previous_turf.y
-		C.parallax_offset["horizontal"] = offsetx
-		C.parallax_offset["vertical"] = offsety
+	if(!posobj || (!(locate(/turf/space) in RANGE_TURFS(C.view, posobj)) && !(locate(/turf/simulated/open) in RANGE_TURFS(C.view, posobj))))
+		return
 
+	if(!C.previous_turf || (C.previous_turf.z != posobj.z))
 		C.previous_turf = posobj
 
-		for(var/obj/screen/parallax/bgobj in C.parallax_movable)
-			var/accumulated_offset_x = bgobj.base_offset_x - round(offsetx * bgobj.parallax_speed * 2)
-			var/accumulated_offset_y = bgobj.base_offset_y - round(offsety * bgobj.parallax_speed * 2)
+	//Doing it this way prevents parallax layers from "jumping" when you change Z-Levels.
+	C.parallax_offset_x += posobj.x - C.previous_turf.x
+	C.parallax_offset_y += posobj.y - C.previous_turf.y
 
-			if(accumulated_offset_x > PARALLAX_IMAGE_WIDTH*WORLD_ICON_SIZE)
-				accumulated_offset_x -= PARALLAX_IMAGE_WIDTH*WORLD_ICON_SIZE*GRID_WIDTH //3x3 grid, 15 tiles * 64 icon_size * 3 grid size
-			if(accumulated_offset_x < -(PARALLAX_IMAGE_WIDTH*WORLD_ICON_SIZE*2))
-				accumulated_offset_x += PARALLAX_IMAGE_WIDTH*WORLD_ICON_SIZE*GRID_WIDTH
+	C.previous_turf = posobj
 
-			if(accumulated_offset_y > PARALLAX_IMAGE_WIDTH*WORLD_ICON_SIZE)
-				accumulated_offset_y -= PARALLAX_IMAGE_WIDTH*WORLD_ICON_SIZE*GRID_WIDTH
-			if(accumulated_offset_y < -(PARALLAX_IMAGE_WIDTH*WORLD_ICON_SIZE*2))
-				accumulated_offset_y += PARALLAX_IMAGE_WIDTH*WORLD_ICON_SIZE*GRID_WIDTH
+	var/offsetx = C.parallax_offset_x * 2
+	var/offsety = C.parallax_offset_y * 2
 
-			bgobj.screen_loc = "CENTER:[accumulated_offset_x],CENTER:[accumulated_offset_y]"
+	for(var/thing in C.parallax_movable)
+		var/obj/screen/parallax/bgobj = thing
+		var/accumulated_offset_x = bgobj.base_offset_x - round(offsetx * bgobj.parallax_speed)
+		var/accumulated_offset_y = bgobj.base_offset_y - round(offsety * bgobj.parallax_speed)
+
+		if(accumulated_offset_x > PARALLAX_SCALED_WIDTH)
+			accumulated_offset_x -= PARALLAX_SCALED_GRID_WIDTH //3x3 grid, 15 tiles * 64 icon_size * 3 grid size
+		if(accumulated_offset_x < -(PARALLAX_SCALED_WIDTH*2))
+			accumulated_offset_x += PARALLAX_SCALED_GRID_WIDTH
+
+		if(accumulated_offset_y > PARALLAX_SCALED_WIDTH)
+			accumulated_offset_y -= PARALLAX_SCALED_GRID_WIDTH
+		if(accumulated_offset_y < -(PARALLAX_SCALED_WIDTH*2))
+			accumulated_offset_y += PARALLAX_SCALED_GRID_WIDTH
+
+		bgobj.screen_loc = "CENTER:[accumulated_offset_x],CENTER:[accumulated_offset_y]"
 
 //Parallax generation code below
 
@@ -178,7 +179,7 @@ var/list/parallax_icon[(GRID_WIDTH**2)*3]
 		parallax_layer.overlays = L
 		parallax_layer.parallax_speed = 0
 		parallax_layer.calibrate_parallax(i+1)
-		parallax_icon[index] = parallax_layer
+		SSicon_cache.parallax_icon[index] = parallax_layer
 		index++
 
 	for(var/i in 0 to ((GRID_WIDTH**2)-1))
@@ -195,7 +196,7 @@ var/list/parallax_icon[(GRID_WIDTH**2)*3]
 		parallax_layer.overlays = L
 		parallax_layer.parallax_speed = 0.5
 		parallax_layer.calibrate_parallax(i+1)
-		parallax_icon[index] = parallax_layer
+		SSicon_cache.parallax_icon[index] = parallax_layer
 		index++
 
 	for(var/i in 0 to ((GRID_WIDTH**2)-1))
@@ -211,10 +212,10 @@ var/list/parallax_icon[(GRID_WIDTH**2)*3]
 		parallax_layer.overlays = L
 		parallax_layer.parallax_speed = 1
 		parallax_layer.calibrate_parallax(i+1)
-		parallax_icon[index] = parallax_layer
+		SSicon_cache.parallax_icon[index] = parallax_layer
 		index++
 
-	parallax_initialized = 1
+	SSicon_cache.parallax_initialized = 1
 
 /obj/screen/parallax/proc/calibrate_parallax(var/i)
 	if(!i)
@@ -243,8 +244,17 @@ var/list/parallax_icon[(GRID_WIDTH**2)*3]
 
 	screen_loc = "CENTER:[base_offset_x],CENTER:[base_offset_y]"
 
+/client/proc/cleanup_parallax_references()
+	parallax_dustmaster = null
+	parallax_master = null
+	parallax_spacemaster = null
+	LAZYCLEARLIST(parallax)
+	LAZYCLEARLIST(parallax_movable)
+
 #undef PARALLAX4_ICON_NUMBER
 #undef PARALLAX3_ICON_NUMBER
 #undef PARALLAX2_ICON_NUMBER
 #undef PARALLAX_IMAGE_WIDTH
 #undef PARALLAX_IMAGE_TILES
+#undef PARALLAX_SCALED_WIDTH
+#undef PARALLAX_SCALED_GRID_WIDTH

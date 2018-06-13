@@ -1,5 +1,5 @@
 /decl/teleport
-	var/static/list/teleport_blacklist = list(/obj/item/weapon/disk/nuclear, /obj/item/weapon/storage/backpack/holding, /obj/effect/sparks) //Items that cannot be teleported, or be in the contents of someone who is teleporting.
+	var/static/list/teleport_blacklist = typecacheof(list(/obj/item/weapon/disk/nuclear, /obj/item/weapon/storage/backpack/holding, /obj/effect/sparks)) //Items that cannot be teleported, or be in the contents of someone who is teleporting.
 
 /decl/teleport/proc/teleport(var/atom/target, var/atom/destination, var/precision = 0)
 	if(!can_teleport(target,destination))
@@ -30,7 +30,7 @@
 			to_chat(mech.occupant, "<span class='danger'>\The [target] would not survive the jump to a location so far away!</span>")
 			return 0
 
-	if(is_type_in_list(target, teleport_blacklist))
+	if(is_type_in_typecache(target, teleport_blacklist))
 		return 0
 
 	for(var/type in teleport_blacklist)

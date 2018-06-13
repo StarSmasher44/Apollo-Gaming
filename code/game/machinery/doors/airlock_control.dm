@@ -25,8 +25,7 @@ obj/machinery/door/airlock/proc/command(var/new_command)
 
 	//if there's no power, recieve the signal but just don't do anything. This allows airlocks to continue to work normally once power is restored
 	if(arePowerSystemsOn())
-		spawn()
-			execute_current_command()
+		execute_current_command()
 
 obj/machinery/door/airlock/proc/execute_current_command()
 	if(operating)
@@ -34,10 +33,10 @@ obj/machinery/door/airlock/proc/execute_current_command()
 //	~L: Checked in Process()
 //	if (!cur_command)
 //		return
-
-	do_command(cur_command)
-	if (command_completed(cur_command))
-		cur_command = null
+	spawn()
+		do_command(cur_command)
+		if (command_completed(cur_command))
+			cur_command = null
 
 obj/machinery/door/airlock/proc/do_command(var/command)
 	switch(command)

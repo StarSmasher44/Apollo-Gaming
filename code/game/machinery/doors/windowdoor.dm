@@ -177,9 +177,9 @@
 		return 1
 
 /obj/machinery/door/emp_act(severity)
+	set waitfor = FALSE
 	if(prob(20/severity))
-		spawn(0)
-			open()
+		open()
 	..()
 
 /obj/machinery/door/window/attackby(obj/item/weapon/I as obj, mob/user as mob)

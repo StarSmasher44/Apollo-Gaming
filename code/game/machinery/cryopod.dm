@@ -177,7 +177,7 @@
 	var/next_process_time = 0
 
 	// These items are preserved when the process() despawn proc occurs.
-	var/list/preserve_items = list(
+	var/static/list/preserve_items = typecacheof(list(
 		/obj/item/integrated_circuit/manipulation/bluespace_rift,
 		/obj/item/integrated_circuit/input/teleporter_locator,
 		/obj/item/weapon/card/id/captains_spare,
@@ -191,7 +191,7 @@
 		/obj/item/blueprints,
 		/obj/item/clothing/head/helmet/space,
 		/obj/item/weapon/storage/internal
-	)
+	))
 
 /obj/machinery/cryopod/robot
 	name = "robotic storage unit"
@@ -365,10 +365,8 @@
 			else
 				continue
 		else
-			for(var/T in preserve_items)
-				if(istype(W,T))
-					preserve = 1
-					break
+			if(is_type_in_typecache(W, preserve_items))
+				preserve = 1
 
 		if(!preserve)
 			qdel(W)

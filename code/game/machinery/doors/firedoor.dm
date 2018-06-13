@@ -165,11 +165,9 @@
 			// Accountability!
 			users_to_open |= user.name
 			needs_to_close = !issilicon(user)
-		spawn()
-			open()
+		open()
 	else
-		spawn()
-			close()
+		close()
 
 	if(needs_to_close)
 		spawn(50)
@@ -333,10 +331,12 @@
 	return
 
 /obj/machinery/door/firedoor/close()
+	set waitfor = 0
 	latetoggle()
 	return ..()
 
 /obj/machinery/door/firedoor/open(var/forced = 0)
+	set waitfor = 0
 	if(hatch_open)
 		hatch_open = 0
 		visible_message("The maintenance hatch of \the [src] closes.")
@@ -356,9 +356,12 @@
 // Only opens when all areas connecting with our turf have an air alarm and are cleared
 /obj/machinery/door/firedoor/proc/can_safely_open()
 	var/turf/neighbour
+	var/turf/self = src.loc
 	for(var/dir in GLOB.cardinal)
 		neighbour = get_step(src.loc, dir)
-		if(neighbour.c_airblock(src.loc) & AIR_BLOCKED)
+		var/c_airblock
+		ATMOS_CANPASS_TURF(c_airblock, neighbour, self)
+		if(c_airblock & AIR_BLOCKED)
 			continue
 		for(var/obj/O in src.loc)
 			if(istype(O, /obj/machinery/door))

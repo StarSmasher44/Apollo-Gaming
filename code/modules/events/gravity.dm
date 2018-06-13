@@ -9,7 +9,8 @@
 
 /datum/event/gravity/start()
 	gravity_is_on = 0
-	for(var/area/A in all_areas)
+	for(var/AR in all_areas)
+		var/area/A = AR
 		if(A.z in GLOB.using_map.station_levels)
 			A.gravitychange(gravity_is_on)
 
@@ -17,7 +18,8 @@
 	if(!gravity_is_on)
 		gravity_is_on = 1
 
-		for(var/area/A in all_areas)
+		for(var/AR in all_areas)
+			var/area/A = AR
 			if(A.z in GLOB.using_map.station_levels)
 				A.gravitychange(gravity_is_on)
 

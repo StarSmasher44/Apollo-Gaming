@@ -380,19 +380,19 @@
 	if(MyArea)
 		return MyArea.lightswitch && ..(power_channel)
 
-/obj/machinery/light/proc/flicker(var/amount = rand(10, 20))
+/obj/machinery/light/proc/flicker(var/amount = rand(2, 12))
+	set waitfor = 0
 	if(flickering) return
 	flickering = 1
-	spawn(0)
-		if(on && get_status() == LIGHT_OK)
-			for(var/i = 0; i < amount; i++)
-				if(get_status() != LIGHT_OK) break
-				on = !on
-				update_icon(0)
-				sleep(rand(5, 15))
-			on = (get_status() == LIGHT_OK)
+	if(on && get_status() == LIGHT_OK)
+		for(var/i = 0; i < amount; i++)
+			if(get_status() != LIGHT_OK) break
+			on = !on
 			update_icon(0)
-		flickering = 0
+			sleep(amount)
+		on = (get_status() == LIGHT_OK)
+		update_icon(0)
+	flickering = 0
 
 // ai attack - make lights flicker, because why not
 
@@ -409,7 +409,7 @@
 		to_chat(user, "There is no [get_fitting_name()] in this light.")
 		return
 
-	if(istype(user,/mob/living/carbon/human))
+	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(H.species.can_shred(H))
 			visible_message("<span class='warning'>[user.name] smashed the light!</span>", 3, "You hear a tinkle of breaking glass")
@@ -421,7 +421,7 @@
 		var/prot = 0
 		var/mob/living/carbon/human/H = user
 
-		if(istype(H))
+		if(ishuman(H))
 			if(H.getSpeciesOrSynthTemp(HEAT_LEVEL_1) > LIGHT_BULB_TEMPERATURE)
 				prot = 1
 			else if(H.gloves)
@@ -501,8 +501,8 @@
 
 // called when area power state changes
 /obj/machinery/light/power_change()
-	spawn(10)
-		seton(powered())
+	set waitfor = 0
+	seton(powered())
 
 // called when on fire
 
@@ -552,18 +552,18 @@
 	matter = list("glass" = 100)
 
 	brightness_range = 7	// luminosity when on, also used in power calculation
-	brightness_power = 6
+	brightness_power = 7
 	brightness_color = "#fffee0"
 	lighting_modes = list(
-		LIGHTMODE_EMERGENCY = list(l_range = 4, l_power = 1, l_color = "#da0205"),
+		LIGHTMODE_EMERGENCY = list(l_range = 4, l_power = 2, l_color = "#da0205"),
 		)
 	sound_on = 'sound/machines/lightson.ogg'
 
 /obj/item/weapon/light/tube/large
 	w_class = ITEM_SIZE_SMALL
 	name = "large light tube"
-	brightness_range = 9
-	brightness_power = 6
+	brightness_range = 8
+	brightness_power = 7
 
 /obj/item/weapon/light/bulb
 	name = "light bulb"

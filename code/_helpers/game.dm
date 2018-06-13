@@ -53,7 +53,8 @@
 	return 0
 
 /proc/get_area_master(const/O)
-	var/area/A = get_area(O)
+	var/atom/O2 = O
+	var/area/A = get_area(O2)
 	if (isarea(A))
 		return A
 /*
@@ -286,7 +287,7 @@
 				. += T
 		c_dist++
 		if(tick_checked)
-			CHECK_TICK2(92)
+			CHECK_TICK2(85)
 
 	return .
 
@@ -389,18 +390,20 @@
 	FOR_DVIEW(var/atom/movable/AM, range, T, INVISIBILITY_MAXIMUM)
 		if(ismob(AM))
 			mobs += AM
-			hearturfs += get_turf(AM)
+			hearturfs |= get_turf(AM)
 		else if(isobj(AM))
 			objs += AM
-			hearturfs += get_turf(AM)
+			hearturfs |= get_turf(AM)
 //		END_FOR_DVIEW
-	for(var/mob/M in GLOB.player_list)
+	for(var/mob in GLOB.player_list)
+		var/mob/M = mob
 		if(checkghosts && M.stat == DEAD && M.get_preference_value(checkghosts) != GLOB.PREF_NEARBY)
 			mobs |= M
 		else if(get_turf(M) in hearturfs)
 			mobs |= M
 
-	for(var/obj/O in GLOB.listening_objects)
+	for(var/OB in GLOB.listening_objects)
+		var/obj/O = OB
 		if(get_turf(O) in hearturfs)
 			objs |= O
 

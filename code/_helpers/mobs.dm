@@ -20,8 +20,15 @@
 
 /proc/mobs_in_view(var/range, var/source)
 	. = list()
-	for(var/atom/movable/AM in view(range, source))
-		if(AM.get_mob())	. += AM
+	for(var/mob/living/AM in view(range, source))
+		if(ismob(AM))
+			. += AM
+	if(mechas_list.len)
+		for(var/M in mechas_list)
+			var/obj/mecha/Mech = M
+			if(get_dist(Mech, source) <= range && can_see(source, Mech, range))
+				if(Mech.get_mob())
+					. += Mech
 	return .
 
 proc/random_hair_style(gender, species = SPECIES_HUMAN)
@@ -300,3 +307,53 @@ proc/age2agedescription(age)
 				selected = M
 				break
 	return selected
+
+/proc/cached_character_icon(var/mob/desired)
+	var/cachekey = "\ref[desired][desired.real_name]"
+
+	if(cached_character_icons[cachekey])
+		. = cached_character_icons[cachekey]
+	else
+		. = getCompoundIcon(desired)
+		cached_character_icons[cachekey] = .
+
+// Better recursive loop, technically sort of not actually recursive cause that shit is retarded, enjoy.
+//No need for a recursive limit either
+/proc/recursive_mob_check(atom/O,client_check=1,sight_check=1,include_radio=1)
+
+	var/list/processing_list = list(O)
+	var/list/processed_list = list()
+	. = list()
+
+	while(processing_list.len)
+
+		var/atom/A = processing_list[1]
+		var/passed = 0
+
+		if(ismob(A))
+			var/mob/A_tmp = A
+			passed=1
+
+			if(client_check && !A_tmp.client)
+				passed=0
+
+			if(sight_check && !isInSight(A_tmp, O))
+				passed=0
+
+		else if(include_radio && istype(A, /obj/item/device/radio))
+			passed=1
+
+			if(sight_check && !isInSight(A, O))
+				passed=0
+
+		if(passed)
+			. |= A
+
+		for(var/atom/B in A)
+			if(!processed_list[B])
+				processing_list |= B
+
+		processing_list.Cut(1, 2)
+		processed_list[A] = A
+
+	return .

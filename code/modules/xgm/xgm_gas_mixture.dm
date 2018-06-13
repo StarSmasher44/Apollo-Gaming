@@ -14,6 +14,7 @@
 
 	//List of active tile overlays for this gas_mixture.  Updated by check_tile_graphic()
 	var/list/graphic = list()
+//	var/static/list/nonreactive_gases = list(typecacheof(/datum/gas/oxygen, /datum/gas/nitrogen, /datum/gas/carbon_dioxide)) // These gasses cannot react amongst themselves
 
 /datum/gas_mixture/New(_volume = CELL_VOLUME, _temperature = 0, _group_multiplier = 1)
 	volume = _volume
@@ -202,12 +203,12 @@
 //Updates the total_moles count and trims any empty gases.
 /datum/gas_mixture/proc/update_values()
 	total_moles = 0
-	for(var/g in gas)
-		if(gas[g] <= 0)
-			gas -= g
+	. = gas
+	for(var/g in .)
+		if(.[g] <= 0)
+			. -= g
 		else
-			total_moles += gas[g]
-
+			total_moles += .[g]
 
 //Returns the pressure of the gas mix.  Only accurate if there have been no gas modifications since update_values() has been called.
 /datum/gas_mixture/proc/return_pressure()
@@ -383,8 +384,9 @@
 
 //Multiply all gas amounts by a factor.
 /datum/gas_mixture/proc/multiply(factor)
-	for(var/g in gas)
-		gas[g] *= factor
+	var/list/gas2 = gas
+	for(var/g in gas2)
+		gas2[g] *= factor
 
 	update_values()
 	return 1
@@ -451,24 +453,27 @@
 	return share_ratio(unsim_air, unsim_air.group_multiplier, max(1, max(group_multiplier + 3, 1) + unsim_air.group_multiplier), one_way = 1)
 
 //Equalizes a list of gas mixtures.  Used for pipe networks.
-/proc/equalize_gases(datum/gas_mixture/list/gases)
+/proc/equalize_gases(datum/gas_mixture/list/gases2)
 	//Calculate totals from individual components
+	var/list/gases = gases2 //Caches gases list.
 	var/total_volume = 0
 	var/total_thermal_energy = 0
 	var/total_heat_capacity = 0
 
-	var/list/total_gas = list()
-	for(var/datum/gas_mixture/gasmix in gases)
-		total_volume += gasmix.volume
-		var/temp_heatcap = gasmix.heat_capacity()
-		total_thermal_energy += gasmix.temperature * temp_heatcap
-		total_heat_capacity += temp_heatcap
-		for(var/g in gasmix.gas)
-			total_gas[g] += gasmix.gas[g]
+	. = list()
+	for(var/GM in gases)
+		var/datum/gas_mixture/gasmix = GM
+		if(GM)
+			total_volume += gasmix.volume
+			var/temp_heatcap = gasmix.heat_capacity()
+			total_thermal_energy += gasmix.temperature * temp_heatcap
+			total_heat_capacity += temp_heatcap
+			for(var/g in gasmix.gas)
+				.[g] += gasmix.gas[g]
 
-	if(total_volume > 0)
+	if(total_volume > 0.5) //Raising the bar, less fucking CPU THANKS.
 		var/datum/gas_mixture/combined = new(total_volume)
-		combined.gas = total_gas
+		combined.gas = .
 
 		//Calculate temperature
 		if(total_heat_capacity > 0)
@@ -483,11 +488,12 @@
 			combined.gas[g] /= total_volume
 
 		//Update individual gas_mixtures
-		for(var/datum/gas_mixture/gasmix in gases)
-			gasmix.gas = combined.gas.Copy()
-			gasmix.temperature = combined.temperature
-			gasmix.multiply(gasmix.volume)
-
+		for(var/GM in gases)
+			var/datum/gas_mixture/gasmix = GM
+			if(GM)
+				gasmix.gas = combined.gas.Copy()
+				gasmix.temperature = combined.temperature
+				gasmix.multiply(gasmix.volume)
 	return 1
 
 /datum/gas_mixture/proc/get_mass()

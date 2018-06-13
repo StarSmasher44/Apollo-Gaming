@@ -2,7 +2,7 @@
 	plane = OBJ_PLANE
 
 	appearance_flags = TILE_BOUND
-	glide_size = 6
+	glide_size = 8
 
 	var/last_move = null
 	var/anchored = 0
@@ -266,16 +266,19 @@
 		if(T)
 			forceMove(T)
 
+// Parallax stuff.
+
 /atom/movable/proc/update_client_hook(atom/destination)
-	if(locate(/mob) in src)
-		for(var/client/C in parallax_on_clients)
-			if((get_turf(C.eye) == destination) && (C.mob.hud_used))
-				C.mob.hud_used.update_parallax_values()
+	. = isturf(destination)
+	if (.)
+		for (var/mob/M in src)
+			if (!M.client || !M.hud_used)
+				continue
+
+			if (get_turf(M.client.eye) == destination)
+				M.hud_used.update_parallax_values()
 
 /mob/update_client_hook(atom/destination)
-	if(locate(/mob) in src)
-		for(var/client/C in parallax_on_clients)
-			if((get_turf(C.eye) == destination) && (C.mob.hud_used))
-				C.mob.hud_used.update_parallax_values()
-	else if(client && hud_used)
+	. = ..()
+	if (. && hud_used && client && get_turf(client.eye) == destination)
 		hud_used.update_parallax_values()

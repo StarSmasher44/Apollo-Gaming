@@ -28,7 +28,7 @@
 /atom/movable/New()
 	. = ..()
 	var/turf/simulated/T = loc
-	if(isturf(T))
+	if(issimturf(T))
 		T.opaque_counter += opacity
 
 /atom/proc/update_light()
@@ -56,7 +56,7 @@
 		light.destroy()
 		light = null
 	return ..()
-	
+
 /atom/set_opacity()
 	. = ..()
 	if(.)
@@ -67,9 +67,13 @@
 /atom/movable/Move()
 	var/turf/old_loc = loc
 	. = ..()
+	if(.)
+		// Parallax.
+		update_client_hook(loc)
 
 	if(loc != old_loc)
-		for(var/datum/light_source/L in light_sources)
+		for(var/LS in light_sources)
+			var/datum/light_source/L = LS
 			L.source_atom.update_light()
 
 /obj/item/equipped()

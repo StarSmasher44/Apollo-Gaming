@@ -42,6 +42,19 @@ var/list/mechtoys = list(
 		/mob/living/silicon/robot/drone
 		)
 
+/obj/structure/plasticflaps/New() //A specific type for mining that doesn't allow airflow because of them damn crates
+	var/turf/T = get_turf(loc)
+	if(T)
+		T.blocks_air = 1
+	..()
+
+/obj/structure/plasticflaps/Destroy() //lazy hack to set the turf to allow air to pass if it's a simulated floor
+	var/turf/T = get_turf(loc)
+	if(T)
+		if(istype(T, /turf/simulated/floor))
+			T.blocks_air = 0
+	..()
+
 /obj/structure/plasticflaps/CanPass(atom/A, turf/T)
 	if(isatom(A) && A.checkpass(PASSGLASS))
 		return prob(60)

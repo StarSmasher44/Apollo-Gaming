@@ -321,18 +321,18 @@
 			flavor_text = client.prefs.flavour_texts_robot["Default"]
 
 /mob/living/silicon/robot/verb/Namepick()
+	set waitfor = 0
 	set category = "Silicon Commands"
 	if(custom_name)
 		return 0
 
-	spawn(0)
-		var/newname
-		newname = sanitizeSafe(input(src,"You are a robot. Enter a name, or leave blank for the default name.", "Name change","") as text, MAX_NAME_LEN)
-		if (newname)
-			custom_name = newname
+	var/newname
+	newname = sanitizeSafe(input(src,"You are a robot. Enter a name, or leave blank for the default name.", "Name change","") as text, MAX_NAME_LEN)
+	if (newname)
+		custom_name = newname
 
-		updatename()
-		update_icon()
+	updatename()
+	update_icon()
 
 // this verb lets cyborgs see the stations manifest
 /mob/living/silicon/robot/verb/cmd_station_manifest()

@@ -29,7 +29,8 @@
 		if (locate(/obj/structure/ore_box, input.loc))
 			var/obj/structure/ore_box/BOX = locate(/obj/structure/ore_box, input.loc)
 			var/i = 0
-			for (var/obj/item/weapon/ore/O in BOX.contents)
+			for (var/ORE in BOX.contents)
+				var/obj/item/weapon/ore/O = ORE
 				BOX.contents -= O
 				O.loc = output.loc
 				i++

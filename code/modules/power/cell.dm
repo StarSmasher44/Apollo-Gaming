@@ -18,6 +18,8 @@
 	var/global/list/overlay_cache = list()
 	matter = list(DEFAULT_WALL_MATERIAL = 700, "glass" = 50)
 
+	// Overlay stuff.
+	var/last_overlay_state = null // Used to optimize update_icon() calls.
 
 /obj/item/weapon/cell/New()
 	if(isnull(charge))
@@ -43,7 +45,38 @@
 	var/cell_amt = power * CELLRATE
 
 	return use(cell_amt) / CELLRATE
+#define OVERLAY_FULL	2
+#define OVERLAY_PARTIAL	1
+#define OVERLAY_EMPTY	0
 
+/obj/item/weapon/cell/update_icon()
+	var/new_overlay = null // The overlay that is needed.
+	// If it's different than the current overlay, then it'll get changed.
+	// Otherwise nothing happens, to save on CPU.
+
+	if(charge < 0.01) // Empty.
+		new_overlay = OVERLAY_EMPTY
+		if(last_overlay_state != new_overlay)
+			overlays.len = 0
+
+	else if(charge/maxcharge >= 0.995) // Full
+		new_overlay = OVERLAY_FULL
+		if(last_overlay_state != new_overlay)
+			overlays -= overlay_cache["cell-o1"]
+			overlays += overlay_cache["cell-o2"]
+
+
+	else // Inbetween.
+		new_overlay = OVERLAY_PARTIAL
+		if(last_overlay_state != new_overlay)
+			overlays -= overlay_cache["cell-o2"]
+			overlays += overlay_cache["cell-o1"]
+
+	last_overlay_state = new_overlay
+
+#undef OVERLAY_FULL
+#undef OVERLAY_PARTIAL
+#undef OVERLAY_EMPTY
 /obj/item/weapon/cell/update_icon()
 
 	var/new_overlay_state = null

@@ -79,9 +79,9 @@ var/datum/species/shapeshifter/promethean/prometheans
 	H.apply_stored_shock_to(target)
 
 /datum/species/shapeshifter/promethean/handle_death(var/mob/living/carbon/human/H)
-	spawn(1)
-		if(H)
-			H.gib()
+	set waitfor = 0
+	if(H)
+		H.gib()
 
 /datum/species/shapeshifter/promethean/handle_environment_special(var/mob/living/carbon/human/H)
 

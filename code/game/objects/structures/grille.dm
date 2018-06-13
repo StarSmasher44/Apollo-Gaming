@@ -164,6 +164,7 @@
 
 
 /obj/structure/grille/proc/healthcheck()
+	set waitfor = 0
 	if(health <= 0)
 		if(!destroyed)
 			set_density(0)

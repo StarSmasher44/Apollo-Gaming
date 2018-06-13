@@ -60,7 +60,8 @@
 	src.y = y
 	src.z = z
 
-	for(var/turf/t in RANGE_TURFS(10, locate(x + 8, y + 8, z)))
+	for(var/ta in RANGE_TURFS(10, locate(x + 8, y + 8, z)))
+		var/tmp/turf/t = ta
 		if(t.x >= x && t.y >= y && t.x < x + 16 && t.y < y + 16)
 			turfs[t] = t
 

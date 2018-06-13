@@ -49,7 +49,8 @@
 	if(!control_area)
 		control_area = get_area(src)
 	else if(istext(control_area))
-		for(var/area/A in all_areas)
+		for(var/AS in all_areas)
+			var/area/A = AS
 			if(A.name && A.name==control_area)
 				control_area = A
 				break

@@ -117,20 +117,20 @@
 	operating = 0
 
 /obj/item/device/spy_monitor/proc/view_camera(mob/user)
-	spawn(0)
-		while(selected_camera && Adjacent(user))
-			var/turf/T = get_turf(selected_camera)
-			if(!T || !is_on_same_plane_or_station(T.z, user.z) || !selected_camera.can_use())
-				user.unset_machine()
-				user.reset_view(null)
-				to_chat(user, "<span class='notice'>[selected_camera] unavailable.</span>")
-				sleep(90)
-			else
-				user.set_machine(selected_camera)
-				user.reset_view(selected_camera)
-			sleep(10)
-		user.unset_machine()
-		user.reset_view(null)
+	set waitfor = FALSE
+	while(selected_camera && Adjacent(user))
+		var/turf/T = get_turf(selected_camera)
+		if(!T || !is_on_same_plane_or_station(T.z, user.z) || !selected_camera.can_use())
+			user.unset_machine()
+			user.reset_view(null)
+			to_chat(user, "<span class='notice'>[selected_camera] unavailable.</span>")
+			sleep(90)
+		else
+			user.set_machine(selected_camera)
+			user.reset_view(selected_camera)
+		sleep(10)
+	user.unset_machine()
+	user.reset_view(null)
 
 /obj/item/device/spy_monitor/proc/can_use_cam(mob/user)
 	if(operating)

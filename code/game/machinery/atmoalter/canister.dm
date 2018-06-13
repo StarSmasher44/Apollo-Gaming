@@ -221,7 +221,7 @@ update_flag
 			if(returnval >= 0)
 				ADD_ICON_QUEUE(src)
 
-	if(air_contents.return_pressure() < 1)
+	if(return_pressure(air_contents) < 1)
 		can_label = 1
 	else
 		can_label = 0

@@ -147,7 +147,8 @@
 	create_shields()
 
 	idle_power_usage = 0
-	for(var/obj/machinery/shield/shield_tile in deployed_shields)
+	for(var/ST in deployed_shields)
+		var/obj/machinery/shield/shield_tile = ST
 		idle_power_usage += shield_tile.shield_idle_power
 	update_use_power(src, 1)
 
@@ -171,7 +172,8 @@
 				use_power(S.shield_generate_power)
 
 /obj/machinery/shieldgen/proc/collapse_shields()
-	for(var/obj/machinery/shield/shield_tile in deployed_shields)
+	for(var/ST in deployed_shields)
+		var/obj/machinery/shield/shield_tile = ST
 		qdel(shield_tile)
 
 /obj/machinery/shieldgen/power_change()
@@ -194,7 +196,8 @@
 			create_shields()
 
 			var/new_power_usage = 0
-			for(var/obj/machinery/shield/shield_tile in deployed_shields)
+			for(var/ST in deployed_shields)
+				var/obj/machinery/shield/shield_tile = ST
 				new_power_usage += shield_tile.shield_idle_power
 
 			if (new_power_usage != idle_power_usage)

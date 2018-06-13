@@ -533,6 +533,7 @@
 	toggle_tint()
 
 /obj/machinery/button/windowtint/proc/toggle_tint()
+	set waitfor = FALSE
 	use_power(5)
 
 	active = !active
@@ -540,9 +541,8 @@
 
 	for(var/obj/structure/window/reinforced/polarized/W in range(src,range))
 		if (W.id == src.id || !W.id)
-			spawn(0)
-				W.toggle()
-				return
+			W.toggle()
+			return
 
 /obj/machinery/button/windowtint/power_change()
 	. = ..()

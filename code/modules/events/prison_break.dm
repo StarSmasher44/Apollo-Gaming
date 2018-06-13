@@ -41,7 +41,7 @@
 
 
 /datum/event/prison_break/start()
-	for(var/area/A in all_areas)
+	for(var/A in all_areas)
 		if(is_type_in_list(A,areaType) && !is_type_in_list(A,areaNotType))
 			areas += A
 
@@ -52,7 +52,6 @@
 			MS.send_rc_message("Engineering", my_department, rc_message, "", "", 2)
 		for(var/mob/living/silicon/ai/A in GLOB.player_list)
 			to_chat(A, "<span class='danger'>Malicious program detected in the [english_list(areaName)] lighting and airlock control systems by [my_department].</span>")
-
 	else
 		world.log << "ERROR: Could not initate grey-tide. Unable to find suitable containment area."
 		kill()
@@ -62,7 +61,8 @@
 	if(activeFor == releaseWhen)
 		if(areas && areas.len > 0)
 			var/obj/machinery/power/apc/theAPC = null
-			for(var/area/A in areas)
+			for(var/AS in areas)
+				var/area/A = AS
 				theAPC = A.get_apc()
 				if(theAPC && theAPC.operating)	//If the apc's off, it's a little hard to overload the lights.
 					for(var/obj/machinery/light/L in A.machinecache)

@@ -1,16 +1,16 @@
-var/list/ventcrawl_machinery = list(
+var/static/list/ventcrawl_machinery = typecacheof(list(
 	/obj/machinery/atmospherics/unary/vent_scrubber,
 	/obj/machinery/atmospherics/unary/vent_pump
-	)
+	))
 
 // Vent crawling whitelisted items, whoo
-/mob/living/var/list/can_enter_vent_with = list(
+/mob/living/var/static/list/can_enter_vent_with = typecacheof(list(
 	/obj/item/weapon/implant,
 	/obj/item/device/radio/borg,
 	/obj/item/weapon/holder,
 	/obj/machinery/camera,
 	/mob/living/simple_animal/borer
-	)
+	))
 
 /mob/living/var/list/icon/pipes_shown = list()
 /mob/living/var/last_played_vent
@@ -42,7 +42,7 @@ var/list/ventcrawl_machinery = list(
 	. = ..()
 
 /mob/living/proc/is_allowed_vent_crawl_item(var/obj/item/carried_item)
-	if(is_type_in_list(carried_item, can_enter_vent_with))
+	if(is_type_in_typecache(carried_item, can_enter_vent_with))
 		return !get_inventory_slot(carried_item)
 
 /mob/living/carbon/is_allowed_vent_crawl_item(var/obj/item/carried_item)
@@ -72,7 +72,7 @@ var/list/ventcrawl_machinery = list(
 	return TRUE
 
 /mob/living/AltClickOn(var/atom/A)
-	if(is_type_in_list(A,ventcrawl_machinery))
+	if(is_type_in_typecache(A,ventcrawl_machinery))
 		handle_ventcrawl(A)
 		return 1
 	return ..()
@@ -81,7 +81,7 @@ var/list/ventcrawl_machinery = list(
 	var/atom/pipe
 	var/list/pipes = list()
 	for(var/obj/machinery/atmospherics/unary/U in range(1))
-		if(is_type_in_list(U,ventcrawl_machinery) && Adjacent(U) && U.can_crawl_through())
+		if(is_type_in_typecache(U,ventcrawl_machinery) && Adjacent(U) && U.can_crawl_through())
 			pipes |= U
 	if(!pipes || !pipes.len)
 		to_chat(src, "There are no pipes that you can ventcrawl into within range!")
@@ -108,7 +108,7 @@ var/list/ventcrawl_machinery = list(
 
 	if(!vent_found)
 		for(var/obj/machinery/atmospherics/machine in range(1,src))
-			if(is_type_in_list(machine, ventcrawl_machinery))
+			if(is_type_in_typecache(machine, ventcrawl_machinery))
 				vent_found = machine
 
 			if(!vent_found || !vent_found.can_crawl_through())

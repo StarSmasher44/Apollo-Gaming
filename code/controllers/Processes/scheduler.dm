@@ -8,29 +8,31 @@
 
 /datum/controller/process/scheduler/setup()
 	name = "scheduler"
-	schedule_interval = 3 SECONDS
+	schedule_interval = 1 SECONDS
 	scheduled_tasks = list()
 	scheduler = src
 
 /datum/controller/process/scheduler/doWork()
+	var/world_time = world.time
 	for(last_object in scheduled_tasks)
 		var/datum/scheduled_task/scheduled_task = last_object
+		if(world_time < scheduled_task.trigger_time)
+			break
 		try
-			if(world.time > scheduled_task.trigger_time)
-				unschedule(scheduled_task)
-				scheduled_task.pre_process()
-				scheduled_task.process()
-				scheduled_task.post_process()
+			unschedule(scheduled_task)
+			scheduled_task.pre_process()
+			scheduled_task.process()
+			scheduled_task.post_process()
 		catch(var/exception/e)
 			catchException(e, last_object)
-		SCHECK
+		CHECK_TICK //Mwuhhahaha.. replaced with TICK_CHECK, if it stops it will continue where it stopped any way, this should help.
 
 /datum/controller/process/scheduler/statProcess()
 	..()
 	stat(null, "[scheduled_tasks.len] task\s")
 
 /datum/controller/process/scheduler/proc/schedule(var/datum/scheduled_task/st)
-	scheduled_tasks += st
+	dd_insertObjectList(scheduled_tasks, st)
 	GLOB.destroyed_event.register(st, src, /datum/controller/process/scheduler/proc/unschedule)
 
 /datum/controller/process/scheduler/proc/unschedule(var/datum/scheduled_task/st)
@@ -92,6 +94,9 @@
 	task_after_process = null
 	task_after_process_args.Cut()
 	return ..()
+
+/datum/scheduled_task/dd_SortValue()
+	return trigger_time
 
 /datum/scheduled_task/proc/pre_process()
 	task_triggered_event.raise_event(src)

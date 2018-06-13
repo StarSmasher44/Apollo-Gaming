@@ -225,8 +225,8 @@
 
 	reagents.trans_to_obj(temp_chem_holder, min(reagents.total_volume,rand(1,3)))
 
-	for(var/datum/reagent/R in temp_chem_holder.reagents.reagent_list)
-
+	for(var/RE in temp_chem_holder.reagents.reagent_list)
+		var/datum/reagent/R = RE
 		var/reagent_total = temp_chem_holder.reagents.get_reagent_amount(R.type)
 
 		if(seed && !dead)

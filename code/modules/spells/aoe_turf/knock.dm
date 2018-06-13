@@ -14,13 +14,13 @@
 	hud_state = "wiz_knock"
 
 /spell/aoe_turf/knock/cast(list/targets)
+	set waitfor = 0
 	for(var/turf/T in targets)
 		for(var/obj/machinery/door/door in T.contents)
-			spawn(1)
-				if(isairlock(door))
-					var/obj/machinery/door/airlock/AL = door //casting is important
-					AL.locked = 0
-				door.open()
+			if(isairlock(door))
+				var/obj/machinery/door/airlock/AL = door //casting is important
+				AL.locked = 0
+			door.open()
 	return
 
 

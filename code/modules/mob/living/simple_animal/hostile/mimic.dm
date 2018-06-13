@@ -2,7 +2,7 @@
 // Abstract Class
 //
 
-var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/cable, /obj/structure/window, /obj/item/projectile/animate)
+var/global/list/protected_objects = typecacheof(list(/obj/structure/table, /obj/structure/cable, /obj/structure/window, /obj/item/projectile/animate))
 
 /mob/living/simple_animal/hostile/mimic
 	name = "crate"
@@ -57,7 +57,7 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 
 /mob/living/simple_animal/hostile/mimic/proc/CopyObject(var/obj/O, var/mob/living/creator)
 
-	if((isitem(O) || isstructure(O)) && !is_type_in_list(O, protected_objects))
+	if((isitem(O) || isstructure(O)) && !is_type_in_typecache(O, protected_objects))
 		O.forceMove(src)
 		copy_of = weakref(O)
 		appearance = O

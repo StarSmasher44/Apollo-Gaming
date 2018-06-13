@@ -17,7 +17,8 @@
 
 	var/choice = input(user, "Make Command Report?") in list("Yes", "No")
 	gravity_is_on = !gravity_is_on
-	for(var/area/A in all_areas)
+	for(var/AS in all_areas)
+		var/area/A = AS
 		A.gravitychange(gravity_is_on)
 
 	feedback_inc("admin_secrets_fun_used",1)

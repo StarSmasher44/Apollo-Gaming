@@ -8,7 +8,8 @@
 	var/list/listeners = new				// A list of all objects interested in alarm changes.
 
 /datum/alarm_handler/proc/process()
-	for(var/datum/alarm/A in alarms)
+	for(var/AL in alarms)
+		var/datum/alarm/A = AL
 		A.process()
 		check_alarm_cleared(A)
 

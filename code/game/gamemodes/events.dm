@@ -97,10 +97,10 @@ var/hadevent    = 0
 
 //Changing this to affect the main station. Blame Urist. --Pete
 /proc/prison_break() // -- Callagan
-
+	set waitfor = FALSE
 
 	var/list/area/areas = list()
-	for(var/area/A in all_areas)
+	for(var/A in all_areas)
 		if(istype(A, /area/security/prison) || istype(A, /area/security/brig))
 			areas += A
 
@@ -112,7 +112,7 @@ var/hadevent    = 0
 
 		sleep(100)
 
-		for(var/area/A in areas)
+		for(var/A in areas)
 			for (var/obj/machinery/power/apc/temp_apc in A)
 				temp_apc.overload_lighting()
 

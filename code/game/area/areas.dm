@@ -6,7 +6,7 @@
 /area
 	var/global/global_uid = 0
 	var/uid
-	var/machinecache
+	var/list/machinecache
 
 /area/New()
 	icon_state = ""
@@ -76,6 +76,7 @@
 	return 0
 
 /area/proc/air_doors_close()
+	set waitfor = FALSE
 	if(!air_doors_activated)
 		air_doors_activated = 1
 		if(!all_doors)
@@ -85,10 +86,10 @@
 				if(E.operating)
 					E.nextstate = FIREDOOR_CLOSED
 				else if(!E.density)
-					spawn(0)
-						E.close()
+					E.close()
 
 /area/proc/air_doors_open()
+	set waitfor = FALSE
 	if(air_doors_activated)
 		air_doors_activated = 0
 		if(!all_doors)
@@ -98,12 +99,12 @@
 				if(E.operating)
 					E.nextstate = FIREDOOR_OPEN
 				else if(E.density)
-					spawn(0)
-						if(E.can_safely_open())
-							E.open()
+					if(E.can_safely_open())
+						E.open()
 
 
 /area/proc/fire_alert()
+	set waitfor = FALSE
 	if(!fire)
 		fire = 1	//used for firedoor checks
 		update_icon()
@@ -115,10 +116,10 @@
 				if(D.operating)
 					D.nextstate = FIREDOOR_CLOSED
 				else if(!D.density)
-					spawn()
-						D.close()
+					D.close()
 
 /area/proc/fire_reset()
+	set waitfor = FALSE
 	if (fire)
 		fire = 0	//used for firedoor checks
 		update_icon()
@@ -130,7 +131,6 @@
 				if(D.operating)
 					D.nextstate = FIREDOOR_OPEN
 				else if(D.density)
-					spawn(0)
 					D.open()
 
 /area/proc/readyalert()
@@ -149,8 +149,8 @@
 	if ((fire || eject) && (!requires_power||power_environ))//If it doesn't require power, can still activate this proc.
 		if(fire && !eject)
 			icon_state = "blue"
-		/*else if(atmosalm && !fire && !eject && !party)
-			icon_state = "bluenew"*/
+		else if(atmosalm && !fire && !eject)
+			icon_state = "bluenew"
 		else if(!fire && eject)
 			icon_state = "red"
 		else
@@ -181,9 +181,10 @@
 
 // called when power status changes
 /area/proc/power_change()
-	for(var/obj/machinery/M in machinecache)	// for each machine in the area
+	for(var/MA in machinecache)	// for each machine in the area
+		var/obj/machinery/M = MA
 		M.power_change()			// reverify power status (to update icons etc.)
-	if (fire || eject)
+	if (fire || eject || atmosalm)
 		update_icon()
 
 /area/proc/usage(var/chan)
@@ -265,11 +266,11 @@ var/list/mob/living/forced_ambiance_list = new
 				break
 
 	if(hum)
-		if(!L.client.ambience_playing)
+		if(L && !L.client.ambience_playing)
 			L.client.ambience_playing = 1
 			L.playsound_local(T,sound('sound/ambience/vents.ogg', repeat = 1, wait = 0, volume = 20, channel = 2))
 	else
-		if(L.client.ambience_playing)
+		if(L && L.client.ambience_playing)
 			L.client.ambience_playing = 0
 			sound_to(L, sound(null, channel = 2))
 

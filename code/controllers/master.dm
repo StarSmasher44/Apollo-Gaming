@@ -198,7 +198,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 #endif
 	world.fps = config.fps
 	var/initialized_tod = REALTIMEOFDAY
-	sleep(1)
+	stoplag(1)
 	initializations_finished_with_no_players_logged_in = initialized_tod < REALTIMEOFDAY - 10
 	// Loop.
 	Master.StartProcessing(0)
@@ -298,13 +298,15 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 		if (TICK_USAGE > TICK_LIMIT_MC)
 			sleep_delta += 2
 			current_ticklimit = TICK_LIMIT_RUNNING * 0.5
-			sleep(world.tick_lag * (processing + sleep_delta))
+			sleep(world.tick_lag * (processing * sleep_delta))
 			continue
 
 		sleep_delta = MC_AVERAGE_FAST(sleep_delta, 0)
-		if (last_run + (world.tick_lag * processing) > world.time)
+		//Byond resumed us late. assume it might have to do the same next tick
+		if (last_run + CEILING(world.tick_lag * (processing * sleep_delta), world.tick_lag) < world.time)
 			sleep_delta += 1
-		if (TICK_USAGE > (TICK_LIMIT_MC*0.5))
+
+		if (TICK_USAGE > (TICK_LIMIT_MC*0.75))
 			sleep_delta += 1
 
 		if (make_runtime)
@@ -322,7 +324,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 				for(var/I in current_runlevel_subsystems)
 					var/datum/controller/subsystem/SS = I
 					if(SS.next_fire <= world.time)
-						stagger += world.tick_lag * rand(1, 5)
+						stagger += world.tick_lag * rand(1, 6)
 						SS.next_fire = stagger
 
 			subsystems_to_check = current_runlevel_subsystems
@@ -358,8 +360,11 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 		iteration++
 		last_run = world.time
 		src.sleep_delta = MC_AVERAGE_FAST(src.sleep_delta, sleep_delta)
-		current_ticklimit = TICK_LIMIT_RUNNING - (TICK_LIMIT_RUNNING * 0.25) //reserve the tail 1/4 of the next tick for the mc.
-		sleep(world.tick_lag * (processing + sleep_delta))
+		if (processing * sleep_delta <= world.tick_lag)
+			current_ticklimit -= (TICK_LIMIT_RUNNING * 0.25) //reserve the tail 1/4 of the next tick for the mc if we plan on running next tick
+
+//		current_ticklimit = TICK_LIMIT_RUNNING - (TICK_LIMIT_RUNNING * 0.25) //reserve the tail 1/4 of the next tick for the mc.
+		sleep(world.tick_lag * (processing * sleep_delta))
 
 
 

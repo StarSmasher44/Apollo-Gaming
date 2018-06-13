@@ -6,14 +6,16 @@
 
 /datum/alarm_handler/atmosphere/major_alarms()
 	. = list()
-	for(var/datum/alarm/A in alarms)
+	for(var/AL in alarms)
+		var/datum/alarm/A = AL
 		if(A.max_severity() > 1)
 			. += A
 	return .
 
 /datum/alarm_handler/atmosphere/minor_alarms()
 	. = list()
-	for(var/datum/alarm/A in alarms)
+	for(var/AL in alarms)
+		var/datum/alarm/A = AL
 		if(A.max_severity() == 1)
 			. += A
 	return .

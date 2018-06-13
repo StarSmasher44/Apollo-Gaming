@@ -174,8 +174,8 @@
 
 			if(ores_processing[metal] == 3 && O.alloy) //Alloying.
 
-				for(var/datum/alloy/A in alloy_data)
-
+				for(var/AL in alloy_data)
+					var/datum/alloy/A = AL
 					if(A.metaltag in tick_alloys)
 						continue
 

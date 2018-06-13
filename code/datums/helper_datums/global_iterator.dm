@@ -77,7 +77,7 @@ Data storage vars:
 			for(var/sleep_time=delay;sleep_time>0;sleep_time--) //uhh, this is ugly. But I see no other way to terminate sleeping proc. Such disgrace.
 				if(!control_switch)
 					return 0
-				sleep(1)
+				stoplag(1)
 		return 0
 
 	proc/start(list/arguments=null)

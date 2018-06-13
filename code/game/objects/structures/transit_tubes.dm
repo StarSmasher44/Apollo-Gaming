@@ -284,75 +284,74 @@ obj/structure/ex_act(severity)
 
 
 /obj/structure/transit_tube_pod/proc/follow_tube()
+	set waitfor = 0
 	if(moving)
 		return
 
 	moving = 1
 
-	spawn()
-		var/obj/structure/transit_tube/current_tube = null
-		var/next_dir
-		var/next_loc
-		var/last_delay = 0
-		var/exit_delay
+	var/obj/structure/transit_tube/current_tube = null
+	var/next_dir
+	var/next_loc
+	var/last_delay = 0
+	var/exit_delay
 
-		for(var/obj/structure/transit_tube/tube in loc)
-			if(tube.has_exit(dir))
+	for(var/obj/structure/transit_tube/tube in loc)
+		if(tube.has_exit(dir))
+			current_tube = tube
+			break
+
+	while(current_tube)
+		next_dir = current_tube.get_exit(dir)
+
+		if(!next_dir)
+			break
+
+		exit_delay = current_tube.exit_delay(src, dir)
+		last_delay += exit_delay
+
+		sleep(exit_delay)
+
+		next_loc = get_step(loc, next_dir)
+
+		current_tube = null
+		for(var/obj/structure/transit_tube/tube in next_loc)
+			if(tube.has_entrance(next_dir))
 				current_tube = tube
 				break
 
-		while(current_tube)
-			next_dir = current_tube.get_exit(dir)
-
-			if(!next_dir)
-				break
-
-			exit_delay = current_tube.exit_delay(src, dir)
-			last_delay += exit_delay
-
-			sleep(exit_delay)
-
-			next_loc = get_step(loc, next_dir)
-
-			current_tube = null
-			for(var/obj/structure/transit_tube/tube in next_loc)
-				if(tube.has_entrance(next_dir))
-					current_tube = tube
-					break
-
-			if(current_tube == null)
-				set_dir(next_dir)
-				Move(get_step(loc, dir)) // Allow collisions when leaving the tubes.
-				break
-
-			last_delay = current_tube.enter_delay(src, next_dir)
-			sleep(last_delay)
+		if(current_tube == null)
 			set_dir(next_dir)
-			loc = next_loc // When moving from one tube to another, skip collision and such.
-			set_density(current_tube.density)
+			Move(get_step(loc, dir)) // Allow collisions when leaving the tubes.
+			break
 
-			if(current_tube && current_tube.should_stop_pod(src, next_dir))
-				current_tube.pod_stopped(src, dir)
+		last_delay = current_tube.enter_delay(src, next_dir)
+		sleep(last_delay)
+		set_dir(next_dir)
+		loc = next_loc // When moving from one tube to another, skip collision and such.
+		set_density(current_tube.density)
+
+		if(current_tube && current_tube.should_stop_pod(src, next_dir))
+			current_tube.pod_stopped(src, dir)
+			break
+
+	set_density(1)
+
+	// If the pod is no longer in a tube, move in a line until stopped or slowed to a halt.
+	//  /turf/inertial_drift appears to only work on mobs, and re-implementing some of the
+	//  logic allows a gradual slowdown and eventual stop when passing over non-space turfs.
+	if(!current_tube && last_delay <= 10)
+		do
+			sleep(last_delay)
+
+			if(!isspace(loc))
+				last_delay++
+			if(last_delay > 10)
 				break
 
-		set_density(1)
+		while(isturf(loc) && Move(get_step(loc, dir)))
 
-		// If the pod is no longer in a tube, move in a line until stopped or slowed to a halt.
-		//  /turf/inertial_drift appears to only work on mobs, and re-implementing some of the
-		//  logic allows a gradual slowdown and eventual stop when passing over non-space turfs.
-		if(!current_tube && last_delay <= 10)
-			do
-				sleep(last_delay)
-
-				if(!istype(loc, /turf/space))
-					last_delay++
-
-				if(last_delay > 10)
-					break
-
-			while(isturf(loc) && Move(get_step(loc, dir)))
-
-		moving = 0
+	moving = 0
 
 /obj/structure/transit_tube_pod/return_air()
 	return air_contents
@@ -384,7 +383,7 @@ obj/structure/ex_act(severity)
 			mob.loc = loc
 			mob.client.Move(get_step(loc, direction), direction)
 
-			//if(moving && istype(loc, /turf/space))
+			//if(moving && isspace(loc))
 				// Todo: If you get out of a moving pod in space, you should move as well.
 				//  Same direction as pod? Direcion you moved? Halfway between?
 

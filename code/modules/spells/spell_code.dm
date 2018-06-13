@@ -76,20 +76,20 @@ var/list/spells = typesof(/spell) //needed for the badmin verb for now
 	charge_counter = charge_max
 
 /spell/proc/process()
+	set waitfor = 0
 	if(processing)
 		return
 	processing = 1
-	spawn(0)
-		while(charge_counter < charge_max || silenced > 0)
-			charge_counter = min(charge_max,charge_counter+1)
-			silenced = max(0,silenced-1)
-			sleep(1)
-		if(connected_button)
-			var/obj/screen/ability/spell/S = connected_button
-			if(!istype(S))
-				return
-			S.update_charge(1)
-		processing = 0
+	while(charge_counter < charge_max || silenced > 0)
+		charge_counter = min(charge_max,charge_counter+1)
+		silenced = max(0,silenced-1)
+		sleep(1)
+	if(connected_button)
+		var/obj/screen/ability/spell/S = connected_button
+		if(!istype(S))
+			return
+		S.update_charge(1)
+	processing = 0
 	return
 
 /////////////////
