@@ -18,8 +18,9 @@
 		A.move_camera_by_click()
 
 /mob/living/carbon/human/DblClickOn(var/atom/A, params)
-	if(stat == 2 || lying == 0 || get_dist(src, A) > 1) return
+	if(stat == 2 || stat != 1 || lying == 0 || get_dist(src, A) > 1) return
 	if(world.time <= next_click)
+		to_chat(src, "You have to wait a moment..")
 		return
 	next_click = world.time + 20 //Small cooldown for the effort.
 	if(incapacitated(INCAPACITATION_KNOCKDOWN))

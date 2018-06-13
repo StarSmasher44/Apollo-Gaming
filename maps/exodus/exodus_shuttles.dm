@@ -167,11 +167,20 @@
 /datum/shuttle/autodock/ferry/engineering
 	name = "Engineering"
 	warmup_time = 10
+	location = 0
 	shuttle_area = /area/shuttle/constructionsite/station
 	waypoint_station = "eng_shuttle_start"
 	waypoint_offsite = "eng_shuttle_out"
 	dock_target = "engineering_shuttle"
 
+/obj/effect/shuttle_landmark/engineering/start
+	name = "Engineering Shuttle Dock"
+	landmark_tag = "eng_shuttle_start"
+
+/obj/effect/shuttle_landmark/engineering/out
+	name = "Construction Site"
+	landmark_tag = "eng_shuttle_out"
+	docking_controller = "engineering_shuttle"
 
 // mining shuttle
 
@@ -179,20 +188,41 @@
 /datum/shuttle/autodock/ferry/mining
 	name = "Mining"
 	warmup_time = 10
+	location = 0
 	shuttle_area = /area/shuttle/mining/station
 	waypoint_station = "mining_shuttle_start"
 	waypoint_offsite = "mining_outpost_out"
 	dock_target = "mining_shuttle"
+
+/obj/effect/shuttle_landmark/mining/start
+	name = "Mining Shuttle Dock"
+	landmark_tag = "mining_shuttle_start"
+
+/obj/effect/shuttle_landmark/mining/out
+	name = "Mining Outpost"
+	landmark_tag = "mining_outpost_out"
+	docking_controller = "mining_shuttle"
 
  // research shuttle
 
 /datum/shuttle/autodock/ferry/research
 	name = "Research"
 	warmup_time = 10
+	location = 0
 	shuttle_area = /area/shuttle/research/station
 	waypoint_station = "research_shuttle_start"
 	waypoint_offsite = "research_outpost_out"
 	dock_target = "research_shuttle"
+
+
+/obj/effect/shuttle_landmark/research/start
+	name = "Research Shuttle Dock"
+	landmark_tag = "research_shuttle_start"
+
+/obj/effect/shuttle_landmark/research/out
+	name = "Research outpost dock"
+	landmark_tag = "research_shuttle_out"
+	docking_controller = "research_shuttle"
 
 // transport shuttle
 
