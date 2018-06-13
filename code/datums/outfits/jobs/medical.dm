@@ -28,6 +28,12 @@
 	r_pocket = /obj/item/device/flashlight/pen
 	id_type = /obj/item/weapon/card/id/medical
 
+/decl/hierarchy/outfit/job/medical/intern
+	name = OUTFIT_JOB_NAME("Medical Intern")
+	uniform = /obj/item/clothing/under/rank/medical
+	id_type = /obj/item/weapon/card/id/medical
+
+
 /decl/hierarchy/outfit/job/medical/doctor/emergency_physician
 	name = OUTFIT_JOB_NAME("Emergency physician")
 	suit = /obj/item/clothing/suit/storage/toggle/fr_jacket

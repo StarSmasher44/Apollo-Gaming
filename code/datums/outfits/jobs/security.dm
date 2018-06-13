@@ -53,3 +53,11 @@
 	r_pocket = /obj/item/weapon/handcuffs
 	id_type = /obj/item/weapon/card/id/security
 	pda_type = /obj/item/device/pda/security
+
+/decl/hierarchy/outfit/job/security/intern
+	name = OUTFIT_JOB_NAME("Security Intern")
+	glasses = null //No Hud glasses for interns.
+	uniform = /obj/item/clothing/under/rank/security
+	l_pocket = /obj/item/device/flash
+	id_type = /obj/item/weapon/card/id/security
+	pda_type = /obj/item/device/pda/security

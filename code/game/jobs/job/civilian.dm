@@ -62,6 +62,15 @@
 	spawn_positions = 2
 	supervisors = "the quartermaster and the head of personnel"
 	selection_color = "#515151"
+/datum/job/cargo_tech_intern
+	title = "Logistics Intern"
+	department = "Logistics"
+	department_flag = LOG
+	total_positions = 2
+	spawn_positions = 2
+	intern = 1
+	supervisors = "the Head of Logistics and the head of personnel and any one else above you."
+	selection_color = "#916e22"
 	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
 	minimal_access = list(access_maint_tunnels, access_cargo, access_cargo_bot, access_mailsorting)
 	outfit_type = /decl/hierarchy/outfit/job/cargo/cargo_tech

@@ -24,6 +24,11 @@
 	id_type = /obj/item/weapon/card/id/science
 	suit = /obj/item/clothing/suit/storage/toggle/labcoat/science
 
+/decl/hierarchy/outfit/job/science/intern
+	name = OUTFIT_JOB_NAME("Research Intern")
+	uniform = /obj/item/clothing/under/rank/scientist
+	id_type = /obj/item/weapon/card/id/science
+
 /decl/hierarchy/outfit/job/science/xenobiologist
 	name = OUTFIT_JOB_NAME("Xenobiologist")
 	uniform = /obj/item/clothing/under/rank/scientist

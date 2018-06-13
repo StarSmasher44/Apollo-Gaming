@@ -27,6 +27,7 @@
 	var/economic_modifier = 2			  // With how much does this job modify the initial account amount?
 	var/base_pay = 12 					  // Always minimum wage at all times. Also base = 1 hr, paychecks calculate base * 4
 	var/outfit_type                       // The outfit the employee will be dressed in, if any
+	var/intern = 0                        // If this job is an intern or not? (Assistants)
 
 	var/loadout_allowed = TRUE            // Whether or not loadout equipment is allowed and to be created when joining.
 	var/list/allowed_branches             // For maps using branches and ranks, also expandable for other purposes

@@ -11,7 +11,7 @@
 /datum/gear/head/beret/bsec
 	display_name = "beret, navy (officer)"
 	path = /obj/item/clothing/head/beret/sec/navy/officer
-	allowed_roles = list("Security Officer","Head of Security","Warden")
+	allowed_roles = list("Security Officer","Head of Security","Warden","Security Intern")
 
 /datum/gear/head/beret/bsec_warden
 	display_name = "beret, navy (warden)"
@@ -26,7 +26,7 @@
 /datum/gear/head/beret/eng
 	display_name = "beret, engineering"
 	path = /obj/item/clothing/head/beret/engineering
-	allowed_roles = list("Station Engineer","Chief Engineer","Atmospheric Technician")
+	allowed_roles = list("Station Engineer","Chief Engineer","Atmospheric Technician","Technical Intern")
 
 /datum/gear/head/beret/purp
 	display_name = "beret, purple"
@@ -35,17 +35,17 @@
 /datum/gear/head/beret/sec
 	display_name = "beret, red (security)"
 	path = /obj/item/clothing/head/beret/sec
-	allowed_roles = list("Security Officer","Head of Security","Warden")
+	allowed_roles = list("Security Officer","Head of Security","Warden","Security Intern")
 
 /datum/gear/head/seccap
 	display_name = "cap, security"
 	path = /obj/item/clothing/head/soft/sec
-	allowed_roles = list("Security Officer","Head of Security","Warden", "Detective")
+	allowed_roles = list("Security Officer","Head of Security","Warden", "Detective","Security Intern")
 
 /datum/gear/head/seccap/corp
 	display_name = "cap, corporate security"
 	path = /obj/item/clothing/head/soft/sec/corp
-	allowed_roles = list("Security Officer","Head of Security","Warden", "Detective")
+	allowed_roles = list("Security Officer","Head of Security","Warden", "Detective","Security Intern")
 
 /datum/gear/head/zhan_scarf
 	display_name = "Zhan headscarf"
@@ -53,4 +53,4 @@
 	whitelisted = list(SPECIES_TAJARA)
 
 /datum/gear/head/welding
-	allowed_roles = list("Roboticist","Station Engineer","Atmospheric Technician","Chief Engineer")
+	allowed_roles = list("Roboticist","Station Engineer","Atmospheric Technician","Chief Engineer","Technical Intern")

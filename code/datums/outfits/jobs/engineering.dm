@@ -27,6 +27,13 @@
 	id_type = /obj/item/weapon/card/id/engineering
 	pda_type = /obj/item/device/pda/engineering
 
+/decl/hierarchy/outfit/job/engineering/intern
+	name = OUTFIT_JOB_NAME("Technical Intern")
+	uniform = /obj/item/clothing/under/rank/engineer
+	id_type = /obj/item/weapon/card/id/engineering
+	pda_type = /obj/item/device/pda/engineering
+	belt = null
+
 /decl/hierarchy/outfit/job/engineering/atmos
 	name = OUTFIT_JOB_NAME("Atmospheric technician")
 	uniform = /obj/item/clothing/under/rank/atmospheric_technician

@@ -59,3 +59,20 @@
 	access = list(access_eva, access_engine, access_engine_equip, access_tech_storage, access_maint_tunnels, access_external_airlocks, access_construction, access_atmospherics, access_emergency_storage)
 	minimal_access = list(access_eva, access_engine, access_engine_equip, access_tech_storage, access_maint_tunnels, access_external_airlocks, access_construction, access_atmospherics, access_emergency_storage)
 	outfit_type = /decl/hierarchy/outfit/job/engineering/atmos
+
+/datum/job/engassistant
+	title = "Technical Intern"
+	department = "Engineering"
+	department_flag = ENG
+
+	total_positions = 5
+	spawn_positions = 5
+	supervisors = "Engineering Personnel, the Chief Engineer."
+	selection_color = "#5b4d20"
+	alt_titles = list("Atmospherics Intern")
+	economic_modifier = 1
+	base_pay = 6
+	intern = 1
+	access = list(access_engine_equip, access_tech_storage, access_maint_tunnels, access_external_airlocks, access_construction, access_atmospherics, access_emergency_storage)
+	minimal_access = list(access_engine_equip, access_tech_storage, access_maint_tunnels, access_external_airlocks, access_construction, access_atmospherics, access_emergency_storage)
+	outfit_type = /decl/hierarchy/outfit/job/engineering/intern

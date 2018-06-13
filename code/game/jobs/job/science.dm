@@ -73,3 +73,19 @@
 	alt_titles = list("Biomechanical Engineer","Mechatronic Engineer")
 	minimal_player_age = 3
 	outfit_type = /decl/hierarchy/outfit/job/science/roboticist
+
+/datum/job/sciassistant
+	title = "Research Intern"
+	department = "Science"
+	department_flag = SCI
+
+	total_positions = 5
+	spawn_positions = 5
+	supervisors = "absolutely everyone"
+	selection_color = "#633d63"
+	economic_modifier = 1
+	base_pay = 6
+	intern = 1
+	access = list(access_robotics, access_research, access_xenobiology, access_xenoarch)
+	minimal_access = list(access_research, access_xenoarch)
+	outfit_type = /decl/hierarchy/outfit/job/science/intern

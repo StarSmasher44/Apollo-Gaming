@@ -110,3 +110,20 @@
 	minimal_access = list(access_medical, access_medical_equip, access_morgue, access_eva, access_maint_tunnels, access_external_airlocks)
 	alt_titles = list("Emergency Medical Technician" = /decl/hierarchy/outfit/job/medical/paramedic/emt)
 	outfit_type = /decl/hierarchy/outfit/job/medical/paramedic
+
+/datum/job/medassistant
+	title = "Medical Intern"
+	department = "Medical"
+	department_flag = MED
+
+	total_positions = 5
+	spawn_positions = 5
+	supervisors = "Medical Personnel, the Chief of Medicine."
+	selection_color = "#013d3b"
+	economic_modifier = 1
+	base_pay = 6
+	intern = 1
+	access = list(access_medical, access_medical_equip, access_surgery, access_chemistry)
+	minimal_access = list(access_medical, access_medical_equip, access_surgery)
+	outfit_type = /decl/hierarchy/outfit/job/medical/intern
+	alt_titles = list("Paramedic Intern" = /decl/hierarchy/outfit/job/medical/paramedic/emt, "Biochemical Intern" = /decl/hierarchy/outfit/job/medical/chemist)

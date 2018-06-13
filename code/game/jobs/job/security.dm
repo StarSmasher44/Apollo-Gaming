@@ -76,3 +76,18 @@
 	minimal_access = list(access_security, access_eva, access_sec_doors, access_brig, access_maint_tunnels, access_external_airlocks)
 	minimal_player_age = 7
 	outfit_type = /decl/hierarchy/outfit/job/security/officer
+/datum/job/secassistant
+	title = "Security Intern"
+	department = "Security"
+	department_flag = SEC
+
+	total_positions = 5
+	spawn_positions = 5
+	supervisors = "Security Personnel, the Head of Security."
+	selection_color = "#601c1c"
+	economic_modifier = 1
+	base_pay = 6
+	intern = 1
+	access = list(access_security, access_sec_doors, access_brig, access_maint_tunnels, access_external_airlocks)
+	minimal_access = list(access_security, access_sec_doors, access_brig, access_maint_tunnels, access_external_airlocks)
+	outfit_type = /decl/hierarchy/outfit/job/security/intern
