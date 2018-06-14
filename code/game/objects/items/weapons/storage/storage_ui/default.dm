@@ -90,6 +90,10 @@
 	for(var/mob/M in range(1))
 		if (M.s_active == storage)
 			storage.close(M)
+	if(prob(66))
+		for(var/mob/M in viewers(user))
+			if (M.s_active == storage)
+				M.show_message("<span class='notice'>\The [user] starts going through \the [src].</span>")
 
 /datum/storage_ui/default/show_to(var/mob/user)
 	if(user.s_active != storage)
@@ -233,6 +237,7 @@
 		O.screen_loc = "4:[round((startpoint+endpoint)/2)+2],2:16"
 		O.maptext = ""
 		O.hud_layerise()
+		CHECK_TICK
 
 	closer.screen_loc = "4:[storage_width+19],2:16"
 

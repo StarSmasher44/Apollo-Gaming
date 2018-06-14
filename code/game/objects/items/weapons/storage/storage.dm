@@ -83,6 +83,9 @@
 	if (src.use_sound)
 		playsound(src.loc, src.use_sound, 50, 1, -5)
 
+	if(prob(66))
+		for(var/mob/M in viewers(M))
+			M.show_message("<span class='notice'>\The [user] starts going through \the [src].</span>")
 	prepare_ui()
 	storage_ui.on_open(user)
 	storage_ui.show_to(user)
@@ -178,13 +181,14 @@
 		add_fingerprint(usr)
 
 		if(!prevent_warning)
-			for(var/mob/M in viewers(usr, null))
-				if (M == usr)
-					to_chat(usr, "<span class='notice'>You put \the [W] into [src].</span>")
-				else if (M in range(1)) //If someone is standing close enough, they can tell what it is... TODO replace with distance check
-					M.show_message("<span class='notice'>\The [usr] puts [W] into [src].</span>")
-				else if (W && W.w_class >= ITEM_SIZE_NORMAL) //Otherwise they can only see large or normal items from a distance...
-					M.show_message("<span class='notice'>\The [usr] puts [W] into [src].</span>")
+			if(prob(66))
+				for(var/mob/M in viewers(usr, null))
+					if (M == usr)
+						to_chat(usr, "<span class='notice'>You put \the [W] into [src].</span>")
+					else if (M in range(1)) //If someone is standing close enough, they can tell what it is... TODO replace with distance check
+						M.show_message("<span class='notice'>\The [usr] puts [W] into [src].</span>")
+					else if (W && W.w_class >= ITEM_SIZE_NORMAL) //Otherwise they can only see large or normal items from a distance...
+						M.show_message("<span class='notice'>\The [usr] puts [W] into [src].</span>")
 
 		if(!NoUpdate)
 			update_ui_after_item_insertion()
@@ -220,6 +224,14 @@
 		W.maptext = ""
 	W.on_exit_storage(src)
 	update_icon()
+	for(var/mob/M in viewers(usr, null))
+		if (M == usr)
+			to_chat(usr, "<span class='notice'>You take \the [W] out of \the [src].</span>")
+		else if (M in range(1)) //If someone is standing close enough, they can tell what it is... TODO replace with distance check
+			M.show_message("<span class='notice'>\The [usr] takes \the [W] out of \the [src].</span>")
+		else if (W && W.w_class >= ITEM_SIZE_NORMAL) //Otherwise they can only see large or normal items from a distance...
+			M.show_message("<span class='notice'>\The [usr] takes \the [W] out of \the [src].</span>")
+
 	return 1
 
 //This proc is called when you want to place an item into the storage item.
@@ -276,6 +288,7 @@
 	else
 		..()
 		storage_ui.on_hand_attack(user)
+
 	src.add_fingerprint(user)
 	return
 
@@ -324,6 +337,8 @@
 
 /obj/item/weapon/storage/Initialize()
 	. = ..()
+//	can_hold = typecacheof(can_hold)
+//	cant_hold = typecacheof(cant_hold)
 	if(allow_quick_empty)
 		verbs += /obj/item/weapon/storage/verb/quick_empty
 	else
@@ -355,7 +370,7 @@
 		update_icon()
 
 /obj/item/weapon/storage/emp_act(severity)
-	if(!istype(src.loc, /mob/living))
+	if(!isliving(src.loc))
 		for(var/obj/O in contents)
 			O.emp_act(severity)
 	..()
