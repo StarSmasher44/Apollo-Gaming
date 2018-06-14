@@ -100,6 +100,14 @@
 	if(ai.malfunctioning && ai.uncardable)
 		to_chat(user, "<span class='danger'>ERROR:</span> Remote transfer interface disabled.")
 		return 0
+	var/done = 0 //0-100 = done uploading
+	while(done < 100)
+		if(!do_after(user, 20, src))
+			to_chat(user, "<span class='danger'>ERROR:</span> Upload failed.")
+			return
+		else
+			done += 10
+			to_chat(user, "<span class='notice'><b>Transfer in progress:</b></span> [min(100, done)]% complete.")
 
 	if(istype(ai.loc, /turf/))
 		new /obj/structure/AIcore/deactivated(get_turf(ai))
