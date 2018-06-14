@@ -189,7 +189,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 	ttone = "..."
 
 /obj/item/device/pda/botanist
-	//default_cartridge = /obj/item/weapon/cartridge/botanist
+	default_cartridge = /obj/item/weapon/cartridge/botanist
 	icon_state = "pda-hydro"
 
 /obj/item/device/pda/roboticist

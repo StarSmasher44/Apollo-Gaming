@@ -32,6 +32,7 @@
 	var/message1	// used for status_displays
 	var/message2
 	var/list/stored_data = list()
+	var/department = "Service"
 
 /obj/item/weapon/cartridge/Destroy()
 	QDEL_NULL(radio)
@@ -41,26 +42,31 @@
 	name = "\improper Power-ON cartridge"
 	icon_state = "cart-e"
 	access_engine = 1
+	department = "Engineering"
 
 /obj/item/weapon/cartridge/atmos
 	name = "\improper BreatheDeep cartridge"
 	icon_state = "cart-a"
 	access_atmos = 1
+	department = "Engineering"
 
 /obj/item/weapon/cartridge/medical
 	name = "\improper Med-U cartridge"
 	icon_state = "cart-m"
 	access_medical = 1
+	department = "Medical"
 
 /obj/item/weapon/cartridge/chemistry
 	name = "\improper ChemWhiz cartridge"
 	icon_state = "cart-chem"
 	access_reagent_scanner = 1
+	department = "Medical"
 
 /obj/item/weapon/cartridge/security
 	name = "\improper R.O.B.U.S.T. cartridge"
 	icon_state = "cart-s"
 	access_security = 1
+	department = "Security"
 
 /obj/item/weapon/cartridge/security/Initialize()
 	radio = new /obj/item/radio/integrated/beepsky(src)
@@ -71,6 +77,7 @@
 	icon_state = "cart-s"
 	access_security = 1
 	access_medical = 1
+	department = "Security"
 
 
 /obj/item/weapon/cartridge/janitor
@@ -78,11 +85,13 @@
 	desc = "The ultimate in clean-room design."
 	icon_state = "cart-j"
 	access_janitor = 1
+	department = "Service"
 
 /obj/item/weapon/cartridge/lawyer
 	name = "\improper P.R.O.V.E. cartridge"
 	icon_state = "cart-s"
 	access_security = 1
+	department = "Service"
 
 /obj/item/weapon/cartridge/clown
 	name = "\improper Honkworks 5.0 cartridge"
@@ -95,12 +104,12 @@
 	icon_state = "cart-mi"
 	access_mime = 1
 	charges = 5
-/*
+
 /obj/item/weapon/cartridge/botanist
 	name = "Green Thumb v4.20"
 	icon_state = "cart-b"
-	access_flora = 1
-*/
+//	access_flora = 1
+
 
 /obj/item/weapon/cartridge/signal
 	name = "generic signaler cartridge"
@@ -113,6 +122,7 @@
 	icon_state = "cart-tox"
 	access_reagent_scanner = 1
 	access_atmos = 1
+	department = "Science"
 
 /obj/item/weapon/cartridge/signal/Initialize()
 	radio = new /obj/item/radio/integrated/signal(src)
@@ -123,11 +133,13 @@
 	desc = "Perfect for the Quartermaster on the go!"
 	icon_state = "cart-q"
 	access_quartermaster = 1
+	department = "Logistics"
 
 /obj/item/weapon/cartridge/head
 	name = "\improper Easy-Record DELUXE"
 	icon_state = "cart-h"
 	access_status_display = 1
+	department = "Command"
 
 /obj/item/weapon/cartridge/hop
 	name = "\improper HumanResources9001 cartridge"
@@ -136,12 +148,14 @@
 	access_quartermaster = 1
 	access_janitor = 1
 	access_security = 1
+	department = "Command"
 
 /obj/item/weapon/cartridge/hos
 	name = "\improper R.O.B.U.S.T. DELUXE"
 	icon_state = "cart-hos"
 	access_status_display = 1
 	access_security = 1
+	department = "Command"
 
 /obj/item/weapon/cartridge/hos/Initialize()
 	radio = new /obj/item/radio/integrated/beepsky(src)
@@ -153,6 +167,7 @@
 	access_status_display = 1
 	access_engine = 1
 	access_atmos = 1
+	department = "Command"
 
 /obj/item/weapon/cartridge/cmo
 	name = "\improper Med-U DELUXE"
@@ -160,6 +175,7 @@
 	access_status_display = 1
 	access_reagent_scanner = 1
 	access_medical = 1
+	department = "Command"
 
 /obj/item/weapon/cartridge/rd
 	name = "\improper Signal Ace DELUXE"
@@ -167,6 +183,7 @@
 	access_status_display = 1
 	access_reagent_scanner = 1
 	access_atmos = 1
+	department = "Command"
 
 /obj/item/weapon/cartridge/rd/Initialize()
 	radio = new /obj/item/radio/integrated/signal(src)
@@ -184,6 +201,7 @@
 	access_reagent_scanner = 1
 	access_status_display = 1
 	access_atmos = 1
+	department = "Command"
 
 /obj/item/weapon/cartridge/syndicate
 	name = "\improper Detomatix cartridge"
@@ -210,7 +228,7 @@
 			if(loc)
 				var/obj/item/PDA = loc
 				var/mob/user = PDA.fingerprintslast
-				if(istype(PDA.loc,/mob/living))
+				if(isliving(PDA.loc))
 					name = PDA.loc
 				log_admin("STATUS: [user] set status screen with [PDA]. Message: [data1] [data2]")
 				message_admins("STATUS: [user] set status screen with [PDA]. Message: [data1] [data2]")
@@ -256,7 +274,7 @@
 		var/list/sensors = list()
 		var/obj/machinery/power/sensor/MS = null
 
-		for(var/obj/machinery/power/sensor/S in SSmachines.machinery)
+		for(var/obj/machinery/power/sensor/S in SSmachines.power_sensors)
 			sensors.Add(list(list("name_tag" = S.name_tag)))
 			if(S.name_tag == selected_sensor)
 				MS = S
@@ -395,7 +413,7 @@
 					continue
 				var/direction = get_dir(src,B)
 				BucketData[++BucketData.len] = list ("x" = bl.x, "y" = bl.y, "dir" = uppertext(dir2text(direction)), "status" = B.reagents.total_volume/100)
-
+			CHECK_TICK
 		if(!BucketData.len)
 			BucketData[++BucketData.len] = list("x" = 0, "y" = 0, dir=null, status = null)
 
@@ -419,6 +437,7 @@
 					continue
 				var/direction = get_dir(src,B)
 				CartData[++CartData.len] = list("x" = bl.x, "y" = bl.y, "dir" = uppertext(dir2text(direction)), "status" = B.reagents.total_volume/100)
+			CHECK_TICK
 		if(!CartData.len)
 			CartData[++CartData.len] = list("x" = 0, "y" = 0, dir=null, status = null)
 
@@ -450,9 +469,9 @@
 
 	switch(href_list["choice"])
 		if("Send Signal")
-			spawn( 0 )
-				radio:send_signal("ACTIVATE")
-				return
+			set waitfor = FALSE
+			radio:send_signal("ACTIVATE")
+			return
 
 		if("Signal Frequency")
 			var/new_frequency = sanitize_frequency(radio:frequency + text2num(href_list["sfreq"]))
