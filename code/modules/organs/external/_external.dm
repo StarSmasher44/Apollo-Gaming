@@ -924,6 +924,17 @@ Note that amputating the affected organ does in fact remove the infection from t
 		if(W.clamped)
 			return 1
 
+// open incisions and expose implants
+// this is the retract step of surgery
+/obj/item/organ/external/proc/open_incision()
+	var/datum/wound/W = get_incision()
+	if(!W)	return
+	W.open_wound(min(W.damage * 2, W.damage_list[1] - W.damage))
+
+	if(!encased)
+		for(var/obj/item/weapon/implant/I in implants)
+			I.exposed()
+
 /obj/item/organ/external/proc/fracture()
 	if(!config.bones_can_break)
 		return
@@ -1176,7 +1187,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 			incision = W
 	return incision
 
-/obj/item/organ/external/proc/open()
+/obj/item/organ/external/proc/how_open()
 	var/datum/wound/cut/incision = get_incision()
 	. = 0
 	if(!incision)
@@ -1254,7 +1265,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		else
 			wound_descriptors[this_wound_desc] = W.amount
 
-	if(open() >= (encased ? SURGERY_ENCASED : SURGERY_RETRACTED))
+	if(how_open() >= (encased ? SURGERY_ENCASED : SURGERY_RETRACTED))
 		var/list/bits = list()
 		if(status & ORGAN_BROKEN)
 			bits += "broken bones"
