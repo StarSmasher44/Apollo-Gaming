@@ -157,6 +157,7 @@
 	if(!prefs)
 		prefs = new /datum/preferences(src)
 		preferences_datums[ckey] = prefs
+	get_playerdb()
 	prefs.last_ip = address				//these are gonna be used for banning
 	prefs.last_id = computer_id			//these are gonna be used for banning
 	apply_fps(prefs.clientfps)
@@ -212,6 +213,8 @@
 	//DISCONNECT//
 	//////////////
 /client/Del()
+	saveclientdb(src.key)
+
 	ticket_panels -= src
 	if(holder)
 		holder.owner = null
@@ -232,11 +235,8 @@
 	return round((world.realtime - datejoined) / 864000, 0.1)
 
 /client/proc/Login() //Makeshift login function for clients.
-	refreshclientdb()
-	if(!userdatabase)
-		global.userdatabase = new
-
-	userdatabase.AddToDB(src)
+	refreshclientdb(src.key)
+	AddToDB(src)
 
 /client/proc/log_client_to_db()
 

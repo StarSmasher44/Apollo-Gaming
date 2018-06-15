@@ -95,7 +95,7 @@
 			C.donatorsince = world.realtime
 			message_admins("[key_name_admin(usr)] has added [C] as a donator.")
 			to_chat(C, "Donator status added.")
-	if(C.saveclientdb())
+	if(C.saveclientdb(C.key))
 		usr << "Whitelist written to file."
 	else
 		usr << "Whitelist could not be written, please try again or contact laser."

@@ -1,61 +1,124 @@
 /client
-	var/donator //Donator status
+	var/donator = 0 //Donator status ~ Tiers are 1, 2 and 3
 	var/donatorsince
+	var/ap_veteran = 0 //Is this player an Apollo Veteran? (custom assigned title)
 	var/list/donatoritems = list()
 	var/alien_whitelist //Alien whitelists
 	var/command_whitelist //Head whitelists
+	var/command_coin = 0 //The amount of coins this player has to trade in for a head-unlocked character.
+	var/employee_coin = 0
 	var/datejoined //The date the player first joined the server
 	var/lastseen //The last time since we've seen the player (in days)
 	var/enforcingmod //Enforcing moderator status
 	var/list/iplogs = list() //List of most recent IPs
 	var/list/cidlogs = list() //List of most recent computer IDs
 	var/list/relatedaccounts = list() //List of (possible) related accounts
+	var/list/achievements = list()
+	var/list/warningsys = list() //reason = "", score = 0)
+	var/savefile/playerdb //Not called clientDB to make sure I don't have to re-do everything.
 
 /client/proc/saveclientdb(var/key = key)
 	//Loading list of notes for this key
-	var/savefile/clientdb = new("data/player_saves/[copytext(key, 1, 2)]/[key]/clientdb.sav")
-	clientdb["ckey"] << key
-	clientdb["donator"] << donator
-	clientdb["enforcingmod"] << enforcingmod
-	clientdb["alien_whitelist"] << alien_whitelist
-	clientdb["command_whitelist"] << command_whitelist
+//	var/savefile/clientdb = new("data/player_saves/[copytext(key, 1, 2)]/[key]/clientdb.sav")
+	if(!playerdb)	get_playerdb()
+	playerdb["ckey"] << key
+	playerdb["donator"] << donator
+	playerdb["donatorsince"] << donatorsince
+	playerdb["ap_veteran"] << ap_veteran
+	playerdb["enforcingmod"] << enforcingmod
+	playerdb["alien_whitelist"] << alien_whitelist
+	playerdb["command_whitelist"] << command_whitelist
+	playerdb["employee_coin"] << employee_coin
+	playerdb["command_coin"] << command_coin
+	playerdb["relatedaccounts"] << relatedaccounts
+	playerdb["lastseen"] << lastseen
+	playerdb["warningsys"] << warningsys
+//	clientdb[""]
 	return 1
 
 /client/proc/loadclientdb(var/key = key)
 	//Loading list of notes for this key
-	var/savefile/clientdb = new("data/player_saves/[copytext(key, 1, 2)]/[key]/clientdb.sav")
-	clientdb["donator"] >> donator
-	clientdb["alien_whitelist"] >> alien_whitelist
-	clientdb["enforcingmod"] >> enforcingmod
-	clientdb["command_whitelist"] >> command_whitelist
-	clientdb["datejoined"] >> datejoined
+//	var/savefile/clientdb = new("data/player_saves/[copytext(key, 1, 2)]/[key]/clientdb.sav")
+	if(!playerdb)	get_playerdb()
+	playerdb["donator"] >> donator
+	playerdb["donatorsince"] >> donatorsince
+	playerdb["ap_veteran"] >> ap_veteran
+	playerdb["alien_whitelist"] >> alien_whitelist
+	playerdb["enforcingmod"] >> enforcingmod
+	playerdb["command_whitelist"] >> command_whitelist
+	playerdb["employee_coin"] >> employee_coin
+	playerdb["datejoined"] >> datejoined
+	playerdb["command_coin"] >> command_coin
+	playerdb["relatedaccounts"] >> relatedaccounts
 	if(!datejoined) // No join time set, so we assume he's new.
 		datejoined = world.realtime
-		clientdb["datejoined"] << datejoined
+		playerdb["datejoined"] << datejoined
+	playerdb["lastseen"] >> lastseen
+	playerdb["warningsys"] >> warningsys
 	return 1
 
-/client/proc/refreshclientdb() // Refreshes the client DB with recent information.
-	var/savefile/clientdb = new("data/player_saves/[copytext(key, 1, 2)]/[key]/clientdb.sav")
-
-	clientdb["iplogs"] >> iplogs
+/client/proc/refreshclientdb(var/key = key) // Refreshes the client DB with recent information.
+	if(!playerdb)	get_playerdb()
+	playerdb["iplogs"] >> iplogs
 	if(!iplogs)
 		iplogs = list()
-	if(!locate(address) in iplogs)
+	if(!iplogs.Find(address))
 		iplogs.Add(address)
 		if(iplogs.len > 10)
 			iplogs.Cut(1, 2) // Remove oldest entry.
-	clientdb["iplogs"] << iplogs
+	playerdb["iplogs"] << iplogs
 	sleep(0)
-	clientdb["cidlogs"] >> cidlogs
+	playerdb["cidlogs"] >> cidlogs
 	if(!cidlogs)
 		cidlogs = list()
-	if(!locate(computer_id) in cidlogs)
+	if(!cidlogs.Find(computer_id))
 		cidlogs.Add(computer_id)
 		if(cidlogs.len > 10)
 			cidlogs.Cut(1, 2) // Remove oldest entry.
-	clientdb["cidlogs"] << cidlogs
-	lastseen = round((world.realtime - lastseen) / 864000, 0.1)
-	clientdb["lastseen"] << lastseen
+	playerdb["cidlogs"] << cidlogs
+	sleep(0)
+	for(var/entry in userdb.dir)
+		if(entry == src.key) //Skip those shits.
+			continue
+		var/tmp/curkey
+		var/tmp/curip
+		var/tmp/curcid
+		userdb["[entry]"] >> curkey
+		userdb["[entry]/cid"] >> curcid
+		userdb["[entry]/adr"] >> curip
+		if(curip && curcid)
+			if(curip == src.address && curcid == src.computer_id)
+				if(curkey != src.key || src.key != curkey) //Anything matches, but not the same username?
+					var/message = "Possible match: [curkey] matched with [src.key] -- ([curcid]|[src.computer_id]) ([curip]|[src.address])"
+
+					var/double = 0
+					LAZYINITLIST(relatedaccounts)
+					if(relatedaccounts.len)
+						for(var/N in relatedaccounts)
+							if(N == message)
+								double = 1
+								break
+					if(!double)
+						relatedaccounts |= message
+	playerdb["relatedaccounts"] << relatedaccounts
+
+	lastseen = world.realtime
+	playerdb["lastseen"] << lastseen
+	//Checking for not-notified warnings, and notifies.
+	var/score
+	for(var/datum/staffwarning/SW2 in warningsys)
+		score += SW2.score
+	for(var/datum/staffwarning/SW2 in warningsys)
+		if(!SW2.notified)
+			to_chat(src, "(Old Notification:)<br><span class='warning'><b>WARNING RECIEVED</b> You have recieved an official warning!\n Reason: [SW2.reason] | Score: [score]/[MAXWARNPOINTS]</span>")
+			to_chat(src, "<span class='warning'>Remember that if you reach the maximum, a ban is automatically applied!</span>")
+			SW2.notified = 1
+
+/client/proc/get_playerdb()
+	if(!playerdb)
+		playerdb = new("data/player_saves/[copytext(key, 1, 2)]/[key]/clientdb.sav")
+	else
+		return playerdb
 
 /client/verb/get_days()
 	set name = "Check Age"
