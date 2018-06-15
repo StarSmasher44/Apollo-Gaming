@@ -227,7 +227,7 @@ var/global/list/damage_icon_parts = list()
 		if(O.damage_state == "00") continue
 		var/icon/DI
 		var/use_colour = ((O.robotic >= ORGAN_ROBOT) ? SYNTH_BLOOD_COLOUR : O.species.get_blood_colour(src))
-		var/cache_index = "[O.damage_state]/[O.icon_name]/[use_colour]/[species.get_bodytype(src)]"
+		var/cache_index = "[O.damage_state]/[O.icon_name]/[use_colour]/[GET_BODY_TYPE(src)]"
 		if(damage_icon_parts[cache_index] == null)
 			DI = new /icon(species.get_damage_overlays(src), O.damage_state)			// the damage icon for whole human
 			DI.Blend(new /icon(species.get_damage_mask(src), O.icon_name), ICON_MULTIPLY)	// mask with this organ's pixels
@@ -753,8 +753,8 @@ var/global/list/damage_icon_parts = list()
 	overlays_standing[SURGERY_LEVEL] = null
 	var/image/total = new
 	for(var/obj/item/organ/external/E in organs)
-		if(E.robotic < ORGAN_ROBOT && E.open())
-			var/image/I = image("icon"='icons/mob/surgery.dmi', "icon_state"="[E.icon_name][round(E.open())]", "layer"=-SURGERY_LEVEL)
+		if(E.robotic < ORGAN_ROBOT && E.how_open())
+			var/image/I = image("icon"='icons/mob/surgery.dmi', "icon_state"="[E.icon_name][round(E.how_open())]", "layer"=-SURGERY_LEVEL)
 			total.overlays += I
 	total.appearance_flags = RESET_COLOR
 	overlays_standing[SURGERY_LEVEL] = total

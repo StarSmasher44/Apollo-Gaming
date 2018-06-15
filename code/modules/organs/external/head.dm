@@ -20,6 +20,7 @@
 	var/eye_icon = "eyes_s"
 	var/eye_icon_location = 'icons/mob/human_face.dmi'
 
+	var/icon/lip_icon
 	var/has_lips
 
 /obj/item/organ/external/head/get_agony_multiplier()
@@ -77,7 +78,8 @@
 			overlays |= eyes_icon
 
 		if(owner.lip_style && robotic < ORGAN_ROBOT && (species && (species.appearance_flags & HAS_LIPS)))
-			var/icon/lip_icon = new/icon('icons/mob/human_face.dmi', "lips_[owner.lip_style]_s")
+			if(!lip_icon)
+				lip_icon = new/icon('icons/mob/human_face.dmi', "lips_[owner.lip_style]_s")
 			overlays |= lip_icon
 			mob_icon.Blend(lip_icon, ICON_OVERLAY)
 
@@ -89,7 +91,7 @@
 	var/image/res = image('icons/mob/human_face.dmi',"bald_s")
 	if(owner.f_style)
 		var/datum/sprite_accessory/facial_hair_style = facial_hair_styles_list[owner.f_style]
-		if(facial_hair_style && facial_hair_style.species_allowed && (species.get_bodytype(owner) in facial_hair_style.species_allowed))
+		if(facial_hair_style && facial_hair_style.species_allowed && (GET_BODY_TYPE(owner) in facial_hair_style.species_allowed))
 			var/icon/facial_s = new/icon("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]_s")
 			if(facial_hair_style.do_colouration)
 				facial_s.Blend(rgb(owner.r_facial, owner.g_facial, owner.b_facial), ICON_ADD)
@@ -101,7 +103,7 @@
 		if(owner.head && (owner.head.flags_inv & BLOCKHEADHAIR))
 			if(!(hair_style.flags & VERY_SHORT))
 				hair_style = hair_styles_list["Short Hair"]
-		if(hair_style && (species.get_bodytype(owner) in hair_style.species_allowed))
+		if(hair_style && (GET_BODY_TYPE(owner) in hair_style.species_allowed))
 			var/icon/hair_s = new/icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_s")
 			if(hair_style.do_colouration && islist(h_col) && h_col.len >= 3)
 				hair_s.Blend(rgb(h_col[1], h_col[2], h_col[3]), ICON_ADD)

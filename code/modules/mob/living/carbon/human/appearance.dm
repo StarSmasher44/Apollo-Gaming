@@ -158,7 +158,7 @@
 
 /mob/living/carbon/human/proc/generate_valid_hairstyles(var/check_gender = 1)
 
-	var/use_species = species.get_bodytype(src)
+	var/use_species = GET_BODY_TYPE(src)
 	var/obj/item/organ/external/head/H = get_organ(BP_HEAD)
 	if(H) use_species = H.species.get_bodytype(src)
 
