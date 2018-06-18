@@ -65,7 +65,7 @@
 
 	return match
 
-#define RECOMMENDED_VERSION 511
+#define RECOMMENDED_VERSION 512
 /world/New()
 	//set window title
 	name = "[server_name] - [GLOB.using_map.full_name]"
@@ -130,8 +130,10 @@
 	spawn(1)
 		initialize_unit_tests()
 #endif
+	spawn(300)
 		enfmods.CheckScore()
-
+//	userdatabase = new()
+	persistent_save = new()
 	spawn(3000)		//so we aren't adding to the round-start lag
 		Announce()
 //		if(config.ToRban)
@@ -501,7 +503,7 @@ var/world_topic_spam_protect_time = world.timeofday
 
 	processScheduler.stop()
 
-	if(config.server)	//if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
+	if(config && config.server)	//if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
 		for(var/client/C in GLOB.clients)
 			to_chat(C, link("byond://[config.server]"))
 
@@ -675,6 +677,10 @@ var/world_topic_spam_protect_time = world.timeofday
 
 	WORLD_SETUP_LOG(runtime)
 	WORLD_SETUP_LOG(qdel)
+	diary = "[GLOB.log_directory]/game.log"
+	GLOB.adminlog = "[GLOB.log_directory]/admin.log"
+	GLOB.world_error_log = "[GLOB.log_directory]/errors.log"
+	GLOB.world_attack_log = "[GLOB.log_directory]/attacks.log"
 
 #undef WORLD_SETUP_LOG
 #undef WORLD_LOG_START

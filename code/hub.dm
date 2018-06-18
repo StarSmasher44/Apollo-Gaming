@@ -5,7 +5,7 @@
  // We would like to request that the source is only used for testing and not hosting for an audience, if you'd like to play this code, please do so on our official server.
 #define HUB_ENABLED 1
 	hub = "Exadv1.spacestation13"
-	name = "Apollo Gaming - Test Server"
+	name = "Apollo Gaming"
 #ifdef HUB_ENABLED
 	hub_password = "kMZy3U5jJHSiBQjr"
 #else
