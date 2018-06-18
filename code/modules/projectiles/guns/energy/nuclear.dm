@@ -75,14 +75,14 @@
 				to_chat(loc, "<span class='warning'>\The [src] feels pleasantly warm.</span>")
 
 /obj/item/weapon/gun/energy/gun/nuclear/proc/get_charge_overlay()
-	var/ratio = power_supply.percent()
+	var/ratio = percent2(power_supply)
 	ratio = round(ratio, 25)
 	return "nucgun-[ratio]"
 
 /obj/item/weapon/gun/energy/gun/nuclear/proc/get_reactor_overlay()
 	if(fail_counter)
 		return "nucgun-medium"
-	if (power_supply.percent() <= 50)
+	if (percent2(power_supply) <= 50)
 		return "nucgun-light"
 	return "nucgun-clean"
 

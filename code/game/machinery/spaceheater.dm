@@ -43,7 +43,7 @@
 	if(panel_open)
 		to_chat(user, "The power cell is [cell ? "installed" : "missing"].")
 	else
-		to_chat(user, "The charge meter reads [cell ? round(cell.percent(),1) : 0]%")
+		to_chat(user, "The charge meter reads [cell ? round(percent2(cell),1) : 0]%")
 	return
 
 /obj/machinery/space_heater/emp_act(severity)
@@ -100,7 +100,7 @@
 		else
 			dat += "<A href='byond://?src=\ref[src];op=cellinstall'>Removed</A><BR>"
 
-		dat += "Power Level: [cell ? round(cell.percent(),1) : 0]%<BR><BR>"
+		dat += "Power Level: [cell ? round(percent2(cell),1) : 0]%<BR><BR>"
 
 		dat += "Set Temperature: "
 

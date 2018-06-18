@@ -153,7 +153,7 @@
 	if(!cell || !on)
 		return
 
-	switch(round(cell.percent()))
+	switch(round(percent2(cell)))
 		if(86 to INFINITY)
 			overlays.Add("battery-0")
 		if(69 to 85)
@@ -181,4 +181,4 @@
 		to_chat(user, "The panel is open.")
 
 	if (cell)
-		to_chat(user, "The charge meter reads [round(cell.percent())]%.")
+		to_chat(user, "The charge meter reads [round(percent2(cell))]%.")

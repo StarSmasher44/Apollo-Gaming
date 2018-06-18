@@ -197,7 +197,7 @@
 		return
 
 	to_chat(user, "The power light is [on ? "on" : "off"].\nThere are[key ? "" : " no"] keys in the ignition.")
-	to_chat(user, "The charge meter reads [cell? round(cell.percent(), 0.01) : 0]%")
+	to_chat(user, "The charge meter reads [cell? round(percent2(cell), 0.01) : 0]%")
 
 /obj/vehicle/train/cargo/engine/verb/start_engine()
 	set name = "Start engine"

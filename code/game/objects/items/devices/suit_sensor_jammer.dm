@@ -62,7 +62,7 @@
 /obj/item/device/suit_sensor_jammer/update_icon()
 	overlays.Cut()
 	if(bcell)
-		var/percent = bcell.percent()
+		var/percent = percent2(bcell)
 		switch(percent)
 			if(0 to 25)
 				overlays += "forth_quarter"
@@ -105,7 +105,7 @@ obj/item/device/suit_sensor_jammer/examine(var/user)
 		var/list/message = list()
 		message += "This device appears to be [active ? "" : "in"]active and "
 		if(bcell)
-			message += "displays a charge level of [bcell.percent()]%."
+			message += "displays a charge level of [percent2(bcell)]%."
 		else
 			message += "is lacking a cell."
 		to_chat(user, jointext(message,.))

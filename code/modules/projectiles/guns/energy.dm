@@ -46,7 +46,7 @@
 	return ..()
 
 /obj/item/weapon/gun/energy/Process()
-	if(self_recharge && power_supply && power_supply.percent() < 100) //Every [recharge_time] ticks, recharge a shot for the cyborg
+	if(self_recharge && power_supply && percent2(power_supply) < 100) //Every [recharge_time] ticks, recharge a shot for the cyborg
 		charge_tick++
 		if(charge_tick < recharge_time) return 0
 		charge_tick = 0
@@ -92,7 +92,7 @@
 /obj/item/weapon/gun/energy/update_icon()
 //	..()
 	if(charge_meter)
-		var/ratio = power_supply.percent()
+		var/ratio = percent2(power_supply)
 		if(ratio == old_ratio)
 			return
 		old_ratio = ratio

@@ -143,7 +143,7 @@
 	for(var/obj/item/weapon/cell/C in internal_cells)
 		if(CL == null)
 			CL = C
-		else if(CL.percent() < C.percent())
+		else if(percent2(CL) < percent2(C))
 			CL = C
 	return CL
 /obj/machinery/power/smes/batteryrack/proc/get_least_charged_cell()
@@ -151,7 +151,7 @@
 	for(var/obj/item/weapon/cell/C in internal_cells)
 		if(CL == null)
 			CL = C
-		else if(CL.percent() > C.percent())
+		else if(percent2(CL) > percent2(C))
 			CL = C
 	return CL
 
@@ -190,9 +190,9 @@
 		var/obj/item/weapon/cell/least = get_least_charged_cell()
 		var/obj/item/weapon/cell/most = get_most_charged_cell()
 		// Don't bother equalising charge between two same cells. Also ensure we don't get NULLs or wrong types. Don't bother equalising when difference between charges is tiny.
-		if(least == most || !istype(least) || !istype(most) || least.percent() == most.percent())
+		if(least == most || !istype(least) || !istype(most) || percent2(least) == percent2(most))
 			return
-		var/percentdiff = (most.percent() - least.percent()) / 2 // Transfer only 50% of power. The reason is that it could lead to situations where least and most charged cells would "swap places" (45->50% and 50%->45%)
+		var/percentdiff = (percent2(most) - percent2(least)) / 2 // Transfer only 50% of power. The reason is that it could lead to situations where least and most charged cells would "swap places" (45->50% and 50%->45%)
 		var/celldiff
 		// Take amount of power to transfer from the cell with smaller maxcharge
 		if(most.maxcharge > least.maxcharge)
@@ -221,7 +221,7 @@
 		var/list/cell[0]
 		cell["slot"] = cell_index + 1
 		cell["used"] = 1
-		cell["percentage"] = round(C.percent(), 0.01)
+		cell["percentage"] = round(percent2(C), 0.01)
 		cell["id"] = C.c_uid
 		cell_index++
 		cells += list(cell)

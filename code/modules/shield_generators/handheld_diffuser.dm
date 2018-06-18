@@ -46,5 +46,5 @@
 
 /obj/item/weapon/shield_diffuser/examine()
 	. = ..()
-	to_chat(usr, "The charge meter reads [cell ? cell.percent() : 0]%")
+	to_chat(usr, "The charge meter reads [cell ? percent2(cell) : 0]%")
 	to_chat(usr, "It is [enabled ? "enabled" : "disabled"].")

@@ -29,7 +29,7 @@
 		return
 
 	// If the cell is almost empty rarely "flicker" the light. Aesthetic only.
-	if((cell.percent() < 10) && prob(5))
+	if((percent2(cell) < 10) && prob(5))
 		set_light(brightness_on/2, brightness_on/4)
 		spawn(20)
 			if(on)

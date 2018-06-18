@@ -64,7 +64,7 @@
 // Addition made by Techhead0, thanks for fullfilling the todo!
 /obj/item/weapon/melee/baton/proc/examine_cell(mob/user)
 	if(bcell)
-		to_chat(user, "<span class='notice'>The baton is [round(bcell.percent())]% charged.</span>")
+		to_chat(user, "<span class='notice'>The baton is [round(percent2(bcell))]% charged.</span>")
 	if(!bcell)
 		to_chat(user, "<span class='warning'>The baton does not have a power source installed.</span>")
 

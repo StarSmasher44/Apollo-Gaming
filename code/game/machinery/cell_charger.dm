@@ -16,7 +16,7 @@
 
 	if(charging && !(stat & (BROKEN|NOPOWER)) )
 
-		var/newlevel = 	round(charging.percent() * 4.0 / 99)
+		var/newlevel = 	round(percent2(charging) * 4.0 / 99)
 //		log_debug(world, "nl: [newlevel]")
 
 

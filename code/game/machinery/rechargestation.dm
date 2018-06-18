@@ -39,7 +39,7 @@
 	ADD_ICON_QUEUE(src)
 
 /obj/machinery/recharge_station/proc/has_cell_power()
-	return cell && cell.percent() > 0
+	return cell && percent2(cell) > 0
 
 /obj/machinery/recharge_station/Process()
 	if(stat & (BROKEN))
@@ -132,7 +132,7 @@
 /obj/machinery/recharge_station/proc/chargepercentage()
 	if(!cell)
 		return 0
-	return cell.percent()
+	return percent2(cell)
 
 /obj/machinery/recharge_station/relaymove(mob/user as mob)
 	if(user.stat)

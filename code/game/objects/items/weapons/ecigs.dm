@@ -61,7 +61,7 @@ obj/item/clothing/mask/smokable/ecig/util/examine(mob/user)
 		to_chat(user,"<span class='notice'>There are [round(ec_cartridge.reagents.total_volume, 1)] units of liquid remaining.</span>")
 	else
 		to_chat(user,"<span class='notice'>There is no cartridge connected.</span>")
-	to_chat(user,"<span class='notice'>Gauge shows about [round(cigcell.percent(), 25)]% energy remaining</span>")
+	to_chat(user,"<span class='notice'>Gauge shows about [round(percent2(cigcell), 25)]% energy remaining</span>")
 
 /obj/item/clothing/mask/smokable/ecig/deluxe
 	name = "deluxe electronic cigarette"
@@ -78,7 +78,7 @@ obj/item/clothing/mask/smokable/ecig/deluxe/examine(mob/user)
 		to_chat(user,"<span class='notice'>There are [round(ec_cartridge.reagents.total_volume, 1)] units of liquid remaining.</span>")
 	else
 		to_chat(user,"<span class='notice'>There is no cartridge connected.</span>")
-	to_chat(user,"<span class='notice'>Gauge shows [round(cigcell.percent(), 1)]% energy remaining</span>")
+	to_chat(user,"<span class='notice'>Gauge shows [round(percent2(cigcell), 1)]% energy remaining</span>")
 
 /obj/item/clothing/mask/smokable/ecig/Process()
 	if(idle >= idle_treshold) //idle too long -> automatic shut down

@@ -39,7 +39,7 @@
 	var/dat = "<b>Multi-phase mobile suspension field generator MK II \"Steadfast\"</b><br>"
 	if(cell)
 		var/colour = "red"
-		var/percent = cell.percent()
+		var/percent = percent2(cell)
 		if(percent > 66)
 			colour = "green"
 		else if(percent > 33)
