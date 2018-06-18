@@ -78,7 +78,7 @@
 	var/area/area
 	var/areastring = null
 	var/obj/item/weapon/cell/cell
-	var/chargelevel = 0.0005  // Cap for how fast APC cells charge, as a percentage-per-tick (0.01 means cellcharge is capped to 1% per second)
+	var/chargelevel = 0.0010  // Cap for how fast APC cells charge, as a percentage-per-tick (0.01 means cellcharge is capped to 1% per second)
 	var/cell_type = /obj/item/weapon/cell/apc
 	var/opened = 0 //0=closed, 1=opened, 2=cover removed
 	var/shorted = 0
@@ -947,13 +947,13 @@
 
 /obj/machinery/power/apc/surplus()
 	if(terminal)
-		return terminal.surplus()
+		return terminal.powernet.avail - terminal.powernet.load
 	else
 		return 0
 
 /obj/machinery/power/apc/proc/last_surplus()
 	if(terminal && terminal.powernet)
-		return terminal.powernet.last_surplus()
+		return max(terminal.powernet.avail - terminal.powernet.load, 0)
 	else
 		return 0
 
@@ -969,7 +969,7 @@
 
 /obj/machinery/power/apc/avail()
 	if(terminal)
-		return terminal.avail()
+		return terminal.powernet.avail
 	else
 		return 0
 
@@ -986,10 +986,10 @@
 		force_update = 1
 		return
 
-	lastused_light = area.usage(LIGHT)
-	lastused_equip = area.usage(EQUIP)
-	lastused_environ = area.usage(ENVIRON)
-	area.clear_usage()
+	lastused_light = area.used_light //AreaUsage(LIGHT, area, 0) //AreaUsage(LIGHT, area, 0)     // area.usage(LIGHT) ~Old functions replaced with defines.
+	lastused_equip = area.used_equip //AreaUsage(EQUIP, area, 0)     // area.usage(EQUIP)
+	lastused_environ = area.used_environ //AreaUsage(ENVIRON, area, 0) // area.usage(ENVIRON)
+	ClearUsage(area)                            // area.clear_usage()
 
 	lastused_total = lastused_light + lastused_equip + lastused_environ
 
@@ -1129,6 +1129,14 @@
 			power_alarm.triggerAlarm(loc, src)
 			autoflag = 0
 
+//Turned into another proc to mitigate some of the slowdowns APCs may cause with my new addition.
+obj/machinery/power/apc/proc/switch_emergency_lighting(var/on)
+	set waitfor = 0
+
+	for(var/obj/machinery/light/L in MyArea.machinecache)
+		L.set_emergency_lighting(on)
+		stoplag(rand(1, 4))
+
 // val 0=off, 1=off(auto) 2=on 3=on(auto)
 // on 0=off, 1=on, 2=autooff
 // defines a state machine, returns the new state
@@ -1233,11 +1241,11 @@ obj/machinery/power/apc/proc/autoset(var/cur_state, var/on)
 		return
 	if( cell && cell.charge>=20)
 		cell.use(20);
-		for(var/obj/machinery/light/L in area)
+		for(var/obj/machinery/light/L in MyArea.machinecache)
 			if(prob(chance))
 				L.on = 1
 				L.broken()
-			sleep(1)
+			stoplag(1)
 
 /obj/machinery/power/apc/proc/setsubsystem(val)
 	if(cell && cell.charge > 0)

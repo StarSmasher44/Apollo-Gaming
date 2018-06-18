@@ -8,6 +8,7 @@
 #define AALARM_MODE_CYCLE		4 //sucks off all air, then refill and switches to scrubbing
 #define AALARM_MODE_FILL		5 //emergency fill
 #define AALARM_MODE_OFF			6 //Shuts it all down.
+#define AALARM_MODE_DEFAULT		7 //Starts off, goes on when alarm is raised.
 
 #define AALARM_SCREEN_MAIN		1
 #define AALARM_SCREEN_VENT		2
@@ -62,7 +63,7 @@
 
 	var/datum/wires/alarm/wires
 
-	var/mode = AALARM_MODE_SCRUBBING
+	var/mode = AALARM_MODE_DEFAULT
 	var/screen = AALARM_SCREEN_MAIN
 	var/area_uid
 	var/area/alarm_area
@@ -107,6 +108,9 @@
 	unregister_radio(src, frequency)
 	qdel(wires)
 	wires = null
+	if(alarm_area && alarm_area.master_air_alarm == src)
+		alarm_area.master_air_alarm = null
+		elect_master(exclude_self = TRUE)
 	return ..()
 
 /obj/machinery/alarm/New(var/loc, var/dir, atom/frame)
@@ -165,13 +169,16 @@
 
 		if (old_level != danger_level)
 			apply_danger_level(danger_level)
+			if(mode == AALARM_MODE_DEFAULT)
+				mode = AALARM_MODE_SCRUBBING
+				apply_mode()
 
 		if (old_pressurelevel != pressure_dangerlevel)
 			if (breach_detected())
 				mode = AALARM_MODE_OFF
 				apply_mode()
 
-		if (mode==AALARM_MODE_CYCLE && environment.return_pressure()<ONE_ATMOSPHERE*0.05)
+		if (mode==AALARM_MODE_CYCLE && environment.return_pressure() < ONE_ATMOSPHERE*0.05)
 			mode=AALARM_MODE_FILL
 			apply_mode()
 
@@ -287,8 +294,10 @@
 	return alarm_area.master_air_alarm && !(alarm_area.master_air_alarm.stat & (NOPOWER|BROKEN))
 
 
-/obj/machinery/alarm/proc/elect_master()
+/obj/machinery/alarm/proc/elect_master(exclude_self = FALSE)
 	for (var/obj/machinery/alarm/AA in alarm_area)
+		if(exclude_self && AA == src)
+			continue
 		if (!(AA.stat & (NOPOWER|BROKEN)))
 			alarm_area.master_air_alarm = AA
 			return 1
@@ -434,7 +443,7 @@
 			for(var/device_id in alarm_area.air_vent_names)
 				send_signal(device_id, list("power"= 1, "checks"= "default", "set_external_pressure"= "default") )
 
-		if(AALARM_MODE_OFF)
+		if(AALARM_MODE_OFF || AALARM_MODE_DEFAULT)
 			for(var/device_id in alarm_area.air_scrub_names)
 				send_signal(device_id, list("power"= 0) )
 			for(var/device_id in alarm_area.air_vent_names)

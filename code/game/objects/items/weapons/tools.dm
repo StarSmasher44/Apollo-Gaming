@@ -524,7 +524,7 @@
 	desc = "A heavy-duty portable welder, made to ensure it won't suddenly go cold on you."
 	origin_tech = list(TECH_ENGINEERING = 2)
 	matter = list(DEFAULT_WALL_MATERIAL = 70, "glass" = 60)
-	w_class = ITEM_SIZE_LARGE
+	w_class = ITEM_SIZE_NORMAL
 	tank = /obj/item/weapon/welder_tank/large
 
 /obj/item/weapon/welder_tank/large

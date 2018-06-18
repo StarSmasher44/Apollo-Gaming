@@ -40,7 +40,8 @@
 				if(!(M.disabilities & NEARSIGHTED))
 					M.disabilities |= NEARSIGHTED
 					spawn(100)
-						M.disabilities &= ~NEARSIGHTED
+						if(M)
+							M.disabilities &= ~NEARSIGHTED
 		if(toggleable)
 			if(active)
 				active = 0

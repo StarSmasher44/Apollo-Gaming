@@ -23,6 +23,8 @@ var/list/solars_list = list()
 	var/next_process_time = 0
 	var/obj/machinery/power/solar_control/control = null
 	var/global/list/status_overlays
+	var/new_overlay
+	var/last_overlay
 
 /obj/machinery/power/solar/drain_power()
 	return -1
@@ -34,7 +36,7 @@ var/list/solars_list = list()
 
 /obj/machinery/power/solar/Destroy()
 	unset_control() //remove from control computer
-	..()
+	. = ..()
 
 //set the control of the panel to a given computer if closer than SOLAR_MAX_DIST
 /obj/machinery/power/solar/proc/set_control(var/obj/machinery/power/solar_control/SC)
@@ -94,15 +96,22 @@ var/list/solars_list = list()
 	if (!status_overlays)
 		status_overlays = new/list()
 		status_overlays.len = 2
-		status_overlays[1] = image('icons/obj/power.dmi', icon_state = "solar_panel-b", layer = FLY_LAYER)
-		status_overlays[2] = image('icons/obj/power.dmi', icon_state = "solar_panel", layer = FLY_LAYER)
+		status_overlays[1] = mutable_appearance('icons/obj/power.dmi', icon_state = "solar_panel-b", layer = FLY_LAYER)
+		status_overlays[2] = mutable_appearance('icons/obj/power.dmi', icon_state = "solar_panel", layer = FLY_LAYER)
 
-	overlays.Cut()
 	if(stat & BROKEN)
-		overlays += status_overlays[1]
+		new_overlay = status_overlays[1]
+		if(last_overlay != new_overlay)
+			overlays -= status_overlays[2]
+			overlays += status_overlays[1]
 	else
-		overlays += status_overlays[2]
+		new_overlay = status_overlays[2]
+		if(last_overlay != new_overlay)
+			overlays -= status_overlays[1]
+			overlays += status_overlays[2]
 		src.set_dir(angle2dir(adir))
+
+	last_overlay = new_overlay
 	return
 
 //calculates the fraction of the sunlight that the panel recieves
@@ -148,7 +157,7 @@ var/list/solars_list = list()
 	var/obj/item/solar_assembly/S = locate() in src
 	S.glass_type = null
 	unset_control()
-	ADD_ICON_QUEUE(src)
+	update_icon()
 
 
 /obj/machinery/power/solar/ex_act(severity)
@@ -312,7 +321,7 @@ var/list/solars_list = list()
 		M.unset_control()
 	if(connected_tracker)
 		connected_tracker.unset_control()
-	..()
+	. = ..()
 
 /obj/machinery/power/solar_control/disconnect_from_network()
 	..()

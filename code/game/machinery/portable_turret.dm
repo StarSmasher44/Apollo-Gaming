@@ -444,7 +444,7 @@ var/list/turret_icons
 	//the main machinery process
 
 	if(!enabled || (stat & (NOPOWER|BROKEN)) || disabled)
-		pop_down()
+		popDown()
 		return
 
 	if(next_process_time <= world.time)

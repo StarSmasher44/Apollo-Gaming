@@ -435,7 +435,8 @@ its easier to just keep the beam vertical.
 	set category = "Object"
 	set src in oview(1)
 
-	do_climb(usr)
+	if(flags & OBJ_CLIMBABLE)
+		do_climb(usr)
 
 /atom/proc/can_climb(var/mob/living/user, post_climb_check=0)
 	if (!(flags & OBJ_CLIMBABLE) || !can_touch(user) || (!post_climb_check && (user in climbers)))

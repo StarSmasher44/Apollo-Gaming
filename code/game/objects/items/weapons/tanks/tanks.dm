@@ -12,6 +12,8 @@ var/list/global/tank_gauge_cache = list()
 	var/last_gauge_pressure
 	var/gauge_cap = 6
 
+	var/next_process = 0
+
 	flags = CONDUCT
 	slot_flags = SLOT_BACK
 	w_class = ITEM_SIZE_LARGE
@@ -354,6 +356,8 @@ var/list/global/tank_gauge_cache = list()
 /obj/item/weapon/tank/Process()
 	//Allow for reactions
 	air_contents.react() //cooking up air tanks - add phoron and oxygen, then heat above PHORON_MINIMUM_BURN_TEMPERATURE
+	if(next_process < world.time)
+		return
 	if(gauge_icon)
 		update_gauge()
 	check_status()
@@ -396,8 +400,8 @@ var/list/global/tank_gauge_cache = list()
 
 /obj/item/weapon/tank/proc/check_status()
 	//Handle exploding, leaking, and rupturing of the tank
-
 	if(!air_contents)
+		next_process = world.time + 8 SECONDS //Fuck that if they're empty any way.
 		return 0
 
 	var/pressure = air_contents.return_pressure()
@@ -521,6 +525,7 @@ var/list/global/tank_gauge_cache = list()
 				integrity++
 			if(integrity == maxintegrity)
 				leaking = 0
+		next_process = world.time + 4 SECONDS
 
 /////////////////////////////////
 ///Prewelded tanks

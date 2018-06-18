@@ -38,6 +38,7 @@
 /obj/structure/fireaxecabinet/Initialize()
 	. = ..()
 	fireaxe = new(src)
+	ADD_ICON_QUEUE(src)
 
 /obj/structure/fireaxecabinet/attack_ai(var/mob/user)
 	toggle_lock(user)

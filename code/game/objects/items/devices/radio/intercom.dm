@@ -126,7 +126,7 @@
 
 /obj/item/device/radio/intercom/Process()
 	if(next_tick < world.time)
-		next_tick = world.time + 45
+		next_tick = world.time + 5 SECONDS
 
 		if(!src.loc || !MyArea)
 			on = 0
