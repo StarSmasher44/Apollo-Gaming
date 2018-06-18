@@ -36,6 +36,7 @@
 	update_power_usage()
 	handle_power_oxyloss()
 	update_sight()
+	produce_heat()
 
 	process_queued_alarms()
 	handle_regular_hud_updates()
@@ -55,3 +56,17 @@
 	else
 		clear_fullscreen("blind")
 		..()
+
+/mob/living/silicon/ai/proc/produce_heat()
+	if(src.stat == DEAD || src.stat != CONSCIOUS)
+		return
+
+	var/turf/simulated/L = get_turf(src)
+	if(issimturf(L))
+		var/heat = psupply.active_power_usage / 100
+		var/datum/gas_mixture/env = L.return_air()
+		var/transfer_moles = 0.25 * env.total_moles
+		var/datum/gas_mixture/removed = env.remove(transfer_moles)
+		if(removed)
+			removed.add_thermal_energy(heat)
+			env.merge(removed)
