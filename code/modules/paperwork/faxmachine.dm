@@ -146,6 +146,10 @@ GLOBAL_LIST_EMPTY(adminfaxes)	//cache for faxes that have been sent to admins
 	for(var/obj/machinery/photocopier/faxmachine/F in GLOB.allfaxes)
 		if( F.department == destination )
 			success = F.recievefax(copyitem)
+			for(var/obj/machinery/computer/department_manager/DM in SSmachines.machinery)
+				if(DM.department == F.department)
+					DM.Ping("Fax message recieved from [F.department].", 0)
+					break //There is only one any way.
 
 	if (success)
 		visible_message("[src] beeps, \"Message transmitted successfully.\"")

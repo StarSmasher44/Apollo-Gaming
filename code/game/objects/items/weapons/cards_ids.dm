@@ -14,7 +14,7 @@
 /obj/item/weapon/card
 	name = "card"
 	desc = "Does card things."
-	icon = 'icons/obj/card.dmi'
+	icon = 'icons/obj/card2.dmi'
 	w_class = ITEM_SIZE_TINY
 	slot_flags = SLOT_EARS
 	var/associated_account_number = 0
@@ -160,8 +160,9 @@ var/const/NO_EMAG_ACT = -50
 		name = name + " ([assignment])"
 
 /obj/item/weapon/card/id/proc/set_id_photo(var/mob/M)
-	front = getFlatIcon(M, SOUTH, always_use_defdir = 1)
-	side = getFlatIcon(M, WEST, always_use_defdir = 1)
+	var/icon/charicon = cached_character_icon(M)
+	front = icon(charicon, dir = SOUTH)
+	side = icon(charicon, dir = WEST)
 
 /mob/proc/set_id_info(var/obj/item/weapon/card/id/id_card)
 	id_card.age = 0
@@ -181,11 +182,17 @@ var/const/NO_EMAG_ACT = -50
 
 	if(GLOB.using_map.flags & MAP_HAS_BRANCH)
 		id_card.military_branch = src.CharRecords.char_department
-	spawn(50)
+	spawn(40)
 		if(src.CharRecords && get_department(src.CharRecords.char_department, 1) == "Command")
-			id_card.name = "[id_card.registered_name]'s ID Card ([get_department_rank_title(get_department(src.CharRecords.char_department, 1), src.CharRecords.department_rank, ishead = 1)] [id_card.assignment])"
+			if(!src.CharRecords.department_rank)
+				id_card.name = "[id_card.registered_name]'s ID Card ([id_card.assignment])"
+			else
+				id_card.name = "[id_card.registered_name]'s ID Card ([get_department_rank_title(get_department(src.CharRecords.char_department, 1), src.CharRecords.department_rank, ishead = 1)] [id_card.assignment])"
 		else
-			id_card.name = "[id_card.registered_name]'s ID Card ([get_department_rank_title(get_department(src.CharRecords.char_department, 1), src.CharRecords.department_rank)] [id_card.assignment])"
+			if(!src.CharRecords.department_rank)
+				id_card.name = "[id_card.registered_name]'s ID Card ([id_card.assignment])"
+			else
+				id_card.name = "[id_card.registered_name]'s ID Card ([get_department_rank_title(get_department(src.CharRecords.char_department, 1), src.CharRecords.department_rank)] [id_card.assignment])"
 
 /obj/item/weapon/card/id/proc/dat()
 	var/list/dat = list("<table><tr><td>")
@@ -260,9 +267,9 @@ var/const/NO_EMAG_ACT = -50
 	registered_name = "Captain"
 	assignment = "Captain"
 
-/obj/item/weapon/card/id/captains_spare/New()
+/obj/item/weapon/card/id/captains_spare/Initialize()
+	. = ..()
 	access = get_all_station_access()
-	..()
 
 /obj/item/weapon/card/id/synthetic
 	name = "\improper Synthetic ID"
@@ -272,8 +279,8 @@ var/const/NO_EMAG_ACT = -50
 	assignment = "Synthetic"
 
 /obj/item/weapon/card/id/synthetic/New()
+	. = ..()
 	access = get_all_station_access() + access_synth
-	..()
 
 /obj/item/weapon/card/id/centcom
 	name = "\improper CentCom. ID"
@@ -282,11 +289,11 @@ var/const/NO_EMAG_ACT = -50
 	registered_name = "Central Command"
 	assignment = "General"
 /obj/item/weapon/card/id/centcom/New()
+	. = ..()
 	access = get_all_centcom_access()
-	..()
 
 /obj/item/weapon/card/id/centcom/station/New()
-	..()
+	. = ..()
 	access |= get_all_station_access()
 
 /obj/item/weapon/card/id/centcom/ERT
@@ -294,7 +301,7 @@ var/const/NO_EMAG_ACT = -50
 	assignment = "Emergency Response Team"
 
 /obj/item/weapon/card/id/centcom/ERT/New()
-	..()
+	. = ..()
 	access |= get_all_station_access()
 
 /obj/item/weapon/card/id/all_access
@@ -305,8 +312,8 @@ var/const/NO_EMAG_ACT = -50
 	registered_name = "Administrator"
 	assignment = "Administrator"
 /obj/item/weapon/card/id/all_access/New()
+	. = ..()
 	access = get_access_ids()
-	..()
 
 // Department-flavor IDs
 /obj/item/weapon/card/id/medical
@@ -336,7 +343,7 @@ var/const/NO_EMAG_ACT = -50
 /obj/item/weapon/card/id/security
 	name = "identification card"
 	desc = "A card issued to security staff."
-	icon_state = "sec"
+	icon_state = "security"
 	job_access_type = /datum/job/officer
 
 /obj/item/weapon/card/id/security/warden
@@ -354,7 +361,7 @@ var/const/NO_EMAG_ACT = -50
 /obj/item/weapon/card/id/engineering
 	name = "identification card"
 	desc = "A card issued to engineering staff."
-	icon_state = "eng"
+	icon_state = "engineering"
 	job_access_type = /datum/job/engineer
 
 /obj/item/weapon/card/id/engineering/atmos
@@ -369,7 +376,7 @@ var/const/NO_EMAG_ACT = -50
 /obj/item/weapon/card/id/science
 	name = "identification card"
 	desc = "A card issued to science staff."
-	icon_state = "sci"
+	icon_state = "research"
 	job_access_type = /datum/job/scientist
 
 /obj/item/weapon/card/id/science/xenobiologist
@@ -402,7 +409,7 @@ var/const/NO_EMAG_ACT = -50
 /obj/item/weapon/card/id/civilian
 	name = "identification card"
 	desc = "A card issued to civilian staff."
-	icon_state = "civ"
+	icon_state = "id"
 	job_access_type = /datum/job/assistant
 
 /obj/item/weapon/card/id/civilian/bartender
@@ -429,10 +436,11 @@ var/const/NO_EMAG_ACT = -50
 /obj/item/weapon/card/id/civilian/head //This is not the HoP. There's no position that uses this right now.
 	name = "identification card"
 	desc = "A card which represents common sense and responsibility."
-	icon_state = "civGold"
+	icon_state = "silver"
 
 /obj/item/weapon/card/id/merchant
 	name = "identification card"
 	desc = "A card issued to Merchants, indicating their right to sell and buy goods."
+	icon = 'icons/obj/card.dmi'
 	icon_state = "trader"
 	access = list(access_merchant)

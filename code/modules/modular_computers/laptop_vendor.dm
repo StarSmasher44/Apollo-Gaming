@@ -307,7 +307,7 @@ obj/machinery/lapvend/attackby(obj/item/weapon/W as obj, mob/user as mob)
 			ping("Unable to access account: incorrect credentials.")
 			return 0
 
-	if(total_price > customer_account.money)
+	if(total_price > customer_account.bank_balance)
 		ping("Insufficient funds in account.")
 		return 0
 	else

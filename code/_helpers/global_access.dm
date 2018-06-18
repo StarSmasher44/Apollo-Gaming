@@ -19,6 +19,8 @@
 			return global.DEPT_FREQS;
 		if("Debug2")
 			return global.Debug2;
+		if("DeptRequests")
+			return global.DeptRequests;
 		if("Failsafe")
 			return global.Failsafe;
 		if("GLOB")
@@ -35,6 +37,10 @@
 			return global.OOClog;
 		if("PDAs")
 			return global.PDAs;
+		if("PersistentSys")
+			return global.PersistentSys;
+		if("REVERSE_LIGHTING_CORNER_DIAGONAL")
+			return global.REVERSE_LIGHTING_CORNER_DIAGONAL;
 		if("SSair")
 			return global.SSair;
 		if("SSairflow")
@@ -45,20 +51,20 @@
 			return global.SSfastprocess;
 		if("SSgarbage")
 			return global.SSgarbage;
+		if("SSicon_cache")
+			return global.SSicon_cache;
 		if("SSlegacy")
 			return global.SSlegacy;
 		if("SSmachines")
 			return global.SSmachines;
-		if("SSlighting")
-			return global.SSmachines;
-//		if("SSmapping")
-//			return global.SSmapping;
 		if("SSmobs")
 			return global.SSmobs;
 		if("SSobj")
 			return global.SSobj;
 		if("SSopen_space")
 			return global.SSopen_space;
+		if("SSpersistent")
+			return global.SSpersistent;
 		if("SSprocessing")
 			return global.SSprocessing;
 		if("SSvines")
@@ -81,8 +87,8 @@
 			return global._client_preferences_by_key;
 		if("_client_preferences_by_type")
 			return global._client_preferences_by_type;
-		if("account_hack_attempted")
-			return global.account_hack_attempted;
+//		if("account_hack_attempted")
+//			return global.account_hack_attempted;
 		if("additional_antag_types")
 			return global.additional_antag_types;
 		if("admin_datums")
@@ -125,6 +131,8 @@
 			return global.admin_verbs_spawn;
 		if("adminhelp_ignored_words")
 			return global.adminhelp_ignored_words;
+		if("adminhelps_unanswered")
+			return global.adminhelps_unanswered;
 		if("adminlog")
 			return global.adminlog;
 		if("ai_list")
@@ -149,6 +157,8 @@
 			return global.all_antag_spawnpoints_;
 		if("all_antag_types_")
 			return global.all_antag_types_;
+		if("all_areas")
+			return global.all_areas;
 		if("all_grabobjects")
 			return global.all_grabobjects;
 		if("all_grabstates")
@@ -171,6 +181,8 @@
 			return global.all_virtual_listeners;
 		if("announced_news_types")
 			return global.announced_news_types;
+		if("announcemessages")
+			return global.announcemessages;
 		if("antag_add_finished")
 			return global.antag_add_finished;
 		if("antag_names_to_ids_")
@@ -221,6 +233,8 @@
 			return global.bomb_set;
 		if("borers")
 			return global.borers;
+		if("button_machines")
+			return global.button_machines;
 		if("cable_list")
 			return global.cable_list;
 		if("cached_icons")
@@ -283,6 +297,8 @@
 			return global.controller_iteration;
 		if("create_mob_html")
 			return global.create_mob_html;
+		if("create_object_forms")
+			return global.create_object_forms;
 		if("create_object_html")
 			return global.create_object_html;
 		if("create_turf_html")
@@ -353,6 +369,8 @@
 			return global.endgame_exits;
 		if("endgame_safespawns")
 			return global.endgame_safespawns;
+		if("enfmods")
+			return global.enfmods;
 		if("ert")
 			return global.ert;
 		if("ert_base_chance")
@@ -391,6 +409,8 @@
 			return global.fileaccess_timer;
 		if("finds_as_strings")
 			return global.finds_as_strings;
+		if("finished_init")
+			return global.finished_init;
 		if("fire_alarm")
 			return global.fire_alarm;
 		if("flesh_hud_colours")
@@ -445,6 +465,8 @@
 			return global.global_message_listener;
 		if("global_vars_")
 			return global.global_vars_;
+		if("global_webhooks")
+			return global.global_webhooks;
 		if("godcult")
 			return global.godcult;
 		if("gravity_is_on")
@@ -473,6 +495,8 @@
 			return global.href_logfile;
 		if("human_icon_cache")
 			return global.human_icon_cache;
+		if("iconupdater")
+			return global.iconupdater;
 		if("id_card_states")
 			return global.id_card_states;
 		if("image_repository")
@@ -523,16 +547,10 @@
 			return global.lighting_overlays_initialised;
 		if("lighting_update_corners")
 			return global.lighting_update_corners;
-		if("lighting_update_corners_old")
-			return global.lighting_update_corners_old;
 		if("lighting_update_lights")
 			return global.lighting_update_lights;
-		if("lighting_update_lights_old")
-			return global.lighting_update_lights_old;
 		if("lighting_update_overlays")
 			return global.lighting_update_overlays;
-		if("lighting_update_overlays_old")
-			return global.lighting_update_overlays_old;
 		if("limb_icon_cache")
 			return global.limb_icon_cache;
 		if("list_of_ais")
@@ -691,6 +709,10 @@
 			return global.pai_software_by_key;
 		if("paramslist_cache")
 			return global.paramslist_cache;
+		if("paychecks")
+			return global.paychecks;
+		if("pendingdeptrequests")
+			return global.pendingdeptrequests;
 		if("photo_count")
 			return global.photo_count;
 		if("pipe_colors")
@@ -871,8 +893,6 @@
 			return global.sqlpass;
 		if("sqlport")
 			return global.sqlport;
-		if("station_account")
-			return global.station_account;
 		if("station_date")
 			return global.station_date;
 		if("stool_cache")
@@ -983,6 +1003,8 @@
 			return global.turbolift_controller;
 		if("turbolifts")
 			return global.turbolifts;
+		if("turfs")
+			return global.turfs;
 		if("turret_icons")
 			return global.turret_icons;
 		if("uniqueness_repository")
@@ -995,10 +1017,10 @@
 			return global.uplink_purchase_repository;
 		if("uplink_random_selections_")
 			return global.uplink_random_selections_;
+		if("userdb")
+			return global.userdb;
 		if("valid_bloodtypes")
 			return global.valid_bloodtypes;
-		if("vendor_account")
-			return global.vendor_account;
 		if("ventcrawl_machinery")
 			return global.ventcrawl_machinery;
 		if("view_variables_dont_expand")
@@ -1064,6 +1086,8 @@
 			global.DEPT_FREQS=newval;
 		if("Debug2")
 			global.Debug2=newval;
+		if("DeptRequests")
+			global.DeptRequests=newval;
 		if("Failsafe")
 			global.Failsafe=newval;
 		if("GLOB")
@@ -1080,6 +1104,10 @@
 			global.OOClog=newval;
 		if("PDAs")
 			global.PDAs=newval;
+		if("PersistentSys")
+			global.PersistentSys=newval;
+		if("REVERSE_LIGHTING_CORNER_DIAGONAL")
+			global.REVERSE_LIGHTING_CORNER_DIAGONAL=newval;
 		if("SSair")
 			global.SSair=newval;
 		if("SSairflow")
@@ -1090,20 +1118,20 @@
 			global.SSfastprocess=newval;
 		if("SSgarbage")
 			global.SSgarbage=newval;
+		if("SSicon_cache")
+			global.SSicon_cache=newval;
 		if("SSlegacy")
 			global.SSlegacy=newval;
 		if("SSmachines")
 			global.SSmachines=newval;
-//		if("SSlighting")
-//			global.SSlighting=newval;
-//		if("SSmapping")
-//			global.SSmapping=newval;
 		if("SSmobs")
 			global.SSmobs=newval;
 		if("SSobj")
 			global.SSobj=newval;
 		if("SSopen_space")
 			global.SSopen_space=newval;
+		if("SSpersistent")
+			global.SSpersistent=newval;
 		if("SSprocessing")
 			global.SSprocessing=newval;
 		if("SSvines")
@@ -1126,8 +1154,8 @@
 			global._client_preferences_by_key=newval;
 		if("_client_preferences_by_type")
 			global._client_preferences_by_type=newval;
-		if("account_hack_attempted")
-			global.account_hack_attempted=newval;
+//		if("account_hack_attempted")
+//			global.account_hack_attempted=newval;
 		if("additional_antag_types")
 			global.additional_antag_types=newval;
 		if("admin_datums")
@@ -1170,6 +1198,8 @@
 			global.admin_verbs_spawn=newval;
 		if("adminhelp_ignored_words")
 			global.adminhelp_ignored_words=newval;
+		if("adminhelps_unanswered")
+			global.adminhelps_unanswered=newval;
 		if("adminlog")
 			global.adminlog=newval;
 		if("ai_list")
@@ -1194,6 +1224,8 @@
 			global.all_antag_spawnpoints_=newval;
 		if("all_antag_types_")
 			global.all_antag_types_=newval;
+		if("all_areas")
+			global.all_areas=newval;
 		if("all_grabobjects")
 			global.all_grabobjects=newval;
 		if("all_grabstates")
@@ -1216,6 +1248,8 @@
 			global.all_virtual_listeners=newval;
 		if("announced_news_types")
 			global.announced_news_types=newval;
+		if("announcemessages")
+			global.announcemessages=newval;
 		if("antag_add_finished")
 			global.antag_add_finished=newval;
 		if("antag_names_to_ids_")
@@ -1266,6 +1300,8 @@
 			global.bomb_set=newval;
 		if("borers")
 			global.borers=newval;
+		if("button_machines")
+			global.button_machines=newval;
 		if("cable_list")
 			global.cable_list=newval;
 		if("cached_icons")
@@ -1328,6 +1364,8 @@
 			global.controller_iteration=newval;
 		if("create_mob_html")
 			global.create_mob_html=newval;
+		if("create_object_forms")
+			global.create_object_forms=newval;
 		if("create_object_html")
 			global.create_object_html=newval;
 		if("create_turf_html")
@@ -1398,6 +1436,8 @@
 			global.endgame_exits=newval;
 		if("endgame_safespawns")
 			global.endgame_safespawns=newval;
+		if("enfmods")
+			global.enfmods=newval;
 		if("ert")
 			global.ert=newval;
 		if("ert_base_chance")
@@ -1436,6 +1476,8 @@
 			global.fileaccess_timer=newval;
 		if("finds_as_strings")
 			global.finds_as_strings=newval;
+		if("finished_init")
+			global.finished_init=newval;
 		if("fire_alarm")
 			global.fire_alarm=newval;
 		if("flesh_hud_colours")
@@ -1490,6 +1532,8 @@
 			global.global_message_listener=newval;
 		if("global_vars_")
 			global.global_vars_=newval;
+		if("global_webhooks")
+			global.global_webhooks=newval;
 		if("godcult")
 			global.godcult=newval;
 		if("gravity_is_on")
@@ -1518,6 +1562,8 @@
 			global.href_logfile=newval;
 		if("human_icon_cache")
 			global.human_icon_cache=newval;
+		if("iconupdater")
+			global.iconupdater=newval;
 		if("id_card_states")
 			global.id_card_states=newval;
 		if("image_repository")
@@ -1568,16 +1614,10 @@
 			global.lighting_overlays_initialised=newval;
 		if("lighting_update_corners")
 			global.lighting_update_corners=newval;
-		if("lighting_update_corners_old")
-			global.lighting_update_corners_old=newval;
 		if("lighting_update_lights")
 			global.lighting_update_lights=newval;
-		if("lighting_update_lights_old")
-			global.lighting_update_lights_old=newval;
 		if("lighting_update_overlays")
 			global.lighting_update_overlays=newval;
-		if("lighting_update_overlays_old")
-			global.lighting_update_overlays_old=newval;
 		if("limb_icon_cache")
 			global.limb_icon_cache=newval;
 		if("list_of_ais")
@@ -1736,6 +1776,10 @@
 			global.pai_software_by_key=newval;
 		if("paramslist_cache")
 			global.paramslist_cache=newval;
+		if("paychecks")
+			global.paychecks=newval;
+		if("pendingdeptrequests")
+			global.pendingdeptrequests=newval;
 		if("photo_count")
 			global.photo_count=newval;
 		if("pipe_colors")
@@ -1916,8 +1960,6 @@
 			global.sqlpass=newval;
 		if("sqlport")
 			global.sqlport=newval;
-		if("station_account")
-			global.station_account=newval;
 		if("station_date")
 			global.station_date=newval;
 		if("stool_cache")
@@ -2028,6 +2070,8 @@
 			global.turbolift_controller=newval;
 		if("turbolifts")
 			global.turbolifts=newval;
+		if("turfs")
+			global.turfs=newval;
 		if("turret_icons")
 			global.turret_icons=newval;
 		if("uniqueness_repository")
@@ -2040,10 +2084,10 @@
 			global.uplink_purchase_repository=newval;
 		if("uplink_random_selections_")
 			global.uplink_random_selections_=newval;
+		if("userdb")
+			global.userdb=newval;
 		if("valid_bloodtypes")
 			global.valid_bloodtypes=newval;
-		if("vendor_account")
-			global.vendor_account=newval;
 		if("ventcrawl_machinery")
 			global.ventcrawl_machinery=newval;
 		if("view_variables_dont_expand")
@@ -2099,6 +2143,7 @@
 	"CMinutes",
 	"DEPT_FREQS",
 	"Debug2",
+	"DeptRequests",
 	"Failsafe",
 	"GLOB",
 	"Holiday",
@@ -2107,19 +2152,20 @@
 	"Master",
 	"OOClog",
 	"PDAs",
-	"SKILLS",
+	"PersistentSys",
+	"REVERSE_LIGHTING_CORNER_DIAGONAL",
 	"SSair",
 	"SSairflow",
 	"SSatoms",
 	"SSfastprocess",
 	"SSgarbage",
+	"SSicon_cache",
 	"SSlegacy",
-	"SSlighting",
 	"SSmachines",
-	"SSmapping",
 	"SSmobs",
 	"SSobj",
 	"SSopen_space",
+	"SSpersistent",
 	"SSprocessing",
 	"SSvines",
 	"Tier1Runes",
@@ -2132,7 +2178,6 @@
 	"_client_preferences_by_key",
 	"_client_preferences_by_type",
 	"account_hack_attempted",
-	"actor",
 	"additional_antag_types",
 	"admin_datums",
 	"admin_pm_repository",
@@ -2154,6 +2199,7 @@
 	"admin_verbs_sounds",
 	"admin_verbs_spawn",
 	"adminhelp_ignored_words",
+	"adminhelps_unanswered",
 	"adminlog",
 	"ai_list",
 	"ai_status_emotions",
@@ -2162,11 +2208,11 @@
 	"air_blocked",
 	"air_processing_killed",
 	"alarm_manager",
-	"alien_whitelist",
 	"allCasters",
 	"allConsoles",
 	"all_antag_spawnpoints_",
 	"all_antag_types_",
+	"all_areas",
 	"all_grabobjects",
 	"all_grabstates",
 	"all_languages",
@@ -2178,6 +2224,7 @@
 	"all_unit_tests_passed",
 	"all_virtual_listeners",
 	"announced_news_types",
+	"announcemessages",
 	"antag_add_finished",
 	"antag_names_to_ids_",
 	"appearance_manager",
@@ -2203,6 +2250,7 @@
 	"blocked",
 	"bomb_set",
 	"borers",
+	"button_machines",
 	"cable_list",
 	"cached_icons",
 	"cached_space",
@@ -2234,6 +2282,7 @@
 	"contamination_overlay",
 	"controller_iteration",
 	"create_mob_html",
+	"create_object_forms",
 	"create_object_html",
 	"create_turf_html",
 	"created",
@@ -2269,6 +2318,7 @@
 	"empty_playable_ai_cores",
 	"endgame_exits",
 	"endgame_safespawns",
+	"enfmods",
 	"ert",
 	"ert_base_chance",
 	"escape_pods",
@@ -2288,6 +2338,7 @@
 	"file_uid",
 	"fileaccess_timer",
 	"finds_as_strings",
+	"finished_init",
 	"fire_alarm",
 	"flesh_hud_colours",
 	"floorIsLava",
@@ -2315,6 +2366,7 @@
 	"ghost_traps",
 	"global_message_listener",
 	"global_vars_",
+	"global_webhooks",
 	"godcult",
 	"gravity_is_on",
 	"gyrotrons",
@@ -2324,12 +2376,12 @@
 	"hair_styles_list",
 	"hair_styles_male_list",
 	"hazard_overlays",
-	"hidden_skill_types",
 	"hivemind_bank",
 	"holder_mob_icon_cache",
 	"host",
 	"href_logfile",
 	"human_icon_cache",
+	"iconupdater",
 	"id_card_states",
 	"image_repository",
 	"inactive_keys",
@@ -2389,7 +2441,6 @@
 	"mercs",
 	"merged",
 	"message_delay",
-	"message_servers",
 	"meteors_armageddon",
 	"meteors_cataclysm",
 	"meteors_catastrophic",
@@ -2440,6 +2491,8 @@
 	"pai_emotions",
 	"pai_software_by_key",
 	"paramslist_cache",
+	"paychecks",
+	"pendingdeptrequests",
 	"photo_count",
 	"pipe_colors",
 	"pipe_processing_killed",
@@ -2586,12 +2639,15 @@
 	"transfer_controller",
 	"turbolift_controller",
 	"turbolifts",
+	"turfs",
 	"turret_icons",
 	"uniqueness_repository",
 	"universe_has_ended",
 	"uplink",
 	"uplink_purchase_repository",
 	"uplink_random_selections_",
+	"userdatabase",
+	"userdb",
 	"valid_bloodtypes",
 	"vendor_account",
 	"ventcrawl_machinery",
@@ -2604,7 +2660,6 @@
 	"wax_recipes",
 	"weighted_mundaneevent_locations",
 	"weighted_randomevent_locations",
-	"whitelist",
 	"whitelisted_species",
 	"wireColours",
 	"wirelessProcess",

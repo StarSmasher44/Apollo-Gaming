@@ -241,19 +241,23 @@ var/const/MAP_HAS_RANK = 2		//Rank system, also togglable
 		var/datum/trade_destination/D = new loc_type
 		weighted_randomevent_locations[D] = D.viable_random_events.len
 		weighted_mundaneevent_locations[D] = D.viable_mundane_events.len
-
-	if(!station_account)
-		station_account = create_account("[station_name()] Primary Account", starting_money)
+#warn station account gone
+//	if(!station_account)
+//		station_account = create_account("[station_name()] Primary Account", starting_money)
 
 	for(var/job in allowed_jobs)
 		var/datum/job/J = decls_repository.get_decl(job)
 		if(J.department)
 			station_departments |= J.department
+#warn department accounts gone
+	handle_bank_accounts(1)
 	for(var/department in station_departments)
-		department_accounts[department] = create_account("[department] Account", department_money)
-
-	department_accounts["Vendor"] = create_account("Vendor Account", 0)
-	vendor_account = department_accounts["Vendor"]
+		if(!department_accounts[department] || !istype(department_accounts[department], /datum/money_account))
+			department_accounts[department] = create_account("[department] Account", department = department)
+		else
+			continue
+//	department_accounts["Vendor"] = create_account("Vendor Account", 0)
+//	vendor_account = department_accounts["Vendor"]
 
 /datum/map/proc/map_info(var/client/victim)
 	return

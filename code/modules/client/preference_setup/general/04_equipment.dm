@@ -84,6 +84,7 @@
 
 /datum/category_item/player_setup_item/general/equipment/content()
 	. = list()
+	. += "<body>"
 	. += "<b>Equipment:</b><br>"
 	for(var/datum/category_group/underwear/UWC in GLOB.underwear.categories)
 		var/item_name = (pref.all_underwear && pref.all_underwear[UWC.name]) ? pref.all_underwear[UWC.name] : "None"
@@ -98,7 +99,7 @@
 	. += "Backpack Type: <a href='?src=\ref[src];change_backpack=1'><b>[pref.backpack.name]</b></a>"
 	for(var/datum/backpack_tweak/bt in pref.backpack.tweaks)
 		. += " <a href='?src=\ref[src];backpack=[pref.backpack.name];tweak=\ref[bt]'>[bt.get_ui_content(get_backpack_metadata(pref.backpack, bt))]</a>"
-	. += "<br>"
+	. += "<br></body>"
 	return jointext(.,null)
 
 /datum/category_item/player_setup_item/general/equipment/proc/get_underwear_metadata(var/underwear_category, var/datum/gear_tweak/gt)

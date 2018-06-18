@@ -478,24 +478,35 @@ var/global/list/obj/item/device/pda/PDAs = list()
 
 	if(mode==31)
 		if(!user || !user.client)	return
-		var/recommends = ""
-		for(var/N in user:CharRecords.display_employeerecords())
+		var/mob/living/carbon/human/H = user
+		var/recommends = {"
+		<style>
+		table, th, td {
+    	border: 1px solid black;
+		}
+		</style>
+		<table>
+		<tr><td>"}
+		for(var/N in H.CharRecords.display_employeerecords())
 			recommends += "[N]<br>"
-
-		var/datum/job/job = job_master.GetJob(user:job)
+		recommends += "</td></tr></table>"
+		var/datum/job/job = job_master.GetJob(H.job)
 		data["ntprofile"] = list(\
 			"name" = "[owner]",\
-			"department" = "[get_department(user:CharRecords.char_department, 1)]",\
-			"deptrank" = "[calculate_department_rank(user)] ([get_department_rank_title(get_department(user:CharRecords.char_department, 1), user:CharRecords.department_rank)])",\
-			"job" = "[user:job]",\
+			"department" = "[job.department]",\
+			"deptrank" = "[calculate_department_rank(user)] ([get_department_rank_title(get_department(job.department, calculate_department_rank(H)))])",\
+			"job" = "[H.job]",\
 			"basepay" = "[job.base_pay]",\
-			"bank" = "[user:CharRecords.bank_balance]",\
+			"bank" = "[H.CharRecords.bank_account.bank_balance ? "[H.CharRecords.bank_account.bank_balance]" : "0"]",\
 			"paycheck" = "[calculate_paycheck(user)]",\
-			"pension" = "[user:CharRecords.pension_balance]",\
-			"activehours" = "[round(user:CharRecords.department_playtime/3600, 0.1)]",\
+			"pension" = "[H.CharRecords.pension_balance ? "[H.CharRecords.pension_balance]" : "0"]",\
+			"activehours" = "[round(H.CharRecords.department_playtime/60, 0.1)]",\
 			"recommendations" = "[recommends]",\
-			"neurallaces" = "[user:CharRecords.neurallaces]",\
-			"permadeath" = "[user:CharRecords.permadeath]"\
+			"neurallaces" = "[H.CharRecords.neurallaces]",\
+			"permadeath" = "[user.client.prefs.permadeath]",\
+			"mentorship" = "[H.CharRecords.mentorship ? "Yes" : "No"]",\
+			"mentoring" = "[H.CharRecords.mentoring]",\
+			"reviveprice" = "[REVIVEPRICE]"\
 			)
 		ntprofilecache = data["ntprofile"] //Cacheing for saving unneeded shit?
 
@@ -635,15 +646,13 @@ var/global/list/obj/item/device/pda/PDAs = list()
 			return 0
 		if("Refresh")//Refresh, goes to the end of the proc.
 		if("Return")//Return
-			if(mode<=9)
+			if(mode<=9 || mode==31)
 				mode = 0
 			else
 				mode = round(mode/10)
 				if(mode==2)
 					active_conversation = null
 				if(mode==4)//Fix for cartridges. Redirects to hub.
-					mode = 0
-				if(mode==31)
 					mode = 0
 				else if(mode >= 40 && mode <= 49)//Fix for cartridges. Redirects to refresh the menu.
 					cartridge.mode = mode
@@ -706,25 +715,33 @@ var/global/list/obj/item/device/pda/PDAs = list()
 //NT PROFILE FUNCTIONALITY===================================
 		if("Neurallace")
 			var/mob/living/carbon/human/M = usr
-			if(M && M.client && owner == M.name)
-				switch(alert("Would you like to buy a neural lace for $3,000?", "Buy Neural Lace", "Yes", "Abort"))
+			if(M && M.client && owner == M.real_name)
+				switch(alert("Would you like to buy a neural lace for $3000?", "Buy Neural Lace", "Yes", "Abort"))
 					if("Yes")
-						if(M.CharRecords.bank_balance < 3000) //Insufficient in bank.
-							if((M.CharRecords.bank_balance+M.CharRecords.pension_balance) < 3000)
+						if(M.CharRecords.bank_account.bank_balance < REVIVEPRICE) //Insufficient in bank.
+							if((M.CharRecords.bank_account.bank_balance+M.CharRecords.pension_balance) < REVIVEPRICE)
 								to_chat(M, "You do not have sufficient funds for this!.")
 								return
 							else
-								var/topay = (3000-M.CharRecords.bank_balance)
-								M.CharRecords.bank_balance -= (3000-topay)
+								var/topay = (REVIVEPRICE-M.CharRecords.bank_account.bank_balance)
+								M.CharRecords.bank_account.bank_balance -= (REVIVEPRICE-topay)
 								M.CharRecords.pension_balance -= topay
 						else
-							M.CharRecords.bank_balance -= 3000
+							M.CharRecords.bank_account.bank_balance -= REVIVEPRICE
 						M.CharRecords.neurallaces++ //Buy neural lace.
 						M.CharRecords.save_persistent()
 					if("Abort")
 						to_chat(M, "Purchase Aborted.")
 						return
-
+		if("optmentor")
+			var/mob/living/carbon/human/M = usr
+			if(M && M.client && owner == M.real_name)
+				if(M.CharRecords.mentorship)
+					M.show_message("<span class='notice'>You have been signed out of the NT mentor program.</span>", 1)
+					M.CharRecords.mentorship = 0
+				else
+					M.show_message("<span class='notice'>You have been signed into the NT mentor program.</span>", 1)
+					M.CharRecords.mentorship = 1
 //MESSENGER/NOTE FUNCTIONS===================================
 
 		if ("Edit")

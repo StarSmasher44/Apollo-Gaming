@@ -65,4 +65,4 @@
 	department = MED
 
 /obj/machinery/pager/cargo //supply
-	department = SUP
+	department = LOG

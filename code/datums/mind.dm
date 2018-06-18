@@ -51,6 +51,7 @@
 	var/list/datum/objective/special_verbs = list()
 
 	var/has_been_rev = 0//Tracks if this mind has been a rev or not
+	var/is_targeted = 0 //Tracks if person is targeted by an antag, safety for permadeath
 
 	var/datum/faction/faction 			//associated faction
 	var/datum/changeling/changeling		//changeling holder
@@ -60,7 +61,7 @@
 	// the world.time since the mob has been brigged, or -1 if not at all
 	var/brigged_since = -1
 
-	//put this here for easier tracking ingame
+//	//put this here for easier tracking ingame
 	var/datum/money_account/initial_account
 
 	//used for optional self-objectives that antagonists can give themselves, which are displayed at the end of the round.

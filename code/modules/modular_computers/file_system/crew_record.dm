@@ -46,7 +46,10 @@ GLOBAL_VAR_INIT(arrest_security_status, "Arrest")
 	set_status(GLOB.default_physical_status)
 	set_species(H ? H.get_species() : SPECIES_HUMAN)
 	set_branch(H ? (H.char_branch && H.char_branch.name) : "None")
-	set_rank(H ? (H.char_rank && H.char_rank.name) : "None")
+	if(H.CharRecords)
+		var/datum/job/job = job_master.GetJob(H.job)
+		set_branch(H ? (H.job.department) : "None")
+		set_rank(H ? "[get_department_rank_title(job.department, H.CharRecords.department_rank)]" : "None")
 
 	// Medical record
 	set_bloodtype(H ? H.b_type : "Unset")

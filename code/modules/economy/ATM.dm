@@ -3,7 +3,7 @@
 #define TRANSFER_FUNDS 2
 #define VIEW_TRANSACTION_LOGS 3
 
-/obj/item/weapon/card/id/var/money = 2000
+// /obj/item/weapon/card/id/var/money = 2000
 
 /obj/machinery/atm
 	name = "Automatic Teller Machine"
@@ -94,7 +94,10 @@
 
 	else if(authenticated_account)
 		if(istype(I,/obj/item/weapon/spacecash))
-			var/obj/item/weapon/spacecash/dolla = I
+			to_chat(user, "\icon[src] <span class='warning'>Warning: Deposits have been disabled until further notice. (NT command #431)</span>")
+			return
+
+/*			var/obj/item/weapon/spacecash/dolla = I
 			if(prob(50))
 				playsound(loc, 'sound/items/polaroid1.ogg', 50, 1)
 			else
@@ -107,6 +110,7 @@
 			to_chat(user, "<span class='info'>You insert [I] into [src].</span>")
 			src.attack_hand(user)
 			qdel(I)
+*/
 	else
 		..()
 
@@ -182,7 +186,7 @@
 							t += "</table>"
 							t += "<A href='?src=\ref[src];choice=print_transaction'>Print</a><br>"
 						if(TRANSFER_FUNDS)
-							t += "<b>Account balance:</b> T[authenticated_account.money]<br>"
+							t += "<b>Account balance:</b> $[authenticated_account.bank_balance]<br>"
 							t += "<form name='transfer' action='?src=\ref[src]' method='get'>"
 							t += "<input type='hidden' name='src' value='\ref[src]'>"
 							t += "<input type='hidden' name='choice' value='transfer'>"
@@ -192,7 +196,7 @@
 							t += "<input type='submit' value='Transfer funds'><br>"
 							t += "</form>"
 						else
-							t += "<b>Account balance:</b> T[authenticated_account.money]"
+							t += "<b>Account balance:</b> $[authenticated_account.bank_balance]"
 							t += "<form name='withdrawal' action='?src=\ref[src]' method='get'>"
 							t += "<input type='hidden' name='src' value='\ref[src]'>"
 							t += "<input type='radio' name='choice' value='withdrawal' checked> Cash  <input type='radio' name='choice' value='e_withdrawal'> Chargecard<br>"
@@ -243,7 +247,7 @@
 					transfer_amount = round(transfer_amount, 0.01)
 					if(transfer_amount <= 0)
 						alert("That is not a valid amount.")
-					else if(transfer_amount <= authenticated_account.money)
+					else if(transfer_amount <= authenticated_account.bank_balance)
 						var/target_account_number = text2num(href_list["target_acc_number"])
 						var/transfer_purpose = href_list["purpose"]
 						if(charge_to_account(target_account_number, authenticated_account.owner_name, transfer_purpose, machine_id, transfer_amount))
@@ -326,7 +330,7 @@
 				if(amount <= 0)
 					alert("That is not a valid amount.")
 				else if(authenticated_account && amount > 0)
-					if(amount <= authenticated_account.money)
+					if(amount <= authenticated_account.bank_balance)
 						playsound(src, 'sound/machines/chime.ogg', 50, 1)
 						spawn_ewallet(amount,src.loc,usr)
 
@@ -341,7 +345,7 @@
 				if(amount <= 0)
 					alert("That is not a valid amount.")
 				else if(authenticated_account && amount > 0)
-					if(amount <= authenticated_account.money)
+					if(amount <= authenticated_account.bank_balance)
 						playsound(src, 'sound/machines/chime.ogg', 50, 1)
 						spawn_money(amount,src.loc,usr)
 
@@ -357,7 +361,7 @@
 					R.info = "<b>NT Automated Teller Account Statement</b><br><br>"
 					R.info += "<i>Account holder:</i> [authenticated_account.owner_name]<br>"
 					R.info += "<i>Account number:</i> [authenticated_account.account_number]<br>"
-					R.info += "<i>Balance:</i> T[authenticated_account.money]<br>"
+					R.info += "<i>Balance:</i> T[authenticated_account.bank_balance]<br>"
 					R.info += "<i>Date and time:</i> [stationtime2text()], [stationdate2text()]<br><br>"
 					R.info += "<i>Service terminal ID:</i> [machine_id]<br>"
 

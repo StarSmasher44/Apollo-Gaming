@@ -25,11 +25,11 @@ var/global/datum/offlinedb/ODB
 
 /hook/startup/proc/Init_PlayerDB()
 	if(!ODB)
-		ODB = new()
+		ODB = new(src)
 
 /proc/open_playerdb()
 	if(!ODB)
-		ODB = new(src)
+		ODB = new()
 	ODB.offline_player_database()
 
 /datum/offlinedb/proc/save_watchlist()
@@ -48,20 +48,21 @@ var/global/datum/offlinedb/ODB
 	src = ODB
 	var/dat = "<html><head><title>Admin Player Database</title></head>"
 //	dat += "<a href='?src=\ref[ODB];choice=exit'><b>(EXIT)</b></a><hr>"
-	if(!ODB.userwatchlist.len) //Populate watch list upon entry.
-		load_watchlist()
+//	if(!ODB.userwatchlist.len) //Populate watch list upon entry.
+//		ODB.load_watchlist()
 	switch(screen)
 		if(0)
-			dat += "<h2>Watchlist & Notifications</h2>"
-			if(!ODB.userdblist.len) //If no cache, create one now.
-				LAZYINITLIST(ODB.userdblist)
-				dat += "<div class='RowDisplay'><ul>"
-				for(var/entry in userdb.dir)
-					ODB.userdblist |= entry
-					dat += "<li><a href='?src=\ref[ODB];choice=userdb;player=[entry]'><b>[entry]</b></a></li><br>"
-				dat += "</ul></div>"
-				dat += "</html>"
-			else
+			dat += "<h2>Watchlist & Notifications</h2><br>"
+			dat += "<hr>"
+//			if(!ODB.userdblist.len) //If no cache, create one now.
+			LAZYINITLIST(ODB.userdblist)
+			dat += "<div class='RowDisplay'><ul>"
+			for(var/entry in userdb.dir)
+				userdblist |= entry
+				dat += "<li><a href='?src=\ref[ODB];choice=userdb;player=[entry]'><b>[entry]</b></a></li><br>"
+			dat += "</ul></div>"
+			dat += "</html>"
+/*			else
 				dat += "<div class='RowDisplay'><ul>"
 				for(var/entry in ODB.userdblist) //Cached entries if any
 					for(var/N in ODB.userwatchlist)
@@ -70,10 +71,11 @@ var/global/datum/offlinedb/ODB
 						else
 							dat += "<li><a href='?src=\ref[ODB];choice=userdb;player=[entry]'><b>[entry]</b></a></li><br>"
 				dat += "</ul></div>"
-
-			dat += "</html>"
+*/
+//			dat += "</html>"
 		if(1)
 			if(ODB.selection) //Player has been chosen.
+				ODB.setuser(ODB.selection)
 				var/savefile/clientdb = new("data/player_saves/[copytext(ODB.selection, 1, 2)]/[ODB.selection]/clientdb.sav")
 				var/lastseen = round((world.realtime - clientdb["lastseen"]) / 864000, 0.1)
 				var/watched = 0
@@ -343,10 +345,8 @@ var/global/datum/offlinedb/ODB
 						if("Command Coin")
 							var/coins = 0
 							clientdb["command_coin"] >> coins
-							if(!coins)
-								coins = 1
-							else
-								coins++
+							coins = coins+ODB.selectionclient.command_coin
+							coins += 1
 							clientdb["command_coin"] << coins
 							ODB.selectionclient.command_coin = coins
 							message_admins("[key_name_admin(usr)] has awarded [ODB.selection] a [cointype].")
@@ -354,10 +354,8 @@ var/global/datum/offlinedb/ODB
 						if("Employee Coin")
 							var/coins = 0
 							clientdb["employee_coin"] >> coins
-							if(!coins)
-								coins = 1
-							else
-								coins++
+							coins = coins+ODB.selectionclient.command_coin
+							coins += 1
 							clientdb["employee_coin"] << coins
 							ODB.selectionclient.employee_coin = coins
 							message_admins("[key_name_admin(usr)] has awarded [ODB.selection] a [cointype].")
@@ -372,12 +370,14 @@ var/global/datum/offlinedb/ODB
 						if(!reason)	return to_chat(usr, "No reason specified, aborting.")
 						if(findtext(alienlist, race.name))
 							alienlist = replacetext(alienlist, race.name, "")
+							clientdb["alien_whitelist"] << alienlist
 						notes_add(ckey(ODB.selection),"[usr.client.ckey] removed alien whitelist ([race.name]) from [ODB.selection]. - Reason: [reason]",usr)
 						to_chat(usr, "whitelist for [race.name] removed from [ODB.selection]")
 						message_admins("[key_name_admin(usr)] has de-whitelisted [ODB.selection] for species [race.name]")
 					else
 						if(!alienlist)
 							alienlist = "[race]"
+							clientdb["alien_whitelist"] << alienlist
 						else
 							if(findtext(alienlist, race)) //What, already in there?
 								usr << "<span class='warning'>Could not add [race] to the whitelist of [ODB.selection]. Already found.</span>"
@@ -444,7 +444,8 @@ var/global/datum/offlinedb/ODB
 						to_chat(usr, "Cancelled.")
 						return
 		if("watchlist")
-			return to_chat(usr, "Coming soon, notify laser he forgot if you see this.")
+			to_chat(usr, "Coming soon, notify laser he forgot if you see this.")
+			return
 	if(. == TOPIC_REFRESH)
 		ODB.offline_player_database()
 //	offline_player_database() //Refreshes the panel, hopefully.

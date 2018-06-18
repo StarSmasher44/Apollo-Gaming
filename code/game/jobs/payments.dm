@@ -1,64 +1,65 @@
 proc/calculate_paycheck(var/mob/living/carbon/human/M, var/roundend = 0, var/tax = 1) //Tax = if we should calculate taxes, add if we want to add the cash.
-	if(M && istype(M) && M.client && M.CharRecords.char_department && M.job) //SO MANY CHECKS JEZUS ah well
-		var/paycheck = round(get_base_pay(M) * 4, 0.01)
+	if(M && ishuman(M) && M.client && M.CharRecords && M.CharRecords.char_department && M.job) //SO MANY CHECKS JEZUS ah well
+		var/paycheck = round(get_base_pay(M) * 4, 0.5)
 		if(evacuation_controller.emergency_evacuation)
-			paycheck = paycheck/100*80
+			paycheck = (paycheck*0.80) //80 percent of the paycheck.
 		if(roundend)
 			var/mins = round((round_duration_in_ticks % 36000) / 600)
 			var/deduct = (paycheck/60)*(60 % mins)
 			paycheck -= deduct
 		if(tax)
-			if(M.CharRecords.permadeath)
-				get_tax_deduction("pension", paycheck, 1)
-			else
-				get_tax_deduction("pension", paycheck, 0)
+			get_tax_deduction("pension", paycheck, M.client.prefs.permadeath ? 1 : 0)
 			get_tax_deduction("income", paycheck)
 		if(M.CharRecords.bonuscredit)
 			paycheck += M.CharRecords.bonuscredit
 			M.CharRecords.bonuscredit = 0
-		paycheck = round(paycheck, 0.01)
+		paycheck = round(paycheck, 0.5)
 		return paycheck
 
 proc/send_paycheck(var/mob/living/carbon/human/M, var/paycheck)
 	if(M && paycheck)
 		var/bank = 0
 		var/pension = 0
-		if(M.CharRecords.permadeath)
-			pension = get_tax_deduction("pension", paycheck, 1)
+		var/datum/job/job = job_master.GetJob(M.job)
+		if(job.intern == 1)
+			pension = 0
 		else
-			pension = get_tax_deduction("pension", paycheck, 0)
+			pension = get_tax_deduction("pension", paycheck, M.client.prefs.permadeath ? 1 : 0)
 		bank = get_tax_deduction("income", paycheck)
-		M.CharRecords.pension_balance += pension
-		paycheck -= bank+pension
-		M.CharRecords.bank_balance += paycheck
-		return paycheck
+
+		M.CharRecords.pension_balance += round(pension, 0.5)
+		paycheck -= (bank+pension)
+//		M.CharRecords.bank_account.bank_balance += round(paycheck, 0.5)
+		var/datum/transaction/T = new(M.CharRecords.bank_account.account_number, "Employee Paycheck", round(paycheck, 0.5), "NT Financial")
+		M.CharRecords.bank_account.do_transaction(T)
+		return round(paycheck, 0.5)
 
 proc/get_tax_deduction(var/taxtype, var/paycheck, var/permadeath)
 	if(taxtype && paycheck)
 		switch(taxtype)
 			if("income")
-				var/incometax = (paycheck / 100) * 20 //20%
-				return incometax
+				var/incometax = (paycheck / 100) * INCOME_TAX
+				return round(incometax, 0.5)
 			if("pension")
 				var/pensiontax
 				if(permadeath)
-					pensiontax = (paycheck / 100) * 16
+					pensiontax = (paycheck / 100) * PENSION_TAX_PD
 				else
-					pensiontax = (paycheck / 100) * 10
-				return pensiontax
+					pensiontax = (paycheck / 100) * PENSION_TAX_REG
+				return round(pensiontax, 0.5)
 
 proc/calculate_bonus_credit(var/mob/living/carbon/human/M, var/bonuscredit, var/bonuspercentage)
-	if(M && M.job)
+	if(M && M.CharRecords && M.job)
 		if(bonuscredit) //Applied in direct cashes.
 			M.CharRecords.bonuscredit += bonuscredit
 		else if(bonuspercentage) //Applies to base pay percentage.
 			M.CharRecords.bonuscredit += calculate_paycheck(M, 0, 0)/100*bonuspercentage
 
 proc/get_base_pay(var/mob/living/carbon/human/M)
-	if(M && M.job)
+	if(M && M.CharRecords && M.job)
 		var/datum/job/job = job_master.GetJob(M.job)
 		var/base_pay = job.base_pay //Base pay from job
-		var/efficiencybonus = 4+(4*paychecks) //Efficiencybonus = 4% + 4% per paycheck.
+		var/efficiencybonus = min(4*paychecks, 20) //Efficiencybonus = +4% per paycheck (hour).
 		var/rankbonus = calculate_department_rank(M) * 5 // Rank bonus = rank number * 5%
 		var/speciesmodifier = get_species_modifier(M)
 		var/scoremodifier = (M.CharRecords.employeescore-5) * 2
@@ -73,7 +74,7 @@ proc/get_base_pay(var/mob/living/carbon/human/M)
 ==since they can take a beating more.
 =============================*/
 proc/get_species_modifier(var/mob/living/carbon/human/M)
-	if(M && M.species)
+	if(M && M.species && M.CharRecords)
 		var/bonuspercentage = 0
 		switch(M.species.name)
 			if("Vat-Grown Human")
@@ -122,6 +123,8 @@ proc/get_species_modifier(var/mob/living/carbon/human/M)
 					bonuspercentage += 10
 				if(M.CharRecords.char_department & MED)
 					bonuspercentage -= 5
+				if(M.CharRecords.char_department & SCI)
+					bonuspercentage -= 5
 			if(SPECIES_SKRELL)
 				bonuspercentage += 5
 				if(M.CharRecords.char_department & SCI)
@@ -134,7 +137,7 @@ proc/get_species_modifier(var/mob/living/carbon/human/M)
 				bonuspercentage -= 40
 				if(M.CharRecords.char_department & SRV|CIV)
 					bonuspercentage += 10
-				if(M.CharRecords.char_department & SUP)
+				if(M.CharRecords.char_department & LOG)
 					bonuspercentage += 5
 				if(M.CharRecords.char_department & SCI)
 					bonuspercentage -= 10

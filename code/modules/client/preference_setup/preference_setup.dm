@@ -8,12 +8,7 @@
 	name = "General"
 	sort_order = 1
 	category_item_type = /datum/category_item/player_setup_item/general
-/*
-/datum/category_group/player_setup_category/skill_preferences
-	name = "Skills"
-	sort_order = 2
-	category_item_type = /datum/category_item/player_setup_item/skills
-*/
+
 /datum/category_group/player_setup_category/occupation_preferences
 	name = "Occupation"
 	sort_order = 3
@@ -44,6 +39,10 @@
 	sort_order = 8
 	category_item_type = /datum/category_item/player_setup_item/law_pref
 
+/datum/category_group/player_setup_category/persistent_preferences
+	name = "Character Details (Persistency)"
+	sort_order = 9
+	category_item_type = /datum/category_item/player_setup_item/persistent
 
 /****************************
 * Category Collection Setup *
@@ -97,8 +96,15 @@
 	return dat
 
 /datum/category_collection/player_setup_collection/proc/content(var/mob/user)
+	var/dat
+	dat += {"
+	<div id='stars'></div>
+	<div id='stars2'></div>
+	<div id='stars3'></div>
+	"}
 	if(selected_category)
-		return selected_category.content(user)
+		dat += selected_category.content(user)
+	return jointext(dat,null)
 
 /datum/category_collection/player_setup_collection/Topic(var/href,var/list/href_list)
 	if(..())
@@ -250,7 +256,7 @@
 
 /datum/category_item/player_setup_item/proc/preference_mob()
 	if(!pref.client)
-		for(var/client/C)
+		for(var/client/C in GLOB.clients)
 			if(C.ckey == pref.client_ckey)
 				pref.client = C
 				break

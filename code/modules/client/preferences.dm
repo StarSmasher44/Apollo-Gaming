@@ -111,26 +111,31 @@ datum/preferences
 		close_load_dialog(user)
 		return
 
-	var/dat = "<html><body><center>"
+	var/dat
 
 	if(path)
 		dat += "Slot - "
 		dat += "<a href='?src=\ref[src];load=1'>Load slot</a> - "
 		dat += "<a href='?src=\ref[src];save=1'>Save slot</a> - "
+		if(char_lock)
+			dat += "<span style='color:green'>Lock Character (LOCKED)</span> -"
+		else
+			dat += "<span style='color:red'><a href='?src=\ref[src];lockchar=1'>Lock Character (UNLOCKED)</a></span> -"
 		dat += "<a href='?src=\ref[src];resetslot=1'>Reset slot</a> - "
 		dat += "<a href='?src=\ref[src];reload=1'>Reload slot</a>"
-
-	else
+	if(!path)
 		dat += "Please create an account to save your preferences."
 
-	dat += "<br>"
-	dat += player_setup.header()
-	dat += "<br><HR></center>"
+	dat += "<hr>"
+	dat += player_setup.header(user)
 	dat += player_setup.content(user)
+//	usr << browse_rsc('html/images/uiBackground.png', "uiBackground.png")
+//	dat += player_setup.footer(user)
 
 	dat += "</html></body>"
-	var/datum/browser/popup = new(user, "Character Setup","Character Setup", 1200, 800, src)
+	var/datum/browser/popup = new(user, "Character Setup","Character Setup", 1150, 900, src)
 	popup.set_content(dat)
+	popup.add_stylesheet("parallax", 'html/browser/space-parallax.css')
 	popup.open()
 
 /datum/preferences/proc/process_link(mob/user, list/href_list)
@@ -154,6 +159,20 @@ datum/preferences
 	if(href_list["save"])
 		save_preferences()
 		save_character()
+	else if(href_list["lockchar"])
+		if(!char_lock)
+			switch(alert("Are you sure you wish to lock your character? The only way back is a reset!", "Character Lock", "Yes", "No"))
+				if("Yes")
+					char_lock = 1
+					save_character()
+		var/mob/new_player/M = usr
+		if(istype(M))
+			M.panel.close()
+			M.new_player_panel_proc()
+		else
+			to_chat(usr, "<span clas='notice'>Character is already locked.</span>")
+			return
+
 	else if(href_list["reload"])
 		load_preferences()
 		load_character()
@@ -171,6 +190,7 @@ datum/preferences
 			return 0
 		load_character(SAVE_RESET)
 		sanitize_preferences()
+		char_lock = 0 //Reset char lock just so we're sure.
 	else
 		return 0
 
@@ -348,13 +368,15 @@ datum/preferences
 	if(S)
 		dat += "<b>Select a character slot to load</b><hr>"
 		var/name
+		var/dept
 		for(var/i=1, i<= config.character_slots, i++)
 			S.cd = GLOB.using_map.character_load_path(S, i)
 			S["real_name"] >> name
+			S["prefs_department"] >> dept
 			if(!name)	name = "Character[i]"
 			if(i==default_slot)
 				name = "<b>[name]</b>"
-			dat += "<a href='?src=\ref[src];changeslot=[i]'>[name]</a><br>"
+			dat += "<a href='?src=\ref[src];changeslot=[i]'>[name] ([dept])</a><br>"
 
 	dat += "<hr>"
 	dat += "</center></tt>"

@@ -360,7 +360,8 @@ var/global/datum/controller/occupations/job_master
 		if(job)
 
 			//Equip job items.
-			job.setup_account(H)
+			spawn(30) //Allow for CharRecords to init..
+				job.setup_account(H)
 			job.equip(H, H.mind ? H.mind.role_alt_title : "", H.char_branch)
 			job.apply_fingerprints(H)
 
@@ -422,7 +423,7 @@ var/global/datum/controller/occupations/job_master
 			if(H.buckled && istype(H.buckled, /obj/structure/bed/chair/wheelchair))
 				H.buckled.forceMove(H.loc)
 				H.buckled.set_dir(H.dir)
-
+/*
 		// If they're head, give them the account info for their department
 		if(H.mind && job.head_position)
 			var/remembered_info = ""
@@ -434,7 +435,7 @@ var/global/datum/controller/occupations/job_master
 				remembered_info += "<b>Your department's account funds are:</b> T[department_account.money]<br>"
 
 			H.mind.store_memory(remembered_info)
-
+*/
 		var/alt_title = null
 		if(H.mind)
 			H.mind.assigned_role = rank
@@ -511,6 +512,7 @@ var/global/datum/controller/occupations/job_master
 		BITSET(H.hud_updateflag, ID_HUD)
 		BITSET(H.hud_updateflag, IMPLOYAL_HUD)
 		BITSET(H.hud_updateflag, SPECIALROLE_HUD)
+
 		return H
 
 	proc/LoadJobs(jobsfile) //ran during round setup, reads info from jobs.txt -- Urist

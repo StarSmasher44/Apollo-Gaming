@@ -350,3 +350,12 @@ var/list/mob/living/forced_ambiance_list = new
 /area/proc/has_turfs()
 	return !!(locate(/turf) in src)
 
+/area/proc/flicker_lights(var/area/A) //Makes lights flicker in a given area, if no A is set, src is used.
+	if(!A)
+		A = src
+		if(A.machinecache)
+			for(var/obj/machinery/light/L in A.machinecache)
+				if(prob(65)) //75% chance to flicker that fucker
+					L.flicker()
+					if(prob(2))
+						L.lightbulb.shatter() //And a very small chance to fuck your light up.

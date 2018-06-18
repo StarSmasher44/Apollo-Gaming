@@ -9,6 +9,7 @@ var/global/datum/controller/gameticker/ticker
 	var/post_game = 0
 	var/event_time = null
 	var/event = 0
+	var/forced = 0 //If the gamemode is forced by an admin or not.
 
 	var/list/datum/mind/minds = list()//The people in the game. Used for objective tracking.
 
@@ -114,7 +115,7 @@ var/global/datum/controller/gameticker/ticker
 	job_master.DivideOccupations() // Apparently important for new antagonist system to register specific job antags properly.
 
 	var/t = src.mode.startRequirements()
-	if(t)
+	if(t && !forced)
 		to_world("<B>Unable to start [mode.name].</B> [t] Reverting to pre-game lobby.")
 
 		current_state = GAME_STATE_PREGAME
@@ -176,6 +177,35 @@ var/global/datum/controller/gameticker/ticker
 
 	if(config.sql_enabled)
 		statistic_cycle() // Polls population totals regularly and stores them in an SQL DB -- TLE
+	for(var/mob/living/carbon/human/H in GLOB.player_list)
+		if(H.CharRecords.mentorship && !H.CharRecords.mentoring)
+			for(var/mob/living/carbon/human/M in GLOB.player_list)
+				if(!M.CharRecords.department_rank) //Intern lvl 1 gets no choice in the matter.
+					if(M == H || M.real_name == H.real_name)	return //YOU CANT MENTOR YOURSELF.
+					H.CharRecords.mentoring = M.real_name
+					var/remembered_info = "<b>Your assigned intern for this shift is:</b> [M.real_name].<br>"
+					H.mind.store_memory(remembered_info)
+					to_chat(H, "<span class='notice'>[remembered_info] ((Remember that you must actually teach and help! Opt-out otherwise!))</span")
+					alert("REMEMBER: You are currently mentoring someone! [remembered_info]")
+					remembered_info = "<b>Your mentor for this shift is:</b> [H.real_name].<br>"
+					calculate_bonus_credit(H, 0, 12)
+					M.mind.store_memory(remembered_info)
+					to_chat(M, "<span class='notice'>[remembered_info]</span")
+				else if(M.CharRecords.department_rank == 1)
+					switch(alert(M, "Would you like to be assigned a mentor/teacher for this round? ((IC))", "Mentor Program", "Yes", "No"))
+						if("Yes")
+							if(M == H || M.real_name == H.real_name)	return //YOU CANT MENTOR YOURSELF
+							H.CharRecords.mentoring = M.real_name
+							var/remembered_info = "<b>Your assigned intern for this shift is:</b> [M.real_name].<br>"
+							alert("REMEMBER: You are currently mentoring someone! [remembered_info]")
+							H.mind.store_memory(remembered_info)
+							to_chat(H, "<span class='notice'>[remembered_info] ((Remember that you must actually teach and help! Opt-out otherwise!))</span")
+							calculate_bonus_credit(H, 0, 12)
+							remembered_info = "<b>Your mentor for this shift is:</b> [H.real_name].<br>"
+							M.mind.store_memory(remembered_info)
+							to_chat(M, "<span class='notice'>[remembered_info]</span")
+						else
+							return 1
 	return 1
 
 /datum/controller/gameticker
@@ -304,8 +334,8 @@ var/global/datum/controller/gameticker/ticker
 		var/captainless=1
 		for(var/mob/living/carbon/human/player in GLOB.player_list)
 			player.client.prefs.load_character()
-			calculate_department_rank(player)
 			player.CharRecords = new(player)
+			calculate_department_rank(player)
 			if(player.mind && player.mind.assigned_role)
 				if(player.mind.assigned_role == "Captain")
 					captainless=0
@@ -412,6 +442,7 @@ var/global/datum/controller/gameticker/ticker
 	for(var/client/C in GLOB.clients)
 		if(!C.credits)
 			C.RollCredits()
+	handle_bank_accounts(0)
 	for(var/mob/Player in GLOB.player_list)
 		if(Player.mind && !isnewplayer(Player))
 			if(Player.stat != DEAD)
@@ -427,35 +458,17 @@ var/global/datum/controller/gameticker/ticker
 					to_chat(Player, "<font color='green'><b>You remain operational after the events on [station_name()] as [Player.real_name].</b></font>")
 				else
 					to_chat(Player, "<font color='blue'><b>You got through just another workday on [station_name()] as [Player.real_name].</b></font>")
-				calculate_paycheck(Player, add = 1, roundend = 1)
+				calculate_paycheck(Player, 1, 1)
 			else
 				if(isghost(Player))
 					var/mob/observer/ghost/O = Player
 					if(!O.started_as_observer)
+						Check_Death(O)
 						to_chat(Player, "<font color='red'><b>You did not survive the events on [station_name()]...</b></font>")
 				else
+					Check_Death(Player)
 					to_chat(Player, "<font color='red'><b>You did not survive the events on [station_name()]...</b></font>")
 	to_world("<br>")
-
-	for(var/mob/living/carbon/human/H in GLOB.player_list)
-		if(H.stat == DEAD && H.CharRecords.permadeath == 1)
-			if(H.CharRecords.neurallaces >= 1) //If neural lace is found, remove 1 and proceed.
-				to_chat(H, "<font color='green'><b>Your corpse has been taken back and has been cloned using a neural lace!</b></font>")
-				H.CharRecords.neurallaces--
-			else if(!H.CharRecords.neurallaces) //Has none
-				if(H.CharRecords.pension_balance >= REVIVEPRICE)
-					H.CharRecords.pension_balance -= REVIVEPRICE
-					to_chat(H, "<font color='green'><b>Your corpse has been taken back has been cloned using a new neural lace! (-[REVIVEPRICE] credits)</b></font>")
-					continue
-				else if(H.CharRecords.pension_balance+H.CharRecords.bank_balance >= REVIVEPRICE)
-					var/leftover = REVIVEPRICE-H.CharRecords.pension_balance
-					H.CharRecords.bank_balance -= leftover
-					to_chat(H, "<font color='green'><b>Your corpse has been taken back has been cloned using a new neural lace! (-[REVIVEPRICE] credits)</b></font>")
-					continue
-			else
-				H.client.prefs.load_character(-1)
-				sleep(2) //Make settings go.
-				H.client.prefs.save_character()
 
 	for (var/mob/living/silicon/ai/aiPlayer in SSmobs.mob_list)
 		if (aiPlayer.stat != 2)
@@ -498,8 +511,8 @@ var/global/datum/controller/gameticker/ticker
 	if(all_money_accounts.len)
 		var/datum/money_account/max_profit = all_money_accounts[1]
 		var/datum/money_account/max_loss = all_money_accounts[1]
-		for(var/datum/money_account/D in all_money_accounts)
-			if(D == vendor_account) //yes we know you get lots of money
+		for(var/datum/money_account/D in bank_accounts)
+			if(D.department == "Logistics") //yes we know you get lots of money
 				continue
 			var/saldo = D.get_balance()
 			if(saldo >= max_profit.get_balance())
@@ -532,6 +545,42 @@ var/global/datum/controller/gameticker/ticker
 		log_game("[i]s[total_antagonists[i]].")
 
 	return 1
+
+/datum/controller/gameticker/proc/Check_Death(var/mob/Target)
+	var/image/cross = image('icons/obj/storage.dmi',"bible")
+	var/isdead = 0 //If dead, we will lock the char. Easier to use a variable.
+	if(Target.client.prefs.permadeath && !Target.mind.is_targeted)
+		var/mob/living/carbon/human/H = Target.mind.original
+//		var/datum/ntprofile/H = Target.mind.original:CharRecords
+		if(!H.CharRecords.neurallaces) //If not initialized, do so now. Otherwise breaks. Idk. ~L
+			H.CharRecords.neurallaces = 0
+			isdead = 1
+		if(H.CharRecords.neurallaces > 0) //If neural lace is found, remove 1 and proceed.
+			to_chat(Target, "<font color='green'><b>Your corpse has been taken back and has been cloned using your neural lace!</b></font>")
+			H.CharRecords.neurallaces--
+			isdead = 0
+			return
+		if(!H.CharRecords.neurallaces) //Has none
+			var/totalprice = REVIVEPRICE+250 //Extra pay for not having one, ye shite.
+			if(H.CharRecords.pension_balance >= totalprice)
+				H.CharRecords.pension_balance -= totalprice
+				to_chat(Target, "<font color='green'><b>Your corpse has been taken back has been cloned using a new neural lace! (-[totalprice] credits)</b></font>")
+				isdead = 0
+			else if((H.CharRecords.pension_balance+H.CharRecords.bank_account.bank_balance) >= totalprice)
+				var/leftover = REVIVEPRICE-H.CharRecords.pension_balance
+				H.CharRecords.bank_account.bank_balance -= leftover
+				to_chat(Target, "<font color='green'><b>Your corpse has been taken back has been cloned using a new neural lace! (-[totalprice] credits)</b></font>")
+				isdead = 0
+			else
+				isdead = 1
+		if(isdead == 1)
+			to_chat(Target, "<font color='warning'><b>You did not have a neural lace and you couldn't afford one.. Rest in Peace [H.real_name]..</b></font>")
+			Target.client.prefs.char_dead = 1
+			Target.client.prefs.char_deadsince = world.realtime //Death time saved.
+			sleep(5) //Make settings go.
+			Target.client.prefs.save_character()
+//			H.CharRecords.Reset_Profile() ~Auto deleted in 3 days, no need for this now.
+			to_world("<font color='grey'><b>\icon[cross][H.real_name] (Aged [H.age]) has died aboard the [station_name()]. May his soul rest in peace.</b></font>")
 
 /datum/controller/gameticker/proc/attempt_late_antag_spawn(var/list/antag_choices)
 	var/datum/antagonist/antag = antag_choices[1]

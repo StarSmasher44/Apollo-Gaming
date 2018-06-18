@@ -70,7 +70,7 @@
 /datum/job/proc/setup_account(var/mob/living/carbon/human/H)
 	if(!account_allowed || (H.mind && H.mind.initial_account))
 		return
-
+/*
 	var/loyalty = 1
 	if(H.client)
 		switch(H.client.prefs.nanotrasen_relation)
@@ -85,23 +85,29 @@
 		return //some bizarre species like shadow, slime, or monkey? You don't get an account.
 
 	var/species_modifier = economic_species_modifier[H.species.type]
-
-	var/money_amount = (rand(5,50) + rand(5, 50)) * loyalty * economic_modifier * species_modifier * GLOB.using_map.salary_modifier
-	var/datum/money_account/M = create_account(H.real_name, money_amount, null)
+*/
+	if(!H.CharRecords)
+		world << "No CharRecords found for [H], [src], please inform laser he forgot something"
+	var/datum/money_account/M = H.CharRecords.bank_account
+	if(!M)
+		H.CharRecords.check_bank_account()
 	if(H.mind)
 		var/remembered_info = ""
 		remembered_info += "<b>Your account number is:</b> #[M.account_number]<br>"
-		remembered_info += "<b>Your account pin is:</b> [M.remote_access_pin]<br>"
-		remembered_info += "<b>Your account funds are:</b> T[M.money]<br>"
-
-		if(M.transaction_log.len)
-			var/datum/transaction/T = M.transaction_log[1]
+		remembered_info += "<b>Your account pin is:</b> [M.account_pin]<br>"
+		remembered_info += "<b>Your account funds are:</b> T[H.CharRecords.bank_account.bank_balance]<br>"
+		LAZYINITLIST(M.transaction_log)
+		var/datum/transaction/T = M.transaction_log[1]
+		if(T)
 			remembered_info += "<b>Your account was created:</b> [T.time], [T.date] at [T.source_terminal]<br>"
 		H.mind.store_memory(remembered_info)
 
 		H.mind.initial_account = M
+		for(var/obj/item/weapon/card/id/ID in H.contents)
+			if(ID)
+				ID.associated_account_number = M.account_number
 
-	to_chat(H, "<span class='notice'><b>Your account number is: [M.account_number], your account pin is: [M.remote_access_pin]</b></span>")
+	to_chat(H, "<span class='notice'><b>Your account number is: [M.account_number], your account pin is: [M.account_pin]</b></span>")
 
 // overrideable separately so AIs/borgs can have cardborg hats without unneccessary new()/qdel()
 /datum/job/proc/equip_preview(mob/living/carbon/human/H, var/alt_title, var/datum/mil_branch/branch)
@@ -181,12 +187,24 @@
 	else
 		return 0
 
-/datum/job/proc/is_valid_department(var/dept_flag)
-	if(dept_flag == department_flag || dept_flag == department)
+/datum/job/proc/is_valid_department(var/dept_flag, var/mob/user)
+	if(dept_flag == department_flag)
 		return 1
+	else if(user && user.client && user.client.prefs.char_department == dept_flag)
+		if(ishuman(user))
+			var/mob/living/carbon/human/H = user
+			if(H)
+				if(department_flag2 & COM && H.client.prefs.promoted == 4)
+					return 1 // Command flag but different department is usually department head.
+				else
+					return 0
+			else
+				if(department_flag2 & COM && user.client.prefs.promoted == 4)
+					return 1 // Command flag but different department is usually department head.
+				else
+					return 0
 	else
 		return 0
-
 /**
  *  Check if people with given rank are allowed in this job
  *
@@ -231,17 +249,17 @@
 		res += initial(R.name)
 	return english_list(res)
 
-/proc/get_department(var/department_flag, var/bit)
+/proc/get_department(var/department_flag, var/bit) //bit changes from text to bit, 1=returns text form, 0=returns bit form
 	if(!department_flag) return null
 	switch(bit)
 		if(1)
 			switch(department_flag)
-				if(COM)
-					return "Command"
 				if(SEC)
 					return "Security"
 				if(SCI)
 					return "Science"
+				if(LOG)
+					return "Logistics"
 				if(ENG)
 					return "Engineering"
 				if(SRV)
@@ -250,19 +268,27 @@
 					return "Civilian"
 				if(MED)
 					return "Medical"
+				if(NTO)
+					return "NanoTrasen"
+				if(COM)
+					return "Command"
 		if(0)
 			switch(department_flag)
-				if("Command")
-					return COM
 				if("Security")
 					return SEC
 				if("Science")
 					return SCI
 				if("Engineering")
 					return ENG
+				if("Logistics")
+					return LOG
 				if("Service")
 					return SRV
 				if("Civilian")
 					return CIV
 				if("Medical")
 					return MED
+				if("NanoTrasen")
+					return NTO
+				if("Command")
+					return COM

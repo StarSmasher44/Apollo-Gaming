@@ -28,6 +28,8 @@ datum/objective
 				possible_targets += possible_target
 		if(possible_targets.len > 0)
 			target = pick(possible_targets)
+		if(target)
+			target.is_targeted = 1
 
 
 	proc/find_target_by_role(role, role_type=0)//Option sets either to check assigned role or special role. Default to assigned.
@@ -35,7 +37,8 @@ datum/objective
 			if((possible_target != owner) && ishuman(possible_target.current) && ((role_type ? possible_target.special_role : possible_target.assigned_role) == role) )
 				target = possible_target
 				break
-
+		if(target)
+			target.is_targeted = 1
 
 
 datum/objective/assassinate

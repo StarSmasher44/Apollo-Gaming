@@ -11,8 +11,10 @@
 	var/list/player_alt_titles // the default name of a job like "Medical Doctor"
 	var/char_branch	= "None"   // military branch
 	var/char_rank = "None"     // military rank
-	var/prefs_department = "Service" //Department of choice, also saved in NT Profile
-	var/prefs_command = 0 //Eligible for command roles? Also saved in NT profile.
+//	var/prefs_department = "Service" //Department of choice, also saved in NT Profile
+	var/promoted = 0 //Eligible for command roles? Also saved in NT profile. NOT ANYMORE.. ITS NOT.
+	var/ntallowed = 0 //Allowed to play as the NT roles.
+	var/char_department = SRV
 
 	//Keeps track of preferrence for not getting any wanted jobs
 	var/alternate_option = 2
@@ -28,11 +30,15 @@
 	S["job_low"]           >> pref.job_low
 	S["player_alt_titles"] >> pref.player_alt_titles
 	S["char_branch"]       >> pref.char_branch
-	S["prefs_department"]  >> pref.prefs_department
-	if(!pref.prefs_department)
-		pref.prefs_department = initial(pref.prefs_department) // Oops
-	S["prefs_command"]     >> pref.prefs_command
+//	S["prefs_department"]  >> pref.prefs_department
+//	if(!pref.prefs_department)
+//		pref.prefs_department = initial(pref.prefs_department) // Oops
+	S["promoted"]     >> pref.promoted
 	S["char_rank"]         >> pref.char_rank
+	S["nanotrasen_official"] >> pref.ntallowed
+	S["char_department"]     >> pref.char_department
+	if(!pref.char_department)
+		pref.char_department = initial(pref.char_department)
 
 /datum/category_item/player_setup_item/occupation/save_character(var/savefile/S)
 	S["alternate_option"]  << pref.alternate_option
@@ -40,11 +46,12 @@
 	S["job_medium"]        << pref.job_medium
 	S["job_low"]           << pref.job_low
 	S["player_alt_titles"] << pref.player_alt_titles
+	S["promoted"]     << pref.promoted
 	S["char_branch"]       << pref.char_branch
 	S["char_rank"]         << pref.char_rank
-	if(pref.prefs_department)
-		S["prefs_department"]  << pref.prefs_department
-	S["prefs_command"]     << pref.prefs_command
+	if(pref.char_department)
+		S["char_department"]  << pref.char_department
+	S["nanotrasen_official"] << pref.ntallowed
 
 /datum/category_item/player_setup_item/occupation/sanitize_character()
 	if(!istype(pref.job_medium)) pref.job_medium = list()
@@ -84,10 +91,17 @@
 	. += "<tt><center>"
 	. += "<b>Choose occupation chances</b><br>Unavailable occupations are crossed out.<br>"
 //	if(GLOB.using_map.flags & MAP_HAS_BRANCH)
-
+	if(pref.char_dead)
+		. += "<b>Character is deceased, unable to continue.</b><br>"
+		. += "<i>(Character died [round((world.realtime - pref.char_deadsince) / 864000, 0.1)] Days Ago)</i>"
+		. = jointext(.,null)
+		return
 //		player_branch = mil_branches.get_branch(pref.char_branch)
+	if(pref.char_lock)
+		. += "Department of Service: [get_department(user.client.prefs.char_department, 1)]<br>"
+	else
+		. += "Department of Service: <a href='?src=\ref[src];char_dept=1'>[get_department(user.client.prefs.char_department, 1)]</a>	"
 
-	. += "Department of Service: <a href='?src=\ref[src];char_dept=1'>[user.client.prefs.prefs_department]</a>	"
 	if(GLOB.using_map.flags & MAP_HAS_RANK)
 		player_rank = mil_branches.get_rank(pref.char_branch, pref.char_rank)
 
@@ -134,8 +148,22 @@
 		if(!job.is_species_allowed(S))
 			. += "<del>[rank]</del></td><td><b> \[SPECIES RESTRICTED]</b></td></tr>"
 			continue
-		if(!job.is_valid_department(get_department(user.client.prefs.prefs_department, 0)))
-			. += "<del>[rank]</del></td><td><a href='?src=\ref[src];show_branches=[rank]'><b> \[NOT FOR [user.client.prefs.prefs_department]]</b></a></td></tr>"
+
+		//Check if its even the right department, if not fuck off.
+		if(!job.is_valid_department(user.client.prefs.char_department, user))
+			. += "<del>[rank]</del></td><td><a href='?src=\ref[src];show_branches=[rank]'><b> \[NOT FOR [get_department(user.client.prefs.char_department, 1)]]</b></a></td></tr>"
+			continue
+		//If commanding role, but no head. fuck off too.
+		if(job.department_flag & COM || job.department_flag2 & COM && user.client.prefs.promoted != JOB_LEVEL_HEAD)
+			. += "<del>[rank]</del></td><td><a href='?src=\ref[src];show_branches=[rank]'><b> \[NO CLEARANCE FOR HEAD RANK]</b></a></td></tr>"
+			continue
+		//If the Job aint intern, but the guy is, fuck off especially right quick.
+
+		if(!job.intern && !user.client.prefs.promoted && job.department_flag & ~SRV && job.department_flag & ~MSC) //If the job isn't intern but the player is, can't go.
+			. += "<del>[rank]</del></td><td><a href='?src=\ref[src];show_branches=[rank]'><b> \[INTERN NEEDED FOR FIRST ROUNDS]</b></a></td></tr>"
+			continue
+		if(job.intern && user.client.prefs.promoted >= 2)
+			. += "<del>[rank]</del></td><td><a href='?src=\ref[src];show_branches=[rank]'><b> \[TOO HIGH RANK FOR INTERN]</b></a></td></tr>"
 			continue
 //		if(job.allowed_branches)
 //			if(!player_branch)
@@ -235,9 +263,14 @@
 			return TOPIC_REFRESH
 */
 	else if(href_list["char_dept"])
-		var/new_department = input(user, "Select the department your character wishes to enlist in","Department enlistment") in list("Security","Medical","Engineering","Service","Science","Supply")
+		var/list/alloweddepts = list("Security","Medical","Engineering","Service","Science","Logistics")
+		if(pref.ntallowed)
+			alloweddepts.Add("NanoTrasen")
+		if(pref.char_department & COM) //If head unlocked, unlock cappy and HoP too.
+			alloweddepts.Add("Command")
+		var/new_department = input(user, "Select the department your character wishes to enlist in","Department enlistment") in alloweddepts
 		pref.char_rank = "None"
-		pref.prefs_department = new_department
+		pref.char_department = get_department(new_department, 0)
 		prune_job_prefs()
 		return TOPIC_REFRESH
 

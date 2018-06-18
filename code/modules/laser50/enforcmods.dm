@@ -8,6 +8,7 @@ var/datum/enforcingmods/enfmods
 
 /datum/enforcingmods/proc/CheckScore()
 	var/afk_admins = 0
+	max_enfmods = 1 + (GLOB.clients.len / 10) //Always 1 Enf mod, plus 1 per 10 players.
 	for(var/client/C in GLOB.admins)
 		if(check_rights((R_ADMIN|R_MOD),0,C))
 			if(C.is_afk(9000)) // More than 15 minutes of AFK time = Really AFK
@@ -26,7 +27,7 @@ var/datum/enforcingmods/enfmods
 	else if(admplayratio >= 10)
 		modscore -= admplayratio*5
 	modscore -= active_enfmods*5
-	if(modscore >= 25)
+	if(modscore >= 50)
 		selectenfmods()
 	spawn(18000)
 		CheckScore()
@@ -42,30 +43,32 @@ var/datum/enforcingmods/enfmods
 					modsneeded = pick(1, 2)
 				if(75 to 200)
 					modsneeded = pick(1, 2, 3)
-			world << "Mods list is [enforcingmods.len] long."
 			var/list/acceptedinvites = list()
 			for(var/client/C in enforcingmods)
 				if(C.is_afk(6000))
 					continue
 				if(C.mob && C.mob.mind.special_role)
 					continue // Skip Antags too.
-				world << "Chose [C]"
+				if(C.holder)
+					continue //Is already staff of some kind, ignore too.
 				switch(alert(C, "Would you like to become an enforcing moderator this round?","Enforcing Moderator","Yes","No"))
 					if("Yes")
 						acceptedinvites.Add(C)
 					if("No")
 						enforcingmods.Remove(C)
 
-			for(var/client/C in acceptedinvites)
-				while(modsneeded)
-					var/datum/admins/D = new /datum/admins("Enforcing Moderator",R_MOD,C)
-					D.associate(C)											//link up with the client and add verbs
-					C.holder.associate(src)
-					message_admins("[C.key] has been auto-modded based on score ([modscore])")
-					modsneeded--
-					active_enfmods++
+			while(modsneeded)
+				if(!acceptedinvites || !acceptedinvites.len)	break //No-one? :'(
+				var/client/C = pick(acceptedinvites)
+				var/datum/admins/D = new /datum/admins("Enforcing Moderator",R_MOD,C)
+				D.associate(C)											//link up with the client and add verbs
+				C.holder.associate(src)
+				message_admins("[C.key] has been auto-modded based on score ([modscore])")
+				modsneeded--
+				active_enfmods++
 			modscore = 0
 
+/* ~Debug code.
 /client/verb/SetModScore()
 	set name = "Set mod score"
 	enfmods.modscore = input("Choose score") as num
@@ -79,3 +82,4 @@ var/datum/enforcingmods/enfmods
 	var/client/C = input("Add who?", "Enf Mod") in GLOB.clients
 	if(C)
 		enfmods.enforcingmods.Add(C)
+*/

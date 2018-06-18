@@ -362,6 +362,8 @@
 
 	if (source_area)
 		source_area.use_power(drained_energy/CELLRATE)
+		if(prob(50))
+			source_area.flicker_lights()
 	else if (istype(power_source,/datum/powernet))
 		var/drained_power = drained_energy/CELLRATE
 		drained_power = PN.draw_power(drained_power)

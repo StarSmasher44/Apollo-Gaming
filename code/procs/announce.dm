@@ -125,8 +125,8 @@ datum/announcement/proc/NewsCast(message as text, message_title as text)
 
 	if(job.department_flag & (COM | CIV | MSC))
 		return "Common"
-	if(job.department_flag & SUP)
-		return "Supply"
+	if(job.department_flag & LOG)
+		return "Logistics"
 	if(job.department_flag & SPT)
 		return "Command"
 	if(job.department_flag & SEC)
@@ -141,4 +141,6 @@ datum/announcement/proc/NewsCast(message as text, message_title as text)
 		return "Service"
 	if(job.department_flag & EXP)
 		return "Exploration"
+	if(job.department_flag & NTO)
+		return "Nanotrasen"
 	return "Common"

@@ -41,7 +41,8 @@
 /datum/job/qm
 	title = "Head of Logistics"
 	department = "Logistics"
-	department_flag = COM|LOG
+	department_flag = LOG
+	department_flag2 = COM
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the head of personnel"

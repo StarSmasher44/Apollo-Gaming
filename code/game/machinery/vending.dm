@@ -137,9 +137,7 @@
 				return
 		if(3.0)
 			if (prob(25))
-				spawn(0)
-					src.malfunction()
-					return
+				src.malfunction()
 				return
 		else
 	return
@@ -151,10 +149,10 @@
 		return 1
 
 /obj/machinery/vending/attackby(obj/item/weapon/W as obj, mob/user as mob)
-
+	var/datum/money_account/Logbank = department_accounts["Logistics"]
 	var/obj/item/weapon/card/id/I = W.GetIdCard()
 
-	if (currently_vending && vendor_account && !vendor_account.suspended)
+	if (currently_vending && Logbank && !Logbank.suspended)
 		var/paid = 0
 		var/handled = 0
 
@@ -175,7 +173,7 @@
 			return
 		else if(handled)
 			GLOB.nanomanager.update_uis(src)
-			return // don't smack that machine with your 2 thalers
+			return // don't smack that machine with your 2 Credits
 
 	if (I || istype(W, /obj/item/weapon/spacecash))
 		attack_hand(user)
@@ -268,11 +266,17 @@
  * successful, 0 if failed
  */
 /obj/machinery/vending/proc/pay_with_card(var/obj/item/weapon/card/id/I, var/obj/item/ID_container)
+	var/datum/money_account/Logbank = department_accounts["Logistics"]
 	if(I==ID_container || ID_container == null)
 		visible_message("<span class='info'>\The [usr] swipes \the [I] through \the [src].</span>")
 	else
 		visible_message("<span class='info'>\The [usr] swipes \the [ID_container] through \the [src].</span>")
 	var/datum/money_account/customer_account = get_account(I.associated_account_number)
+	var/mob/living/carbon/human/H
+	if(!customer_account && ishuman(usr))
+		H = usr
+	if(H)
+		customer_account = H.CharRecords.bank_account
 	if (!customer_account)
 		src.status_message = "Error: Unable to access account. Please contact technical support if problem persists."
 		src.status_error = 1
@@ -294,13 +298,13 @@
 			src.status_error = 1
 			return 0
 
-	if(currently_vending.price > customer_account.money)
+	if(currently_vending.price > customer_account.bank_balance)
 		src.status_message = "Insufficient funds in account."
 		src.status_error = 1
 		return 0
 	else
 		// Okay to move the money at this point
-		var/datum/transaction/T = new("[vendor_account.owner_name] (via [name])", "Purchase of [currently_vending.item_name]", -currently_vending.price, name)
+		var/datum/transaction/T = new("[Logbank.owner_name] (via [name])", "Purchase of [currently_vending.item_name]", -currently_vending.price, name)
 
 		customer_account.do_transaction(T)
 
@@ -315,11 +319,12 @@
  *
  *  Called after the money has already been taken from the customer.
  */
+ #warn Vendor Account removed. Don't forget.
 /obj/machinery/vending/proc/credit_purchase(var/target as text)
-	vendor_account.money += currently_vending.price
+	var/datum/money_account/Logbank = department_accounts["Logistics"]
 
 	var/datum/transaction/T = new(target, "Purchase of [currently_vending.item_name]", currently_vending.price, name)
-	vendor_account.do_transaction(T)
+	Logbank.do_transaction(T)
 
 /obj/machinery/vending/attack_ai(mob/user as mob)
 	return attack_hand(user)
@@ -423,8 +428,12 @@
 				to_chat(usr, "<span class='danger'>Artificial unit recognized.  Artificial units cannot complete this transaction.  Purchase canceled.</span>")
 				return
 			else
+				var/datum/money_account/Logbank
+				for(var/datum/money_account/MA in bank_accounts)
+					if(MA.department == "Logistics")
+						Logbank = MA
 				src.currently_vending = R
-				if(!vendor_account || vendor_account.suspended)
+				if(!Logbank || Logbank.suspended)
 					src.status_message = "This machine is currently unable to process payments due to problems with the associated account."
 					src.status_error = 1
 				else

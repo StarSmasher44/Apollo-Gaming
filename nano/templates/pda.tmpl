@@ -290,13 +290,26 @@ Used In File(s): \code\game\objects\items\devices\PDA\PDA.dm
 					{{if data.ntprofile.permadeath == 1}}
 						<span class="average">Contract Type: External (Uninsured)</span><br>
 						<span class="average">Neural Laces: {{:data.ntprofile.neurallaces}}</span><br>
-						<span class="average">{{:helper.link('Buy Neural Lace $2,500', 'star', {'choice' : "Neurallace"}, null)}}</span><br>
+						<span class="average">{{:helper.link('Buy Neural Lace $3,000', 'star', {'choice' : "Neurallace"}, null)}}</span><br>
 					{{/if}}
 					<span class="average">Contract Type: Life-Time (NT-Insured)</span><br>
 					<span class="average">Base hourly rate: {{:data.ntprofile.basepay}}</span><br>
 					<span class="average">Approximate gross income: {{:data.ntprofile.paycheck}}</span><br>
 					<span class="average">Recommendations: {{:data.ntprofile.recommendations}}</span><br>
+					<hr>
 				</div>
+				<div class = "itemLabel">
+					<b>NT Mentor Program:</b>
+				</div>
+				<div class = "itemContent">
+					<span class="average">Mentor Status: {{:data.ntprofile.mentorship}}</span><br>
+					{{if data.ntprofile.mentorship == 1}}
+						<span class="average">Financial Compensation: $100 Credits per shift</span><br>
+						<span class="average">Assigned Intern: {{:data.ntprofile.mentoring}}</span><br>
+					{{/if}}
+					<span class="average">{{:helper.link('Opt In/Opt Out Mentor program', 'star', {'choice' : "optmentor"}, null)}}</span><br>
+				</div>
+
                 <div class="itemLabel">
                     <b>Financial Information:</b>
                 </div>

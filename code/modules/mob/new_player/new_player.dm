@@ -7,6 +7,7 @@
 	var/totalPlayersReady = 0
 	var/datum/browser/panel
 	var/show_invalid_jobs = 0
+	var/old_name = ""			// Saves old char name, useful for making sure to track names.
 	universal_speak = 1
 
 	invisibility = 101
@@ -33,22 +34,24 @@
 	output += "<p><a href='byond://?src=\ref[src];show_preferences=1'>Setup Character</A></p>"
 
 	if(!ticker || ticker.current_state <= GAME_STATE_PREGAME)
-		if(client.prefs.char_lock)
+		if(client.prefs.char_dead)
+			output += "<p> <span style='color:red'>Character dead, can't join.</font> </p>"
+		if(client.prefs.char_lock && !client.prefs.char_dead)
 			if(ready)
 				output += "<p>\[ <span class='linkOn'><b>Ready</b></span> | <a href='byond://?src=\ref[src];ready=0'>Not Ready</a> \]</p>"
 			else
 				output += "<p>\[ <a href='byond://?src=\ref[src];ready=1'>Ready</a> | <span class='linkOn'><b>Not Ready</b></span> \]</p>"
-		else
+		else if(!client.prefs.char_lock && !client.prefs.char_dead)
 			output +="<p> <span class='link'>Lock Char to Ready</span> </p>"
-
 
 	else
 		output += "<p><a href='byond://?src=\ref[src];manifest=1'>View the Crew Manifest</A></p>"
-		if(client.prefs.char_lock)
+		if(client.prefs.char_dead)
+			output += "<p> <span style='color:red'>Character dead, can't join.</font> </p>"
+		else if(client.prefs.char_lock)
 			output += "<p><a href='byond://?src=\ref[src];late_join=1'>Join Game!</A></p>"
-		else
+		else if(!client.prefs.char_lock)
 			output += "<p> <span class='link'>Lock Char to Join</span> </p>"
-
 	output += "<p><a href='byond://?src=\ref[src];observe=1'>Observe</A></p>"
 /*
 	if(!IsGuestKey(src.key))
@@ -153,7 +156,7 @@
 			if(isnull(client.holder))
 				announce_ghost_joinleave(src)
 
-			var/mob/living/carbon/human/dummy/mannequin = new()
+			var/mob/living/carbon/human/dummy/mannequin = get_mannequin(client.ckey)
 			client.prefs.dress_preview_mob(mannequin)
 			observer.set_appearance(mannequin)
 			qdel(mannequin)
@@ -175,6 +178,7 @@
 			LateChoices() //show the latejoin job selection menu
 		else
 			panel.close()
+			stoplag(1)
 			new_player_panel_proc()
 
 
@@ -343,12 +347,21 @@
 //	if(!job.is_branch_allowed(client.mob:CharRecords.char_department))
 //		alert("Wrong branch of service for [job.title]. Valid branches is: [job.department].")
 //		return 0
-	if(!job.is_valid_department(get_department(client.prefs.prefs_department, 0)))
-		alert("Wrong branch of service for [job.title]. Valid branches is: [client.prefs.prefs_department].")
+	if(!job.is_valid_department(src.client.prefs.char_department, src))
+		alert("Wrong branch of service for [job.title]. Valid branch is: [get_department(client.prefs.char_department, 1)].")
 		return 0
-	if(!job.is_rank_allowed(client.prefs.char_branch, client.prefs.char_rank))
-		alert("Wrong rank for [job.title]. Valid ranks in [client.prefs.char_branch] are: [job.get_ranks(client.prefs.char_branch)].")
+//		if(!job.is_valid_department(src.client.prefs.char_department, src))
+
+//	if(!job.is_rank_allowed(client.prefs.char_branch, client.prefs.char_rank))
+//		alert("Wrong rank for [job.title]. Valid ranks in [client.prefs.char_branch] are: [job.get_ranks(client.prefs.char_branch)].")
+//		return 0
+	if(client.prefs.char_dead)
+		alert("Your character is dead and is not playable. Please select a new character.")
 		return 0
+	if(old_name == client.prefs.real_name)
+		alert("You can't return as the character you died as! Please choose another character.")
+		return 0
+
 
 	var/datum/spawnpoint/spawnpoint = job_master.get_spawnpoint_for(client, job.title)
 	var/turf/spawn_turf = pick(spawnpoint.turfs)
@@ -378,10 +391,11 @@
 	if(!character)
 		return 0
 
+	character:CharRecords = new(character)
+
 	character = job_master.EquipRank(character, job.title, 1)					//equips the human
 	equip_custom_items(character)
 
-	character:CharRecords = new(character)
 
 	// AIs don't need a spawnpoint, they must spawn at an empty core
 	if(character.mind.assigned_role == "AI")
@@ -446,13 +460,16 @@
 		if(job && IsJobAvailable(job))
 			if(job.minimum_character_age && (client.prefs.age < job.minimum_character_age))
 				continue
-
+			if(job.department_flag & COM || job.department_flag2 & COM && client.prefs.promoted != JOB_LEVEL_HEAD)
+				continue
+			if(!job.intern && !client.prefs.promoted && job.department_flag & ~SRV && job.department_flag & ~MSC) //If the job isn't intern but the player is, can't go.
+				continue
 			var/active = 0
 			// Only players with the job assigned and AFK for less than 10 minutes count as active
 			for(var/mob/M in GLOB.player_list) if(M.mind && M.client && M.mind.assigned_role == job.title && M.client.inactivity <= 10 * 60 * 10)
 				active++
 
-			if(!job.is_valid_department(get_department(src.client.prefs.prefs_department, 0)))
+			if(!job.is_valid_department(src.client.prefs.char_department, src))
 				if(show_invalid_jobs)
 					dat += "<tr><td><a style='text-decoration: line-through' href='byond://?src=\ref[src];SelectedJob=[job.title]'>[job.title]</a></td><td>[job.current_positions]</td><td>(Active: [active])</td></tr>"
 			else
