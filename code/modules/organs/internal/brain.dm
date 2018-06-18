@@ -143,7 +143,7 @@
 				alert(owner, "You have taken massive brain damage! You will not be able to remember the events leading up to your injury.", "Brain Damaged")
 			healed_threshold = 0
 
-		if(damage < (max_damage / 4))
+		if(damage < (max_damage / 3))
 			healed_threshold = 1
 
 		if(owner.paralysis < 1) // Skip it if we're already down.
@@ -193,25 +193,28 @@
 
 				if(BLOOD_VOLUME_SAFE to INFINITY)
 					if(can_heal)
-						if(prob(1)) //Not always heal. ~L: Set to 1 because brain damage doesn't fix itself bro..
+						if(owner.chem_effects[CE_BRAIN_REGEN] && prob(33))
 							damage--
+						else
+							if(prob(3)) //Not always heal. ~L: Set to 3 because brain damage doesn't fix itself bro..
+								damage--
 				if(BLOOD_VOLUME_OKAY to BLOOD_VOLUME_SAFE)
 					if(prob(1))
 						to_chat(owner, "<span class='warning'>You feel [pick("dizzy","woozy","faint")]...</span>")
-					damprob = owner.chem_effects[CE_STABLE] ? 30 : 60
+					damprob = owner.chem_effects[CE_STABLE] ? 25 : 50
 					if(!past_damage_threshold(2) && prob(damprob))
 						take_damage(1)
 				if(BLOOD_VOLUME_BAD to BLOOD_VOLUME_OKAY)
 					owner.eye_blurry = max(owner.eye_blurry,6)
-					damprob = owner.chem_effects[CE_STABLE] ? 40 : 80
+					damprob = owner.chem_effects[CE_STABLE] ? 35 : 70
 					if(!past_damage_threshold(4) && prob(damprob))
 						take_damage(1)
 					if(!owner.paralysis && prob(10))
-						owner.Paralyse(rand(1,3))
+						owner.Paralyse(rand(1,2))
 						to_chat(owner, "<span class='warning'>You feel extremely [pick("dizzy","woozy","faint")]...</span>")
 				if(BLOOD_VOLUME_SURVIVE to BLOOD_VOLUME_BAD)
 					owner.eye_blurry = max(owner.eye_blurry,6)
-					damprob = owner.chem_effects[CE_STABLE] ? 60 : 100
+					damprob = owner.chem_effects[CE_STABLE] ? 60 : 90
 					if(!past_damage_threshold(6) && prob(damprob))
 						take_damage(rand(1, 3))
 					if(!owner.paralysis && prob(15))
@@ -219,7 +222,7 @@
 						to_chat(owner, "<span class='warning'>You feel extremely [pick("dizzy","woozy","faint")]...</span>")
 				if(-(INFINITY) to BLOOD_VOLUME_SURVIVE) // Also see heart.dm, being below this point puts you into cardiac arrest.
 					owner.eye_blurry = max(owner.eye_blurry,6)
-					damprob = owner.chem_effects[CE_STABLE] ? 80 : 100
+					damprob = owner.chem_effects[CE_STABLE] ? 80 : 98
 					if(prob(damprob))
-						take_damage(rand(1, 4))
+						take_damage(rand(1, 3))
 	..()

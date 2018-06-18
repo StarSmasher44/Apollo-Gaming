@@ -468,7 +468,7 @@ var/list/global/slot_flags_enumeration = list(
 
 	admin_attack_log(user, M, "Attacked using \a [src]", "Was attacked with \a [src]", "used \a [src] to attack")
 
-	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN)
+	user.setClickCooldown(DEFAULT_ATTACK_COOLDOWN+4)
 	user.do_attack_animation(M)
 
 	src.add_fingerprint(user)
@@ -496,7 +496,7 @@ var/list/global/slot_flags_enumeration = list(
 				"<span class='danger'>You stab yourself in the eyes with [src]!</span>" \
 			)
 
-		eyes.damage += rand(3,4)
+		eyes.damage += rand(2,4)
 		if(eyes.damage >= eyes.min_bruised_damage)
 			if(M.stat != 2)
 				if(eyes.robotic < ORGAN_ROBOT) //robot eyes bleeding might be a bit silly
@@ -513,9 +513,9 @@ var/list/global/slot_flags_enumeration = list(
 					to_chat(M, "<span class='warning'>You go blind!</span>")
 
 		var/obj/item/organ/external/affecting = H.get_organ(eyes.parent_organ)
-		affecting.take_damage(7)
+		affecting.take_damage(5)
 	else
-		M.take_organ_damage(7)
+		M.take_organ_damage(5)
 	M.eye_blurry += rand(3,4)
 	return
 
