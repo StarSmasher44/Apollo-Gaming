@@ -9,7 +9,17 @@
 
 	if(check_rights(R_INVESTIGATE, 0))
 		for(var/client/C in GLOB.clients)
-			var/entry = "\t[C.key]"
+			var/entry
+			if(check_rights(R_ADMIN, 0, C))
+				entry = "\t<span class='admin'>[create_text_tag("admin", "Admin: ", usr.client)] [C.key]</span>"
+			else if(check_rights(R_MOD, 0, C))
+				entry = "\t<span class='moderator'>[create_text_tag("mod", "Moderator: ", usr.client)] [C.key]</span>"
+			else if(C.donator)
+				entry = "\t<span class='donator[C.donator]'>[create_text_tag("don", "Donator: ", usr.client)] [C.key]</span>"
+			else if(C.ap_veteran)
+				entry = "\t<span class='apveteran'>[create_text_tag("veteran", "Veteran: ", usr.client)] [C.key]</span>"
+			else
+				entry = "\t[create_text_tag("player", "Player: ", usr.client)] [C.key]"
 			if(!C.mob) //If mob is null, print error and skip rest of info for client.
 				entry += " - <font color='red'><i>HAS NO MOB</i></font>"
 				Lines += entry
@@ -46,12 +56,24 @@
 				entry += " - <b><font color='red'>Antagonist</font></b>"
 			if(C.is_afk())
 				entry += " (AFK - [C.inactivity2text()])"
+			for(var/N in ODB.userwatchlist)
+				if(findtext(N, C.key)) //Found this man in the watch list?
+					entry += " <b><font color='red'>(WATCH)</font></b>"
 			entry += " (<A HREF='?_src_=holder;adminmoreinfo=\ref[C.mob]'>?</A>)"
 			Lines += entry
 	else
 		for(var/client/C in GLOB.clients)
 			if(!C.is_stealthed())
-				Lines += C.key
+				if(check_rights(R_ADMIN, 0, C))
+					Lines += "\t<span class='admin'>[create_text_tag("admin", "Admin: ", usr.client)] [C.key]</span>"
+				else if(check_rights(R_MOD, 0, C))
+					Lines += "\t<span class='moderator'>[create_text_tag("mod", "Moderator: ", usr.client)] [C.key]</span>"
+				else if(C.donator)
+					Lines += "\t<span class='donator[C.donator]'>[create_text_tag("don", "Donator: ", usr.client)] [C.key]</span>"
+				else if(C.ap_veteran)
+					Lines += "\t<span clas='apveteran'>[create_text_tag("veteran", "Veteran: ", usr.client)] [C.key]</span>"
+				else
+					Lines += "\t[create_text_tag("player", "Player: ", usr.client)] [C.key]"
 
 	for(var/line in sortList(Lines))
 		msg += "[line]\n"

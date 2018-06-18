@@ -828,6 +828,7 @@ var/global/floorIsLava = 0
 		log_admin("[usr.key] has started the game.")
 		message_admins("<font color='blue'>[usr.key] has started the game.</font>")
 		feedback_add_details("admin_verb","SN") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+		ticker.forced = 1
 		initialization_stage |= INITIALIZATION_NOW
 		return 1
 	else

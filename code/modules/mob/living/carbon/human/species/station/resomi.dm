@@ -26,16 +26,17 @@
 	damage_mask = 'icons/mob/human_races/masks/dam_mask_resomi.dmi'
 	blood_mask = 'icons/mob/human_races/masks/blood_resomi.dmi'
 
-	slowdown = -1
-	total_health = 50
-	brute_mod = 1.35
-	burn_mod =  1.35
+	slowdown = -1.5
+	strength = STR_HIGH
+	total_health = 65
+	brute_mod = 1.20
+	burn_mod =  1.20
 	metabolism_mod = 2.0
 	mob_size = MOB_SMALL
 	holder_type = /obj/item/weapon/holder/human
 	light_sensitive = 6
 	gluttonous = GLUT_TINY
-	blood_volume = 280
+	blood_volume = 320
 	hunger_factor = 0.2
 
 	spawn_flags = SPECIES_CAN_JOIN | SPECIES_IS_WHITELISTED | SPECIES_NO_FBP_CONSTRUCTION | SPECIES_NO_FBP_CHARGEN

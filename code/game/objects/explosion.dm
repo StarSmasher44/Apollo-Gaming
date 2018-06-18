@@ -35,6 +35,7 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 
 	qdel(src)
 	stoplag()
+	var/list/NearbyAreas = GatherAreas(epicenter, max_range)
 
 	// Play sounds; we want sounds to be different depending on distance so we will manually do it ourselves.
 	// Stereo users will also hear the direction of the explosion!
@@ -44,7 +45,8 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 	far_dist += heavy_impact_range * 5
 	far_dist += devastation_range * 20
 	var/frequency = get_rand_frequency()
-	for(var/mob/M in GLOB.player_list)
+	for(var/MO in GLOB.player_list)
+		var/mob/M = MO
 		if(M.z == epicenter.z)
 			var/turf/M_turf = get_turf(M)
 			var/dist = get_dist(M_turf, epicenter)
@@ -55,6 +57,10 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 				var/far_volume = Clamp(far_dist, 30, 50) // Volume is based on explosion size and dist
 				far_volume += (dist <= far_dist * 0.5 ? 50 : 0) // add 50 volume if the mob is pretty close to the explosion
 				M.playsound_local(epicenter, 'sound/effects/explosionfar.ogg', far_volume, 1, frequency, falloff = 5)
+
+	for(var/AR in NearbyAreas)
+		var/area/A = AR
+		A.flicker_lights()
 
 	if(adminlog)
 		message_admins("Explosion with size ([devastation_range], [heavy_impact_range], [light_impact_range]) in area [epicenter.loc.name] ([epicenter.x],[epicenter.y],[epicenter.z]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[epicenter.x];Y=[epicenter.y];Z=[epicenter.z]'>JMP</a>)")
@@ -91,6 +97,7 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 		for(var/TU in .)
 			var/turf/T = TU
 			if (!T)
+				CHECK_TICK
 				continue
 
 			var/dist = sqrt((T.x - x0)**2 + (T.y - y0)**2)
@@ -98,21 +105,23 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 			if(dist < devastation_range)		dist = 1
 			else if(dist < heavy_impact_range)	dist = 2
 			else if(dist < light_impact_range)	dist = 3
-			else								continue
+			else
+				CHECK_TICK
+				continue
 			fireyexplosion(flame_range, T)
-			for(var/atom/movable/AM in T.contents)	//bypass type checking since only atom/movable can be contained by turfs anyway
-				if(AM && AM.simulated)	AM.ex_act(dist)
-
 			T.ex_act(dist)
-			CHECK_TICK2(80)
+			CHECK_TICK
+			if(T)
+				for(var/atom/movable/AM in T.contents)	//bypass type checking since only atom/movable can be contained by turfs anyway
+					if(AM && AM.simulated)
+						AM.ex_act(dist)
+					CHECK_TICK
 
 
 	var/took = (world.timeofday-start)/10
 	//You need to press the DebugGame verb to see these now....they were getting annoying and we've collected a fair bit of data. Just -test- changes  to explosion code using this please so we can compare
 	if(Debug2) world.log << "## DEBUG: Explosion([x0],[y0],[z0])(d[devastation_range],h[heavy_impact_range],l[light_impact_range]): Took [took] seconds."
 	explosion_in_progress = 0
-
-	sleep(8)
 	return 1
 
 
@@ -126,3 +135,11 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 proc/secondaryexplosion(turf/epicenter, range)
 	for(var/turf/tile in spiral_range_turfs(range, epicenter))
 		tile.ex_act(2)
+
+/proc/GatherAreas(var/turf/epicenter, var/range)
+	set waitfor = 0
+	. = list()
+	for(var/area/A in range(epicenter, range*1.5))
+		. += A
+		CHECK_TICK
+	return .

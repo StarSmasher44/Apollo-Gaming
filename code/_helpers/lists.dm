@@ -53,12 +53,52 @@ proc/isemptylist(list/list)
 			return 1
 	return 0
 
+#define is_type_in_typecache(A, L) (A && length(L) && L[(ispath(A) ? A : A:type)])
+/*
+//Checks for specific types in specifically structured (Assoc "type" = TRUE) lists ('typecaches')
+/proc/is_type_in_typecache(atom/A, list/L)
+	if(!LAZYLEN(L) || !A)
+
+		return FALSE
+	if(ispath(A))
+		. = L[A]
+	else
+		. = L[A.type]
+*/
 /proc/instances_of_type_in_list(var/atom/A, var/list/L)
 	var/instances = 0
 	for(var/type in L)
 		if(istype(A, type))
 			instances++
 	return instances
+
+//Like typesof() or subtypesof(), but returns a typecache instead of a list
+/proc/typecacheof(path, ignore_root_path, only_root_path = FALSE)
+	if(ispath(path))
+		var/list/types = list()
+		if(only_root_path)
+			types = list(path)
+		else
+			types = ignore_root_path ? subtypesof(path) : typesof(path)
+		var/list/L = list()
+		for(var/T in types)
+			L[T] = TRUE
+		return L
+	else if(islist(path))
+		var/list/pathlist = path
+		var/list/L = list()
+		if(ignore_root_path)
+			for(var/P in pathlist)
+				for(var/T in subtypesof(P))
+					L[T] = TRUE
+		else
+			for(var/P in pathlist)
+				if(only_root_path)
+					L[P] = TRUE
+				else
+					for(var/T in typesof(P))
+						L[T] = TRUE
+		return L
 
 //Empties the list by .Cut(). Setting lenght = 0 has been confirmed to leak references.
 proc/clearlist(var/list/L)

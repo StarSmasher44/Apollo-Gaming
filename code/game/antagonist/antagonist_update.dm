@@ -46,32 +46,32 @@
 				antag.current.client.images |= get_indicator(antag, other_antag)
 
 /datum/antagonist/proc/update_icons_added(var/datum/mind/player)
+	set waitfor = FALSE
 	if(!antag_indicator || !player.current)
 		return
-	spawn(0)
 
-		var/give_to_player = (!faction_invisible || !(player in faction_members))
-		for(var/datum/mind/antag in current_antagonists)
-			if(!antag.current)
-				continue
-			if(antag.current.client)
-				antag.current.client.images |= get_indicator(antag, player)
-			if(!give_to_player)
-				continue
-			if(player.current.client)
-				player.current.client.images |= get_indicator(player, antag)
+	var/give_to_player = (!faction_invisible || !(player in faction_members))
+	for(var/datum/mind/antag in current_antagonists)
+		if(!antag.current)
+			continue
+		if(antag.current.client)
+			antag.current.client.images |= get_indicator(antag, player)
+		if(!give_to_player)
+			continue
+		if(player.current.client)
+			player.current.client.images |= get_indicator(player, antag)
 
 /datum/antagonist/proc/update_icons_removed(var/datum/mind/player)
+	set waitfor = FALSE
 	if(!antag_indicator || !player.current)
 		return
-	spawn(0)
-		clear_indicators(player)
-		if(player.current && player.current.client)
-			for(var/datum/mind/antag in current_antagonists)
-				if(antag.current && antag.current.client)
-					for(var/image/I in antag.current.client.images)
-						if(I.loc == player.current)
-							qdel(I)
+	clear_indicators(player)
+	if(player.current && player.current.client)
+		for(var/datum/mind/antag in current_antagonists)
+			if(antag.current && antag.current.client)
+				for(var/image/I in antag.current.client.images)
+					if(I.loc == player.current)
+						qdel(I)
 
 /datum/antagonist/proc/update_current_antag_max()
 	cur_max = hard_cap

@@ -245,6 +245,7 @@ datum/preferences
 
 	preview_icon = icon('icons/effects/128x48.dmi', bgstate)
 	preview_icon.Scale(48+32, 16+32)
+//	var/icon/charicon = cached_character_icon(mannequin)
 
 	mannequin.dir = NORTH
 	var/icon/stamp = getFlatIcon(mannequin, NORTH)

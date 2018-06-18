@@ -713,35 +713,33 @@
 		else
 			clear_fullscreen("crit")
 			//Oxygen damage overlay
-			if(getOxyLoss())
-				var/severity = 0
-				switch(getOxyLoss())
-					if(10 to 20)		severity = 1
-					if(20 to 25)		severity = 2
-					if(25 to 30)		severity = 3
-					if(30 to 35)		severity = 4
-					if(35 to 40)		severity = 5
-					if(40 to 45)		severity = 6
-					if(45 to INFINITY)	severity = 7
-				overlay_fullscreen("oxy", /obj/screen/fullscreen/oxy, severity)
-			else
-				clear_fullscreen("oxy")
+//			if(getOxyLoss())
+			var/severity = 0
+			switch(getOxyLoss())
+				if(0)				clear_fullscreen("oxy")
+				if(10 to 20)		severity = 1
+				if(20 to 25)		severity = 2
+				if(25 to 30)		severity = 3
+				if(30 to 35)		severity = 4
+				if(35 to 40)		severity = 5
+				if(40 to 45)		severity = 6
+				if(45 to INFINITY)	severity = 7
+			overlay_fullscreen("oxy", /obj/screen/fullscreen/oxy, severity)
 
 		//Fire and Brute damage overlay (BSSR)
 		var/hurtdamage = src.getBruteLoss() + src.getFireLoss() + damageoverlaytemp
 		damageoverlaytemp = 0 // We do this so we can detect if someone hits us or not.
-		if(hurtdamage)
-			var/severity = 0
-			switch(hurtdamage)
-				if(10 to 25)		severity = 1
-				if(25 to 40)		severity = 2
-				if(40 to 55)		severity = 3
-				if(55 to 70)		severity = 4
-				if(70 to 85)		severity = 5
-				if(85 to INFINITY)	severity = 6
-			overlay_fullscreen("brute", /obj/screen/fullscreen/brute, severity)
-		else
-			clear_fullscreen("brute")
+//		if(hurtdamage)
+		var/severity = 0
+		switch(hurtdamage)
+			if(0)				clear_fullscreen("brute")
+			if(10 to 25)		severity = 1
+			if(25 to 40)		severity = 2
+			if(40 to 55)		severity = 3
+			if(55 to 70)		severity = 4
+			if(70 to 85)		severity = 5
+			if(85 to INFINITY)	severity = 6
+		overlay_fullscreen("brute", /obj/screen/fullscreen/brute, severity)
 
 		if(healths)
 			if (chem_effects[CE_PAINKILLER] > 100)
@@ -749,8 +747,9 @@
 				healths.icon_state = "health_numb"
 			else
 				// Generate a by-limb health display.
-				healths.icon_state = "blank"
-				healths.overlays = null
+				var/mutable_appearance/healths_ma = new(healths)
+				healths_ma.icon_state = "blank"
+				healths_ma.overlays = null
 
 				var/no_damage = 1
 				var/trauma_val = 0 // Used in calculating softcrit/hardcrit indicators.
@@ -765,21 +764,22 @@
 
 				// Apply a fire overlay if we're burning.
 				if(on_fire)
-					health_images += image('icons/mob/screen1_health.dmi',"burning")
+					health_images += mutable_appearance('icons/mob/screen1_health.dmi',"burning")
 
 				// Show a general pain/crit indicator if needed.
 				if(is_asystole())
-					health_images += image('icons/mob/screen1_health.dmi',"hardcrit")
+					health_images += mutable_appearance('icons/mob/screen1_health.dmi',"hardcrit")
 				else if(trauma_val)
 					if(can_feel_pain())
 						if(trauma_val > 0.7)
-							health_images += image('icons/mob/screen1_health.dmi',"softcrit")
+							health_images += mutable_appearance('icons/mob/screen1_health.dmi',"softcrit")
 						if(trauma_val >= 1)
-							health_images += image('icons/mob/screen1_health.dmi',"hardcrit")
+							health_images += mutable_appearance('icons/mob/screen1_health.dmi',"hardcrit")
 				else if(no_damage)
-					health_images += image('icons/mob/screen1_health.dmi',"fullhealth")
+					health_images += mutable_appearance('icons/mob/screen1_health.dmi',"fullhealth")
 
-				healths.overlays += health_images
+				healths_ma.overlays += health_images
+				healths.appearance = healths_ma
 
 		if(nutrition_icon)
 			switch(nutrition)

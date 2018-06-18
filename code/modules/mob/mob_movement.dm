@@ -195,7 +195,17 @@
 
 	if(moving)	return 0
 
-	if(world.time < move_delay)	return
+	if(moving || world.time < move_delay)	return 0
+
+	//This compensates for the inaccuracy of move ticks
+	//Whenever world.time overshoots the movedelay, due to it only ticking once per decisecond
+	//The overshoot value is subtracted from our next delay, farther down where move delay is set.
+	//This doesn't entirely remove the problem, but it keeps travel times accurate to within 0.1 seconds
+	//Over an infinite distance, and prevents the inaccuracy from compounding. Thus making it basically a non-issue
+	var/leftover = world.time - move_delay
+	if (leftover > 1)
+		leftover = 0
+
 
 	if(locate(/obj/effect/stop/, mob.loc))
 		for(var/obj/effect/stop/S in mob.loc)
@@ -263,7 +273,7 @@
 	if(isturf(mob.loc))
 
 		if(mob.restrained())//Why being pulled while cuffed prevents you from moving
-			for(var/mob/M in range(mob, 1))
+			for(var/mob/living/M in range(mob, 1))
 				if(M.pulling == mob)
 					if(!M.restrained() && M.stat == 0 && M.canmove && mob.Adjacent(M))
 						to_chat(src, "<span class='notice'>You're restrained! You can't move!</span>")
@@ -275,7 +285,7 @@
 			to_chat(src, "<span class='notice'>You're pinned to a wall by [mob.pinned[1]]!</span>")
 			return 0
 
-		move_delay = world.time//set move delay
+		move_delay = world.time - leftover//set move delay
 
 		switch(mob.m_intent)
 			if("run")
@@ -288,11 +298,11 @@
 		for(var/obj/M in mob.loc)
 			if(istype(M, /obj/structure/bed) || istype(M, /obj/item/weapon/stool) && !istype(M, /obj/structure/bed/chair/wheelchair))
 				move_delay += 2
-				if(prob(1) && prob(33))
-					mob.visible_message("<span class='notice'>[mob.name] trips and falls over the [M.name]!.</span>")
-					to_chat(mob, "<span class='warning'>You trip and fall over the [M.name]!</span>")
+				if(prob(1) && prob(20))
 					mob.weakened = rand(2, 3)
 					mob:apply_damage(rand(2, 4), BRUTE)
+					mob.visible_message("<span class='notice'>[mob.name] trips and falls over the [M.name]!.</span>")
+					to_chat(mob, "<span class='warning'>You trip and fall over the [M.name]!</span>")
 
 		if(istype(mob.buckled, /obj/vehicle))
 			//manually set move_delay for vehicles so we don't inherit any mob movement penalties
