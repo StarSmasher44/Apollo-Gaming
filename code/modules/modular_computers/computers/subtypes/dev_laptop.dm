@@ -15,6 +15,8 @@
 	broken_damage = 100
 	w_class = ITEM_SIZE_NORMAL
 	var/icon_state_closed = "laptop-closed"
+	battery_module = new/obj/item/weapon/computer_hardware/battery_module/micro(src)
+	battery_module.charge_to_full()
 
 /obj/item/modular_computer/laptop/AltClick()
 	// Prevents carrying of open laptops inhand.
