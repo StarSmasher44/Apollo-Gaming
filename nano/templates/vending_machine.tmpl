@@ -38,7 +38,7 @@
 <div class='item'>
 	<div class='item'>
 		<div class='itemLabel'>Item selected:</div> <div class='itemContent'>{{:data.product}}</div>
-		<div class='itemLabel'>Charge:</div> <div class='itemContent'>{{:data.price}}</div>
+		<div class='itemLabel'>Charge:</div> <div class='itemContent'>${{:data.price}}</div>
 	</div>
 	<div class='statusDisplay' style='overflow: auto;'>
 		{{if data.message_err}} <span class='uiIcon16 icon-alert' ></span>{{/if}} {{:data.message}}
