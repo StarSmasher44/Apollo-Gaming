@@ -33,7 +33,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	var/init_time
 	var/tickdrift = 0
 
-	var/sleep_delta
+	var/sleep_delta = 1
 
 	var/make_runtime = 0
 
@@ -283,11 +283,12 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 
 	iteration = 1
 	var/error_level = 0
-	var/sleep_delta = 0
+	var/sleep_delta = 1
 	var/list/subsystems_to_check
 	//the actual loop.
 	while (1)
 		tickdrift = max(0, MC_AVERAGE_FAST(tickdrift, (((REALTIMEOFDAY - init_timeofday) - (world.time - init_time)) / world.tick_lag)))
+		var/starting_tick_usage = TICK_USAGE
 		if (processing <= 0)
 			current_ticklimit = TICK_LIMIT_RUNNING
 			sleep(10)
@@ -295,18 +296,19 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 
 		//if there are mutiple sleeping procs running before us hogging the cpu, we have to run later
 		//	because sleeps are processed in the order received, so longer sleeps are more likely to run first
-		if (TICK_USAGE > TICK_LIMIT_MC)
-			sleep_delta += 2
+		if (starting_tick_usage > TICK_LIMIT_MC)
+			sleep_delta *= 2
 			current_ticklimit = TICK_LIMIT_RUNNING * 0.5
 			sleep(world.tick_lag * (processing * sleep_delta))
 			continue
 
-		sleep_delta = MC_AVERAGE_FAST(sleep_delta, 0)
+//		sleep_delta = MC_AVERAGE_FAST(sleep_delta, 0)
 		//Byond resumed us late. assume it might have to do the same next tick
 		if (last_run + CEILING(world.tick_lag * (processing * sleep_delta), world.tick_lag) < world.time)
 			sleep_delta += 1
 
-		if (TICK_USAGE > (TICK_LIMIT_MC*0.75))
+		sleep_delta = MC_AVERAGE_FAST(sleep_delta, 1)
+		if (starting_tick_usage > (TICK_LIMIT_MC*0.75))
 			sleep_delta += 1
 
 		if (make_runtime)
@@ -360,13 +362,10 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 		iteration++
 		last_run = world.time
 		src.sleep_delta = MC_AVERAGE_FAST(src.sleep_delta, sleep_delta)
+		current_ticklimit = TICK_LIMIT_RUNNING
 		if (processing * sleep_delta <= world.tick_lag)
 			current_ticklimit -= (TICK_LIMIT_RUNNING * 0.25) //reserve the tail 1/4 of the next tick for the mc if we plan on running next tick
-
-//		current_ticklimit = TICK_LIMIT_RUNNING - (TICK_LIMIT_RUNNING * 0.25) //reserve the tail 1/4 of the next tick for the mc.
 		sleep(world.tick_lag * (processing * sleep_delta))
-
-
 
 
 // This is what decides if something should run.
@@ -434,7 +433,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 			//	in those cases, so we just let them run)
 			if (queue_node_flags & SS_NO_TICK_CHECK)
 				if (queue_node.tick_usage > TICK_LIMIT_RUNNING - TICK_USAGE && ran_non_ticker)
-					queue_node.queued_priority += queue_priority_count * 0.10
+					queue_node.queued_priority += queue_priority_count * 0.1
 					queue_priority_count -= queue_node_priority
 					queue_priority_count += queue_node.queued_priority
 					current_tick_budget -= queue_node_priority

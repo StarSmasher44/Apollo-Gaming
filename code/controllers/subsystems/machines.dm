@@ -86,6 +86,9 @@ else { \
 			Machine.MyArea = get_area_def(Machine); \
 		} \
 	} \
+		if(!ismachine(Machine)) { \
+			return;\
+		}\
 		switch(Machine.use_power) { \
 			if(1) { \
 				switch(Machine.power_channel) { \
@@ -125,11 +128,14 @@ else { \
 } \
 
 /datum/controller/subsystem/machines/fire(resumed = 0)
+	MC_SPLIT_TICK_INIT(2)
 	var/timer = TICK_USAGE_REAL
 
 	INTERNAL_PROCESS_STEP(SSMACHINES_PIPENETS,TRUE,process_pipenets,cost_pipenets,SSMACHINES_MACHINERY)
+	MC_SPLIT_TICK
 	INTERNAL_PROCESS_STEP(SSMACHINES_MACHINERY,FALSE,process_machinery,cost_machinery,SSMACHINES_POWERNETS)
 	INTERNAL_PROCESS_STEP(SSMACHINES_POWERNETS,FALSE,process_powernets,cost_powernets,SSMACHINES_POWER_OBJECTS)
+	MC_SPLIT_TICK
 	INTERNAL_PROCESS_STEP(SSMACHINES_POWER_OBJECTS,FALSE,process_power_objects,cost_power_objects,SSMACHINES_PIPENETS)
 
 #undef INTERNAL_PROCESS_STEP
@@ -137,17 +143,22 @@ else { \
 // rebuild all power networks from scratch - only called at world creation or by the admin verb
 // The above is a lie. Turbolifts also call this proc.
 /datum/controller/subsystem/machines/proc/makepowernets()
-	for(var/datum/powernet/PN in powernets)
+	var/list/powernets = src.powernets
+
+	for(var/PON in powernets)
+		var/datum/powernet/PN = PON
 		qdel(PN)
 	powernets.Cut()
 	setup_powernets_for_cables(cable_list)
 
 /datum/controller/subsystem/machines/proc/setup_powernets_for_cables(list/cables)
-	for(var/obj/structure/cable/PC in cables)
+	for(var/PCA in cables)
+		var/obj/structure/cable/PC = PCA
 		if(!PC.powernet)
 			var/datum/powernet/NewPN = new()
 			NewPN.add_cable(PC)
 			propagate_network(PC,PC.powernet)
+		CHECK_TICK
 
 datum/controller/subsystem/machines/proc/setup_atmos_machinery(list/machines)
 	report_progress("Initializing atmos machinery")
@@ -208,7 +219,7 @@ datum/controller/subsystem/machines/proc/setup_atmos_machinery(list/machines)
 	while(current_run.len)
 		var/obj/machinery/M = current_run[current_run.len]
 		current_run.len--
-		if(!QDELETED(M) && !(M.Process(wait) == PROCESS_KILL))
+		if(ismachine(M) && !QDELETED(M) && !(M.Process(wait) == PROCESS_KILL))
 			ADD_POWER_USE(M)
 		else
 			machinery.Remove(M)

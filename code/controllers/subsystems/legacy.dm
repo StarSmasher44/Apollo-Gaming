@@ -5,4 +5,5 @@ SUBSYSTEM_DEF(legacy)
 
 /datum/controller/subsystem/legacy/Initialize(timeofday)
 	master_controller.setup()
+	global_initialize_webhooks()
 	return ..()
