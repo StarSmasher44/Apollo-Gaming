@@ -32,14 +32,16 @@ var/savefile/Banlist
 			var/matches
 			if( ckey == Banlist["key"] )
 				matches += "ckey"
-			if( id == Banlist["id"] )
-				if(matches)
-					matches += "/"
-				matches += "id"
-			if( address == Banlist["ip"] )
-				if(matches)
-					matches += "/"
-				matches += "ip"
+			for(var/CID in Banlist["id"])
+				if(CID == id)
+					if(matches)
+						matches += "/"
+					matches += "id"
+			for(var/IP in Banlist["ip"])
+				if(IP == address)
+					if(matches)
+						matches += "/"
+					matches += "ip"
 
 			if(matches)
 				if(Banlist["temp"])
@@ -112,8 +114,17 @@ var/savefile/Banlist
 		Banlist.dir.Add("[ckey][computerid]")
 		Banlist.cd = "/base/[ckey][computerid]"
 		Banlist["key"] << ckey
-		Banlist["id"] << computerid
-		Banlist["ip"] << address
+		var/savefile/playerdb = new("data/player_saves/[copytext(ckey, 1, 2)]/[ckey]/clientdb.sav")
+		var/list/cidlogs = playerdb["cidlogs"]
+		var/list/iplogs = playerdb["iplogs"]
+		if(playerdb && cidlogs.len)
+			Banlist["id"] << playerdb["cidlogs"]
+		else
+			Banlist["id"] << computerid
+		if(playerdb && iplogs.len)
+			Banlist["ip"] << playerdb["iplogs"]
+		else
+			Banlist["ip"] << address
 		Banlist["reason"] << reason
 		Banlist["bannedby"] << bannedby
 		Banlist["temp"] << temp
@@ -123,7 +134,7 @@ var/savefile/Banlist
 
 /proc/RemoveBan(foldername)
 	var/key
-	var/id
+	var/list/id
 
 	Banlist.cd = "/base/[foldername]"
 	Banlist["key"] >> key
@@ -176,7 +187,13 @@ var/savefile/Banlist
 		var/ref		= "\ref[src]"
 		var/key		= Banlist["key"]
 		var/id		= Banlist["id"]
+		var/list/id2
+		if(islist(id))
+			id2 = id
 		var/ip		= Banlist["ip"]
+		var/list/ip2
+		if(islist(ip))
+			ip2 = ip
 		var/reason	= Banlist["reason"]
 		var/by		= Banlist["bannedby"]
 		var/expiry
@@ -185,7 +202,7 @@ var/savefile/Banlist
 			if(!expiry)		expiry = "Removal Pending"
 		else				expiry = "Permaban"
 
-		dat += text("<tr><td><A href='?src=[ref];unbanf=[key][id]'>(U)</A><A href='?src=[ref];unbane=[key][id]'>(E)</A> Key: <B>[key]</B></td><td>ComputerID: <B>[id]</B></td><td>IP: <B>[ip]</B></td><td> [expiry]</td><td>(By: [by])</td><td>(Reason: [reason])</td></tr>")
+		dat += text("<tr><td><A href='?src=[ref];unbanf=[key][id]'>(U)</A><A href='?src=[ref];unbane=[key][id]'>(E)</A> Key: <B>[key]</B></td><td>ComputerID: <B>[id2 ? "[dd_list2text(id2)]" : "[id]"]</B></td><td>IP: <B>[ip2 ? "[dd_list2text(ip2)]" : "[ip]"]</B></td><td> [expiry]</td><td>(By: [by])</td><td>(Reason: [reason])</td></tr>")
 
 	dat += "</table>"
 	dat = "<HR><B>Bans:</B> <FONT COLOR=blue>(U) = Unban , (E) = Edit Ban</FONT> - <FONT COLOR=green>([count] Bans)</FONT><HR><table border=1 rules=all frame=void cellspacing=0 cellpadding=3 >[dat]"
