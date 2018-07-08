@@ -110,6 +110,11 @@
 	icon_state = "pr-wingrille"
 	win_path = /obj/structure/window/phoronreinforced
 
+/obj/effect/wingrille_spawn/reinforced_phoron/atmos
+	name = "reinforced phoron safety glass window grille spawner"
+	icon_state = "pr-wingrille"
+	win_path = /obj/structure/window/phoronreinforced/atmos
+
 /obj/effect/wingrille_spawn/reinforced_phoron/full
 	name = "reinforced phoron window grille spawner - full tile"
 	fulltile = TRUE

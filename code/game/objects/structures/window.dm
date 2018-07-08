@@ -430,15 +430,15 @@
 
 /obj/structure/window/phoronreinforced/atmos
 	name = "reinforced borosilicate safety glass"
-	desc = "A borosilicate alloy window, with rods supporting it. It seems to be very strong."
+	desc = "A borosilicate alloy window, with steel rods supporting it. It seems to be very strong. Has been made to withstand large temperatures."
 	basestate = "phoronrwindow"
 	icon_state = "phoronrwindow"
 	shardtype = /obj/item/weapon/material/shard/phoron
 	glasstype = /obj/item/stack/material/glass/phoronrglass
 	reinf = 1
-	maximal_heat = T0C + 4100
+	maximal_heat = T0C + 4200
 	damage_per_fire_tick = 0.5 // This should last for 160 fire ticks if the window is not damaged at all. The idea is that borosilicate windows have something like ablative layer that protects them for a while.
-	maxhealth = 120.0
+	maxhealth = 125.0
 
 /obj/structure/window/phoronreinforced/full
 	dir = 5
