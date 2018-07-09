@@ -73,6 +73,12 @@ var/list/possible_cable_coil_colours
 /obj/structure/cable/white
 	color = COLOR_WHITE
 
+/obj/structure/cable/heavy_duty
+	name = "heavy duty power cable"
+	desc = "A hard superconducting cable for heavy-duty power transfer."
+	icon = 'icons/obj/power_cond_heavy.dmi'
+	color = null
+
 /obj/structure/cable/New()
 	..()
 
