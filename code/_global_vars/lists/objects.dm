@@ -11,6 +11,8 @@ GLOBAL_LIST_EMPTY(global_mutations) // List of hidden mutation things.
 
 GLOBAL_LIST_EMPTY(reg_dna)
 
+GLOBAL_LIST_EMPTY(outside_turfs)
+
 GLOBAL_LIST_EMPTY(global_map)
 
 // Announcer intercom, because too much stuff creates an intercom for one message then hard del()s it. Also headset, for things that should be affected by comms outages.

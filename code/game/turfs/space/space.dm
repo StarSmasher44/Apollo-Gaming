@@ -12,6 +12,26 @@
 	plane = SPACE_PLANE
 //	heat_capacity = 700000 No.
 
+//because simulated turfs are way too whacky, we try this..
+/turf/unsimulated/desert
+	name = "sand"
+	temperature = 251.15
+	heat_capacity = 10000
+	thermal_conductivity = OPEN_HEAT_TRANSFER_COEFFICIENT
+	initial_gas = list("carbon_dioxide" = 42, "nitrogen" = 26, "oxygen" = 12)
+	icon = 'icons/turf/desert.dmi'
+	icon_state = "desert"
+//	has_resources = 1
+
+/turf/unsimulated/desert/Initialize()
+	icon_state = "desert[rand(0,5)]"
+	GLOB.outside_turfs += src
+	. = ..()
+
+/turf/unsimulated/desert/Destroy()
+	GLOB.outside_turfs -= src
+	. = ..()
+
 /turf/space/Initialize()
 	. = ..()
 	appearance = SSicon_cache.space_cache["[((x + y) ^ ~(x * y) + z) % 25]"]
