@@ -25,7 +25,10 @@
 	client.screen += lobby_image
 	my_client = client
 	set_sight(sight|SEE_TURFS)
-	GLOB.player_list |= src
+
+	// Add to player list if missing
+	if (!GLOB.player_list.Find(src))
+		ADD_SORTED(GLOB.player_list, src, /proc/cmp_mob_key)
 
 	new_player_panel()
 	spawn(40)

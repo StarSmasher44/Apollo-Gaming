@@ -57,3 +57,15 @@
 
 /proc/cmp_ruincost_priority(datum/map_template/ruin/A, datum/map_template/ruin/B)
 	return initial(A.cost) - initial(B.cost)
+
+/proc/cmp_mob_key(mob/A, mob/B)
+	if (!A && !B)
+		return 0
+
+	if (!A && B)
+		return -1
+
+	if (A && !B)
+		return 1
+
+	return sorttext(B.key, A.key)
