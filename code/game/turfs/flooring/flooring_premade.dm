@@ -179,6 +179,14 @@
 	initial_gas = null
 	temperature = TCMB
 
+//The gas used for pollo map.
+/turf/simulated/floor/airless/co2atmos
+	name = "plating"
+	initial_gas = list("carbon_dioxide" = 42, "nitrogen" = 26, "oxygen" = 12)
+	temperature = TCMB
+
+
+
 /turf/simulated/floor/tiled/airless
 	name = "airless floor"
 	initial_gas = null
