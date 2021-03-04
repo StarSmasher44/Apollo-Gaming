@@ -198,9 +198,16 @@
 	item_state = "headset"
 	ks2type = /obj/item/device/encryptionkey/heads/hop
 
+/obj/item/device/radio/headset/headset_hol
+	name = "head of logistics's headset"
+	desc = "The headset of the master of resources."
+	icon_state = "com_headset"
+	item_state = "headset"
+	ks2type = /obj/item/device/encryptionkey/hol
+
 /obj/item/device/radio/headset/headset_cargo
-	name = "supply radio headset"
-	desc = "A headset used by the box pushers."
+	name = "Logistics radio headset"
+	desc = "A headset used by the box pushers and ore haulers."
 	icon_state = "cargo_headset"
 	item_state = "headset"
 	ks2type = /obj/item/device/encryptionkey/headset_cargo

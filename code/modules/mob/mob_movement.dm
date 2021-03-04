@@ -168,12 +168,12 @@
 		src.move_speed = world.time - src.l_move_time
 		src.l_move_time = world.time
 		src.m_flag = 1
-		if ((A != src.loc && A && A.z == src.z))
+		if ((A != src.loc && A?.z == src.z))
 			src.last_move = get_dir(A, src.loc)
 	return
 
 /client/proc/Move_object(direct)
-	if(mob && mob.control_object)
+	if(mob?.control_object)
 		if(mob.control_object.density)
 			step(mob.control_object,direct)
 			if(!mob.control_object)	return
@@ -477,7 +477,7 @@
 	for(var/obj/O in orange(1, src))
 		if(istype(O, /obj/structure/lattice))
 			return 1
-		if(O && O.density && O.anchored)
+		if(O?.density && O.anchored)
 			return 1
 
 	return 0

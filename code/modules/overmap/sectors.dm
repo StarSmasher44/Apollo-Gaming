@@ -7,10 +7,9 @@ var/list/points_of_interest = list()
 	name = "map object"
 	icon = 'icons/obj/overmap.dmi'
 	icon_state = "object"
-	var/list/map_z = list()
+	var/map_z = list()
 
-	var/list/generic_waypoints = list()    //waypoints that any shuttle can use
-	var/list/restricted_waypoints = list() //waypoints for specific shuttles
+	var/list/landing_areas	//areas where inbound exploration shuttles can land
 
 	var/start_x			//coordinates on the
 	var/start_y			//overmap zlevel
@@ -20,13 +19,13 @@ var/list/points_of_interest = list()
 	var/in_space = 1	//can be accessed via lucky EVA
 
 /obj/effect/overmap/Initialize()
-	. = ..()
-
 	if(!GLOB.using_map.use_overmap)
-		return INITIALIZE_HINT_QDEL
+		qdel(src)
+		return
 
 	if(!GLOB.using_map.overmap_z)
 		build_overmap()
+	GLOB.using_map.sealed_levels |= GLOB.using_map.overmap_z
 
 	map_z = GetConnectedZlevels(z)
 	for(var/zlevel in map_z)
@@ -37,7 +36,6 @@ var/list/points_of_interest = list()
 
 	forceMove(locate(start_x, start_y, GLOB.using_map.overmap_z))
 	testing("Located sector \"[name]\" at [start_x],[start_y], containing Z [english_list(map_z)]")
-	points_of_interest += name
 
 	GLOB.using_map.player_levels |= map_z
 
@@ -47,40 +45,14 @@ var/list/points_of_interest = list()
 	if(base)
 		GLOB.using_map.station_levels |= map_z
 		GLOB.using_map.contact_levels |= map_z
-	//handle automatic waypoints that spawned before us
-	for(var/obj/effect/shuttle_landmark/automatic/L in world)
-		if(L.z in map_z)
-			L.add_to_sector(src, 1)
 
-	//find shuttle waypoints
-	var/list/found_waypoints = list()
-	for(var/waypoint_tag in generic_waypoints)
-		var/obj/effect/shuttle_landmark/WP = locate(waypoint_tag)
-		if(WP)
-			found_waypoints += WP
-		else
-			log_error("Sector \"[name]\" containing Z [english_list(map_z)] could not find waypoint with tag [waypoint_tag]!")
-	generic_waypoints = found_waypoints
+	for(var/obj/machinery/computer/shuttle_control/explore/console in SSmachines.machinery)
+		if(console.z in map_z)
+			if(!landing_areas)
+				landing_areas = list()
+			landing_areas |= console.shuttle_area
 
-	for(var/shuttle_name in restricted_waypoints)
-		found_waypoints = list()
-		for(var/waypoint_tag in restricted_waypoints[shuttle_name])
-			var/obj/effect/shuttle_landmark/WP = locate(waypoint_tag)
-			if(WP)
-				found_waypoints += WP
-			else
-				log_error("Sector \"[name]\" containing Z [english_list(map_z)] could not find waypoint with tag [waypoint_tag]!")
-		restricted_waypoints[shuttle_name] = found_waypoints
-
-	for(var/obj/machinery/computer/sensors/S in SSmachines.machinery)
-		if (S.z in map_z)
-			S.linked = src
-			testing("Sensor console at level [S.z] linked to overmap object '[name]'.")
-
-/obj/effect/overmap/proc/get_waypoints(var/shuttle_name)
-	. = generic_waypoints.Copy()
-	if(shuttle_name in restricted_waypoints)
-		. += restricted_waypoints[shuttle_name]
+	points_of_interest += name
 
 /obj/effect/overmap/sector
 	name = "generic sector"
@@ -89,12 +61,9 @@ var/list/points_of_interest = list()
 	anchored = 1
 
 /obj/effect/overmap/sector/Initialize()
-	. = ..()
-	if(known)
-		layer = ABOVE_LIGHTING_LAYER
-		plane = EFFECTS_ABOVE_LIGHTING_PLANE
-		for(var/obj/machinery/computer/helm/H in SSmachines.machinery)
-			H.get_known_sectors()
+	..()
+	for(var/obj/machinery/computer/helm/H in SSmachines.machinery)
+		H.get_known_sectors()
 
 /proc/build_overmap()
 	if(!GLOB.using_map.use_overmap)

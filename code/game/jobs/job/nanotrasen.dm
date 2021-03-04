@@ -1,5 +1,5 @@
 /datum/job/ntboss
-	title = "NanoTrasen Station Supervisor"
+	title = "NanoTrasen Station Commander"
 	department = "NanoTrasen"
 	head_position = 1
 	department_flag = NTO
@@ -13,10 +13,10 @@
 	minimal_access = list() 	//See get_access()
 	minimal_player_age = 14
 	economic_modifier = 20
-	base_pay = 26
+	base_pay = 32
 
 	ideal_character_age = 70 // Old geezer captains ftw
-	outfit_type = /decl/hierarchy/outfit/job/captain
+	outfit_type = /decl/hierarchy/outfit/nanotrasen/captain
 
 /datum/job/captain/equip(var/mob/living/carbon/human/H)
 	. = ..()
@@ -24,7 +24,7 @@
 		H.implant_loyalty(src)
 
 /datum/job/ntboss/get_access()
-	return get_all_station_access()
+	return get_all_station_access()+get_centcom_access()
 
 /datum/job/ntofficer
 	title = "NanoTrasen Station Officer"
@@ -40,7 +40,7 @@
 	minimal_player_age = 14
 	economic_modifier = 10
 	ideal_character_age = 50
-	base_pay = 25
+	base_pay = 28
 
 	access = list(access_security, access_sec_doors, access_brig, access_forensics_lockers,
 			            access_medical, access_engine, access_change_ids, access_ai_upload, access_eva, access_heads,
@@ -55,7 +55,7 @@
 			            access_chapel_office, access_library, access_research, access_mining, access_heads_vault, access_mining_station,
 			            access_hop, access_RC_announce, access_keycard_auth, access_gateway)
 
-	outfit_type = /decl/hierarchy/outfit/job/hop
+	outfit_type = /decl/hierarchy/outfit/nanotrasen/representative
 
 /datum/job/ntofficer/get_access()
-	return get_all_station_access()
+	return get_all_station_access()+get_centcom_access()

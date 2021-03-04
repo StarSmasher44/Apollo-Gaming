@@ -113,7 +113,7 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 			CHECK_TICK
 			if(T)
 				for(var/atom/movable/AM in T.contents)	//bypass type checking since only atom/movable can be contained by turfs anyway
-					if(AM && AM.simulated)
+					if(AM?.simulated)
 						AM.ex_act(dist)
 					CHECK_TICK
 

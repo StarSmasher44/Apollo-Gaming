@@ -64,7 +64,6 @@ var/global/list/map_count = list()
 		if(generate())
 			if(!do_not_announce) admin_notice("<span class='danger'>[capitalize(name)] generation completed in [round(0.1*(world.timeofday-start_time),0.1)] seconds.</span>", R_DEBUG)
 			return
-		CHECK_TICK
 	if(!do_not_announce) admin_notice("<span class='danger'>[capitalize(name)] failed to generate ([round(0.1*(world.timeofday-start_time),0.1)] seconds): could not produce sane map.</span>", R_DEBUG)
 
 /datum/random_map/proc/get_map_cell(var/x,var/y)

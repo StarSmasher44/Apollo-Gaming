@@ -1,27 +1,23 @@
-#ignore misc BYOND files
-Thumbs.db
 *.log
 *.int
 *.rsc
 *.dmb
 *.lk
 *.backup
-*.before
+tools/
 data/
 cfg/
-build_log.txt
-use_map
-stopserver
-reboot_called
-atupdate
-__pycache__
-
-# ignore config, but not subdirs
-config/*
-!config/*/
-sql/test_db
-
-maps/nsv_apollo/
-.atom-build.json
+config/
+code/CharScreen_Andrew/
+scripts/
+maps/DixonButts/backup/
 NewSOund/
-Space Miners/
+maps/nsv_apollo/
+maps/example/backup/
+maps/exodus/backup/
+maps/torch/backup/
+code/controllers/master_pre2952018.dm
+*.dmb
+*.rsc
+baystation12.int
+baystation12.lk

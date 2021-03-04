@@ -1,478 +1,224 @@
-
 // Escape shuttle and pods
-/datum/shuttle/autodock/ferry/emergency/evac
+/datum/shuttle/ferry/emergency/centcom
 	name = "Escape"
 	location = 1
 	warmup_time = 10
-	shuttle_area = /area/shuttle/escape/centcom
-	waypoint_offsite = "nav_evac_start"
-	waypoint_station = "nav_evac_station"
-	landmark_transition = "nav_evac_transit"
-	dock_target = "escape_shuttle"
+	area_offsite = /area/shuttle/escape/centcom
+	area_station = /area/shuttle/escape/station
+	area_transition = /area/shuttle/escape/transit
+	docking_controller_tag = "escape_shuttle"
+	dock_target_station = "escape_dock"
+	dock_target_offsite = "centcom_dock"
+	transit_direction = NORTH
 
-
-/obj/effect/shuttle_landmark/evac/start
-	name = "CentCom Dock"
-	landmark_tag = "nav_evac_start"
-	docking_controller = "centcom_dock"
-
-/obj/effect/shuttle_landmark/evac/transit
-	name = "In transit"
-	landmark_tag = "nav_evac_transit"
-
-/obj/effect/shuttle_landmark/evac/out
-	name = "Docked to station"
-	landmark_tag = "nav_evac_station"
-	docking_controller = "escape_dock"
-
-/*
-/datum/shuttle/autodock/ferry/emergency/centcom
-	name = "Escape"
-	location = 1
-	warmup_time = 10
-	shuttle_area = /area/shuttle/escape/centcom
-	waypoint_offsite = "nav_evac_start"
-	waypoint_station = "nav_evac_station"
-	landmark_transition = "nav_evac_transit"
-	dock_target = "escape_shuttle"
-*/
-
-/datum/shuttle/autodock/ferry/escape_pod/
-	category = /datum/shuttle/autodock/ferry/escape_pod/
-	sound_takeoff = 'sound/effects/rocket.ogg'
-	sound_landing = 'sound/effects/rocket_backwards.ogg'
-	var/number
-
-/datum/shuttle/autodock/ferry/escape_pod/New()
-	name = "Escape Pod [number]"
-	dock_target = "escape_pod_[number]"
-	arming_controller = "escape_pod_[number]_berth"
-	waypoint_station = "escape_pod_[number]_start"
-	landmark_transition = "escape_pod_[number]_internim"
-	waypoint_offsite = "escape_pod_[number]_out"
-	..()
-
-/obj/effect/shuttle_landmark/escape_pod/
-	var/number
-
-/obj/effect/shuttle_landmark/escape_pod/start
-	name = "Docked with station"
-
-/obj/effect/shuttle_landmark/escape_pod/start/New()
-	landmark_tag = "escape_pod_[number]_start"
-	docking_controller = "escape_pod_[number]_berth"
-	..()
-
-/obj/effect/shuttle_landmark/escape_pod/transit
-	name = "In transit"
-
-/obj/effect/shuttle_landmark/escape_pod/transit/New()
-	landmark_tag = "escape_pod_[number]_internim"
-	..()
-
-/obj/effect/shuttle_landmark/escape_pod/out
-	name = "Docked with rescue ship"
-
-/obj/effect/shuttle_landmark/escape_pod/out/New()
-	landmark_tag = "escape_pod_[number]_out"
-	..()
-
-/datum/shuttle/autodock/ferry/escape_pod/escape_pod1
+/datum/shuttle/ferry/escape_pod/escape_pod_one
+	name = "Escape Pod 1"
+	location = 0
 	warmup_time = 0
-	number = 1
-	shuttle_area = /area/shuttle/escape_pod1/station
-/obj/effect/shuttle_landmark/escape_pod/start/pod1
-	number = 1
-/obj/effect/shuttle_landmark/escape_pod/out/pod1
-	number = 1
-/obj/effect/shuttle_landmark/escape_pod/transit/pod1
-	number = 1
+	area_station = /area/shuttle/escape_pod1/station
+	area_offsite = /area/shuttle/escape_pod1/centcom
+	area_transition = /area/shuttle/escape_pod1/transit
+	docking_controller_tag = "escape_pod_1"
+	dock_target_station = "escape_pod_1_berth"
+	dock_target_offsite = "escape_pod_1_recovery"
+	transit_direction = NORTH
 
-/datum/shuttle/autodock/ferry/escape_pod/escape_pod2
+/datum/shuttle/ferry/escape_pod/escape_pod_two
+	name = "Escape Pod 2"
+	location = 0
 	warmup_time = 0
-	number = 2
-	shuttle_area = /area/shuttle/escape_pod2/station
-/obj/effect/shuttle_landmark/escape_pod/start/pod2
-	number = 2
-/obj/effect/shuttle_landmark/escape_pod/out/pod2
-	number = 2
-/obj/effect/shuttle_landmark/escape_pod/transit/pod2
-	number = 2
+	area_station = /area/shuttle/escape_pod2/station
+	area_offsite = /area/shuttle/escape_pod2/centcom
+	area_transition = /area/shuttle/escape_pod2/transit
+	docking_controller_tag = "escape_pod_2"
+	dock_target_station = "escape_pod_2_berth"
+	dock_target_offsite = "escape_pod_2_recovery"
+	transit_direction = NORTH
 
-/datum/shuttle/autodock/ferry/escape_pod/escape_pod3
+/datum/shuttle/ferry/escape_pod/escape_pod_three
+	name = "Escape Pod 3"
+	location = 0
 	warmup_time = 0
-	number = 3
-	shuttle_area = /area/shuttle/escape_pod3/station
-/obj/effect/shuttle_landmark/escape_pod/start/pod3
-	number = 3
-/obj/effect/shuttle_landmark/escape_pod/out/pod3
-	number = 3
-/obj/effect/shuttle_landmark/escape_pod/transit/pod3
-	number = 3
+	area_station = /area/shuttle/escape_pod3/station
+	area_offsite = /area/shuttle/escape_pod3/centcom
+	area_transition = /area/shuttle/escape_pod3/transit
+	docking_controller_tag = "escape_pod_3"
+	dock_target_station = "escape_pod_3_berth"
+	dock_target_offsite = "escape_pod_3_recovery"
+	transit_direction = EAST
 
-/datum/shuttle/autodock/ferry/escape_pod/escape_pod5
+/datum/shuttle/ferry/escape_pod/escape_pod_four
+	name = "Escape Pod 4"
+	location = 0
 	warmup_time = 0
-	number = 5
-	shuttle_area = /area/shuttle/escape_pod5/station
-/obj/effect/shuttle_landmark/escape_pod/start/pod5
-	number = 5
-/obj/effect/shuttle_landmark/escape_pod/out/pod5
-	number = 5
-/obj/effect/shuttle_landmark/escape_pod/transit/pod5
-	number = 5
+	area_station = /area/shuttle/escape_pod5/station
+	area_offsite = /area/shuttle/escape_pod5/centcom
+	area_transition = /area/shuttle/escape_pod5/transit
+	docking_controller_tag = "escape_pod_5"
+	dock_target_station = "escape_pod_5_berth"
+	dock_target_offsite = "escape_pod_5_recovery"
+	transit_direction = EAST //should this be WEST? I have no idea.
 
-//merchant shuttle
-
-/datum/shuttle/autodock/ferry/merchant
-	name = "Merchant"
-	warmup_time = 10
-	shuttle_area = /area/shuttle/merchant/home
-	waypoint_station = "nav_merchant_start"
-	waypoint_offsite = "nav_merchant_out"
-	dock_target = "merchant_ship_dock"
-
-/obj/effect/shuttle_landmark/merchant/start
-	name = "Merchant Base"
-	landmark_tag = "nav_merchant_start"
-	docking_controller = "merchant_station_dock"
-
-/obj/effect/shuttle_landmark/merchant/out
-	name = "Docking Bay"
-	landmark_tag = "nav_merchant_out"
-	docking_controller = "merchant_shuttle_station_dock"
-
-//supply shuttle
-
-/datum/shuttle/autodock/ferry/supply/cargo
+/datum/shuttle/ferry/supply/cargo
 	name = "Supply"
 	location = 1
 	warmup_time = 10
-	shuttle_area = /area/supply/dock
-	waypoint_station = "nav_supply_out"
-	waypoint_offsite = "nav_supply_start"
-	dock_target = "supply_shuttle"
+	area_offsite = /area/supply/dock
+	area_station = /area/supply/station
+	docking_controller_tag = "supply_shuttle"
+	dock_target_station = "cargo_bay"
 
-
-/obj/effect/shuttle_landmark/supply/start
-	name = "Central Command"
-	landmark_tag = "nav_supply_start"
-
-/obj/effect/shuttle_landmark/supply/out
-	name = "Cargo Bay"
-	landmark_tag = "nav_supply_out"
-	docking_controller = "cargo_bay"
-
-//engineering shuttle
-
-/datum/shuttle/autodock/ferry/engineering
+/datum/shuttle/ferry/engineering
 	name = "Engineering"
 	warmup_time = 10
-	location = 0
-	shuttle_area = /area/shuttle/constructionsite/station
-	waypoint_station = "eng_shuttle_start"
-	waypoint_offsite = "eng_shuttle_out"
-	dock_target = "engineering_shuttle"
+	area_offsite = /area/shuttle/engineoutpost/site
+	area_station = /area/shuttle/engineoutpost/station
+	docking_controller_tag = "engineering_shuttle"
+	dock_target_station = "engineering_dock_airlock"
+	dock_target_offsite = "edock_airlock"
 
-/obj/effect/shuttle_landmark/engineering/start
-	name = "Engineering Shuttle Dock"
-	landmark_tag = "eng_shuttle_start"
-
-/obj/effect/shuttle_landmark/engineering/out
-	name = "Construction Site"
-	landmark_tag = "eng_shuttle_out"
-	docking_controller = "engineering_shuttle"
-
-// mining shuttle
-
-
-/datum/shuttle/autodock/ferry/mining
+/datum/shuttle/ferry/mining
 	name = "Mining"
 	warmup_time = 10
-	location = 0
-	shuttle_area = /area/shuttle/mining/station
-	waypoint_station = "mining_shuttle_start"
-	waypoint_offsite = "mining_outpost_out"
-	dock_target = "mining_shuttle"
+	area_offsite = /area/shuttle/mining/outpost
+	area_station = /area/shuttle/mining/station
+	docking_controller_tag = "mining_shuttle"
+	dock_target_station = "mining_dock_airlock"
+	dock_target_offsite = "mining_outpost_airlock"
 
-/obj/effect/shuttle_landmark/mining/start
-	name = "Mining Shuttle Dock"
-	landmark_tag = "mining_shuttle_start"
-
-/obj/effect/shuttle_landmark/mining/out
-	name = "Mining Outpost"
-	landmark_tag = "mining_outpost_out"
-	docking_controller = "mining_shuttle"
-
- // research shuttle
-
-/datum/shuttle/autodock/ferry/research
+/datum/shuttle/ferry/research
 	name = "Research"
 	warmup_time = 10
-	location = 0
-	shuttle_area = /area/shuttle/research/station
-	waypoint_station = "research_shuttle_start"
-	waypoint_offsite = "research_outpost_out"
-	dock_target = "research_shuttle"
+	area_offsite = /area/shuttle/research/outpost
+	area_station = /area/shuttle/research/station
+	docking_controller_tag = "research_shuttle"
+	dock_target_station = "research_dock_airlock"
+	dock_target_offsite = "research_outpost_dock"
 
-
-/obj/effect/shuttle_landmark/research/start
-	name = "Research Shuttle Dock"
-	landmark_tag = "research_shuttle_start"
-
-/obj/effect/shuttle_landmark/research/out
-	name = "Research outpost dock"
-	landmark_tag = "research_shuttle_out"
-	docking_controller = "research_shuttle"
-
-// transport shuttle
-
-/datum/shuttle/autodock/ferry/centcom
+/datum/shuttle/ferry/centcom
 	name = "Centcom"
 	location = 1
 	warmup_time = 10
-	shuttle_area = /area/shuttle/transport1/centcom
-	waypoint_station = "research_shuttle_start"
-	waypoint_offsite = "research_outpost_out"
-	dock_target = "research_shuttle"
+	area_offsite = /area/shuttle/transport1/centcom
+	area_station = /area/shuttle/transport1/station
+	docking_controller_tag = "centcom_shuttle"
+	dock_target_station = "centcom_shuttle_dock_airlock"
+	dock_target_offsite = "centcom_shuttle_bay"
 
-// admin shuttle
-
-/datum/shuttle/autodock/ferry/administration
+/datum/shuttle/ferry/administration
 	name = "Administration"
+	location = 1
 	warmup_time = 10	//want some warmup time so people can cancel.
-	shuttle_area = /area/shuttle/administration/centcom
-	dock_target = "admin_shuttle"
-	waypoint_station = "nav_admin_start"
-	waypoint_offsite = "nav_admin_out"
+	area_offsite = /area/shuttle/administration/centcom
+	area_station = /area/shuttle/administration/station
+	docking_controller_tag = "admin_shuttle"
+	dock_target_station = "admin_shuttle_dock_airlock"
+	dock_target_offsite = "admin_shuttle_bay"
 
-/obj/effect/shuttle_landmark/admin/start
-	name = "Centcom"
-	landmark_tag = "nav_admin_start"
-	docking_controller = "admin_shuttle"
-	base_area = /area/centcom
-	base_turf = /turf/simulated/floor/plating
+/datum/shuttle/ferry/alien
+	name = "Alien"
+	area_offsite = /area/shuttle/alien/base
+	area_station = /area/shuttle/alien/mine
+	flags = SHUTTLE_FLAGS_NONE
 
-/obj/effect/shuttle_landmark/admin/out
-	name = "Docking Bay"
-	landmark_tag = "nav_admin_out"
-	docking_controller = "admin_shuttle_dock_airlock"
+/datum/shuttle/ferry/merchant
+	name = "Merchant"
+	warmup_time = 10
+	docking_controller_tag = "merchant_ship_dock"
+	dock_target_station = "merchant_station_dock"
+	dock_target_offsite = "merchant_shuttle_station_dock"
+	area_station = /area/shuttle/merchant/home
+	area_offsite = /area/shuttle/merchant/away
 
-/datum/shuttle/autodock/multi/antag/mercenary
+/datum/shuttle/multi_shuttle/mercenary
 	name = "Mercenary"
 	warmup_time = 0
-	destination_tags = list(
-		"nav_merc_deck1",
-		"nav_merc_deck2",
-		"nav_merc_deck3",
-		"nav_merc_deck4",
-		"nav_merc_deck5",
-		"nav_away_5",
-		"nav_derelict_6",
-		"nav_cluster_5",
-		"nav_merc_dock",
-		"nav_merc_start",
-		"nav_lost_supply_base_antag",
-		"nav_marooned_antag",
-		"nav_smugglers_antag",
-		"nav_magshield_antag",
-		"nav_casino_antag",
-		"nav_yacht_antag",
-		"nav_slavers_base_antag",
+	origin = /area/syndicate_station/start
+	interim = /area/syndicate_station/transit
+	start_location = "Mercenary Base"
+	destinations = list(
+		"Northwest of the station" = /area/syndicate_station/northwest,
+		"North of the station" = /area/syndicate_station/north,
+		"Northeast of the station" = /area/syndicate_station/northeast,
+		"Southwest of the station" = /area/syndicate_station/southwest,
+		"South of the station" = /area/syndicate_station/south,
+		"Southeast of the station" = /area/syndicate_station/southeast,
+		"Telecomms Satellite" = /area/syndicate_station/commssat,
+		"Mining Station" = /area/syndicate_station/mining,
+		"Arrivals dock" = /area/syndicate_station/arrivals_dock,
 		)
-	shuttle_area = /area/syndicate_station/start
-	dock_target = "merc_shuttle"
-	current_location = "nav_merc_start"
-	landmark_transition = "nav_merc_transition"
-	announcer = "SEV Torch Sensor Array"
-	home_waypoint = "nav_merc_start"
-	arrival_message = "Attention, vessel detected entering vessel proximity."
-	departure_message = "Attention, vessel detected leaving vessel proximity."
+	docking_controller_tag = "merc_shuttle"
+	destination_dock_targets = list(
+		"Mercenary Base" = "merc_base",
+		"Arrivals dock" = "nuke_shuttle_dock_airlock",
+		)
+	announcer = "NDV Icarus"
 
-/obj/effect/shuttle_landmark/merc/start
-	name = "Mercenary Base"
-	landmark_tag = "nav_merc_start"
-	docking_controller = "merc_base"
+/datum/shuttle/multi_shuttle/mercenary/New()
+	arrival_message = "Attention, [GLOB.using_map.station_short], you have a large signature approaching the station - looks unarmed to surface scans. We're too far out to intercept - brace for visitors."
+	departure_message = "Your visitors are on their way out of the system, [GLOB.using_map.station_short], burning delta-v like it's nothing. Good riddance."
+	..()
 
-/obj/effect/shuttle_landmark/merc/internim
-	name = "In transit"
-	landmark_tag = "nav_merc_transition"
-
-/obj/effect/shuttle_landmark/merc/dock
-	name = "Docking Port"
-	landmark_tag = "nav_merc_dock"
-	docking_controller = "nuke_shuttle_dock_airlock"
-
-/obj/effect/shuttle_landmark/merc/deck1
-	name = "Northeast of First Deck"
-	landmark_tag = "nav_merc_deck1"
-
-/obj/effect/shuttle_landmark/merc/deck2
-	name = "Southeast of the Second deck"
-	landmark_tag = "nav_merc_deck2"
-
-/obj/effect/shuttle_landmark/merc/deck3
-	name = "South of Third deck"
-	landmark_tag = "nav_merc_deck3"
-
-/obj/effect/shuttle_landmark/merc/deck4
-	name = "Northwest of Fourth Deck"
-	landmark_tag = "nav_merc_deck4"
-
-/obj/effect/shuttle_landmark/merc/deck5
-	name = "East of Bridge"
-	landmark_tag = "nav_merc_deck5"
-
-
-//Skipjack
-
-/datum/shuttle/autodock/multi/antag/skipjack
+/datum/shuttle/multi_shuttle/skipjack
 	name = "Skipjack"
 	warmup_time = 0
-	destination_tags = list(
-		"nav_skipjack_deck1",
-		"nav_skipjack_deck2",
-		"nav_skipjack_deck3",
-		"nav_skipjack_deck4",
-		"nav_skipjack_deck5",
-		"nav_away_7",
-		"nav_derelict_7",
-		"nav_cluster_7",
-		"nav_skipjack_dock",
-		"nav_skipjack_start",
-		"nav_lost_supply_base_antag",
-		"nav_marooned_antag",
-		"nav_smugglers_antag",
-		"nav_magshield_antag",
-		"nav_casino_antag",
-		"nav_yacht_antag",
-		"nav_slavers_base_antag",
+	origin = /area/skipjack_station/start
+	interim = /area/skipjack_station/transit
+	destinations = list(
+		"Fore Starboard Solars" = /area/skipjack_station/northeast_solars,
+		"Fore Port Solars" = /area/skipjack_station/northwest_solars,
+		"Aft Starboard Solars" = /area/skipjack_station/southeast_solars,
+		"Aft Port Solars" = /area/skipjack_station/southwest_solars,
+		"Mining Station" = /area/skipjack_station/mining
 		)
-	shuttle_area =  /area/skipjack_station/start
-	dock_target = "skipjack_shuttle"
-	current_location = "nav_skipjack_start"
-	landmark_transition = "nav_skipjack_transition"
-	announcer = "SEV Torch Sensor Array"
-	home_waypoint = "nav_skipjack_start"
-	arrival_message = "Attention, vessel detected entering vessel proximity."
-	departure_message = "Attention, vessel detected leaving vessel proximity."
+	announcer = "NDV Icarus"
 
-/obj/effect/shuttle_landmark/skipjack/start
-	name = "Raider Outpost"
-	landmark_tag = "nav_skipjack_start"
-	docking_controller = "skipjack_base"
+/datum/shuttle/multi_shuttle/skipjack/New()
+	arrival_message = "Attention, [GLOB.using_map.station_short], we just tracked a small target bypassing our defensive perimeter. Can't fire on it without hitting the station - you've got incoming visitors, like it or not."
+	departure_message = "Your guests are pulling away, [GLOB.using_map.station_short] - moving too fast for us to draw a bead on them. Looks like they're heading out of the system at a rapid clip."
+	..()
 
-/obj/effect/shuttle_landmark/skipjack/internim
-	name = "In transit"
-	landmark_tag = "nav_skipjack_transition"
-
-/obj/effect/shuttle_landmark/skipjack/dock
-	name = "Docking Port"
-	landmark_tag = "nav_skipjack_dock"
-	docking_controller = "skipjack_shuttle_dock_airlock"
-
-/obj/effect/shuttle_landmark/skipjack/deck1
-	name = "Northwest of First Deck"
-	landmark_tag = "nav_skipjack_deck1"
-
-/obj/effect/shuttle_landmark/skipjack/deck2
-	name = "Southwest of the Second deck"
-	landmark_tag = "nav_skipjack_deck2"
-
-/obj/effect/shuttle_landmark/skipjack/deck3
-	name = "Southeast of Third deck"
-	landmark_tag = "nav_skipjack_deck3"
-
-/obj/effect/shuttle_landmark/skipjack/deck4
-	name = "Northwest of Fourth Deck"
-	landmark_tag = "nav_skipjack_deck4"
-
-/obj/effect/shuttle_landmark/skipjack/deck5
-	name = "South of Bridge"
-	landmark_tag = "nav_skipjack_deck5"
-
-//NT Rescue Shuttle
-
-/datum/shuttle/autodock/multi/antag/rescue
+/datum/shuttle/multi_shuttle/rescue
 	name = "Rescue"
 	warmup_time = 0
-	destination_tags = list(
-		"nav_ert_deck1",
-		"nav_ert_deck2",
-		"nav_ert_deck3",
-		"nav_ert_deck4",
-		"nav_ert_deck5",
-		"nav_away_4",
-		"nav_derelict_4",
-		"nav_cluster_4",
-		"nav_ert_dock",
-		"nav_ert_start",
-		"nav_lost_supply_base_antag",
-		"nav_marooned_antag",
-		"nav_smugglers_antag",
-		"nav_magshield_antag",
-		"nav_casino_antag",
-		"nav_yacht_antag",
-		"nav_slavers_base_antag",
+	origin = /area/rescue_base/start
+	interim = /area/rescue_base/transit
+	start_location = "Response Team Base"
+	destinations = list(
+		"Northwest of the station" = /area/rescue_base/northwest,
+		"North of the station" = /area/rescue_base/north,
+		"Northeast of the station" = /area/rescue_base/northeast,
+		"Southwest of the station" = /area/rescue_base/southwest,
+		"South of the station" = /area/rescue_base/south,
+		"Southeast of the station" = /area/rescue_base/southeast,
+		"Telecomms Satellite" = /area/rescue_base/commssat,
+		"Engineering Station" = /area/rescue_base/mining,
+		"Arrivals dock" = /area/rescue_base/arrivals_dock,
 		)
-	shuttle_area = /area/rescue_base/start
-	dock_target = "rescue_shuttle"
-	current_location = "nav_ert_start"
-	landmark_transition = "nav_ert_transition"
-	home_waypoint = "nav_ert_start"
-	announcer = "SEV Torch Sensor Array"
-	arrival_message = "Attention, vessel detected entering vessel proximity."
-	departure_message = "Attention, vessel detected leaving vessel proximity."
+	docking_controller_tag = "rescue_shuttle"
+	destination_dock_targets = list(
+		"Response Team Base" = "rescue_base",
+		"Arrivals dock" = "rescue_shuttle_dock_airlock",
+		)
+	announcer = "NDV Icarus"
 
-/obj/effect/shuttle_landmark/ert/start
-	name = "Response Team Base"
-	landmark_tag = "nav_ert_start"
-	docking_controller = "rescue_base"
+/datum/shuttle/multi_shuttle/rescue/New()
+	arrival_message = "Attention, [GLOB.using_map.station_short], there's a small patrol craft headed your way, it flashed us Asset Protection codes and we let it pass. You've got guests on the way."
+	departure_message = "[GLOB.using_map.station_short], That Asset Protection vessel is headed back the way it came. Hope they were helpful."
+	..()
 
-/obj/effect/shuttle_landmark/ert/internim
-	name = "In transit"
-	landmark_tag = "nav_ert_transition"
-
-/obj/effect/shuttle_landmark/ert/dock
-	name = "Docking Port"
-	landmark_tag = "nav_ert_dock"
-	docking_controller = "rescue_shuttle_dock_airlock"
-
-/obj/effect/shuttle_landmark/ert/deck1
-	name =  "Southwest of Fourth deck"
-	landmark_tag = "nav_ert_deck1"
-
-/obj/effect/shuttle_landmark/ert/deck2
-	name = "Northwest of Third deck"
-	landmark_tag = "nav_ert_deck2"
-
-/obj/effect/shuttle_landmark/ert/deck3
-	name = "Northwest of Second deck"
-	landmark_tag = "nav_ert_deck3"
-
-/obj/effect/shuttle_landmark/ert/deck4
-	name = "Southwest of First Deck"
-	landmark_tag = "nav_ert_deck4"
-
-/obj/effect/shuttle_landmark/ert/deck5
-	name = "West of Bridge"
-	landmark_tag = "nav_ert_deck5"
-
-//Deathsquad Assault Pod
-
-/datum/shuttle/autodock/ferry/specops/ert
+/datum/shuttle/ferry/multidock/specops/ert
 	name = "Special Operations"
+	location = 0
 	warmup_time = 10
-	shuttle_area = /area/shuttle/specops/centcom
-	dock_target = "specops_shuttle_fore"
-	waypoint_station = "nav_specops_start"
-	waypoint_offsite = "nav_specops_out"
+	area_offsite = /area/shuttle/specops/station	//centcom is the home station, the Exodus is offsite
+	area_station = /area/shuttle/specops/centcom
+	docking_controller_tag = "specops_shuttle_port"
+	docking_controller_tag_station = "specops_shuttle_port"
+	docking_controller_tag_offsite = "specops_shuttle_fore"
+	dock_target_station = "specops_centcom_dock"
+	dock_target_offsite = "specops_dock_airlock"
 
-/obj/effect/shuttle_landmark/specops/start
-	name = "Centcom"
-	landmark_tag = "nav_specops_start"
-	docking_controller = "specops_shuttle_port"
 
-/obj/effect/shuttle_landmark/specops/out
-	name = "Docking Bay"
-	landmark_tag = "nav_specops_out"
-	docking_controller = "specops_dock_airlock"
+/obj/effect/shuttle_landmark/evac/out
+	name = "Docked to station"

@@ -108,7 +108,7 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	pref.has_cortical_stack = sanitize_bool(pref.has_cortical_stack, initial(pref.has_cortical_stack))
 
 	var/datum/species/mob_species = all_species[pref.species]
-	if(mob_species && mob_species.spawn_flags & SPECIES_NO_LACE)
+	if(mob_species?.spawn_flags & SPECIES_NO_LACE)
 		pref.has_cortical_stack = FALSE
 
 	var/low_skin_tone = mob_species ? (35 - mob_species.max_skin_tone()) : -185
@@ -705,10 +705,8 @@ var/global/list/valid_bloodtypes = list("A+", "A-", "B+", "B-", "AB+", "AB-", "O
 	if(config.usealienwhitelist) //If we're using the whitelist, make sure to check it!
 		if(!(current_species.spawn_flags & SPECIES_CAN_JOIN))
 			restricted = 2
-		else if((current_species.spawn_flags & SPECIES_IS_WHITELISTED) && !is_alien_whitelisted(preference_mob(),current_species))
+		else if((current_species.spawn_flags & SPECIES_IS_WHITELISTED) && !is_alien_whitelisted(preference_mob(), current_species))
 			restricted = 1
-		else if((current_species.spawn_flags & SPECIES_IS_WHITELISTED) && whitelist_lookup(current_species, preference_mob()))
-			restricted = 0
 
 	if(restricted)
 		if(restricted == 1)

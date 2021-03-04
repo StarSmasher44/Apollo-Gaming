@@ -181,7 +181,7 @@
 	check_armour = "energy"
 	sharp = 0 //not a laser
 	taser_effect = 1
-	agony = 40
+	agony = 30
 	damage_type = STUN
 
 	muzzle_type = /obj/effect/projectile/stun/muzzle
@@ -190,7 +190,7 @@
 
 /obj/item/projectile/beam/stun/heavy
 	name = "heavy stun beam"
-	agony = 60
+	agony = 40
 
 /obj/item/projectile/beam/stun/shock
 	name = "shock beam"

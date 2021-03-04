@@ -372,11 +372,11 @@ datum/preferences
 		for(var/i=1, i<= config.character_slots, i++)
 			S.cd = GLOB.using_map.character_load_path(S, i)
 			S["real_name"] >> name
-			S["prefs_department"] >> dept
+			S["char_department"] >> dept
 			if(!name)	name = "Character[i]"
 			if(i==default_slot)
 				name = "<b>[name]</b>"
-			dat += "<a href='?src=\ref[src];changeslot=[i]'>[name] ([dept])</a><br>"
+			dat += "<a href='?src=\ref[src];changeslot=[i]'>[name] ([get_department(dept, 1)])</a><br>"
 
 	dat += "<hr>"
 	dat += "</center></tt>"
@@ -388,3 +388,12 @@ datum/preferences
 	user << browse(null, "window=saves")
 	if(panel)
 		panel.close()
+
+/datum/preferences/proc/isnewchar()
+	if(!newcharinit || isnull(newcharinit)) //Character seems new?
+		newcharinit = 1
+		return 1 //Returns 1 for new character.
+	else
+		return 0
+
+

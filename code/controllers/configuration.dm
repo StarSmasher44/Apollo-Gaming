@@ -73,7 +73,7 @@ var/list/gamemode_cache = list()
 	var/cult_ghostwriter = 1               //Allows ghosts to write in blood in cult rounds...
 	var/cult_ghostwriter_req_cultists = 10 //...so long as this many cultists are active.
 
-	var/character_slots = 10				// The number of available character slots
+	var/character_slots = 7				// The number of available character slots
 	var/loadout_slots = 3					// The number of loadout slots per character
 
 	var/max_maint_drones = 5				//This many drones can spawn,
@@ -191,6 +191,8 @@ var/list/gamemode_cache = list()
 	var/aooc_allowed = 1
 
 	var/starlight = 0	// Whether space turfs have ambient light or not
+
+	var/discord_token = "notoken"
 
 	var/list/ert_species = list(SPECIES_HUMAN)
 
@@ -729,6 +731,8 @@ var/list/gamemode_cache = list()
 					radiation_lower_limit = text2num(value)
 				if("player_limit")
 					player_limit = text2num(value)
+				if("hub")
+					world.update_hub_visibility()
 
 				else
 					log_misc("Unknown setting in configuration: '[name]'")
@@ -850,7 +854,7 @@ var/list/gamemode_cache = list()
 	. = list()
 	for(var/game_mode in gamemode_cache)
 		var/datum/game_mode/M = gamemode_cache[game_mode]
-		if(M && !M.startRequirements() && !isnull(config.probabilities[M.config_tag]) && config.probabilities[M.config_tag] > 0)
+		if(!M?.startRequirements() && !isnull(config.probabilities[M.config_tag]) && config.probabilities[M.config_tag] > 0)
 			. |= M
 	return .
 

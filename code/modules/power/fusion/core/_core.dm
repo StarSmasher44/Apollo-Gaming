@@ -16,7 +16,7 @@ var/list/fusion_cores = list()
 	layer = ABOVE_HUMAN_LAYER
 	density = 1
 	use_power = 1
-	idle_power_usage = 50
+	idle_power_usage = 250
 	active_power_usage = 500 //multiplied by field strength
 	anchored = 0
 
@@ -50,7 +50,7 @@ var/list/fusion_cores = list()
 	if(href_list["str"])
 		var/dif = text2num(href_list["str"])
 		field_strength = min(max(field_strength + dif, MIN_FIELD_STR), MAX_FIELD_STR)
-		active_power_usage = 500 * field_strength
+		active_power_usage = 200 * field_strength
 		if(owned_field)
 			owned_field.ChangeFieldStrength(field_strength)
 
@@ -86,7 +86,7 @@ var/list/fusion_cores = list()
 /obj/machinery/power/fusion_core/proc/set_strength(var/value)
 	value = Clamp(value, MIN_FIELD_STR, MAX_FIELD_STR)
 	field_strength = value
-	active_power_usage = 5 * value
+	active_power_usage = 500 * value
 	if(owned_field)
 		owned_field.ChangeFieldStrength(value)
 

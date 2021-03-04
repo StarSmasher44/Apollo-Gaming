@@ -161,13 +161,13 @@ var/global/list/additional_antag_types = list()
 
 	var/enemy_count = 0
 	var/list/all_antag_types = all_antag_types()
-	if(antag_tags && antag_tags.len)
+	if(antag_tags?.len)
 		for(var/antag_tag in antag_tags)
 			var/datum/antagonist/antag = all_antag_types[antag_tag]
 			if(!antag)
 				continue
 			var/list/potential = list()
-			if(antag_templates && antag_templates.len)
+			if(antag_templates?.len)
 				if(antag.flags & ANTAG_OVERRIDE_JOB)
 					potential = antag.pending_antagonists
 				else
@@ -232,7 +232,7 @@ var/global/list/additional_antag_types = list()
 		evacuation_controller.recall = 1
 
 	feedback_set_details("round_start","[time2text(world.realtime)]")
-	if(ticker && ticker.mode)
+	if(ticker?.mode)
 		feedback_set_details("game_mode","[ticker.mode]")
 	feedback_set_details("server_ip","[world.internet_address]:[world.port]")
 	return 1
@@ -377,7 +377,7 @@ var/global/list/additional_antag_types = list()
 		return candidates
 
 	// If this is being called post-roundstart then it doesn't care about ready status.
-	if(ticker && ticker.current_state == GAME_STATE_PLAYING)
+	if(ticker?.current_state == GAME_STATE_PLAYING)
 		for(var/mob/player in GLOB.player_list)
 			if(!player.client)
 				continue
@@ -428,7 +428,7 @@ var/global/list/additional_antag_types = list()
 		antag_scaling_coeff = 0
 
 	var/list/all_antag_types = all_antag_types()
-	if(antag_tags && antag_tags.len)
+	if(antag_tags?.len)
 		antag_templates = list()
 		for(var/antag_tag in antag_tags)
 			var/datum/antagonist/antag = all_antag_types[antag_tag]
@@ -494,7 +494,7 @@ proc/display_roundstart_logout_report()
 	msg += "</span>" // close the span from right at the top
 
 	for(var/mob/M in SSmobs.mob_list)
-		if(M.client && M.client.holder)
+		if(M.client?.holder)
 			to_chat(M, msg)
 proc/get_nt_opposed()
 	var/list/dudes = list()

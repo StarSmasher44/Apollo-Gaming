@@ -36,7 +36,7 @@
 //takes input from cmd_admin_pm_context, cmd_admin_pm_panel or /client/Topic and sends them a PM.
 //Fetching a message if needed. src is the sender and C is the target client
 
-/client/proc/cmd_admin_pm(var/client/C, var/msg = null, var/datum/ticket/ticket = null)
+/client/proc/cmd_admin_pm(var/client/C, var/msg = null, var/datum/ticket/ticket = null, var/discord=0)
 	if(prefs.muted & MUTE_ADMINHELP)
 		to_chat(src, "<span class='warning'>Error: Private-Message: You are unable to use PM-s (muted).</span>")
 		return
@@ -146,6 +146,9 @@
 		sound_to(C, 'sound/effects/adminhelp.ogg')
 
 	log_admin("PM: [key_name(src)]->[key_name(C)]: [msg]")
+
+//	send_discord(src.ckey, discord ? discord : C.ckey, msg)
+	send_discord_message(1, msg)
 	adminmsg2adminirc(src, C, html_decode(msg))
 
 	ticket.msgs += new /datum/ticket_msg(src.ckey, C.ckey, msg)

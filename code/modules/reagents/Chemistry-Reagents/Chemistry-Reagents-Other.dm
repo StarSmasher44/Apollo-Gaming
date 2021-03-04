@@ -191,6 +191,18 @@
 		T.holy = 1
 	return
 
+// This is only really used to poison vox.
+/datum/reagent/oxygen
+	name = "Oxygen"
+	description = "An ubiquitous oxidizing agent."
+	taste_description = "nothing"
+	reagent_state = LIQUID
+	color = COLOR_GRAY80
+
+/datum/reagent/oxygen/affect_blood(var/mob/living/carbon/M, var/alien, var/removed)
+	if(alien == IS_VOX)
+		M.adjustToxLoss(removed * 6)
+
 /datum/reagent/diethylamine
 	name = "Diethylamine"
 	description = "A secondary amine, mildly corrosive."

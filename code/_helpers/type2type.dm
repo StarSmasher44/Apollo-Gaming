@@ -47,6 +47,21 @@
 	while (left-- > 0)
 		. = "0[.]"
 
+//Converts a string into a list by splitting the string at each delimiter found. (discarding the seperator)			**F_A's Split
+/proc/dd_text2list(txt, d="\n")
+	var/pos = findtext(txt, d)
+	var/start = 1
+	var/dlen = length(d)
+
+	. = list()
+
+	while(pos > 0)
+		. += copytext(txt, start, pos)
+		start = pos + dlen
+		pos = findtext(txt, d, start)
+
+	. += copytext(txt, start)
+
 /proc/dd_list2text(list/the_list, separator)
 	var/total = the_list.len
 	if (total == 0)														// Nothing to work with.
@@ -103,6 +118,11 @@
 		if ("SOUTHEAST") return 6
 		if ("SOUTHWEST") return 10
 
+//Converts an angle (degrees) into a ss13 direction
+GLOBAL_LIST_INIT(modulo_angle_to_dir, list(NORTH,NORTHEAST,EAST,SOUTHEAST,SOUTH,SOUTHWEST,WEST,NORTHWEST))
+#define angle2dir(X) (GLOB.modulo_angle_to_dir[round((((X%360)+382.5)%360)/45)+1])
+
+/*
 // Converts an angle (degrees) into an ss13 direction
 /proc/angle2dir(var/degree)
 	degree = (degree + 22.5) % 360 // 22.5 = 45 / 2
@@ -114,6 +134,7 @@
 	if (degree < 270) return SOUTHWEST
 	if (degree < 315) return WEST
 	return NORTH|WEST
+*/
 
 // Returns the north-zero clockwise angle in degrees, given a direction
 /proc/dir2angle(var/D)

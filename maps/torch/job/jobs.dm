@@ -781,7 +781,7 @@
 /datum/job/qm
 	title = "Deck Officer"
 	department = "Supply"
-	department_flag = SUP
+	department_flag = LOG
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the Executive Officer"
@@ -820,7 +820,7 @@
 /datum/job/cargo_tech
 	title = "Deck Technician"
 	department = "Supply"
-	department_flag = SUP
+	department_flag = LOG
 	total_positions = 2
 	spawn_positions = 2
 	supervisors = "the Deck Officer and Executive Officer"
@@ -852,7 +852,7 @@
 /datum/job/cargo_contractor
 	title = "Supply Assistant"
 	department = "Supply"
-	department_flag = SUP
+	department_flag = LOG
 
 	total_positions = 1
 	spawn_positions = 1

@@ -83,13 +83,14 @@
 
 		if(src.product_ads)
 			src.ads_list += splittext(src.product_ads, ";")
-
-		src.build_inventory()
-		power_change()
-
 		return
 
 	return
+
+/obj/machinery/vending/Initialize()
+	. = ..()
+	src.build_inventory()
+	power_change()
 
 /**
  *  Build src.produdct_records from the products lists
@@ -276,7 +277,7 @@
 	if(!customer_account && ishuman(usr))
 		H = usr
 	if(H)
-		customer_account = H.CharRecords.bank_account
+		customer_account = H.client.prefs.bank_account
 	if (!customer_account)
 		src.status_message = "Error: Unable to access account. Please contact technical support if problem persists."
 		src.status_error = 1
@@ -522,7 +523,7 @@
 
 /obj/machinery/vending/Process()
 	if(stat & (BROKEN|NOPOWER))
-		return
+		return PROCESS_KILL
 
 	if(!src.active)
 		return
@@ -551,6 +552,11 @@
 	for(var/mob/O in hearers(src, null))
 		O.show_message("<span class='game say'><span class='name'>\The [src]</span> beeps, \"[message]\"</span>",2)
 	return
+
+/obj/machinery/vending/power_change()
+	..()
+	if( !(stat & NOPOWER) )
+		SSmachines.machinery.Add(src)
 
 /obj/machinery/vending/powered()
 	return anchored && ..()

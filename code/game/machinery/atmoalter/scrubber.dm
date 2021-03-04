@@ -46,7 +46,7 @@
 /obj/machinery/portable_atmospherics/powered/scrubber/update_icon()
 	src.overlays = 0
 
-	if(on && cell && cell.charge)
+	if(on && cell?.charge)
 		icon_state = "pscrubber:1"
 	else
 		icon_state = "pscrubber:0"
@@ -64,7 +64,7 @@
 
 	var/power_draw = -1
 
-	if(on && cell && cell.charge)
+	if(on && cell?.charge)
 		var/datum/gas_mixture/environment
 		if(holding)
 			environment = holding.air_contents

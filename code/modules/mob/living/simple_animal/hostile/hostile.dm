@@ -228,7 +228,7 @@
 	if(prob(break_stuff_probability))
 		for(var/dir in GLOB.cardinal) // North, South, East, West
 			var/obj/effect/shield/S = locate(/obj/effect/shield, get_step(src, dir))
-			if(S && S.gen && S.gen.check_flag(MODEFLAG_NONHUMANS))
+			if(S?.gen && S.gen.check_flag(MODEFLAG_NONHUMANS))
 				S.attack_generic(src,rand(melee_damage_lower,melee_damage_upper),attacktext)
 				return
 			for(var/obj/structure/window/obstacle in get_step(src, dir))

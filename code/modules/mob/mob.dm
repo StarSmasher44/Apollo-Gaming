@@ -14,7 +14,7 @@
 			if(!istype(screenobj) || !screenobj.globalscreen)
 				qdel(screenobj)
 		client.screen = list()
-	if(mind && mind.current == src)
+	if(mind?.current == src)
 		spellremove(src)
 	ghostize()
 	..()
@@ -45,6 +45,10 @@
 /mob/Initialize()
 	. = ..()
 	START_PROCESSING(SSmobs, src)
+	spawn(10)
+		if(ishuman(src) && src.real_name) //Only humans now, lets not populate shit lists.
+			LAZYINITLIST(trigger_words)
+			trigger_words.Add(splittext(real_name, " "))
 
 /mob/proc/show_message(msg, type, alt, alt_type)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
 	if(!client)	return
@@ -359,7 +363,7 @@
 /mob/proc/print_flavor_text()
 	if (flavor_text && flavor_text != "")
 		var/msg = replacetext(flavor_text, "\n", " ")
-		if(lentext(msg) <= 40)
+		if(length(msg) <= 40)
 			return "<span class='notice'>[msg]</span>"
 		else
 			return "<span class='notice'>[copytext_preserve_html(msg, 1, 37)]... <a href='byond://?src=\ref[src];flavor_more=1'>More...</a></span>"
@@ -410,7 +414,7 @@
 
 	var/is_admin = 0
 
-	if(client.holder && (client.holder.rights & R_ADMIN))
+	if(client.holder?.rights & R_ADMIN)
 		is_admin = 1
 
 	if(is_admin && stat == DEAD)
@@ -600,7 +604,7 @@
 	return stat == DEAD
 
 /mob/proc/is_mechanical()
-	if(mind && (mind.assigned_role == "Cyborg" || mind.assigned_role == "AI"))
+	if(mind?.assigned_role == "Cyborg" || mind?.assigned_role == "AI")
 		return 1
 	return issilicon(src) || get_species() == SPECIES_IPC
 
@@ -627,7 +631,7 @@
 		return
 
 	if(statpanel("Status"))
-		if(ticker && ticker.current_state != GAME_STATE_PREGAME)
+		if(ticker?.current_state != GAME_STATE_PREGAME)
 			stat("Local Time", stationtime2text())
 			stat("Local Date", stationdate2text())
 			stat("Round Duration", roundduration2text())
@@ -742,7 +746,7 @@
 	if(!canface() || client.moving || world.time < client.move_delay)
 		return 0
 	set_dir(ndir)
-	if(buckled && buckled.buckle_movable)
+	if(buckled?.buckle_movable)
 		buckled.set_dir(ndir)
 	client.move_delay += movement_delay()
 	return 1
@@ -970,6 +974,27 @@ mob/proc/yank_out_object()
 /mob/update_icon()
 	return
 
+/mob/verb/add_alert_word()
+	set name = "Alert Words Add"
+	set category = "IC"
+
+	var/word = sanitizeSafe(input(usr, "What word would you like to add to your alerts?", "Add Alert", null)  as text, MAX_NAME_LEN)
+
+	if(word)
+		LAZYINITLIST(trigger_words)
+		trigger_words |= word
+
+/mob/verb/del_alert_word()
+	set name = "Alert Words Remove"
+	set category = "IC"
+
+	var/word = input("What do you want to yank out?", "Embedded objects") in trigger_words
+
+	if(word)
+		LAZYINITLIST(trigger_words)
+		trigger_words -= word
+
+
 /mob/verb/face_direction()
 
 	set name = "Face Direction"
@@ -1052,7 +1077,7 @@ mob/proc/yank_out_object()
 	set desc = "Toggles whether or not you will be considered a candidate by an add-antag vote."
 	set category = "OOC"
 	if(isghostmind(src.mind) || isnewplayer(src))
-		if(ticker && ticker.looking_for_antags)
+		if(ticker?.looking_for_antags)
 			if(src.mind in ticker.antag_pool)
 				ticker.antag_pool -= src.mind
 				to_chat(usr, "You have left the antag pool.")
@@ -1067,7 +1092,7 @@ mob/proc/yank_out_object()
 	return (!alpha || !mouse_opacity || viewer.see_invisible < invisibility)
 
 /client/proc/check_has_body_select()
-	return mob && mob.hud_used && istype(mob.zone_sel, /obj/screen/zone_sel)
+	return mob?.hud_used && istype(mob.zone_sel, /obj/screen/zone_sel)
 
 /client/verb/body_toggle_head()
 	set name = "body-toggle-head"

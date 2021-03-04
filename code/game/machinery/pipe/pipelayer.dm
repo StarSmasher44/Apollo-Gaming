@@ -23,7 +23,7 @@
 	..()
 
 	if(on && a_dis)
-		dismantleFloor(old_turf)
+		dismantleFLOOR(old_turf)
 	layPipe(old_turf,M_Dir,old_dir)
 
 	old_turf = new_turf
@@ -106,7 +106,7 @@
 	metal-=amount
 	return 1
 
-/obj/machinery/pipelayer/proc/dismantleFloor(var/turf/new_turf)
+/obj/machinery/pipelayer/proc/dismantleFLOOR(var/turf/new_turf)
 	if(istype(new_turf, /turf/simulated/floor))
 		var/turf/simulated/floor/T = new_turf
 		if(!T.is_plating())

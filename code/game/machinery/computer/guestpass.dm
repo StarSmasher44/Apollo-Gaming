@@ -95,7 +95,7 @@
 		dat += "Reason:  <a href='?src=\ref[src];choice=reason'>[reason]</a><br>"
 		dat += "Duration (minutes):  <a href='?src=\ref[src];choice=duration'>[duration] m</a><br>"
 		dat += "Access to areas:<br>"
-		if (giver && giver.access)
+		if (giver?.access)
 			for (var/A in giver.access)
 				var/area = get_access_desc(A)
 				if (A in accesses)

@@ -239,8 +239,21 @@
 	name = "\improper Engine Monitoring Room"
 	icon_state = "engine_monitoring"
 
+/area/engineering/chiefengi_office
+	name = "\improper Chief Engineer's Office"
+	icon_state = "engine_monitoring"
+
+/area/engineering/engine_monitoring_secondary
+	name = "\improper Secondary Engine Monitoring Room"
+	icon_state = "engine_monitoring"
+
 /area/engineering/engine_smes
 	name = "\improper Engineering SMES"
+	icon_state = "engine_smes"
+	sound_env = SMALL_ENCLOSED
+
+/area/engineering/engine_solars
+	name = "\improper Engineering Solar Array"
 	icon_state = "engine_smes"
 	sound_env = SMALL_ENCLOSED
 
@@ -266,6 +279,10 @@
  	sound_env = LARGE_ENCLOSED
 
 // Medical
+
+/area/medical/medicalstorage
+	name = "\improper Secondary Storage"
+	icon_state = "medbay4"
 
 /area/medical/biostorage
 	name = "\improper Secondary Storage"
@@ -305,6 +322,10 @@
 /area/rnd/lab
 	name = "\improper Research Lab"
 	icon_state = "toxlab"
+
+/area/rnd/misc_lab_spectro
+	name = "\improper Spectrometry Chemistry Lab"
+	icon_state = "toxmisc"
 
 /area/rnd/misc_lab
 	name = "\improper Miscellaneous Research"
@@ -357,6 +378,13 @@
 	name = "Supply Shuttle"
 	icon_state = "shuttle3"
 	requires_power = 0
+
+/area/supply/station
+	name = "Supply Shuttle"
+	icon_state = "shuttle3"
+	requires_power = 0
+	base_turf = /turf/simulated/floor/reinforced
+
 
 // Security
 

@@ -118,7 +118,7 @@
 	if(!src.stat)
 		stat("Hardware integrity", "[hardware_integrity()]%")
 		stat("Internal capacitor", "[backup_capacitor()]%")
-		var/turf/T = get_turf(src)
+		var/turf/T = src.loc
 		var/datum/gas_mixture/environment = T.return_air()
 		var/core_temp = round(environment.temperature - T0C, 0.1)
 		stat(null, text("Core Temperature: [core_temp] C"))

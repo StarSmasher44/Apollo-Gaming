@@ -86,7 +86,7 @@
 		if(vlist.len)
 			for(var/ID in vlist)
 				var/datum/disease2/disease/V = vlist[ID]
-				if(V && V.spreadtype == "Contact")
+				if(V?.spreadtype == "Contact")
 					infect_virus2(M, V.getcopy())
 
 /datum/reagent/blood/affect_touch(var/mob/living/carbon/M, var/alien, var/removed)

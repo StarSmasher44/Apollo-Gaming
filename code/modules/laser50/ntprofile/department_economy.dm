@@ -8,7 +8,10 @@ var/global/list/department_accounts = list()
 			LAZYINITLIST(department_accounts)
 			LAZYINITLIST(bank_accounts)
 		else
-			department_bank["dept_bank"] << department_accounts
+			if(department_accounts.len)
+				department_bank["dept_bank"] << department_accounts
+
+				department_bank.Flush()
 	else
 		world.log << "ERROR: No department_bank found."
 
@@ -26,7 +29,10 @@ var/global/list/department_accounts = list()
 		if(MA.department)
 			dat += "<b>DEPT ACC: [MA.owner_name] - $[MA.bank_balance] - SUS: [MA.suspended] - TRANS: [MA.transaction_log.len]</b><br>"
 		else
-			dat += "<b>USER ACC: [MA.owner_name] ([MA.owner_mob]) - $[MA.bank_balance] - SUS: [MA.suspended] - TRANS: [MA.transaction_log.len]</b><br>"
+			dat += "<b>USER ACC: [MA.owner_name] - $[MA.bank_balance] - SUS: [MA.suspended] - TRANS: [MA.transaction_log.len]</b><br>"
+	for(var/datum/money_account/MA in department_accounts)
+		dat += "<b>DEPT2 ACC: [MA.owner_name] - $[MA.bank_balance] - SUS: [MA.suspended] - TRANS: [MA.transaction_log.len]</b><br>"
+
 	dat += "</html>"
 
 	var/datum/browser/popup = new(usr, "Economy Overview","Economy Overview", 480, 600, src)

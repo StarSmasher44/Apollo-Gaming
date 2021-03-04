@@ -12,7 +12,7 @@ datum/unit_test/zas_area_test/emergency_shuttle
 
 /datum/unit_test/zas_area_test/eng_shuttle
 	name = "ZAS: Construction Site Shuttle (Station)"
-	area_path = /area/shuttle/constructionsite/station
+	area_path = /area/shuttle/engineoutpost/station
 
 /datum/unit_test/zas_area_test/mining_shuttle_at_station
 	name = "ZAS: Mining Shuttle (Station)"

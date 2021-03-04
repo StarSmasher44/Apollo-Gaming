@@ -494,18 +494,18 @@ var/global/list/obj/item/device/pda/PDAs = list()
 		data["ntprofile"] = list(\
 			"name" = "[owner]",\
 			"department" = "[job.department]",\
-			"deptrank" = "[calculate_department_rank(user)] ([get_department_rank_title(get_department(job.department, calculate_department_rank(H)))])",\
+			"deptrank" = "[calculate_department_rank(user)] ([get_department_rank_title(H, H.client.prefs.department_rank)])",\
 			"job" = "[H.job]",\
 			"basepay" = "[job.base_pay]",\
-			"bank" = "[H.CharRecords.bank_account.bank_balance ? "[H.CharRecords.bank_account.bank_balance]" : "0"]",\
+			"bank" = "[H.client.prefs.bank_account.bank_balance ? "[H.client.prefs.bank_account.bank_balance]" : "0"]",\
 			"paycheck" = "[calculate_paycheck(user)]",\
-			"pension" = "[H.CharRecords.pension_balance ? "[H.CharRecords.pension_balance]" : "0"]",\
-			"activehours" = "[round(H.CharRecords.department_playtime/60, 0.1)]",\
+			"pension" = "[H.client.prefs.pension_balance ? "[H.client.prefs.pension_balance]" : "0"]",\
+			"activehours" = "[round(H.client.prefs.department_playtime/60, 0.1)]",\
 			"recommendations" = "[recommends]",\
-			"neurallaces" = "[H.CharRecords.neurallaces]",\
-			"permadeath" = "[user.client.prefs.permadeath]",\
-			"mentorship" = "[H.CharRecords.mentorship ? "Yes" : "No"]",\
-			"mentoring" = "[H.CharRecords.mentoring]",\
+			"neurallaces" = "[H.client.prefs.neurallaces ? "[H.client.prefs.neurallaces]" : "None"]",\
+			"permadeath" = "[H.client.prefs.permadeath]",\
+			"mentorship" = "[H.client.prefs.mentorship ? "Yes" : "No"]",\
+			"mentoring" = "[H.mind.mentoring]",\
 			"reviveprice" = "[REVIVEPRICE]"\
 			)
 		ntprofilecache = data["ntprofile"] //Cacheing for saving unneeded shit?
@@ -715,33 +715,34 @@ var/global/list/obj/item/device/pda/PDAs = list()
 //NT PROFILE FUNCTIONALITY===================================
 		if("Neurallace")
 			var/mob/living/carbon/human/M = usr
-			if(M && M.client && owner == M.real_name)
+			if(M?.client && owner == M.real_name)
 				switch(alert("Would you like to buy a neural lace for $3000?", "Buy Neural Lace", "Yes", "Abort"))
 					if("Yes")
-						if(M.CharRecords.bank_account.bank_balance < REVIVEPRICE) //Insufficient in bank.
-							if((M.CharRecords.bank_account.bank_balance+M.CharRecords.pension_balance) < REVIVEPRICE)
+						if(M.client.prefs.bank_account.bank_balance < REVIVEPRICE) //Insufficient in bank.
+							if((M.client.prefs.bank_account.bank_balance+M.client.prefs.pension_balance) < REVIVEPRICE)
 								to_chat(M, "You do not have sufficient funds for this!.")
 								return
 							else
-								var/topay = (REVIVEPRICE-M.CharRecords.bank_account.bank_balance)
-								M.CharRecords.bank_account.bank_balance -= (REVIVEPRICE-topay)
-								M.CharRecords.pension_balance -= topay
+								var/topay = (REVIVEPRICE-M.client.prefs.bank_account.bank_balance)
+								M.client.prefs.bank_account.bank_balance -= (REVIVEPRICE-topay)
+								M.client.prefs.pension_balance -= topay
 						else
-							M.CharRecords.bank_account.bank_balance -= REVIVEPRICE
-						M.CharRecords.neurallaces++ //Buy neural lace.
-						M.CharRecords.save_persistent()
+							M.client.prefs.bank_account.bank_balance -= REVIVEPRICE
+						M.client.prefs.neurallaces++ //Buy neural lace.
+						M.client.prefs.save_character()
 					if("Abort")
 						to_chat(M, "Purchase Aborted.")
 						return
 		if("optmentor")
 			var/mob/living/carbon/human/M = usr
-			if(M && M.client && owner == M.real_name)
-				if(M.CharRecords.mentorship)
+			if(M?.client && owner == M.real_name)
+				if(M.client.prefs.mentorship)
 					M.show_message("<span class='notice'>You have been signed out of the NT mentor program.</span>", 1)
-					M.CharRecords.mentorship = 0
+					M.client.prefs.mentorship = 0
 				else
 					M.show_message("<span class='notice'>You have been signed into the NT mentor program.</span>", 1)
-					M.CharRecords.mentorship = 1
+					M.client.prefs.mentorship = 1
+				M.client.prefs.save_character()
 //MESSENGER/NOTE FUNCTIONS===================================
 
 		if ("Edit")

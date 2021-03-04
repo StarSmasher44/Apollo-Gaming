@@ -135,7 +135,7 @@
 			to_chat(usr, "<span class='notice'>[src]'s motors resist your effort.</span>")
 		return
 	if(istype(C, /obj/item/stack/material) && C.get_material_name() == "plasteel")
-		var/amt = Ceiling((maxhealth - health)/150)
+		var/amt = CEILING((maxhealth - health)/150, 1)
 		if(!amt)
 			to_chat(usr, "<span class='notice'>\The [src] is already fully repaired.</span>")
 			return

@@ -98,7 +98,7 @@
 
 // An ugly proc, but apparently mechs don't have maxhealth var of any kind.
 /obj/machinery/mech_recharger/proc/fully_repaired()
-	return charging && (charging.health == initial(charging.health))
+	return charging?.health == initial(charging.health)
 
 /obj/machinery/mech_recharger/attackby(var/obj/item/I, var/mob/user)
 	if(default_deconstruction_screwdriver(user, I))

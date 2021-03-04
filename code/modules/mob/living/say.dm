@@ -12,7 +12,7 @@ var/list/department_radio_keys = list(
 	  ":w" = "whisper",		".w" = "whisper",
 	  ":t" = "Mercenary",	".t" = "Mercenary",
 	  ":x" = "Raider",		".x" = "Raider",
-	  ":u" = "Supply",		".u" = "Supply",
+	  ":u" = "Logistics",	".u" = "Logistics",
 	  ":v" = "Service",		".v" = "Service",
 	  ":p" = "AI Private",	".p" = "AI Private",
 	  ":z" = "Entertainment",".z" = "Entertainment",
@@ -30,7 +30,7 @@ var/list/department_radio_keys = list(
 	  ":W" = "whisper",		".W" = "whisper",
 	  ":T" = "Mercenary",	".T" = "Mercenary",
 	  ":X" = "Raider",		".X" = "Raider",
-	  ":U" = "Supply",		".U" = "Supply",
+	  ":U" = "Logistics",	".U" = "Logistics",
 	  ":V" = "Service",		".V" = "Service",
 	  ":P" = "AI Private",	".P" = "AI Private",
 	  ":Z" = "Entertainment",".Z" = "Entertainment",
@@ -49,7 +49,7 @@ var/list/department_radio_keys = list(
 	  ":û" = "Security",	".û" = "Security",
 	  ":ö" = "whisper",		".ö" = "whisper",
 	  ":å" = "Mercenary",	".å" = "Mercenary",
-	  ":é" = "Supply",		".é" = "Supply",
+	  ":é" = "Logistics",		".é" = "Logistics",
 )
 
 
@@ -171,7 +171,7 @@ proc/get_radio_key_from_channel(var/channel)
 
 	// This is broadcast to all mobs with the language,
 	// irrespective of distance or anything else.
-	if(speaking && (speaking.flags & HIVEMIND))
+	if(speaking?.flags & HIVEMIND)
 		speaking.broadcast(src,trim(message))
 		return 1
 
@@ -189,7 +189,7 @@ proc/get_radio_key_from_channel(var/channel)
 
 	message = handle_autohiss(message, speaking)
 
-	if(!(speaking && (speaking.flags & NO_STUTTER)))
+	if(!(speaking?.flags & NO_STUTTER))
 		var/list/message_data = list(message, verb, 0)
 		if(handle_speech_problems(message_data))
 			message = message_data[1]
@@ -300,7 +300,7 @@ proc/get_radio_key_from_channel(var/channel)
 				if(O) //It's possible that it could be deleted in the meantime.
 					O.hear_talk(src, stars(message), verb, speaking)
 
-	
+
 	if(whispering)
 		log_whisper("[name]/[key] : [message]")
 	else

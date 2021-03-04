@@ -51,6 +51,17 @@
 #define LANGUAGE_SPACER "Spacer"
 #define LANGUAGE_BOGANI "Bogani"
 
+// Alien whitelists
+#define A_WHITELIST_DIONA 1
+#define A_WHITELIST_SKRELL 2
+#define A_WHITELIST_TAJARA 4
+#define A_WHITELIST_UNATHI 8
+#define A_WHITELIST_WRYN 16
+#define A_WHITELIST_MACHINE 32
+#define A_WHITELIST_RESOMI 64
+#define A_WHITELIST_TOTAL A_WHITELIST_DIONA | A_WHITELIST_SKRELL | A_WHITELIST_TAJARA | A_WHITELIST_UNATHI | A_WHITELIST_WRYN | A_WHITELIST_MACHINE | A_WHITELIST_RESOMI
+
+
 // Language flags.
 #define WHITELISTED  1   // Language is available if the speaker is whitelisted.
 #define RESTRICTED   2   // Language can only be acquired by spawning or an admin.

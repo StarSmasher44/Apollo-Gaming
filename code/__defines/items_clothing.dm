@@ -1,5 +1,7 @@
 #define HUMAN_STRIP_DELAY        40   // Takes 40ds = 4s to strip someone.
 
+#define LOADOUT_MONEY 1 //If 0, loadouts use plain old points. 1 = Persistent money
+
 #define CANDLE_LUM 3 // For how bright candles are.
 
 // Item inventory slot bitmasks.

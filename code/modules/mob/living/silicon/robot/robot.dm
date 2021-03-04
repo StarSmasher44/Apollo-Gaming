@@ -120,7 +120,7 @@
 	if(!scrambledcodes && !camera)
 		camera = new /obj/machinery/camera(src)
 		camera.c_tag = real_name
-		camera.replace_networks(list(NETWORK_EXODUS,NETWORK_ROBOTS))
+		camera.replace_networks(list(NETWORK_APOLLO,NETWORK_ROBOTS))
 		if(wires.IsIndexCut(BORG_WIRE_CAMERA))
 			camera.status = 0
 
@@ -232,7 +232,7 @@
 	return ..()
 
 /mob/living/silicon/robot/proc/set_module_sprites(var/list/new_sprites)
-	if(new_sprites && new_sprites.len)
+	if(new_sprites?.len)
 		module_sprites = new_sprites.Copy()
 		//Custom_sprite check and entry
 
@@ -687,7 +687,7 @@
 
 //Robots take half damage from basic attacks.
 /mob/living/silicon/robot/attack_generic(var/mob/user, var/damage, var/attack_message)
-	return ..(user,Floor(damage/2),attack_message)
+	return ..(user,FLOOR(damage/2),attack_message)
 
 /mob/living/silicon/robot/proc/allowed(mob/M)
 	//check if it doesn't require any access at all

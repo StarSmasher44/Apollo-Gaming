@@ -167,21 +167,20 @@
 	anchored = 1
 
 
-
 /obj/machinery/conveyor_switch/New(loc, newid)
 	..(loc)
 	if(!id)
 		id = newid
 	ADD_ICON_QUEUE(src)
+
 	button_machines.Add(src)
 
-/obj/machinery/conveyor_switch/Initialize()
-	..(loc)
-	LAZYINITLIST(conveyors)
-	for(var/obj/machinery/conveyor/C in world) //Pls this is retarded
-		if(C.id == id)
-			conveyors += C
-		CHECK_TICK
+	spawn(5)		// allow map load
+		conveyors = list()
+		for(var/obj/machinery/conveyor/C in world)
+			if(C.id == id)
+				conveyors += C
+
 
 
 /obj/machinery/conveyor_switch/Destroy()

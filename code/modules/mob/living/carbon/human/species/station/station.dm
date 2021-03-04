@@ -187,7 +187,7 @@
 	if(prob(5) && H.nutrition > 150)
 		for(var/limb_type in has_limbs)
 			var/obj/item/organ/external/E = H.organs_by_name[limb_type]
-			if(E && !E.is_usable())
+			if(!E?.is_usable())
 				E.removed()
 				qdel(E)
 				E= null
@@ -415,7 +415,7 @@
 		return TRUE
 	for(var/thing in H.bad_external_organs)
 		var/obj/item/organ/external/E = thing
-		if(E && E.is_stump())
+		if(E?.is_stump())
 			lost_limb_count++
 	return (lost_limb_count >= DIONA_LIMB_DEATH_COUNT)
 #undef DIONA_LIMB_DEATH_COUNT
@@ -481,7 +481,7 @@
 		if (prob(10) && H.nutrition > 70)
 			for(var/limb_type in has_limbs)
 				var/obj/item/organ/external/E = H.organs_by_name[limb_type]
-				if(E && !E.is_usable())
+				if(!E?.is_usable())
 					E.removed()
 					qdel(E)
 					E = null

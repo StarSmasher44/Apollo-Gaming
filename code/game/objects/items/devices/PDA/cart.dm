@@ -297,7 +297,7 @@
 			else
 				beepskyData["botstatus"] = list("loca" = null, "mode" = -1)
 			var/botsCount=0
-			if(SC.botlist && SC.botlist.len)
+			if(SC.botlist?.len)
 				for(var/mob/living/bot/B in SC.botlist)
 					botsCount++
 					if(B.loc)
@@ -349,7 +349,7 @@
 
 	if(mode==47)
 		var/supplyData[0]
-		var/datum/shuttle/autodock/ferry/supply/shuttle = supply_controller.shuttle
+		var/datum/shuttle/ferry/supply/cargo/shuttle = supply_controller.shuttle
 		if (shuttle)
 			supplyData["shuttle_moving"] = shuttle.has_arrive_time()
 			supplyData["shuttle_eta"] = shuttle.eta_minutes()

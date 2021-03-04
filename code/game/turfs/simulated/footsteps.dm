@@ -3,6 +3,7 @@
 #define FOOTSTEP_PLATING 	"plating"
 #define FOOTSTEP_WOOD 		"wood"
 #define FOOTSTEP_ASTEROID 	"asteroid"
+#define FOOTSTEP_CATWALK	"catwalk"
 
 /turf/simulated/floor/var/global/list/footstep_sounds = list(
 	FOOTSTEP_WOOD = list(
@@ -35,8 +36,7 @@
 		'sound/effects/footstep/asteroid3.ogg',
 		'sound/effects/footstep/asteroid4.ogg',
 		'sound/effects/footstep/asteroid5.ogg')
-	)
-
+)
 /decl/flooring/var/footstep_type
 /decl/flooring/carpet/footstep_type = FOOTSTEP_CARPET
 /decl/flooring/tiling/footstep_type = FOOTSTEP_TILES
@@ -85,9 +85,10 @@
 
 	if(!has_organ(BP_L_FOOT) && !has_organ(BP_R_FOOT))
 		return //no feet no footsteps
-
-	var/S = T.get_footstep_sound()
-	if(S)
+	var/footsound
+	if(!footsound)
+		footsound = T.get_footstep_sound()
+	if(footsound)
 		var/range = -(world.view - 2)
 		var/volume = 70
 		if(m_intent == "walk")
@@ -97,4 +98,4 @@
 			volume -= 60
 			range -= 0.333
 
-		playsound(T, S, volume, 1, range)
+		playsound(T, footsound, volume, 1, range)

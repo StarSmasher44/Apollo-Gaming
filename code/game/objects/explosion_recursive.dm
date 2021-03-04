@@ -57,7 +57,7 @@ proc/explosion_rec(turf/epicenter, power, shaped)
 
 		for(var/atom_movable in T.contents)
 			var/atom/movable/AM = atom_movable
-			if(AM && AM.simulated && !T.protects_atom(AM))
+			if(AM?.simulated && !T.protects_atom(AM))
 				AM.ex_act(severity)
 
 	explosion_turfs.Cut()

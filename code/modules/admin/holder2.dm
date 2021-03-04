@@ -88,7 +88,7 @@ NOTE: It checks usr by default. Supply the "user" argument if you wish to check 
 
 //probably a bit iffy - will hopefully figure out a better solution
 /proc/check_if_greater_rights_than(client/other)
-	if(usr && usr.client)
+	if(usr?.client)
 		if(usr.client.holder)
 			if(!other || !other.holder)
 				return 1

@@ -358,7 +358,7 @@
 
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
-			if(H.mind && H.mind.assigned_role)
+			if(H.mind?.assigned_role)
 				dat += "<td>[H.mind.assigned_role]</td>"
 		else
 			dat += "<td>NA</td>"
@@ -395,7 +395,7 @@
 
 
 /datum/admins/proc/check_antagonists()
-	if (ticker && ticker.current_state >= GAME_STATE_PLAYING)
+	if (ticker?.current_state >= GAME_STATE_PLAYING)
 		var/dat = list()
 		dat += "<html><head><title>Round Status</title></head><body><h1><B>Round Status</B></h1>"
 		dat += "Current Game Mode: <B>[ticker.mode.name]</B><BR>"

@@ -2,7 +2,8 @@
 	iterations = 5
 	descriptor = "moon caves"
 	wall_type =  /turf/simulated/mineral
-	floor_type = /turf/simulated/floor/asteroid
+	#warn floor_type = /turf/unsimulated/desert For newpollo map
+	floor_type = /turf/unsimulated/desert // /turf/simulated/floor/asteroid
 	target_turf_type = /turf/unsimulated/mask
 	var/mineral_sparse =  /turf/simulated/mineral/random
 	var/mineral_rich = /turf/simulated/mineral/random/high_chance

@@ -81,11 +81,11 @@
 	if(byond_version < RECOMMENDED_VERSION)
 		world.log << "Your server's byond version does not meet the recommended requirements for this server. Please update BYOND"
 
-	if(config && config.server_name != null && config.server_suffix && world.port > 0)
+	if(config?.server_name != null && config.server_suffix && world.port > 0)
 		// dumb and hardcoded but I don't care~
 		config.server_name += " #[(world.port % 1000) / 100]"
 
-	if(config && config.log_runtime)
+	if(config?.log_runtime)
 		var/runtime_log = file("data/logs/runtime/[date_string]_[time2text(world.timeofday, "hh:mm")]_[game_id].log")
 		runtime_log << "Game [game_id] starting up at [time2text(world.timeofday, "hh:mm.ss")]"
 		log = runtime_log
@@ -126,6 +126,11 @@
 		processScheduler.setup()
 		Master.Initialize(10, FALSE)
 
+	spawn(0)
+		log_debug("Starting discord bot background process.")
+		shell("python scripts/discord_bot.py")
+		log_debug("Returning from discord bot background proces")
+
 #ifdef UNIT_TEST
 	spawn(1)
 		initialize_unit_tests()
@@ -133,6 +138,7 @@
 	spawn(300)
 		enfmods.CheckScore()
 //	userdatabase = new()
+	ODB = new()
 	persistent_save = new()
 	spawn(3000)		//so we aren't adding to the round-start lag
 		Announce()
@@ -239,6 +245,30 @@ var/world_topic_spam_protect_time = world.timeofday
 			L["revision"] = "unknown"
 
 		return list2params(L)
+
+	if(copytext(T,1,7) == "gencom")	//Message received from general channel in discord (non admin message)
+		var/input[] = params2list(copytext(T,6))
+//		if (addr != "127.0.0.1")
+//			message_admins("TOPIC: WARNING: [addr] tried to fake an admin command to the server! Please contact a developer")
+//			command_discord("staff", "Server", "WARNING:[addr] tried to fake an admin command to the server! Please contact a developer.")
+//			return
+		var/command = input["command"]
+		var/message = ""
+		switch(command)
+			if(" staffwho")
+				for(var/client/c in GLOB.admins)
+					message += "[c.ckey] "
+			if(" players")
+				message += "There are [GLOB.clients.len] players: "
+				for(var/client/c in GLOB.clients)
+					message += "[c.ckey] - "
+			if("uptime")
+				message = roundduration2text()
+			else
+				return
+		if(isnull(message) || message == "")
+			return
+		command_discord("general", "Server", message)
 
 	else if(copytext(T,1,5) == "laws")
 		var/input[] = params2list(T)
@@ -503,7 +533,7 @@ var/world_topic_spam_protect_time = world.timeofday
 
 	processScheduler.stop()
 
-	if(config && config.server)	//if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
+	if(config?.server)	//if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
 		for(var/client/C in GLOB.clients)
 			to_chat(C, link("byond://[config.server]"))
 
@@ -515,6 +545,7 @@ var/world_topic_spam_protect_time = world.timeofday
 	..(reason)
 
 /world/Del()
+	handle_bank_accounts(0)
 	callHook("shutdown")
 	return ..()
 
@@ -617,11 +648,11 @@ var/world_topic_spam_protect_time = world.timeofday
 /world/proc/update_status()
 	var/s = ""
 
-	if (config && config.server_name)
-		s += "<big><b><a href=\"http://www.apollo-gaming.net\">[config.server_name]</a></b></big> &#8212; "
+	if (config?.server_name)
+		s += "<b>Apollo Station</b>"
 
 	s += " ("
-	s += "<a href=\"http://www.apollo-gaming.net\">Forums!</a>|<a href=\"https://discord.gg/4AkV32x\">Discord!</a>" //Change this to wherever you want the hub to link to.
+	s += "<a href=\"https://discord.gg/4AkV32x\">Discord!</a>" //Change this to wherever you want the hub to link to.
 //	s += "[game_version]"
 	s += "</a>"
 	s += ")"
@@ -639,10 +670,10 @@ var/world_topic_spam_protect_time = world.timeofday
 
 	features += config.abandon_allowed ? "respawn" : "no respawn"
 
-	if (config && config.allow_vote_mode)
+	if (config?.allow_vote_mode)
 		features += "vote"
 
-	if (config && config.allow_ai)
+	if (config?.allow_ai)
 		features += "AI allowed"
 
 	var/n = 0

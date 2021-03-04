@@ -151,7 +151,7 @@
 
 	if(supplied_laws.len >= number)
 		var/datum/ai_law/existing_law = supplied_laws[number]
-		if(existing_law && existing_law.law == law)
+		if(existing_law?.law == law)
 			return
 
 	if(supplied_laws.len >= number && supplied_laws[number])

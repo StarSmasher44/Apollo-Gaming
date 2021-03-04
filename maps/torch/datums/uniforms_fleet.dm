@@ -79,7 +79,7 @@
 
 /decl/hierarchy/mil_uniform/fleet/sup
 	name = "Fleet supply"
-	departments = SUP
+	departments = LOG
 
 	utility_under = /obj/item/clothing/under/solgov/utility/fleet/supply
 	utility_extra = list(/obj/item/clothing/head/beret/solgov/fleet/supply, /obj/item/clothing/head/ushanka/solgov/fleet, /obj/item/clothing/suit/storage/hooded/wintercoat/solgov/fleet)

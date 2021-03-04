@@ -80,7 +80,7 @@
 	name = "vox survival kit"
 	desc = "A box decorated in warning colors that contains a limited supply of survival tools. The panel and black stripe indicate this one contains nitrogen."
 	icon_state = "survivalvox"
-	startswith = list(/obj/item/clothing/mask/breath = 1,
+	startswith = list(/obj/item/clothing/mask/gas/vox = 1,
 					/obj/item/weapon/tank/emergency/nitrogen = 1,
 					/obj/item/device/flashlight/glowstick = 1,
 					/obj/item/weapon/reagent_containers/food/snacks/candy/proteinbar = 1)

@@ -11,7 +11,7 @@
 	selection_color = "#026865"
 	req_admin_notify = 1
 	economic_modifier = 10
-	base_pay = 23
+	base_pay = 22
 	access = list(access_medical, access_medical_equip, access_morgue, access_genetics, access_heads,
 			access_chemistry, access_virology, access_cmo, access_surgery, access_RC_announce,
 			access_keycard_auth, access_sec_doors, access_psychiatrist, access_eva, access_maint_tunnels, access_external_airlocks)
@@ -56,7 +56,7 @@
 	supervisors = "the chief medical officer"
 	selection_color = "#013d3b"
 	economic_modifier = 5
-	base_pay = 14
+	base_pay = 14.5
 	access = list(access_medical, access_medical_equip, access_morgue, access_surgery, access_chemistry, access_virology, access_genetics)
 	minimal_access = list(access_medical, access_medical_equip, access_chemistry)
 	alt_titles = list("Pharmacist")
@@ -86,7 +86,7 @@
 	total_positions = 1
 	spawn_positions = 1
 	economic_modifier = 5
-	base_pay = 14
+	base_pay = 14.5
 	minimal_player_age = 3
 	supervisors = "the chief medical officer"
 	selection_color = "#013d3b"

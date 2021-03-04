@@ -160,7 +160,7 @@
 	if(on)
 		if(powered() || (cell && cell.charge))
 			var/datum/gas_mixture/env = loc.return_air()
-			if(env && abs(env.temperature - set_temperature) <= 0.1)
+			if(abs(env?.temperature - set_temperature) <= 0.1)
 				active = 0
 			else
 				var/transfer_moles = 0.25 * env.total_moles

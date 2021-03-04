@@ -79,7 +79,7 @@
 	if(M.client.holder) 							// What admins see
 		lname = "[keyname][(DM && DM.anonsay) ? "*" : (DM ? "" : "^")] ([name])"
 	else
-		if(DM && DM.anonsay)						// If the person is actually observer they have the option to be anonymous
+		if(DM?.anonsay)						// If the person is actually observer they have the option to be anonymous
 			lname = "Ghost of [name]"
 		else if(DM)									// Non-anons
 			lname = "[keyname] ([name])"

@@ -22,7 +22,7 @@
 		else if (ui.on_close_logic)
 			// no atomref specified (or not found)
 			// so just reset the user mob's machine var
-			if(src && src.mob)
+			if(src?.mob)
 				src.mob.unset_machine()
 
  /**

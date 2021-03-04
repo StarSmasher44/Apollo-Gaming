@@ -67,7 +67,7 @@
 	id = "Hub"
 	network = "tcommsat"
 	autolinkers = list("hub", "relay", "c_relay", "s_relay", "m_relay", "r_relay", "b_relay", "1_relay", "2_relay", "3_relay", "4_relay", "5_relay", "s_relay", "science", "medical",
-	"supply", "service", "common", "command", "engineering", "security", "unused",
+	"logistics", "service", "common", "command", "engineering", "security", "unused",
 	"receiverA", "broadcasterA")
 
 /obj/machinery/telecomms/hub/preset_cent
@@ -111,7 +111,7 @@
 	id = "Bus 2"
 	network = "tcommsat"
 	freq_listening = list(SUP_FREQ, SRV_FREQ)
-	autolinkers = list("processor2", "supply", "service", "unused")
+	autolinkers = list("processor2", "logistics", "service", "unused")
 
 /obj/machinery/telecomms/bus/preset_two/New()
 	for(var/i = PUBLIC_LOW_FREQ, i < PUBLIC_HIGH_FREQ, i += 2)
@@ -184,9 +184,9 @@
 	autolinkers = list("medical")
 
 /obj/machinery/telecomms/server/presets/supply
-	id = "Supply Server"
+	id = "Logistics Server"
 	freq_listening = list(SUP_FREQ)
-	autolinkers = list("supply")
+	autolinkers = list("logistics")
 
 /obj/machinery/telecomms/server/presets/service
 	id = "Service Server"

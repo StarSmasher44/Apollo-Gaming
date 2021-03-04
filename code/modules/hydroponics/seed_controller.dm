@@ -26,7 +26,7 @@ var/global/datum/controller/plants/plant_controller // Set in New().
 	var/list/product_descs = list()         // Stores generated fruit descs.
 	var/list/seeds = list()                 // All seed data stored here.
 	var/list/gene_tag_masks = list()        // Gene obfuscation for delicious trial and error goodness.
-	var/list/plant_icon_cache = list()      // Stores images of growth, fruits and seeds.
+	var/global/list/plant_icon_cache = list()      // Stores images of growth, fruits and seeds.
 	var/list/plant_sprites = list()         // List of all harvested product sprites.
 	var/list/plant_product_sprites = list() // List of all growth sprites plus number of growth stages.
 	var/list/gene_masked_list = list()		// Stored gene masked list, rather than recreating it when needed.

@@ -344,7 +344,7 @@
 			src.updateUsrDialog()
 			return 0
 
-	if(holdingitems && holdingitems.len >= limit)
+	if(holdingitems?.len >= limit)
 		to_chat(usr, "The machine cannot hold anymore items.")
 		return 1
 
@@ -360,7 +360,7 @@
 			failed = 0
 			bag.remove_from_storage(G, src)
 			holdingitems += G
-			if(holdingitems && holdingitems.len >= limit)
+			if(holdingitems?.len >= limit)
 				break
 
 		if(failed)
@@ -435,7 +435,7 @@
 	"}
 		if (is_beaker_ready && !is_chamber_empty && !(stat & (NOPOWER|BROKEN)))
 			dat += "<A href='?src=\ref[src];action=grind'>Process the reagents</a><BR>"
-		if(holdingitems && holdingitems.len > 0)
+		if(holdingitems?.len > 0)
 			dat += "<A href='?src=\ref[src];action=eject'>Eject the reagents</a><BR>"
 		if (beaker)
 			dat += "<A href='?src=\ref[src];action=detach'>Detach the beaker</a><BR>"

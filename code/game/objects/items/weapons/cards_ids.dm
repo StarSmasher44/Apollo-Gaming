@@ -121,6 +121,7 @@ var/const/NO_EMAG_ACT = -50
 
 	var/datum/mil_branch/military_branch = null //Vars for tracking branches and ranks on multi-crewtype maps
 	var/datum/mil_rank/military_rank = null
+	var/service_branch
 
 /obj/item/weapon/card/id/Initialize()
 	. = ..()
@@ -181,18 +182,12 @@ var/const/NO_EMAG_ACT = -50
 	id_card.age = age
 
 	if(GLOB.using_map.flags & MAP_HAS_BRANCH)
-		id_card.military_branch = src.CharRecords.char_department
-	spawn(40)
-		if(src.CharRecords && get_department(src.CharRecords.char_department, 1) == "Command")
-			if(!src.CharRecords.department_rank)
-				id_card.name = "[id_card.registered_name]'s ID Card ([id_card.assignment])"
-			else
-				id_card.name = "[id_card.registered_name]'s ID Card ([get_department_rank_title(get_department(src.CharRecords.char_department, 1), src.CharRecords.department_rank, ishead = 1)] [id_card.assignment])"
+		id_card.service_branch = get_department(src.client.prefs.char_department, 1)
+	spawn(50)
+		if(!src.client.prefs|| !src.client.prefs.department_rank)
+			id_card.name = "[id_card.registered_name]'s ID Card ([id_card.assignment])"
 		else
-			if(!src.CharRecords.department_rank)
-				id_card.name = "[id_card.registered_name]'s ID Card ([id_card.assignment])"
-			else
-				id_card.name = "[id_card.registered_name]'s ID Card ([get_department_rank_title(get_department(src.CharRecords.char_department, 1), src.CharRecords.department_rank)] [id_card.assignment])"
+			id_card.name = "[id_card.registered_name]'s ID Card ([get_department_rank_title(src, src.client.prefs.department_rank)] [id_card.assignment])"
 
 /obj/item/weapon/card/id/proc/dat()
 	var/list/dat = list("<table><tr><td>")

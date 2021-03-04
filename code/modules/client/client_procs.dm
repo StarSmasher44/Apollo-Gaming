@@ -57,7 +57,10 @@
 		if(ismob(C)) 		//Old stuff can feed-in mobs instead of clients
 			var/mob/M = C
 			C = M.client
-		cmd_admin_pm(C, null, ticket)
+		if(href_list["discord"])
+			cmd_admin_pm(C, null, href_list["discord"])
+		else
+			cmd_admin_pm(C,null,ticket)
 		return
 
 	if(href_list["irc_msg"])
@@ -81,7 +84,7 @@
 
 
 	//Logs all hrefs
-	if(config && config.log_hrefs && href_logfile)
+	if(config?.log_hrefs && href_logfile)
 		to_chat(href_logfile, "<small>[time2text(world.timeofday,"hh:mm")] [src] (usr:[usr])</small> || [hsrc ? "[hsrc] " : ""][href]<br>")
 
 	switch(href_list["_src_"])
@@ -157,7 +160,7 @@
 	if(!prefs)
 		prefs = new /datum/preferences(src)
 		preferences_datums[ckey] = prefs
-	get_playerdb()
+
 	prefs.last_ip = address				//these are gonna be used for banning
 	prefs.last_id = computer_id			//these are gonna be used for banning
 	apply_fps(prefs.clientfps)
@@ -189,10 +192,8 @@
 //	log_client_to_db() Feck off SQL
 
 	send_resources()
-	loadclientdb(src.key) // Load their files.
-	player_age = get_player_age()
-
-	Login()
+	spawn(50) //To make sure client is still there.
+		Login()
 
 	if(prefs.lastchangelog != changelog_hash) //bolds the changelog button on the interface so we know there are updates.
 		to_chat(src, "<span class='info'>You have unread updates in the changelog.</span>")
@@ -213,7 +214,7 @@
 	//DISCONNECT//
 	//////////////
 /client/Del()
-	saveclientdb(src.key)
+	saveclientdb(src.ckey)
 
 	ticket_panels -= src
 	if(holder)
@@ -235,8 +236,12 @@
 	return round((world.realtime - datejoined) / 864000, 0.1)
 
 /client/proc/Login() //Makeshift login function for clients.
-	refreshclientdb(src.key)
-	AddToDB(src)
+	if(src?.ckey)
+		loadclientdb(src.ckey) // Load their files.
+		refreshclientdb(src.ckey)
+		AddToDB(src)
+		player_age = get_player_age()
+		Donator_Status()
 
 /client/proc/log_client_to_db()
 

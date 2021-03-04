@@ -106,6 +106,8 @@ datum/admins/proc/notes_gethtml(var/ckey)
 	infos += P
 	info << infos
 
+	info.Flush()
+
 	message_staff("<span class='notice'>[P.author] has edited [key]'s notes.</span>")
 	log_admin("[P.author] has edited [key]'s notes.")
 
@@ -118,6 +120,8 @@ datum/admins/proc/notes_gethtml(var/ckey)
 	if(!note_keys) note_keys = list()
 	if(!note_keys.Find(key)) note_keys += key
 	note_list << note_keys
+	note_list.Flush()
+
 	del(note_list) // savefile, so NOT qdel
 
 
@@ -133,6 +137,7 @@ datum/admins/proc/notes_gethtml(var/ckey)
 
 	message_staff("<span class='notice'>[key_name_admin(usr)] deleted one of [key]'s notes.</span>")
 	log_admin("[key_name(usr)] deleted one of [key]'s notes.")
+	info.Flush()
 
 	del(info) // savefile, so NOT qdel
 

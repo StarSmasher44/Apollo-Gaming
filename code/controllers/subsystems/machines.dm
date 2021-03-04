@@ -82,7 +82,7 @@ if (ismachine(Machine) && Machine.special_power_checks) { \
 } \
 else { \
 	if(Machine.use_power) { \
-		if(!Machine.MyArea) { \
+		if(!Machine.MyArea || !istype(Machine.MyArea, /area)) { \
 			Machine.MyArea = get_area_def(Machine); \
 		} \
 	} \
@@ -219,7 +219,7 @@ datum/controller/subsystem/machines/proc/setup_atmos_machinery(list/machines)
 	while(current_run.len)
 		var/obj/machinery/M = current_run[current_run.len]
 		current_run.len--
-		if(ismachine(M) && !QDELETED(M) && !(M.Process(wait) == PROCESS_KILL))
+		if(istype(M, /obj/machinery) && !QDELETED(M) && !(M.Process(wait) == PROCESS_KILL))
 			ADD_POWER_USE(M)
 		else
 			machinery.Remove(M)

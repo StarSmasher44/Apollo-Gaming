@@ -9,7 +9,7 @@
 	plane = ABOVE_HUMAN_PLANE
 	layer = CAMERA_LAYER
 
-	var/list/network = list(NETWORK_EXODUS)
+	var/list/network = list(NETWORK_APOLLO)
 	var/c_tag = null
 	var/c_tag_order = 999
 	var/number = 0 //camera number in area
@@ -89,13 +89,12 @@
 	. = ..()
 	if(!c_tag)
 		number = 1
-		var/area/A = get_area(src)
-		if(A)
-			for(var/obj/machinery/camera/C in A)
+		if(MyArea)
+			for(var/obj/machinery/camera/C in MyArea)
 				if(C == src) continue
 				if(C.number)
 					number = max(number, C.number+1)
-			c_tag = "[A.name][number == 1 ? "" : " #[number]"]"
+			c_tag = "[MyArea.name][number == 1 ? "" : " #[number]"]"
 		invalidateCameraCache()
 
 

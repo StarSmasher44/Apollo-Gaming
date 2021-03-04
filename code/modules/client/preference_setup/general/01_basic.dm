@@ -141,7 +141,7 @@ datum/preferences
 					pref.promoted = JOB_LEVEL_HEAD
 					user.client.command_coin--
 					user.client.playerdb["command_coin"] << user.client.command_coin
-					user.client.saveclientdb(user.client.key)
+					user.client.saveclientdb(user.client.ckey)
 					pref.save_character()
 					return TOPIC_REFRESH
 				else
@@ -158,7 +158,7 @@ datum/preferences
 					pref.promoted = JOB_LEVEL_REGULAR
 					user.client.employee_coin--
 					user.client.playerdb["employee_coin"] << user.client.employee_coin
-					user.client.saveclientdb(user.client.key)
+					user.client.saveclientdb(user.client.ckey)
 					pref.save_character()
 					return TOPIC_REFRESH
 				else

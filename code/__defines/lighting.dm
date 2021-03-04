@@ -51,3 +51,39 @@
 #define CL_MATRIX_CG 18
 #define CL_MATRIX_CB 19
 #define CL_MATRIX_CA 20
+
+//Lighting values used by the station lights
+#define LIGHT_COLOR_FLUORESCENT_TUBE "#E0EFFF"
+#define LIGHT_COLOR_FLUORESCENT_FLASHLIGHT "#CDDDFF"
+#define LIGHT_COLOR_INCANDESCENT_TUBE "#FFEEDD"
+#define LIGHT_COLOR_INCANDESCENT_BULB "#FFDDBB"
+#define LIGHT_COLOR_INCANDESCENT_FLASHLIGHT "#FFCC66"
+
+//Fake ambient occlusion filter
+#define AMBIENT_OCCLUSION filter(type="drop_shadow", x=0, y=-2, size=4, border=4, color="#04080FAA")
+
+
+
+/// Returns the red part of a #RRGGBB hex sequence as number
+#define GETREDPART(hexa) hex2num(copytext(hexa, 2, 4))
+
+/// Returns the green part of a #RRGGBB hex sequence as number
+#define GETGREENPART(hexa) hex2num(copytext(hexa, 4, 6))
+
+/// Returns the blue part of a #RRGGBB hex sequence as number
+#define GETBLUEPART(hexa) hex2num(copytext(hexa, 6, 8))
+
+/// Parse the hexadecimal color into lumcounts of each perspective.
+#define PARSE_LIGHT_COLOR(source) \
+do { \
+	if (source.light_color != COLOR_WHITE) { \
+		var/__light_color = source.light_color; \
+		source.lum_r = GETREDPART(__light_color) / 255; \
+		source.lum_g = GETGREENPART(__light_color) / 255; \
+		source.lum_b = GETBLUEPART(__light_color) / 255; \
+	} else { \
+		source.lum_r = 1; \
+		source.lum_g = 1; \
+		source.lum_b = 1; \
+	}; \
+} while (FALSE)

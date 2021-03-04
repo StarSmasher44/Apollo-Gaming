@@ -64,13 +64,12 @@ GLOBAL_LIST_INIT(button_sound,list('sound/machines/button1.ogg','sound/machines/
 	var/turf/turf_source = get_turf(source)
 
  	// Looping through the player list has the added bonus of working for mobs inside containers
-	for (var/P in GLOB.player_list)
-		var/mob/M = P
-		if(!M || !M.client)
-			continue
+	for(var/mob/M in GLOB.player_list)
+//		if(!M || !M.client) List contains only mobs *with* client any way.
+//			continue
 		if(get_dist(M, turf_source) <= (world.view + extrarange) * 2)
 			var/turf/T = get_turf(M)
-			if(T && T.z == turf_source.z && (!is_ambiance || M.get_preference_value(/datum/client_preference/play_ambiance) == GLOB.PREF_YES))
+			if(T?.z == turf_source.z && (!is_ambiance || M.get_preference_value(/datum/client_preference/play_ambiance) == GLOB.PREF_YES))
 				M.playsound_local(turf_source, soundin, vol, vary, frequency, falloff, is_global, extrarange)
 
 var/const/FALLOFF_SOUNDS = 0.5

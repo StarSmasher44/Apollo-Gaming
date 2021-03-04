@@ -1192,7 +1192,7 @@
 		log_message("[equip_ready?"Dea":"A"]ctivated.")
 		return
 	if(href_list["cut"])
-		if(cable && cable.amount)
+		if(cable?.amount)
 			var/m = round(input(chassis.occupant,"Please specify the length of cable to cut","Cut cable",min(cable.amount,30)) as num, 1)
 			m = min(m, cable.amount)
 			if(m)
@@ -1241,7 +1241,7 @@
 /obj/item/mecha_parts/mecha_equipment/tool/cable_layer/proc/reset()
 	last_piece = null
 
-/obj/item/mecha_parts/mecha_equipment/tool/cable_layer/proc/dismantleFloor(var/turf/new_turf)
+/obj/item/mecha_parts/mecha_equipment/tool/cable_layer/proc/dismantleFLOOR(var/turf/new_turf)
 	if(istype(new_turf, /turf/simulated/floor))
 		var/turf/simulated/floor/T = new_turf
 		if(!T.is_plating())
@@ -1249,7 +1249,7 @@
 	return new_turf.is_plating()
 
 /obj/item/mecha_parts/mecha_equipment/tool/cable_layer/proc/layCable(var/turf/new_turf)
-	if(equip_ready || !isturf(new_turf) || !dismantleFloor(new_turf))
+	if(equip_ready || !isturf(new_turf) || !dismantleFLOOR(new_turf))
 		return reset()
 	var/fdirn = turn(chassis.dir,180)
 	for(var/obj/structure/cable/LC in new_turf)		// check to make sure there's not a cable there already

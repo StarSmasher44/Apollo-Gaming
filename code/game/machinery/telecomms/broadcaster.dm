@@ -442,7 +442,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 	if(data == 1)
 		for (var/obj/item/device/radio/intercom/R in connection.devices["[RADIO_CHAT]"])
 			var/turf/position = get_turf(R)
-			if(position && position.z == level)
+			if(position?.z == level)
 				receive |= R.send_hear(display_freq, level)
 
 
@@ -454,7 +454,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 			if(istype(R, /obj/item/device/radio/headset))
 				continue
 			var/turf/position = get_turf(R)
-			if(position && position.z == level)
+			if(position?.z == level)
 				receive |= R.send_hear(display_freq)
 
 
@@ -465,7 +465,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 			var/datum/radio_frequency/antag_connection = radio_controller.return_frequency(freq)
 			for (var/obj/item/device/radio/R in antag_connection.devices["[RADIO_CHAT]"])
 				var/turf/position = get_turf(R)
-				if(position && position.z == level)
+				if(position?.z == level)
 					receive |= R.send_hear(freq)
 
 
@@ -474,7 +474,7 @@ var/message_delay = 0 // To make sure restarting the recentmessages list is kept
 	else
 		for (var/obj/item/device/radio/R in connection.devices["[RADIO_CHAT]"])
 			var/turf/position = get_turf(R)
-			if(position && position.z == level)
+			if(position?.z == level)
 				receive |= R.send_hear(display_freq)
 
 

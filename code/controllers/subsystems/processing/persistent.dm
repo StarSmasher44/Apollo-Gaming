@@ -4,12 +4,13 @@ var/global/datum/controller/subsystem/persistent/PersistentSys
 SUBSYSTEM_DEF(persistent)
 	name = "Persistent"
 	priority = SS_PRIORITY_PERSISTENT
-	flags = SS_KEEP_TIMING
+	flags = SS_POST_FIRE_TIMING
 	runlevels = RUNLEVEL_GAME|RUNLEVEL_POSTGAME
 	wait = 60 SECONDS
 
 	var/next_cycle = 0
-	var/savetime
+	var/savetime = 0
+	var/last_tick = 0
 	var/obj/machinery/message_server/linkedServer = null
 	var/obj/item/device/pda/NTpda
 
@@ -18,35 +19,38 @@ SUBSYSTEM_DEF(persistent)
 	InitializePDA()
 	InitializeServer()
 	PersistentSys = src
-	next_cycle = world.time + 1 HOUR
+	next_cycle = world.timeofday + 1 HOUR
+	savetime = world.timeofday + 3 MINUTES
 	..()
 
 /datum/controller/subsystem/persistent/fire(resumed = 0)
 //	var/datum/category_item/player_setup_item/general/persistent/PERSISTENT = new()
-	for(var/CL in GLOB.clients)
-		var/client/C = CL
-		var/mob/living/carbon/human/H = C.mob
-		if(!H || !ishuman(H) || !H.CharRecords)	continue
-		if(C.inactivity/10 > 180) // 3 minutes AFK or more we begin counting.
-			var/timeafk = round(C.inactivity/3, 1) // Take 1/3rd of the total AFK time.
-			if(timeafk/10 > 600) // 10 minutes
-				continue // Too much AFKing, we quit.
+	for(var/mob/living/carbon/human/H in GLOB.player_list)
+		if(!H || !H.CharRecords || !H.client)	continue
+		var/timetoadd = 0
+		if((H.client.inactivity/10) > 300) // 5 minutes AFK or more we begin counting.
+			var/timeafk = round((H.client.inactivity*0.75), 1) //Take 75% of their total AFK time, and get rid of it.
 			var/playtimeseconds = round(60-(timeafk/10), 1) // Divide by 10 to get seconds.
-			H.CharRecords.department_playtime += round(playtimeseconds/60, 0.01)
-			if(!H.client.prefs.promoted && calculate_department_rank(H) <= 3)
-				H.CharRecords.department_experience += round(playtimeseconds/60, 0.01)
+			timetoadd += round(playtimeseconds/60, 0.01)
+			if((H.client.inactivity/10) > 900) // 15 minutes
+				timetoadd = 0
 		else
-			H.CharRecords.department_playtime++
-			H.CharRecords.department_experience++
+			timetoadd = 1
 
-		if(H && world.timeofday > savetime) // Calculate once every 2 minutes
-			savetime = world.timeofday + 3 MINUTES
+		H.client.prefs.department_playtime += timetoadd
+
+		if(world.timeofday > savetime) //Just in case, make sure we do not corrupt our shit by saving during reboots. Round end handles its own saves.
+			savetime = world.timeofday + 2 MINUTES
 			calculate_department_rank(H) //Checks time played and sets rank accordingly.
-			if(ticker.current_state != GAME_STATE_FINISHED) //Just in case, make sure we do not corrupt our shit by saving during reboots. Round end handles its own saves.
-				H.CharRecords.save_persistent()
-				CHECK_TICK
-	if(world.time > next_cycle)
-		next_cycle = world.time + 1 HOUR
+			H.client.prefs.save_character()
+//			var/savefile/S = H.client.get_persistent_file()
+//			if(S)
+//				S.cd = GLOB.using_map.character_save_path(H.client.prefs.default_slot)
+//				S["department_playtime"]	<< H.CharRecords.department_playtime
+//				S["department_rank"]		<< H.CharRecords.department_rank
+
+	if(world.timeofday > next_cycle)
+		next_cycle = world.timeofday + 1 HOUR
 		paychecks++
 		command_announcement.Announce("Paychecks have been processed for crew of [station_name()].", "[GLOB.using_map.boss_name]")
 		var/tot_incometax = 0 //Pools income taxes to send to NT.
@@ -60,7 +64,7 @@ SUBSYSTEM_DEF(persistent)
 					if(job.intern)
 						status = "N/A (Internship)"
 					else
-						status = get_department_rank_title(job.department, calculate_department_rank(M))
+						status = get_department_rank_title(M, M.client.prefs.department_rank)
 					tot_incometax += get_tax_deduction("income", paycheck) //Adds taxes to total.
 					var/message = {"
 					<html>
@@ -69,15 +73,17 @@ SUBSYSTEM_DEF(persistent)
 					<b>!WARNING: CONFIDENTIAL!</b>
 					<hr>
 					Employee Name: [M.name] <br>Employee Assignment: [M.job]<br>
-					Total work time: [round(M.CharRecords.department_playtime/60, 0.1)] Hours<br>
+					Total work time: [round(M.client.prefs.department_playtime/60, 0.1)] Hours<br>
 					Current Department Rank: [status]<br>
 					Employment Status: [job.intern ? "INTERNSHIP PROGRAM" : "WORK CONTRACT"]<br>
 					<hr>
 					<b>Gross Paycheck:</b> $[paycheck]<br>
+					Hazard Pay Bonus: [min(4*paychecks, 20)]%
 					<b>Taxes:</b><br>
 					Income Tax: $-[get_tax_deduction("income", paycheck)] ([INCOME_TAX]%)<br>
 					Pension Tax: $-[get_tax_deduction("pension", paycheck, M.client.prefs.permadeath ? 1 : 0)] ([M.client.prefs.permadeath ? PENSION_TAX_PD : PENSION_TAX_REG]%)<br>
-					Net Income: $[send_paycheck(M, paycheck)]</tr>
+
+					<b>Net Income:</b> $[send_paycheck(M, paycheck)]</tr>
 					</table>
 					</body>
 					</html>
@@ -123,3 +129,4 @@ SUBSYSTEM_DEF(persistent)
 			P.new_message_from_pda(NTpda, message)
 			if (!P.message_silent)
 				playsound(P.loc, 'sound/machines/twobeep.ogg', 50, 1)
+		CHECK_TICK

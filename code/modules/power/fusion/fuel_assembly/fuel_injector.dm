@@ -16,7 +16,7 @@ var/list/fuel_injectors = list()
 	var/injecting = 0
 	var/obj/item/weapon/fuel_assembly/cur_assembly
 
-/obj/machinery/fusion_fuel_injector/Initialize()
+/obj/machinery/fusion_fuel_injector/New()
 	..()
 	fuel_injectors += src
 	tag = null
@@ -51,7 +51,8 @@ var/list/fuel_injectors = list()
 		if(injecting)
 			to_chat(user, "<span class='warning'>Shut \the [src] off before playing with the fuel rod!</span>")
 			return
-
+		if(!user.unEquip(W, src))
+			return
 		if(cur_assembly)
 			cur_assembly.forceMove(get_turf(src))
 			visible_message("<span class='notice'>\The [user] swaps \the [src]'s [cur_assembly] for \a [W].</span>")
@@ -122,6 +123,7 @@ var/list/fuel_injectors = list()
 				var/obj/effect/accelerated_particle/A = new/obj/effect/accelerated_particle(get_turf(src), dir)
 				A.particle_type = reagent
 				A.additional_particles = numparticles - 1
+				A.move(1)
 				if(cur_assembly)
 					cur_assembly.rod_quantities[reagent] -= amount
 					amount_left += cur_assembly.rod_quantities[reagent]

@@ -24,3 +24,14 @@
 #define PENSION_TAX_PD 16 //Permadeath has a higher tax rate for pension.
 #define PENSION_TAX_REG 8 //Regular pension tax.
 #define INCOME_TAX 40
+
+
+//DEPARTMENT CONTRACTS DEFINES
+#define CONTRACT_SCI 1 //Science contract (XRP/Research power)
+#define CONTRACT_ENGI 2 //Engineering Contract (Power)
+#define CONTRACT_LOGI 4 //Logistics Contract (Resources)
+
+// Company size defines the ranges between the required resource(s). A small business can do great with a small amount of power, but EG Fucken Google needs more for everyone's porn search.
+#define COMPANY_SMALL 0 //Small contract
+#define COMPANY_MEDIUM 1 //Medium Contract
+#define COMPANY_LARGE 2 //Large Contract

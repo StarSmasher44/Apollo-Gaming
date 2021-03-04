@@ -141,10 +141,10 @@ proc/get_fusion_reaction(var/p_react, var/s_react, var/m_energy)
 				H.hallucination(rand(100,150), 51)
 
 	for(var/obj/machinery/fusion_fuel_injector/I in range(world.view, origin))
-		if(I.cur_assembly && I.cur_assembly.fuel_type == "supermatter")
+		if(I.cur_assembly?.fuel_type == "supermatter")
 			explosion(get_turf(I), 1, 2, 3)
 			spawn(5)
-				if(I && I.loc)
+				if(I?.loc)
 					qdel(I)
 
 	sleep(5)
@@ -162,3 +162,12 @@ proc/get_fusion_reaction(var/p_react, var/s_react, var/m_energy)
 	energy_production = 15
 	radiation = 3
 	instability = 3
+
+/decl/fusion_reaction/hydrogen_hydrogen
+	p_react = "hydrogen"
+	s_react = "hydrogen"
+	minimum_energy_level = FUSION_HEAT_CAP * 0.75
+	energy_consumption = 2
+	energy_production = 8
+	radiation = 5
+	instability = 5

@@ -131,7 +131,7 @@
 	return ..()
 
 /obj/machinery/portable_atmospherics/hydroponics/attack_ghost(var/mob/observer/ghost/user)
-	if(!(harvest && seed && seed.has_mob_product))
+	if(!(harvest && seed?.has_mob_product))
 		return
 
 	if(!user.can_admin_interact())
@@ -175,7 +175,7 @@
 /obj/machinery/portable_atmospherics/hydroponics/bullet_act(var/obj/item/projectile/Proj)
 
 	//Don't act on seeds like dionaea that shouldn't change.
-	if(seed && seed.get_trait(TRAIT_IMMUTABLE) > 0)
+	if(seed?.get_trait(TRAIT_IMMUTABLE) > 0)
 		return
 
 	//Override for somatoray projectiles.

@@ -26,7 +26,7 @@
 
 	var/account_allowed = 1				  // Does this job type come with a station account?
 	var/economic_modifier = 2			  // With how much does this job modify the initial account amount?
-	var/base_pay = 10 					  // Always minimum wage at all times. Also base = 1 hr, paychecks calculate base * 4
+	var/base_pay = 9 					  // Always minimum wage at all times. Also base = 1 hr, paychecks calculate base * 4
 	var/outfit_type                       // The outfit the employee will be dressed in, if any
 	var/intern = 0                        // If this job is an intern or not? (Assistants)
 
@@ -68,7 +68,7 @@
 	. = outfit_by_type(.)
 
 /datum/job/proc/setup_account(var/mob/living/carbon/human/H)
-	if(!account_allowed || (H.mind && H.mind.initial_account))
+	if(!account_allowed)
 		return
 /*
 	var/loyalty = 1
@@ -86,28 +86,24 @@
 
 	var/species_modifier = economic_species_modifier[H.species.type]
 */
-	if(!H.CharRecords)
-		world << "No CharRecords found for [H], [src], please inform laser he forgot something"
-	var/datum/money_account/M = H.CharRecords.bank_account
-	if(!M)
-		H.CharRecords.check_bank_account()
-	if(H.mind)
-		var/remembered_info = ""
-		remembered_info += "<b>Your account number is:</b> #[M.account_number]<br>"
-		remembered_info += "<b>Your account pin is:</b> [M.account_pin]<br>"
-		remembered_info += "<b>Your account funds are:</b> T[H.CharRecords.bank_account.bank_balance]<br>"
-		LAZYINITLIST(M.transaction_log)
-		var/datum/transaction/T = M.transaction_log[1]
-		if(T)
-			remembered_info += "<b>Your account was created:</b> [T.time], [T.date] at [T.source_terminal]<br>"
-		H.mind.store_memory(remembered_info)
+	spawn(10)
+		var/datum/money_account/M = H.client.prefs.bank_account
+		if(H.mind)
+			var/remembered_info = ""
+			remembered_info += "<b>Your account number is:</b> #[M.account_number]<br>"
+			remembered_info += "<b>Your account pin is:</b> [M.account_pin]<br>"
+			remembered_info += "<b>Your account funds are:</b> T[H.client.prefs.bank_account.bank_balance]<br>"
+			LAZYINITLIST(M.transaction_log)
+			var/datum/transaction/T = M.transaction_log[1]
+			if(T)
+				remembered_info += "<b>Your account was created:</b> [T.time], [T.date] at [T.source_terminal]<br>"
+			H.mind.store_memory(remembered_info)
 
-		H.mind.initial_account = M
-		for(var/obj/item/weapon/card/id/ID in H.contents)
-			if(ID)
-				ID.associated_account_number = M.account_number
+			for(var/obj/item/weapon/card/id/ID in H.contents)
+				if(ID)
+					ID.associated_account_number = M.account_number
 
-	to_chat(H, "<span class='notice'><b>Your account number is: [M.account_number], your account pin is: [M.account_pin]</b></span>")
+		to_chat(H, "<span class='notice'><b>Your account number is: [M.account_number], your account pin is: [M.account_pin]</b></span>")
 
 // overrideable separately so AIs/borgs can have cardborg hats without unneccessary new()/qdel()
 /datum/job/proc/equip_preview(mob/living/carbon/human/H, var/alt_title, var/datum/mil_branch/branch)
@@ -190,19 +186,11 @@
 /datum/job/proc/is_valid_department(var/dept_flag, var/mob/user)
 	if(dept_flag == department_flag)
 		return 1
-	else if(user && user.client && user.client.prefs.char_department == dept_flag)
-		if(ishuman(user))
-			var/mob/living/carbon/human/H = user
-			if(H)
-				if(department_flag2 & COM && H.client.prefs.promoted == 4)
-					return 1 // Command flag but different department is usually department head.
-				else
-					return 0
-			else
-				if(department_flag2 & COM && user.client.prefs.promoted == 4)
-					return 1 // Command flag but different department is usually department head.
-				else
-					return 0
+	else if(user.client && user.client.prefs)
+		if(department_flag & COM && user.client.prefs.promoted == 4)
+			return 1 // Command flag but different department is usually department head.
+		else
+			return 0
 	else
 		return 0
 /**

@@ -61,9 +61,13 @@
 	if(src.stat == DEAD || src.stat != CONSCIOUS)
 		return
 
-	var/turf/simulated/L = get_turf(src)
+	var/turf/simulated/L = get_turf(src.loc)
 	if(issimturf(L))
-		var/heat = psupply.active_power_usage / 100
+		var/heat = 2
+		if(psupply && ismachine(psupply))
+			heat = psupply.active_power_usage / 100
+		else
+			return
 		var/datum/gas_mixture/env = L.return_air()
 		var/transfer_moles = 0.25 * env.total_moles
 		var/datum/gas_mixture/removed = env.remove(transfer_moles)

@@ -42,7 +42,7 @@
 		if(faction_invisible && (antag in faction_members))
 			continue
 		for(var/datum/mind/other_antag in current_antagonists)
-			if(antag.current && antag.current.client)
+			if(antag.current?.client)
 				antag.current.client.images |= get_indicator(antag, other_antag)
 
 /datum/antagonist/proc/update_icons_added(var/datum/mind/player)
@@ -66,16 +66,16 @@
 	if(!antag_indicator || !player.current)
 		return
 	clear_indicators(player)
-	if(player.current && player.current.client)
+	if(player.current?.client)
 		for(var/datum/mind/antag in current_antagonists)
-			if(antag.current && antag.current.client)
+			if(antag.current?.client)
 				for(var/image/I in antag.current.client.images)
 					if(I.loc == player.current)
 						qdel(I)
 
 /datum/antagonist/proc/update_current_antag_max()
 	cur_max = hard_cap
-	if(ticker && ticker.mode)
+	if(ticker?.mode)
 		if(ticker.mode.antag_tags && (id in ticker.mode.antag_tags))
 			cur_max = hard_cap_round
 

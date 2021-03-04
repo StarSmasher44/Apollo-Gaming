@@ -61,8 +61,11 @@
 	// the world.time since the mob has been brigged, or -1 if not at all
 	var/brigged_since = -1
 
+	//The person we are mentoring this round.
+	var/mentoring
+
 //	//put this here for easier tracking ingame
-	var/datum/money_account/initial_account
+//	var/datum/money_account/initial_account ~L Or nah
 
 	//used for optional self-objectives that antagonists can give themselves, which are displayed at the end of the round.
 	var/ambitions
@@ -88,7 +91,7 @@
 	current = new_character		//link ourself to our new body
 	new_character.mind = src	//and link our new body to ourself
 
-	if(learned_spells && learned_spells.len)
+	if(learned_spells?.len)
 		restore_spells(new_character)
 
 	if(changeling)
@@ -132,7 +135,7 @@
 	out += "</table><hr>"
 	out += "<b>Objectives</b></br>"
 
-	if(objectives && objectives.len)
+	if(objectives?.len)
 		var/num = 1
 		for(var/datum/objective/O in objectives)
 			out += "<b>Objective #[num]:</b> [O.explanation_text] "
@@ -472,7 +475,7 @@
 	assigned_job =    null
 	//faction =       null //Uncommenting this causes a compile error due to 'undefined type', fucked if I know.
 	changeling =      null
-	initial_account = null
+//	initial_account = null
 	objectives =      list()
 	special_verbs =   list()
 	has_been_rev =    0

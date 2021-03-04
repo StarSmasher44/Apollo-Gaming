@@ -16,7 +16,7 @@
 				entry = "\t<span class='moderator'>[create_text_tag("mod", "Moderator: ", usr.client)] [C.key]</span>"
 			else if(C.donator)
 				entry = "\t<span class='donator[C.donator]'>[create_text_tag("don", "Donator: ", usr.client)] [C.key]</span>"
-			else if(C.ap_veteran)
+			else if(C.ap_veteran && !C.donator)
 				entry = "\t<span class='apveteran'>[create_text_tag("veteran", "Veteran: ", usr.client)] [C.key]</span>"
 			else
 				entry = "\t[create_text_tag("player", "Player: ", usr.client)] [C.key]"
@@ -70,7 +70,7 @@
 					Lines += "\t<span class='moderator'>[create_text_tag("mod", "Moderator: ", usr.client)] [C.key]</span>"
 				else if(C.donator)
 					Lines += "\t<span class='donator[C.donator]'>[create_text_tag("don", "Donator: ", usr.client)] [C.key]</span>"
-				else if(C.ap_veteran)
+				else if(C.ap_veteran && !C.donator)
 					Lines += "\t<span clas='apveteran'>[create_text_tag("veteran", "Veteran: ", usr.client)] [C.key]</span>"
 				else
 					Lines += "\t[create_text_tag("player", "Player: ", usr.client)] [C.key]"

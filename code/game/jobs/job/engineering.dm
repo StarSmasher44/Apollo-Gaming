@@ -11,7 +11,7 @@
 	selection_color = "#7f6e2c"
 	req_admin_notify = 1
 	economic_modifier = 10
-	base_pay = 23
+	base_pay = 22
 
 	ideal_character_age = 50
 
@@ -72,7 +72,7 @@
 	selection_color = "#5b4d20"
 	alt_titles = list("Atmospherics Intern")
 	economic_modifier = 1
-	base_pay = 6
+	base_pay = 6.5
 	intern = 1
 	access = list(access_engine_equip, access_tech_storage, access_maint_tunnels, access_external_airlocks, access_construction, access_atmospherics, access_emergency_storage)
 	minimal_access = list(access_engine_equip, access_tech_storage, access_maint_tunnels, access_external_airlocks, access_construction, access_atmospherics, access_emergency_storage)

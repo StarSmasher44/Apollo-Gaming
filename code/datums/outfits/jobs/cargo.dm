@@ -10,6 +10,7 @@
 	l_hand = /obj/item/weapon/clipboard
 	id_type = /obj/item/weapon/card/id/cargo/head
 	pda_type = /obj/item/device/pda/quartermaster
+	l_ear = /obj/item/device/radio/headset/headset_hol
 
 /decl/hierarchy/outfit/job/cargo/cargo_tech
 	name = OUTFIT_JOB_NAME("Cargo technician")

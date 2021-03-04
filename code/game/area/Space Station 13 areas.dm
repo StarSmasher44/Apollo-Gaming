@@ -133,6 +133,10 @@ area/space/atmosalert()
 	name = "\improper Xenobiology Lab"
 	icon_state = "xeno_lab"
 
+/area/rnd/server_misc
+	name = "\improper Misc. Server Room"
+	icon_state = "server"
+
 /area/rnd/xenobiology/xenoflora
 	name = "\improper Xenoflora Lab"
 	icon_state = "xeno_f_lab"
@@ -147,6 +151,9 @@ area/space/atmosalert()
 
 /area/shuttle/specops/centcom
 	icon_state = "shuttlered"
+
+/area/shuttle/specops/station
+	icon_state = "shuttlered2"
 
 /area/shuttle/syndicate_elite/mothership
 	icon_state = "shuttlered"

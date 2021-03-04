@@ -1,0 +1,23 @@
+diff a/code/_helpers/vector.dm b/code/_helpers/vector.dm	(rejected hunks)
+@@ -24,18 +24,18 @@
+ 	* North = 90�
+ 	* East  = 0�
+ 	* South = -90�
+ 	* West  = 180�
+ 
+ return_hypotenuse()
+-	Returns the distance of travel for each step of the vector, relative to each full step of movement. 1 is a full turf 
++	Returns the distance of travel for each step of the vector, relative to each full step of movement. 1 is a full turf
+ 	length. Currently used as a multiplier for scaling effects that should be contiguous, like laser beams.
+ 
+ return_location()
+-	Returns a vector_loc datum containing the current location data of the object (see /datum/vector_loc). This includes 
+-	the turf it currently should be at, as well as the pixel offset from the centre of that turf. Typically increment() 
++	Returns a vector_loc datum containing the current location data of the object (see /datum/vector_loc). This includes
++	the turf it currently should be at, as well as the pixel offset from the centre of that turf. Typically increment()
+ 	would be called before this if you are going to move an object based on it's vector data.
+ */
+ 
+ /datum/plot_vector
+ 	var/turf/source
+ 	var/turf/target

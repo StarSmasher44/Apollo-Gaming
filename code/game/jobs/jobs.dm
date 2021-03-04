@@ -67,83 +67,84 @@ GLOBAL_LIST_EMPTY(unsorted_positions) // for nano manifest
 
 /proc/calculate_department_rank(var/mob/living/carbon/human/M)
 	if(ishuman(M))
-		if(M && M.client && M.CharRecords && M.job)
-			var/oldrank = M.CharRecords.department_rank
-			var/playtime = round(M.CharRecords.department_experience/60, 0.1) // In hours.
-			if(M.client.prefs.promoted == JOB_LEVEL_INTERN)
-				if(playtime >= 4.0) // Intern level is upgraded after 4 hours of playtime
-					if(!oldrank) //No old rank
-						M.client.prefs.promoted = JOB_LEVEL_REGULAR
-						M.CharRecords.department_rank = 1
+		if(M?.CharRecords && M.job)
+			var/oldrank = M.client.prefs.department_rank
+			var/playtime = round(M.client.prefs.department_playtime/60, 0.1) // In hours.
+			if(M.client.prefs.promoted == JOB_LEVEL_INTERN) // If he is an intern
+				if(playtime >= 4.0) // And playtime is above 4--Intern level is upgraded after 4 hours of playtime
+					if(!oldrank) //And No old rank
+						M.client.prefs.promoted = JOB_LEVEL_REGULAR //Set to regular role.
+						M.client.prefs.department_rank = 1 //Promote to dept 1.
 				else
 					if(playtime < 4.0 && !oldrank)
-						M.CharRecords.department_rank = 0
+						M.client.prefs.department_rank = 0
 					return 0 //Interns don't get ranks.
 			switch(playtime)
 				if(0 to 4)
-					M.CharRecords.department_rank = 0
+					M.client.prefs.department_rank = 0
 				if(4.1 to 7.9)
-					M.CharRecords.department_rank = 1 //Intern--Lvl 1
+					M.client.prefs.department_rank = 1 //Intern--Lvl 1
 				if(8 to 16.9)
-					M.CharRecords.department_rank = 2 //Junior
+					M.client.prefs.department_rank = 2 //Junior
 				if(17 to 25.9)
-					M.CharRecords.department_rank = 3 //Regular
+					M.client.prefs.department_rank = 3 //Regular
 				if(26 to 39.9)
 					if(M.client.prefs.promoted == JOB_LEVEL_SENIOR) //Promoted from Regular to Senior-capable.
-						M.CharRecords.department_rank = 4 //Senior
+						M.client.prefs.department_rank = 4 //Senior
 				if(40 to 60.9) // Yeah it stops here.
 					if(M.client.prefs.promoted == JOB_LEVEL_SENIOR)
-						M.CharRecords.department_rank = 5 //Expert
+						M.client.prefs.department_rank = 5 //Expert
 				if(61 to 100000)
 					if(M.client.prefs.promoted == JOB_LEVEL_SENIOR)
-						M.CharRecords.department_rank = 6 //Lead
+						M.client.prefs.department_rank = 6 //Lead
 
-			if(M.CharRecords.department_rank != oldrank) //Ranks changed)
-				M.client.prefs.save_character()
-				if(M.CharRecords.department_rank > oldrank)
-					if(!oldrank && M.CharRecords.department_rank == 1) //Was intern and now 'intern'
+			if(M.client.prefs.department_rank != oldrank) //Ranks changed)
+				if(M.client.prefs.department_rank > oldrank)
+					if(!oldrank && M.client.prefs.department_rank == 1) //Was intern and now 'intern'
 						PersistentSys.SendPDAMessage(M, "Congratulations, your first internship period has been successful! Full career selection is now possible.")
-						M.CharRecords.add_employeerecord("NanoTrasen", "Reaching Seniority Status within the company", rand(5, 7), 0, 0, 100, 1)
+						M.CharRecords.add_employeerecord("NanoTrasen", "Internship period completed.", rand(5, 7), 0, 0, 25, 1)
 					else
-						PersistentSys.SendPDAMessage(M, "You have recieved a promotion. You are now a [get_department_rank_title(get_department(M.CharRecords.char_department, 1), M.CharRecords.department_rank)] [M.job].")
+						PersistentSys.SendPDAMessage(M, "You have recieved a promotion. You are now a [get_department_rank_title(M, M.client.prefs.department_rank)] [M.job].")
 					for(var/obj/item/weapon/card/id/id_card in M.contents)
 						if(id_card.registered_name == M.real_name) //Extra verification
-							M:set_id_info(id_card)
-					if(oldrank == 3 && M.CharRecords.department_rank == 4 && M.client.prefs.promoted == JOB_LEVEL_SENIOR) //If they became Senior (and were allowed to)
-						M.CharRecords.add_employeerecord("NanoTrasen", "Reaching Seniority Status within the company", 7, 0, 0, 500, 1)
-			return M.CharRecords.department_rank
-	return 1
+							M.set_id_info(id_card)
+					if(oldrank == 3 && M.client.prefs.department_rank == 4 && M.client.prefs.promoted == JOB_LEVEL_SENIOR) //If they became Senior (and were allowed to)
+						M.CharRecords.add_employeerecord("NanoTrasen", "Reaching Seniority Status within the company", rand(5, 7), 0, 0, 350, 1)
+			return M.client.prefs.department_rank
 
 
-/proc/get_department_rank_title(var/department, var/rank, var/ishead = 0)
-	if(department && rank)
-		if(department == "Command" || ishead)
-			if(rank == 4)
+
+/proc/get_department_rank_title(var/mob/living/carbon/human/M, var/rank)
+	if(!M.job)	return
+	var/datum/job/job = job_master.GetJob(M.job)
+	if(M)
+		switch(rank)
+			if(null || 0 to 1) //Intern
+				if(job.department_flag & COM || job.department_flag2 & COM) //Command roles.
+					return "Assistant"
+				switch(job.department)
+					if("Civilian")
+						return "Assistant"
+					if("Security")
+						return "Cadet"
+					if("Medical")
+						return "Assistant"
+					if("Engineering")
+						return "Assistant"
+					else
+						return "Intern"
+
+			if(2) //Junior
+				return "Junior"
+			if(3) //Regular
+				return "Trained" // No rank.
+			if(4) //Senior
 				return "Senior"
-			else
-				return null
-		if(department != "Command")
-			switch(rank)
-				if(null || 0 to 1) //Intern
-					switch(department)
-						if("Civilian")
-							return "Assistant"
-						if("Security")
-							return "Cadet"
-						if("Medical")
-							return "Assistant"
-						if("Engineering")
-							return "Assistant"
-						else
-							return "Intern"
-				if(2) //Junior
-					return "Junior"
-				if(3) //Regular
-					return null // No rank.
-				if(4) //Senior
-					return "Senior"
-				if(5) //Lead
-					switch(department)
-						if("Civilian")
-							return "Expert" //Different name because Lead is weird for civvies.
-						else return "Lead"
+			if(5) //Lead
+				if(job.department_flag & COM || job.department_flag2 & COM) //Command roles.
+					if(job.title == "Captain")
+						return
+				switch(job.department)
+					if("Civilian")
+						return "Expert" //Different name because Lead is weird for civvies.
+					else return "Lead"

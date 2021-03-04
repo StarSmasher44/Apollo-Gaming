@@ -48,12 +48,12 @@
 
 // Shuttles
 
-/area/shuttle/constructionsite
-	name = "\improper Construction Site Shuttle"
+/area/shuttle/engineoutpost
+	name = "\improper Engineering Outpost Shuttle"
 	icon_state = "yellow"
 
-/area/shuttle/constructionsite/station
-	name = "\improper Construction Site Shuttle"
+/area/shuttle/engineoutpost/station
+	name = "\improper Engineering Outpost Shuttle"
 
 /area/shuttle/mining
 	name = "\improper Mining Shuttle"
@@ -914,7 +914,7 @@ area/rnd/test_area
 
 //HALF-BUILT STATION (REPLACES DERELICT IN BAYCODE, ABOVE IS LEFT FOR DOWNSTREAM)
 
-/area/shuttle/constructionsite/site
+/area/shuttle/engineoutpost/site
 	name = "\improper Construction Site Shuttle"
 	base_turf = /turf/simulated/floor/asteroid
 

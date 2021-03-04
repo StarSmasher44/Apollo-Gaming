@@ -129,7 +129,7 @@
 		if(!lock.toggle(I))
 			to_chat(user, "<span class='warning'>\The [K] does not fit in the lock!</span>")
 		return
-	if(lock && lock.pick_lock(I,user))
+	if(lock?.pick_lock(I,user))
 		return
 
 	if(istype(I,/obj/item/weapon/material/lock_construct))
@@ -177,7 +177,7 @@
 
 	if(src.operating) return
 
-	if(lock && lock.isLocked())
+	if(lock?.isLocked())
 		to_chat(user, "\The [src] is locked!")
 
 	if(operable())
@@ -194,7 +194,7 @@
 		to_chat(user, "<span class='notice'>It appears to have a lock.</span>")
 
 /obj/machinery/door/unpowered/simple/can_open()
-	if(!..() || (lock && lock.isLocked()))
+	if(!..() || (lock?.isLocked()))
 		return 0
 	return 1
 

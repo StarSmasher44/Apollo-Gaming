@@ -537,7 +537,7 @@
 			return .
 	if(charges >= 15)
 		for(var/obj/item/organ/external/e in user.organs)
-			if(e && e.status & ORGAN_BROKEN)
+			if(e?.status & ORGAN_BROKEN)
 				e.status &= ~ORGAN_BROKEN
 				. += "bones in your [e.name] snap into place"
 				charges -= 15

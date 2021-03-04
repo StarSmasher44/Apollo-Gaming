@@ -60,7 +60,7 @@
 		to_chat(user, "<span class='notice'>[target] is empty.</span>")
 		return 1
 
-	if(reagents && !reagents.get_free_space())
+	if(!reagents?.get_free_space())
 		to_chat(user, "<span class='notice'>[src] is full.</span>")
 		return 1
 

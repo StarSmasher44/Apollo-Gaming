@@ -109,6 +109,7 @@
 	on = !on
 	update_icon()
 	if(on)
+		SSmachines.machinery.Add(src)
 		if (M.loc == loc)
 			wash(M)
 			process_heat(M)
@@ -249,7 +250,7 @@
 	reagents.splash(O, 10)
 
 /obj/machinery/shower/Process()
-	if(!on) return
+	if(!on) return PROCESS_KILL
 
 	for(var/thing in loc)
 		var/atom/movable/AM = thing

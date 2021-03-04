@@ -67,7 +67,7 @@
 
 /obj/machinery/optable/proc/check_victim()
 	var/mob/living/carbon/human/M = locate() in src.loc
-	if(M && M.lying)
+	if(M?.lying)
 		src.victim = M
 		icon_state = M.pulse() ? "table2-active" : "table2-idle"
 		return 1

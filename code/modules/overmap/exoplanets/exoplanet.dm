@@ -12,7 +12,7 @@
 	in_space = 0
 	var/maxx
 	var/maxy
-	var/landmark_type = /obj/effect/shuttle_landmark/automatic
+	var/landmark_type
 
 	var/list/actors = list() //things that appear in engravings on xenoarch finds.
 	var/list/species = list() //list of names to use for simple animals
@@ -199,7 +199,7 @@
 	return TRUE
 
 /obj/effect/overmap/sector/exoplanet/proc/generate_landing()
-	var/turf/T = locate(rand(20, maxx-20), rand(20, maxy - 10),map_z[map_z.len])
+	var/turf/T = locate(rand(20, maxx-20), rand(20, maxy - 10),4)
 	if(T)
 		new landmark_type(T)
 	return T

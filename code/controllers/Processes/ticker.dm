@@ -35,4 +35,4 @@ var/global/datum/controller/process/ticker/tickerProcess
 	return lastTickerTimeDuration
 
 /world/proc/has_round_started()
-	return (ticker && ticker.current_state >= GAME_STATE_PLAYING)
+	return (ticker?.current_state >= GAME_STATE_PLAYING)

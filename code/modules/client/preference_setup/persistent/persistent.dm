@@ -48,7 +48,11 @@
 
 	if(isnull(pref.char_department))
 		pref.char_department = initial(pref.char_department)
-	if(!isnull(pref.bank_account))
+		to_chat(pref.client, "<span class='warning'>ERR: Something went wrong with fetching department, please contact a Administrator!</span>")
+		to_chat(pref.client, "<span class='warning'>^ Unlocked your character to allow reselection of proper department.</span>")
+		pref.char_lock = 0
+
+	if(pref.bank_account)
 		var/datum/transaction/T = pref.bank_account.transaction_log[1]
 		if(!T || isnull(T))
 			T = new()
@@ -87,11 +91,11 @@
 		if(M != pref.bank_account)
 			pref.bank_account = M
 
+	S["bank_account"] << pref.bank_account //Save new bank account for future use.
 	for(var/datum/money_account/MA in bank_accounts)
 		if(MA.account_number == pref.bank_account.account_number)
 			if(MA != pref.bank_account)
 				del(MA)
-	bank_accounts |= pref.bank_account
 
 	pref.bank_account.check_savings()
 
@@ -106,6 +110,7 @@
 		S["newcharinit"] << 1
 		S["employedsince"] << pref.employedsince
 
+	S.Flush() //Make sure bank account is carried over.
 
 /datum/category_item/player_setup_item/persistent/content()
 	. = list()

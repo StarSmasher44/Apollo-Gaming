@@ -48,9 +48,9 @@
 	supervisors = "the head of personnel"
 	selection_color = "#916e22"
 	economic_modifier = 5
-	base_pay = 16
-	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
-	minimal_access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
+	base_pay = 17.5
+	access = list(access_heads, access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
+	minimal_access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station,access_heads)
 	minimal_player_age = 3
 	ideal_character_age = 40
 	outfit_type = /decl/hierarchy/outfit/job/cargo/qm
@@ -61,6 +61,7 @@
 	department_flag = LOG
 	total_positions = 2
 	spawn_positions = 2
+	base_pay = 10
 	supervisors = "the Head of Logistics and the head of personnel"
 	selection_color = "#916e22"
 	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
@@ -89,7 +90,7 @@
 	supervisors = "the Head of Logistics and the head of personnel"
 	selection_color = "#916e22"
 	economic_modifier = 5
-	base_pay = 12.5
+	base_pay = 12
 	access = list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mining, access_mining_station)
 	minimal_access = list(access_mining, access_mining_station, access_mailsorting)
 	alt_titles = list("Drill Technician","Prospector")

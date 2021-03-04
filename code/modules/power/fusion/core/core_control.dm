@@ -1,8 +1,10 @@
 /obj/machinery/computer/fusion_core_control
 	name = "\improper R-UST Mk. 8 core control"
-	icon = 'icons/obj/machines/power/fusion.dmi'
-	icon_state = "core_control"
+	icon_keyboard = "power_key"
+	icon_screen = "rust_screen"
 	light_color = COLOR_ORANGE
+	idle_power_usage = 500
+	active_power_usage = 1250
 
 	var/id_tag
 	var/scan_range = 25
@@ -25,6 +27,14 @@
 /obj/machinery/computer/fusion_core_control/attack_hand(mob/user)
 	add_fingerprint(user)
 	interact(user)
+
+
+/obj/machinery/computer/fusion_core_control/Process()
+	if(stat & (NOPOWER | BROKEN))
+		return
+
+	updateDialog()
+
 
 /obj/machinery/computer/fusion_core_control/interact(mob/user)
 

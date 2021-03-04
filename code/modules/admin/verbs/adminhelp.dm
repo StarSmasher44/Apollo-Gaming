@@ -135,6 +135,10 @@ var/adminhelps_unanswered = 0
 	to_chat(src, "<font color='blue'>PM to-<b>Staff</b> (<a href='?src=\ref[usr];close_ticket=\ref[ticket]'>CLOSE</a>): [original_msg]</font>")
 	var/admin_number_present = GLOB.admins.len - admin_number_afk
 	log_admin("HELP: [key_name(src)]: [original_msg] - heard by [admin_number_present] non-AFK admins.")
+
+//	send_discord(usr.ckey, 1, original_msg)
+	send_discord_message(1, original_msg)
+
 	if(admin_number_present <= 0)
 		adminmsg2adminirc(src, null, "[html_decode(original_msg)] - !![admin_number_afk ? "All admins AFK ([admin_number_afk])" : "No admins online"]!!")
 	else

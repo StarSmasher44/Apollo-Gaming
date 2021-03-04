@@ -105,7 +105,7 @@
 
 /decl/hierarchy/mil_uniform/marine/sup
 	name = "Marine supply"
-	departments = SUP
+	departments = LOG
 
 	utility_under = /obj/item/clothing/under/solgov/utility/marine/supply
 

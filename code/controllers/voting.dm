@@ -201,7 +201,7 @@ datum/controller/vote
 				if("gamemode")
 					if(master_mode != .[1])
 						world.save_mode(.[1])
-						if(ticker && ticker.mode)
+						if(ticker?.mode)
 							restart = 1
 						else
 							master_mode = .[1]

@@ -44,7 +44,7 @@
 		return 0
 	if(cell.charge < (use * CELLRATE))
 		return 0
-
+	SSmachines.machinery.Add(src)
 	on = 1
 	set_light(brightness_on, brightness_on / 2)
 	update_icon()
@@ -56,6 +56,7 @@
 	on = 0
 	set_light(0, 0)
 	update_icon()
+	SSmachines.machinery.Remove(src)
 	if(loud)
 		visible_message("\The [src] shuts down.")
 
@@ -87,6 +88,7 @@
 		set_light(0)
 		to_chat(user, "You remove the power cell")
 		update_icon()
+		SSmachines.machinery.Remove(src)
 		return
 
 	if(on)

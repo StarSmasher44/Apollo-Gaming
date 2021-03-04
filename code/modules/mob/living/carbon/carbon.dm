@@ -54,7 +54,7 @@
 			user.last_special = world.time + 50
 			src.visible_message("<span class='danger'>You hear something rumbling inside [src]'s stomach...</span>")
 			var/obj/item/I = user.get_active_hand()
-			if(I && I.force)
+			if(I?.force)
 				var/d = rand(round(I.force / 4), I.force)
 				if(ishuman(src))
 					var/mob/living/carbon/human/H = src
@@ -90,7 +90,7 @@
 		var/obj/item/organ/external/temp = H.organs_by_name[BP_R_HAND]
 		if (H.hand)
 			temp = H.organs_by_name[BP_L_HAND]
-		if(temp && !temp.is_usable())
+		if(!temp?.is_usable())
 			to_chat(H, "<span class='warning'>You can't use your [temp.name]</span>")
 			return
 
@@ -384,7 +384,7 @@
 	stop_pulling()
 	to_chat(src, "<span class='warning'>You slipped on [slipped_on]!</span>")
 	playsound(src.loc, 'sound/misc/slip.ogg', 50, 1, -3)
-	Weaken(Floor(stun_duration/2))
+	Weaken(FLOOR(stun_duration/2))
 	return 1
 
 /mob/living/carbon/proc/add_chemical_effect(var/effect, var/magnitude = 1)

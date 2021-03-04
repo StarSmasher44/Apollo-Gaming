@@ -157,7 +157,7 @@
 	if(!attack)
 		return
 	for(var/obj/item/protection in list(target.head, target.wear_mask, target.glasses))
-		if(protection && (protection.body_parts_covered & EYES))
+		if(protection?.body_parts_covered & EYES)
 			to_chat(attacker, "<span class='danger'>You're going to need to remove the eye covering first.</span>")
 			return
 	if(!target.has_eyes())
@@ -256,7 +256,7 @@
 	user.next_move = world.time + 20 //also should prevent user from triggering this repeatedly
 	if(!do_after(user, 20, progress = 0))
 		return 0
-	if(!(G && G.affecting == affecting)) //check that we still have a grab
+	if(!(G?.affecting == affecting)) //check that we still have a grab
 		return 0
 
 	var/damage_mod = 1
@@ -303,7 +303,7 @@
 
 	if(!do_after(user, 20, progress=0))
 		return 0
-	if(!(G && G.affecting == affecting)) //check that we still have a grab
+	if(!(G?.affecting == affecting)) //check that we still have a grab
 		return 0
 	if(!O || O.is_stump() || !O.sever_tendon())
 		return 0

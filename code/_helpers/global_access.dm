@@ -699,8 +699,8 @@
 			return global.outfits_decls_by_type_;
 		if("outfits_decls_root_")
 			return global.outfits_decls_root_;
-		if("overmap_event_handler")
-			return global.overmap_event_handler;
+//		if("overmap_event_handler")
+//			return global.overmap_event_handler;
 		if("paiController")
 			return global.paiController;
 		if("pai_emotions")
@@ -1766,8 +1766,8 @@
 			global.outfits_decls_by_type_=newval;
 		if("outfits_decls_root_")
 			global.outfits_decls_root_=newval;
-		if("overmap_event_handler")
-			global.overmap_event_handler=newval;
+//		if("overmap_event_handler")
+//			global.overmap_event_handler=newval;
 		if("paiController")
 			global.paiController=newval;
 		if("pai_emotions")

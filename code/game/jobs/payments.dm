@@ -1,5 +1,5 @@
 proc/calculate_paycheck(var/mob/living/carbon/human/M, var/roundend = 0, var/tax = 1) //Tax = if we should calculate taxes, add if we want to add the cash.
-	if(M && ishuman(M) && M.client && M.CharRecords && M.CharRecords.char_department && M.job) //SO MANY CHECKS JEZUS ah well
+	if(M && ishuman(M) && M.client && M.CharRecords && M.client.prefs.char_department && M.job) //SO MANY CHECKS JEZUS ah well
 		var/paycheck = round(get_base_pay(M) * 4, 0.5)
 		if(evacuation_controller.emergency_evacuation)
 			paycheck = (paycheck*0.80) //80 percent of the paycheck.
@@ -10,9 +10,9 @@ proc/calculate_paycheck(var/mob/living/carbon/human/M, var/roundend = 0, var/tax
 		if(tax)
 			get_tax_deduction("pension", paycheck, M.client.prefs.permadeath ? 1 : 0)
 			get_tax_deduction("income", paycheck)
-		if(M.CharRecords.bonuscredit)
-			paycheck += M.CharRecords.bonuscredit
-			M.CharRecords.bonuscredit = 0
+		if(M.client.prefs.bonuscredit)
+			paycheck += M.client.prefs.bonuscredit
+			M.client.prefs.bonuscredit = 0
 		paycheck = round(paycheck, 0.5)
 		return paycheck
 
@@ -27,11 +27,14 @@ proc/send_paycheck(var/mob/living/carbon/human/M, var/paycheck)
 			pension = get_tax_deduction("pension", paycheck, M.client.prefs.permadeath ? 1 : 0)
 		bank = get_tax_deduction("income", paycheck)
 
-		M.CharRecords.pension_balance += round(pension, 0.5)
+		M.client.prefs.pension_balance += round(pension, 0.5)
 		paycheck -= (bank+pension)
-//		M.CharRecords.bank_account.bank_balance += round(paycheck, 0.5)
-		var/datum/transaction/T = new(M.CharRecords.bank_account.account_number, "Employee Paycheck", round(paycheck, 0.5), "NT Financial")
-		M.CharRecords.bank_account.do_transaction(T)
+//		M.client.prefs.bank_account.bank_balance += round(paycheck, 0.5)
+		var/datum/transaction/T = new(M.client.prefs.bank_account.account_number, "Employee Paycheck", round(paycheck, 0.5), "NT Financial")
+		M.client.prefs.bank_account.do_transaction(T)
+		if(M.client)
+			M.client.prefs.save_character()
+
 		return round(paycheck, 0.5)
 
 proc/get_tax_deduction(var/taxtype, var/paycheck, var/permadeath)
@@ -49,14 +52,16 @@ proc/get_tax_deduction(var/taxtype, var/paycheck, var/permadeath)
 				return round(pensiontax, 0.5)
 
 proc/calculate_bonus_credit(var/mob/living/carbon/human/M, var/bonuscredit, var/bonuspercentage)
-	if(M && M.CharRecords && M.job)
+	if(M?.job)
 		if(bonuscredit) //Applied in direct cashes.
-			M.CharRecords.bonuscredit += bonuscredit
+			M.client.prefs.bonuscredit += bonuscredit
 		else if(bonuspercentage) //Applies to base pay percentage.
-			M.CharRecords.bonuscredit += calculate_paycheck(M, 0, 0)/100*bonuspercentage
+			M.client.prefs.bonuscredit += calculate_paycheck(M, 0, 0)/100*bonuspercentage
+		if(M.client)
+			M.client.prefs.save_character()
 
 proc/get_base_pay(var/mob/living/carbon/human/M)
-	if(M && M.CharRecords && M.job)
+	if(M?.job)
 		var/datum/job/job = job_master.GetJob(M.job)
 		var/base_pay = job.base_pay //Base pay from job
 		var/efficiencybonus = min(4*paychecks, 20) //Efficiencybonus = +4% per paycheck (hour).
@@ -74,71 +79,71 @@ proc/get_base_pay(var/mob/living/carbon/human/M)
 ==since they can take a beating more.
 =============================*/
 proc/get_species_modifier(var/mob/living/carbon/human/M)
-	if(M && M.species && M.CharRecords)
+	if(M?.species && M.CharRecords)
 		var/bonuspercentage = 0
 		switch(M.species.name)
 			if("Vat-Grown Human")
 				bonuspercentage -= 20
 			if(SPECIES_HUMAN)
-				if(M.CharRecords.char_department & COM)
+				if(M.client.prefs.char_department & COM)
 					bonuspercentage += 10
 			if(SPECIES_RESOMI)
 				bonuspercentage -= 10
-				if(M.CharRecords.char_department & ENG)
+				if(M.client.prefs.char_department & ENG)
 					bonuspercentage += 10
-				if(M.CharRecords.char_department & SCI)
+				if(M.client.prefs.char_department & SCI)
 					bonuspercentage += 5
-				if(M.CharRecords.char_department & SEC)
+				if(M.client.prefs.char_department & SEC)
 					bonuspercentage -= 10
 			if(SPECIES_TAJARA)
 				bonuspercentage -= 10
-				if(M.CharRecords.char_department & ENG)
+				if(M.client.prefs.char_department & ENG)
 					bonuspercentage += 10
-				if(M.CharRecords.char_department & SCI)
+				if(M.client.prefs.char_department & SCI)
 					bonuspercentage += 5
-				if(M.CharRecords.char_department & COM)
+				if(M.client.prefs.char_department & COM)
 					bonuspercentage -= 10
-				if(M.CharRecords.char_department & MED)
+				if(M.client.prefs.char_department & MED)
 					bonuspercentage -= 5
 			if(SPECIES_DIONA)
 				bonuspercentage -= 95
-				if(M.CharRecords.char_department & SCI)
+				if(M.client.prefs.char_department & SCI)
 					bonuspercentage += 5
-				if(M.CharRecords.char_department & SRV|CIV)
+				if(M.client.prefs.char_department & SRV|CIV)
 					bonuspercentage -= 10
 			if(SPECIES_VOX)
 				bonuspercentage -= 20
-				if(M.CharRecords.char_department & ENG)
+				if(M.client.prefs.char_department & ENG)
 					bonuspercentage += 10
-				if(M.CharRecords.char_department & SEC)
+				if(M.client.prefs.char_department & SEC)
 					bonuspercentage += 5
-				if(M.CharRecords.char_department & COM)
+				if(M.client.prefs.char_department & COM)
 					bonuspercentage -= 10
-				if(M.CharRecords.char_department & MED)
+				if(M.client.prefs.char_department & MED)
 					bonuspercentage -= 10
 			if(SPECIES_IPC)
 				bonuspercentage -= 15
 			if(SPECIES_UNATHI)
-				if(M.CharRecords.char_department & SEC)
+				if(M.client.prefs.char_department & SEC)
 					bonuspercentage += 10
-				if(M.CharRecords.char_department & MED)
+				if(M.client.prefs.char_department & MED)
 					bonuspercentage -= 5
-				if(M.CharRecords.char_department & SCI)
+				if(M.client.prefs.char_department & SCI)
 					bonuspercentage -= 5
 			if(SPECIES_SKRELL)
 				bonuspercentage += 5
-				if(M.CharRecords.char_department & SCI)
+				if(M.client.prefs.char_department & SCI)
 					bonuspercentage += 10
-				if(M.CharRecords.char_department & MED)
+				if(M.client.prefs.char_department & MED)
 					bonuspercentage += 5
-				if(M.CharRecords.char_department & SEC)
+				if(M.client.prefs.char_department & SEC)
 					bonuspercentage -= 5
 			if(SPECIES_WRYN)
 				bonuspercentage -= 40
-				if(M.CharRecords.char_department & SRV|CIV)
+				if(M.client.prefs.char_department & SRV|CIV)
 					bonuspercentage += 10
-				if(M.CharRecords.char_department & LOG)
+				if(M.client.prefs.char_department & LOG)
 					bonuspercentage += 5
-				if(M.CharRecords.char_department & SCI)
+				if(M.client.prefs.char_department & SCI)
 					bonuspercentage -= 10
 		return bonuspercentage

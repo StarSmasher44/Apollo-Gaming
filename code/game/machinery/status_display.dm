@@ -1,6 +1,6 @@
 #define FONT_SIZE "5pt"
 #define FONT_COLOR "#09f"
-#define FONT_STYLE "Arial Black"
+#define FONT_STYLE "Small Fonts"
 #define SCROLL_SPEED 2
 
 // Status display
@@ -39,6 +39,7 @@
 
 	maptext_height = 26
 	maptext_width = 32
+	maptext_y = -1
 
 	var/const/CHARS_PER_LINE = 5
 	var/const/STATUS_DISPLAY_BLANK = 0
@@ -60,14 +61,6 @@
 	if(radio_controller)
 		radio_controller.add_object(src, frequency)
 
-// timed process
-/obj/machinery/status_display/Process()
-	if(stat & NOPOWER)
-		remove_display()
-		return
-	if(next_process_time <= world.time)
-		next_process_time = world.time + 50		// 5 second delays between process updates
-		update()
 
 /obj/machinery/status_display/emp_act(severity)
 	if(stat & (BROKEN|NOPOWER))
@@ -77,10 +70,13 @@
 	..(severity)
 
 // set what is displayed
-/obj/machinery/status_display/proc/update()
+/obj/machinery/status_display/power_change()
 	remove_display()
 	if(friendc && !ignore_friendc)
 		set_picture("ai_friend")
+		return 1
+
+	if(stat & NOPOWER)
 		return 1
 
 	switch(mode)
@@ -193,7 +189,7 @@
 	return "[add_zero(num2text((timeleft / 60) % 60),2)]:[add_zero(num2text(timeleft % 60), 2)]"
 
 /obj/machinery/status_display/proc/get_supply_shuttle_timer()
-	var/datum/shuttle/autodock/ferry/supply/shuttle = supply_controller.shuttle
+	var/datum/shuttle/ferry/supply/cargo/shuttle = supply_controller.shuttle
 	if (!shuttle)
 		return "Error"
 
@@ -232,7 +228,7 @@
 		if("image")
 			mode = STATUS_DISPLAY_IMAGE
 			set_picture(signal.data["picture_state"])
-	update()
+	power_change()
 
 #undef CHARS_PER_LINE
 #undef FOND_SIZE

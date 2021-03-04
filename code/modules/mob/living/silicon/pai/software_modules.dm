@@ -216,7 +216,7 @@
 				return 1
 
 /datum/pai_software/messenger/on_purchase(mob/living/silicon/pai/user)
-	if(user && !user.pda)
+	if(!user?.pda)
 		user.pda = new(user)
 		user.pda.set_owner_rank_job(text("[]", user), "Personal Assistant")
 

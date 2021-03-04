@@ -39,7 +39,7 @@
 
 /mob/living/carbon/alien/diona/death(gibbed)
 
-	if (next_nymph && next_nymph.stat == 0)
+	if (next_nymph?.stat == 0)
 
 		var/mob/living/carbon/alien/diona/S = next_nymph
 		transfer_languages(src, S)

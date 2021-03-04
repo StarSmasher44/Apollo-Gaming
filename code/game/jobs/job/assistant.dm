@@ -9,7 +9,7 @@
 	selection_color = "#515151"
 	alt_titles = list("Off-Duty Personnel")
 	economic_modifier = 1
-	base_pay = 3
+	base_pay = 2
 	intern = 1
 	access = list()
 	minimal_access = list()

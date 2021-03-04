@@ -17,9 +17,7 @@ var/datum/controller/subsystem/gamesys/gamesys
 /datum/controller/subsystem/gamesys/fire()
 	if(state == SS_RUNNING)
 
-		var/list/clients = GLOB.clients
-		for(var/CL in clients)
-			var/client/C = CL
+		for(var/client/C in GLOB.clients)
 			winset(C, null, "command=.update_ping+[world.time+world.tick_lag*TICK_USAGE_REAL/100]")
 
 
@@ -30,8 +28,8 @@ var/datum/controller/subsystem/gamesys/gamesys
 						log_access("AFK: [key_name(C)]")
 						to_chat(C, "<SPAN CLASS='warning'>You have been inactive for more than [config.kick_inactive] minute\s and have been disconnected.</SPAN>")
 						qdel(C)
-		if(cur_ticks % 75)
-			CleanLists()
+//		if(cur_ticks % 75)
+//			CleanLists()
 
 		switch(world.cpu)
 			if(0 to 20)
@@ -47,7 +45,7 @@ var/datum/controller/subsystem/gamesys/gamesys
 			if(100 to 1000)
 				cpustate = "Server Overloaded ([TICK_USAGE]%)"
 		cur_ticks++
-
+/*
 //A loop that periodically (Roughly every 10-15 minutes) cleans out lists, basic maintenance I suppose.
 /datum/controller/subsystem/gamesys/proc/CleanLists()
 	var/list/liststoclean = list(
@@ -59,3 +57,7 @@ var/datum/controller/subsystem/gamesys/gamesys
 	for(var/list/L in liststoclean)
 		listclearnulls(L)
 		liststoclean.Remove(L)
+	for(var/L in SSmachines.machinery)
+		if(!ismachine(L))
+			SSmachines.machinery.Remove(L)
+*/

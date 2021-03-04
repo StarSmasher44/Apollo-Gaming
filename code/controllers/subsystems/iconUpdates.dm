@@ -4,7 +4,7 @@ var/datum/controller/subsystem/icon_updater/iconupdater
 	name = "Icon Updating"
 	priority = 30
 	wait = 15
-	flags = SS_POST_FIRE_TIMING|SS_BACKGROUND|SS_NO_INIT
+	flags = SS_KEEP_TIMING|SS_BACKGROUND|SS_NO_INIT
 	runlevels = RUNLEVEL_INIT | RUNLEVELS_DEFAULT
 
 	var/iconslasttick = 0

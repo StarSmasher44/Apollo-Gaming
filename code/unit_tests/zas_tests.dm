@@ -106,12 +106,12 @@ proc/test_air_in_area(var/test_area, var/expectation = UT_NORMAL)
 
 
 // Here we move a shuttle then test it's area once the shuttle has arrived.
-
+/*
 datum/unit_test/zas_supply_shuttle_moved
 	name = "ZAS: Supply Shuttle (When Moved)"
 	async=1				// We're moving the shuttle using built in procs.
 
-	var/datum/shuttle/autodock/ferry/supply/shuttle = null
+	var/datum/shuttle/ferry/supply/cargo/shuttle = null
 
 	var/testtime = 0	//Used as a timer.
 
@@ -151,7 +151,7 @@ datum/unit_test/zas_supply_shuttle_moved/check_result()
 
 	if(world.time < testtime)
 		return 0
-	for(var/area/A in shuttle.shuttle_area)
+	for(var/area/A in shuttle.get_location_area())
 		var/list/test = test_air_in_area(A.type)
 		if(isnull(test))
 			fail("Check Runtimed")
@@ -162,7 +162,7 @@ datum/unit_test/zas_supply_shuttle_moved/check_result()
 			if(SKIP)    skip(test["msg"])
 			else        fail(test["msg"])
 	return 1
-
+*/
 #undef UT_NORMAL
 #undef UT_VACUUM
 #undef UT_NORMAL_COLD

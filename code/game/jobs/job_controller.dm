@@ -87,7 +87,7 @@ var/global/datum/controller/occupations/job_master
 
 	proc/AssignRole(var/mob/new_player/player, var/rank, var/latejoin = 0)
 		Debug("Running AR, Player: [player], Rank: [rank], LJ: [latejoin]")
-		if(player && player.mind && rank)
+		if(player?.mind && rank)
 			var/datum/job/job = GetJob(rank)
 			if(!job)
 				return 0
@@ -115,7 +115,7 @@ var/global/datum/controller/occupations/job_master
 
 	proc/FreeRole(var/rank)	//making additional slot on the fly
 		var/datum/job/job = GetJob(rank)
-		if(job && job.current_positions >= job.total_positions && job.total_positions != -1)
+		if(job?.current_positions >= job.total_positions && job.total_positions != -1)
 			job.total_positions++
 			return 1
 		return 0
@@ -246,7 +246,7 @@ var/global/datum/controller/occupations/job_master
 		SetupOccupations()
 
 		//Holder for Triumvirate is stored in the ticker, this just processes it
-		if(ticker && ticker.triai)
+		if(ticker?.triai)
 			for(var/datum/job/A in occupations)
 				if(A.title == "AI")
 					A.spawn_positions = 3
@@ -465,6 +465,7 @@ var/global/datum/controller/occupations/job_master
 				W.buckled_mob = H
 				W.add_fingerprint(H)
 
+
 		to_chat(H, "<B>You are [job.total_positions == 1 ? "the" : "a"] [alt_title ? alt_title : rank].</B>")
 
 		if(job.supervisors)
@@ -478,7 +479,7 @@ var/global/datum/controller/occupations/job_master
 
 		// EMAIL GENERATION
 		var/domain
-		if(H.char_branch && H.char_branch.email_domain)
+		if(H.char_branch?.email_domain)
 			domain = H.char_branch.email_domain
 		else
 			domain = "freemail.nt"
@@ -512,6 +513,23 @@ var/global/datum/controller/occupations/job_master
 		BITSET(H.hud_updateflag, ID_HUD)
 		BITSET(H.hud_updateflag, IMPLOYAL_HUD)
 		BITSET(H.hud_updateflag, SPECIALROLE_HUD)
+
+		var/gear_cost = 0
+		for(var/thing in H.client.prefs.Gear())
+			var/datum/gear/G = gear_datums[thing]
+			if(G)
+				if(LOADOUT_MONEY)
+					gear_cost += G.cost_money
+				else
+					gear_cost += G.cost
+
+		var/datum/transaction/T = new(H.client.prefs.bank_account.owner_name, "Crew Store Purchase", -gear_cost, "[station_name()] Equipment Store")
+		H.client.prefs.bank_account.do_transaction(T)
+
+		//Sends income tax to NT.
+		var/datum/money_account/NTBank = department_accounts["NanoTrasen"]
+		var/datum/transaction/T2 = new("", "Crew Store Purchase", gear_cost, "[station_name()] Equipment Store")
+		NTBank.do_transaction(T2)
 
 		return H
 

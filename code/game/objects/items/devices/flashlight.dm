@@ -15,6 +15,7 @@
 	var/brightness_on = 4 //range of light when on
 	var/activation_sound = 'sound/effects/flashlight.ogg'
 	var/flashlight_power //luminosity of light when on, can be negative
+	var/flashlight_color = LIGHT_COLOR_INCANDESCENT_FLASHLIGHT
 
 /obj/item/device/flashlight/Initialize()
 	. = ..()
@@ -28,7 +29,7 @@
 	if(on)
 		icon_state = "[initial(icon_state)]-on"
 		if(flashlight_power)
-			set_light(l_range = brightness_on, l_power = flashlight_power)
+			set_light(l_range = brightness_on, l_power = flashlight_power, l_color = flashlight_color)
 		else
 			set_light(brightness_on)
 	else
@@ -142,6 +143,7 @@
 	attack_verb = list ("smacked", "thwacked", "thunked")
 	matter = list(DEFAULT_WALL_MATERIAL = 200,"glass" = 50)
 	hitsound = "swing_hit"
+	flashlight_color = LIGHT_COLOR_FLUORESCENT_FLASHLIGHT
 
 /obj/item/device/flashlight/drone
 	name = "low-power flashlight"
@@ -172,7 +174,7 @@
 	icon_state = "lampgreen"
 	item_state = "lampgreen"
 	brightness_on = 4
-	light_color = "#ffc58f"
+	flashlight_color = "#ffc58f"
 
 /obj/item/device/flashlight/lamp/verb/toggle_light()
 	set name = "Toggle light"
@@ -190,7 +192,7 @@
 	w_class = ITEM_SIZE_TINY
 	brightness_on = 8 // Pretty bright.
 	light_power = 3
-	light_color = "#e58775"
+	flashlight_color = "#e58775"
 	icon_state = "flare"
 	item_state = "flare"
 	action_button_name = null //just pull it manually, neckbeard.
@@ -245,7 +247,7 @@
 	w_class = 2.0
 	brightness_on = 4
 	light_power = 2
-	color = "#49f37c"
+	flashlight_color = "#49f37c"
 	icon_state = "glowstick"
 	item_state = "glowstick"
 	randpixel = 12
@@ -283,7 +285,7 @@
 		I.blend_mode = BLEND_ADD
 		overlays += I
 		item_state = "glowstick-on"
-		set_light(brightness_on)
+		set_light(brightness_on, l_color = flashlight_color)
 	else
 		icon_state = "glowstick"
 	var/mob/M = loc
@@ -309,27 +311,27 @@
 
 /obj/item/device/flashlight/glowstick/red
 	name = "red glowstick"
-	color = "#fc0f29"
+	flashlight_color = "#fc0f29"
 
 /obj/item/device/flashlight/glowstick/blue
 	name = "blue glowstick"
-	color = "#599dff"
+	flashlight_color = "#599dff"
 
 /obj/item/device/flashlight/glowstick/orange
 	name = "orange glowstick"
-	color = "#fa7c0b"
+	flashlight_color = "#fa7c0b"
 
 /obj/item/device/flashlight/glowstick/yellow
 	name = "yellow glowstick"
-	color = "#fef923"
+	flashlight_color = "#fef923"
 
 /obj/item/device/flashlight/glowstick/random
 	name = "glowstick"
 	desc = "A party-grade glowstick."
-	color = "#ff00ff"
+	flashlight_color = "#ff00ff"
 
 /obj/item/device/flashlight/glowstick/random/New()
-	color = rgb(rand(50,255),rand(50,255),rand(50,255))
+	flashlight_color = rgb(rand(50,255),rand(50,255),rand(50,255))
 	..()
 
 /obj/item/device/flashlight/slime

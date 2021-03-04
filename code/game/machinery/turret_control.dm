@@ -51,7 +51,7 @@
 	else if(istext(control_area))
 		for(var/AS in all_areas)
 			var/area/A = AS
-			if(A.name && A.name==control_area)
+			if(A?.name==control_area)
 				control_area = A
 				break
 

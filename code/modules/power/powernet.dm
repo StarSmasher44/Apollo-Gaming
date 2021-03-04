@@ -101,7 +101,7 @@
 	if(problem > 0)
 		problem = max(problem - 1, 0)
 
-	if(nodes && nodes.len) // Added to fix a bad list bug -- TLE
+	if(nodes?.len) // Added to fix a bad list bug -- TLE
 		for(var/obj/machinery/power/terminal/term in nodes)
 			if( istype( term.master, /obj/machinery/power/apc ) )
 				numapc++

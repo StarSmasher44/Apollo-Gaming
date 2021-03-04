@@ -20,7 +20,7 @@
 	if(other_area)
 		src.connected_area = locate(other_area) in all_areas
 	else
-		src.connected_area = get_area(src)
+		src.connected_area = MyArea
 
 	if(name == initial(name))
 		name = "light switch ([connected_area.name])"

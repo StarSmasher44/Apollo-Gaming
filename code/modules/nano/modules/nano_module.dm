@@ -37,7 +37,7 @@
 	return 0
 
 /datum/nano_module/Topic(href, href_list)
-	if(topic_manager && topic_manager.Topic(href, href_list))
+	if(topic_manager?.Topic(href, href_list))
 		return TRUE
 	. = ..()
 

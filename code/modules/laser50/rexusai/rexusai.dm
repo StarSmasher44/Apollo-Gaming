@@ -12,6 +12,8 @@
 	var/list/familiarpeople = list()
 	var/list/people = list()
 	var/gunshots = 0
+	var/agitated = 0
+
 	var/list/callingnames = list(
 		"Rex",
 		"Rexus",
@@ -26,7 +28,8 @@
 	var/list/defend_commands = list(
 		"Guard",
 		"Defend",
-		"Secure"
+		"Secure",
+		"Protect"
 		)
 	var/list/stop_commands = list(
 		"Stop",
@@ -41,8 +44,16 @@
 	var/list/all_commands = list(
 		fetch_commands,
 		)
-/mob/living/special_mobs/rexus/Process()
 
+/mob/living/special_mobs/rexus/Process()
+	if(prob(30))
+		visible_emote("[MakeSound()]")
+
+	switch(mood)
+		if(MOOD_NEUTRAL)
+		if(MOOD_ALERT)
+		if(MOOD_AGGRESSIVE)
+		if(MOOD_SCARED)
 
 /mob/living/special_mobs/rexus/hear_talk(mob/living/M as mob, text)
 	var/true_text = lowertext(html_decode(text))
@@ -72,7 +83,7 @@
 //Extra: Blood, bleeding, fighting
 /mob/living/special_mobs/rexus/proc/AssessSituation()
 	/*--------Threat assesment--------*/
-	for(var/mob/living/carbon/human/M in view(6))
+	for(var/mob/living/carbon/human/M in view(7))
 		if(M.stat != DEAD)
 			var/score = 0
 			if(!M in familiarpeople)
@@ -91,3 +102,16 @@
 		else if(M.stat == UNCONSCIOUS || M.resting) //Downed people aren't that scary..
 			score -= min(5, rand(25, 35))
 				people["[M.real_name]"] = score
+
+/mob/living/special_mobs/rexus/proc/MakeSound()
+	switch(mood)
+		if(MOOD_NEUTRAL)
+			pick("barks", "woofs", "yaps","pants")
+		if(MOOD_ALERT)
+			pick("barks", "woofs", "whines", "growls softly", "pants")
+		if(MOOD_AGGRESSIVE)
+			pick("barks", "growls", "growls softly", "pants")
+		if(MOOD_SCARED)
+			pick("barks", "growls scared", "pants", "whines", "growls")
+
+/mob/living/special_mobs/rexus/Process()

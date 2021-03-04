@@ -50,7 +50,7 @@ var/global/list/default_pai_software = list()
 
 	if(ui_key != "main")
 		var/datum/pai_software/S = software[ui_key]
-		if(S && !S.toggle)
+		if(!S?.toggle)
 			S.on_ui_interact(src, ui, force_open)
 		else
 			if(ui) ui.set_status(STATUS_CLOSE, 0)

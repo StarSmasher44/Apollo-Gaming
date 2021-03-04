@@ -85,7 +85,7 @@
 	supervisors = "absolutely everyone"
 	selection_color = "#633d63"
 	economic_modifier = 1
-	base_pay = 6
+	base_pay = 6.5
 	intern = 1
 	access = list(access_robotics, access_research, access_xenobiology, access_xenoarch)
 	minimal_access = list(access_research, access_xenoarch)

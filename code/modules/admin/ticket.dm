@@ -76,7 +76,7 @@ proc/get_open_ticket_by_client(var/datum/client_lite/owner)
 
 	for(var/datum/client_lite/admin in assigned_admins)
 		var/client/admin_client = client_by_ckey(admin.ckey)
-		if(admin_client && !admin_client.is_afk())
+		if(!admin_client?.is_afk())
 			return 1
 
 	return 0

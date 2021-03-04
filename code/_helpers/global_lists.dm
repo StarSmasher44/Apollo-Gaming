@@ -28,6 +28,13 @@ var/list/mannequins_
 // Posters
 var/global/list/poster_designs = list()
 
+// Discord Channels>Name List
+//We hardcode them because our code is hardcore any way.
+var/global/list/discord_channels = list(
+	"RoundAnnouncements" = 254963944681242626,
+	"AdminChannel" = 286510890822402048
+	)
+
 // Grabs
 var/global/list/all_grabstates[0]
 var/global/list/all_grabobjects[0]

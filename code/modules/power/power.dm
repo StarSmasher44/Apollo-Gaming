@@ -38,7 +38,7 @@
 	if(drain_check)
 		return 1
 
-	if(powernet && powernet.avail)
+	if(powernet?.avail)
 		powernet.trigger_warning()
 		return powernet.draw_power(amount)
 

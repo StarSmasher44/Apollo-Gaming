@@ -17,7 +17,7 @@
 
 	var/departed = 0
 	var/autopilot = 1
-	var/datum/shuttle/autodock/ferry/emergency/shuttle // Set in shuttle_emergency.dm
+	var/datum/shuttle/ferry/emergency/shuttle // Set in shuttle_emergency.dm
 	var/shuttle_launch_time
 
 /datum/evacuation_controller/shuttle/has_evacuated()
@@ -31,8 +31,8 @@
 	if(waiting_to_leave())
 		return
 
-	for (var/datum/shuttle/autodock/ferry/escape_pod/pod in escape_pods)
-		if (!pod.arming_controller || pod.arming_controller.armed)
+	for (var/datum/shuttle/ferry/escape_pod/pod in escape_pods)
+		if (pod && !pod.arming_controller || pod.arming_controller.armed)
 			pod.move_time = evac_transit_delay
 			pod.launch(src)
 
@@ -48,8 +48,8 @@
 	. = ..()
 	// Arm the escape pods.
 	if (emergency_evacuation)
-		for (var/datum/shuttle/autodock/ferry/escape_pod/pod in escape_pods)
-			if (pod.arming_controller)
+		for (var/datum/shuttle/ferry/escape_pod/pod in escape_pods)
+			if (pod?.arming_controller)
 				pod.arming_controller.arm()
 
 /datum/evacuation_controller/shuttle/call_evacuation(var/mob/user, var/_emergency_evac, var/forced, var/skip_announce, var/autotransfer)
@@ -68,7 +68,7 @@
 	return 0
 
 /datum/evacuation_controller/shuttle/get_eta()
-	if (shuttle && shuttle.has_arrive_time())
+	if (shuttle?.has_arrive_time())
 		return (shuttle.arrive_time-world.time)/10
 	return ..()
 
@@ -79,14 +79,13 @@
 
 // This is largely handled by the emergency shuttle datum.
 /datum/evacuation_controller/shuttle/process()
-	switch(state)
-		if(EVAC_PREPPING)
-			if(!isnull(shuttle_launch_time) && world.time > shuttle_launch_time && shuttle.moving_status == SHUTTLE_IDLE)
-				shuttle.launch()
-				shuttle_launch_time = null
-			return
-		if(EVAC_IN_TRANSIT)
-			return
+	if(state == EVAC_PREPPING)
+		if(!isnull(shuttle_launch_time) && world.time > shuttle_launch_time && shuttle.moving_status == SHUTTLE_IDLE)
+			shuttle.launch()
+			shuttle_launch_time = null
+		return
+	else if(state == EVAC_IN_TRANSIT)
+		return
 	return ..()
 
 /datum/evacuation_controller/shuttle/can_cancel()

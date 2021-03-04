@@ -7,11 +7,13 @@ var/global/list/map_sectors = list()
 	name = "System Map"
 	icon_state = "start"
 	requires_power = 0
+	luminosity = 1
 	base_turf = /turf/unsimulated/map
 
 /turf/unsimulated/map
 	icon = 'icons/turf/space.dmi'
 	icon_state = "map"
+	dynamic_lighting = 0
 
 /turf/unsimulated/map/edge
 	opacity = 1

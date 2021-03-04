@@ -8,7 +8,7 @@
 /obj/effect/spawner/lootdrop/Initialize()
 	var/list/things = params2list(loot)
 
-	if(things && things.len)
+	if(things?.len)
 		for(var/i = lootcount, i > 0, i--)
 			if(!things.len)
 				return

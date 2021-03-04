@@ -114,6 +114,7 @@
 	var/datum/dna/dna = null//Carbon
 	var/list/active_genes=list()
 	var/list/mutations = list() //Carbon -- Doohl
+	var/list/trigger_words = list() // mah triggers, warning of triggers, trigger my warnings
 	//see: setup.dm for list of mutations
 
 	var/radiation = 0.0//Carbon

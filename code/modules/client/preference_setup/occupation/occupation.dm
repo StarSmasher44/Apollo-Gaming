@@ -14,7 +14,6 @@
 //	var/prefs_department = "Service" //Department of choice, also saved in NT Profile
 	var/promoted = 0 //Eligible for command roles? Also saved in NT profile. NOT ANYMORE.. ITS NOT.
 	var/ntallowed = 0 //Allowed to play as the NT roles.
-	var/char_department = SRV
 
 	//Keeps track of preferrence for not getting any wanted jobs
 	var/alternate_option = 2
@@ -30,15 +29,11 @@
 	S["job_low"]           >> pref.job_low
 	S["player_alt_titles"] >> pref.player_alt_titles
 	S["char_branch"]       >> pref.char_branch
-//	S["prefs_department"]  >> pref.prefs_department
-//	if(!pref.prefs_department)
-//		pref.prefs_department = initial(pref.prefs_department) // Oops
-	S["promoted"]     >> pref.promoted
+
+	S["promoted"]          >> pref.promoted
 	S["char_rank"]         >> pref.char_rank
 	S["nanotrasen_official"] >> pref.ntallowed
-	S["char_department"]     >> pref.char_department
-	if(!pref.char_department)
-		pref.char_department = initial(pref.char_department)
+
 
 /datum/category_item/player_setup_item/occupation/save_character(var/savefile/S)
 	S["alternate_option"]  << pref.alternate_option
@@ -46,11 +41,10 @@
 	S["job_medium"]        << pref.job_medium
 	S["job_low"]           << pref.job_low
 	S["player_alt_titles"] << pref.player_alt_titles
-	S["promoted"]     << pref.promoted
+	S["promoted"]          << pref.promoted
 	S["char_branch"]       << pref.char_branch
 	S["char_rank"]         << pref.char_rank
-	if(pref.char_department)
-		S["char_department"]  << pref.char_department
+	S["char_department"]   << pref.char_department
 	S["nanotrasen_official"] << pref.ntallowed
 
 /datum/category_item/player_setup_item/occupation/sanitize_character()
@@ -154,7 +148,7 @@
 			. += "<del>[rank]</del></td><td><a href='?src=\ref[src];show_branches=[rank]'><b> \[NOT FOR [get_department(user.client.prefs.char_department, 1)]]</b></a></td></tr>"
 			continue
 		//If commanding role, but no head. fuck off too.
-		if(job.department_flag & COM || job.department_flag2 & COM && user.client.prefs.promoted != JOB_LEVEL_HEAD)
+		if(user.client.prefs.promoted != JOB_LEVEL_HEAD && (job.department_flag2 & COM || job.department_flag & COM))
 			. += "<del>[rank]</del></td><td><a href='?src=\ref[src];show_branches=[rank]'><b> \[NO CLEARANCE FOR HEAD RANK]</b></a></td></tr>"
 			continue
 		//If the Job aint intern, but the guy is, fuck off especially right quick.

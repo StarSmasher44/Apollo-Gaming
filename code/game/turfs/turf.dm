@@ -139,7 +139,7 @@ var/const/enterloopsanity = 100
 			M.make_floating(0) //we know we're not on solid ground so skip the checks to save a bit of processing
 
 	var/objects = 0
-	if(A && (A.flags & PROXMOVE))
+	if(A?.flags & PROXMOVE)
 		for(var/atom/movable/thing in range(1))
 			if(objects > enterloopsanity) break
 			objects++
@@ -167,7 +167,7 @@ var/const/enterloopsanity = 100
 			M.inertia_dir  = 0
 			return
 		spawn(5)
-			if(M && !(M.anchored) && !(M.pulledby) && (M.loc == src))
+			if(!(M?.anchored) && !(M.pulledby) && (M.loc == src))
 				if(!M.inertia_dir)
 					M.inertia_dir = M.last_move
 				step(M, M.inertia_dir)
@@ -241,7 +241,7 @@ var/const/enterloopsanity = 100
 	return
 
 /turf/proc/remove_decals()
-	if(decals && decals.len)
+	if(decals?.len)
 		decals.Cut()
 		decals = null
 

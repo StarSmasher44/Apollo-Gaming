@@ -102,7 +102,7 @@
 		if(!islist(prefs.preference_values))
 			prefs.preference_values = list()
 		var/datum/client_preference/cp = get_client_preference(preference)
-		if(cp && cp.key)
+		if(cp?.key)
 			return prefs.preference_values[cp.key]
 		else
 			return null

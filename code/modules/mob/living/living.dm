@@ -496,13 +496,13 @@ default behaviour is:
 		var/turf/T = loc
 		. = ..()
 
-		if (pulling && pulling.loc)
+		if (pulling?.loc)
 			if(!( isturf(pulling.loc) ))
 				stop_pulling()
 				return
 
 		/////
-		if(pulling && pulling.anchored)
+		if(pulling?.anchored)
 			stop_pulling()
 			return
 

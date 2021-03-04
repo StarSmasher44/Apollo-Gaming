@@ -1,4 +1,4 @@
-#define SOLAR_MAX_DIST 40
+#define SOLAR_MAX_DIST 128
 
 var/solar_gen_rate = 1500
 var/list/solars_list = list()

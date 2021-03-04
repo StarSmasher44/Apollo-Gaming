@@ -200,11 +200,11 @@ var/list/outfits_decls_by_type_
 		return
 	var/obj/item/device/pda/heads/pda = new pda_type(H)
 	pda.set_owner_rank_job(H.real_name, rank, assignment)
-	if(pda && !pda.cartridge) //Has a PDA, but no default cartridge?
+	if(!pda?.cartridge) //Has a PDA, but no default cartridge?
 //		var/obj/item/weapon/cartridge/CT = new(pda.cartridge) //Make a new one.
 		pda.cartridge = new /obj/item/weapon/cartridge
-		if(H.CharRecords && H.CharRecords.char_department && !pda.cartridge.department)
-			pda.cartridge.department = get_department(H.CharRecords.char_department, 1)
+		if(H.CharRecords && H.client.prefs.char_department && !pda.cartridge.department)
+			pda.cartridge.department = get_department(H.client.prefs.char_department, 1)
 	if(H.equip_to_slot_or_store_or_drop(pda, pda_slot))
 		return pda
 

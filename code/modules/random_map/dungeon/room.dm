@@ -83,7 +83,7 @@ If its complexity is lower than our theme's then
 	return 1
 
 /datum/room/proc/add_loot(var/xorigin,var/yorigin,var/zorigin,var/type)
-	if(room_generator && room_generator.apply_loot(xorigin,yorigin,zorigin,type))
+	if(room_generator?.apply_loot(xorigin,yorigin,zorigin,type))
 		return 1
 	var/rx = xorigin+x+rand(width-3)
 	var/ry = yorigin+y+rand(height-3)

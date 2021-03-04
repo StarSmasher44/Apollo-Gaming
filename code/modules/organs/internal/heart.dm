@@ -26,10 +26,10 @@
 		handle_pulse()
 		if(pulse)
 			handle_heartbeat()
-			if(pulse == PULSE_2FAST && prob(1))
-				take_damage(rand(0.4, 0.6))
+			if(pulse == PULSE_2FAST && prob(2))
+				take_damage(rand(0.3, 0.6))
 			if(pulse == PULSE_THREADY && prob(5))
-				take_damage(rand(0.5, 1.5))
+				take_damage(rand(0.5, 1.3))
 		handle_blood()
 	..()
 
@@ -52,19 +52,26 @@
 	if(owner.status_flags & FAKEDEATH || owner.chem_effects[CE_NOPULSE])
 		pulse = Clamp(PULSE_NONE + pulse_mod, PULSE_NONE, PULSE_2FAST) //pretend that we're dead. unlike actual death, can be inflienced by meds
 		return
-	
+
 	//If heart is stopped, it isn't going to restart itself randomly.
 	if(pulse == PULSE_NONE)
 		return
 	else //and if it's beating, let's see if it should
-		var/should_stop = prob(70) && owner.get_blood_circulation() < BLOOD_VOLUME_SURVIVE //cardiovascular shock, not enough liquid to pump
+		var/should_stop = prob(60) && owner.get_blood_circulation() < BLOOD_VOLUME_SURVIVE //cardiovascular shock, not enough liquid to pump
 		should_stop = should_stop || prob(max(0, owner.getBrainLoss() - owner.maxHealth * 0.80)) //brain failing to work heart properly
-		should_stop = should_stop || (prob(3) && owner.shock_stage >= 120) //traumatic shock
-		should_stop = should_stop || (prob(5) && pulse == PULSE_THREADY) //erratic heart patterns, usually caused by oxyloss
-		if(should_stop) // The heart has stopped due to going into traumatic or cardiovascular shock.
+		should_stop = should_stop || (prob(2) && owner.shock_stage >= 150) //traumatic shock
+		should_stop = should_stop || (prob(3) && pulse == PULSE_THREADY) //erratic heart patterns, usually caused by oxyloss
+		var/obj/item/organ/internal/brain/B = owner.internal_organs_by_name[BP_BRAIN]
+		if(owner.stat == 2 || owner.getBrainLoss() >= B.max_damage)
 			to_chat(owner, "<span class='danger'>Your heart has stopped!</span>")
 			pulse = PULSE_NONE
 			return
+		if(should_stop) // The heart has stopped due to going into traumatic or cardiovascular shock.
+			if(prob(max_damage+damage)) //If enough damage has been done, we will actually stop.
+				to_chat(owner, "<span class='danger'>Your heart has stopped!</span>")
+				pulse = PULSE_NONE
+				return
+			else
 	if(pulse && oxy <= BLOOD_VOLUME_SURVIVE && !owner.chem_effects[CE_STABLE])	//I SAID MOAR OXYGEN
 		pulse = PULSE_THREADY
 		return
@@ -128,7 +135,7 @@
 							blood_max += W.damage / 40
 
 			if(temp.status & ORGAN_ARTERY_CUT)
-				var/bleed_amount = Floor((owner.vessel.total_volume / (temp.applied_pressure ? 400 : 250))*temp.arterial_bleed_severity)
+				var/bleed_amount = FLOOR((owner.vessel.total_volume / (temp.applied_pressure ? 400 : 250))*temp.arterial_bleed_severity)
 				if(bleed_amount)
 					if(open_wound)
 						blood_max += bleed_amount

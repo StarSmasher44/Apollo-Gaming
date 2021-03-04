@@ -48,7 +48,7 @@
 /obj/item/weapon/reagent_containers/glass/examine(var/mob/user)
 	if(!..(user, 2))
 		return
-	if(reagents && reagents.reagent_list.len)
+	if(reagents?.reagent_list.len)
 		to_chat(user, "<span class='notice'>It contains [reagents.total_volume] units of liquid.</span>")
 	else
 		to_chat(user, "<span class='notice'>It is empty.</span>")
@@ -96,7 +96,7 @@
 	if(user.a_intent == I_HURT)
 		if(standard_splash_mob(user,target))
 			return 1
-		if(reagents && reagents.total_volume)
+		if(reagents?.total_volume)
 			to_chat(user, "<span class='notice'>You splash the contents of \the [src] onto [target].</span>") //They are on harm intent, aka wanting to spill it.
 			reagents.splash(target, reagents.total_volume)
 			return 1

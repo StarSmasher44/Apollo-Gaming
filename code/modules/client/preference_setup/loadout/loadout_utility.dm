@@ -9,12 +9,14 @@
 	path = /obj/item/weapon/storage/belt/waistpack
 	slot = slot_belt
 	cost = 2
+	cost_money = 15
 	flags = GEAR_HAS_COLOR_SELECTION
 
 /datum/gear/utility/waistpack/big
 	display_name = "large waist pack"
 	path = /obj/item/weapon/storage/belt/waistpack/big
 	cost = 4
+	cost_money = 40
 
 /datum/gear/utility/clipboard
 	display_name = "clipboard"
@@ -41,7 +43,7 @@
 /datum/gear/utility/paicard
 	display_name = "personal AI device"
 	path = /obj/item/device/paicard
-
+	cost_money = 25
 /****************
 modular computers
 ****************/
@@ -50,16 +52,19 @@ modular computers
 	display_name = "tablet computer, cheap"
 	path = /obj/item/modular_computer/tablet/preset/custom_loadout/cheap
 	cost = 3
+	cost_money = 30
 
 /datum/gear/utility/normaltablet
 	display_name = "tablet computer, advanced"
 	path = /obj/item/modular_computer/tablet/preset/custom_loadout/advanced
 	cost = 4
+	cost_money = 40
 
 /datum/gear/utility/customtablet
 	display_name = "tablet computer, custom"
 	path = /obj/item/modular_computer/tablet
 	cost = 4
+	cost_money = 40
 
 /datum/gear/utility/customtablet/New()
 	..()
@@ -69,8 +74,10 @@ modular computers
 	display_name = "laptop computer, cheap"
 	path = /obj/item/modular_computer/laptop/preset/custom_loadout/cheap
 	cost = 5
+	cost_money = 50
 
 /datum/gear/utility/normallaptop
 	display_name = "laptop computer, advanced"
 	path = /obj/item/modular_computer/laptop/preset/custom_loadout/advanced
 	cost = 6
+	cost_money = 60

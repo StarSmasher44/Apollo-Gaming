@@ -29,7 +29,7 @@
 	if (nref)
 		ref = nref
 	// If a client exists, but they have disabled fancy windowing, disable it!
-	if(user && user.client && user.client.get_preference_value(/datum/client_preference/browser_style) == GLOB.PREF_PLAIN)
+	if(user?.client && user.client.get_preference_value(/datum/client_preference/browser_style) == GLOB.PREF_PLAIN)
 		return
 	add_stylesheet("common", 'html/browser/common.css') // this CSS sheet is common to all UIs
 
@@ -189,7 +189,7 @@
 
 	// no atomref specified (or not found)
 	// so just reset the user mob's machine var
-	if(src && src.mob)
+	if(src?.mob)
 //		log_debug("[src] was [src.mob.machine], setting to null")
 
 		src.mob.unset_machine()

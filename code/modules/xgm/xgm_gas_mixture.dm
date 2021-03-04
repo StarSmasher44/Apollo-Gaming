@@ -135,8 +135,10 @@
 //Returns the heat capacity of the gas mix based on the specific heat of the gases.
 /datum/gas_mixture/proc/heat_capacity()
 	. = 0
-	for(var/g in gas)
-		. += gas_data.specific_heat[g] * gas[g]
+	var/list/gas2 = gas
+	for(var/g in gas2)
+
+		. += gas_data.specific_heat[g] * gas2[g]
 	. *= group_multiplier
 
 
@@ -356,10 +358,10 @@
 				LAZYADD(graphic_add, gas_data.tile_overlay[g])
 	. = 0
 	//Apply changes
-	if(graphic_add && graphic_add.len)
+	if(graphic_add?.len)
 		graphic += graphic_add
 		. = 1
-	if(graphic_remove && graphic_remove.len)
+	if(graphic_remove?.len)
 		graphic -= graphic_remove
 		. = 1
 

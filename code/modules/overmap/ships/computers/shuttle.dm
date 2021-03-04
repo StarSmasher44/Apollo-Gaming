@@ -1,10 +1,22 @@
 //Shuttle controller computer for shuttles going between sectors
 /obj/machinery/computer/shuttle_control/explore
 	name = "general shuttle control console"
+	var/area/shuttle_area	//area for shuttle ship-side
+
+/obj/machinery/computer/shuttle_control/explore/Initialize()
+	. = ..()
+	if(!shuttle_tag)
+		shuttle_tag = "Explorer-[z]"
+	if(!shuttle_controller.shuttles[shuttle_tag])
+		new/datum/shuttle/ferry/overmap(shuttle_tag, locate(shuttle_area))
+		testing("Exploration shuttle '[shuttle_tag]' at zlevel [z] successfully added.")
+	else
+		var/datum/shuttle/ferry/overmap/S = shuttle_controller.shuttles[shuttle_tag]
+		shuttle_area = S.area_station.type
 
 /obj/machinery/computer/shuttle_control/explore/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
 	var/data[0]
-	var/datum/shuttle/autodock/overmap/shuttle = shuttle_controller.shuttles[shuttle_tag]
+	var/datum/shuttle/ferry/overmap/shuttle = shuttle_controller.shuttles[shuttle_tag]
 	if (!istype(shuttle))
 		to_chat(usr,"<span class='warning'>Unable to establish link with the shuttle.</span>")
 		return
@@ -25,61 +37,41 @@
 		if(WAIT_LAUNCH, FORCE_LAUNCH)
 			shuttle_status = "Shuttle has recieved command and will depart shortly."
 		if(WAIT_ARRIVE)
-			shuttle_status = "Proceeding to [shuttle.get_destination_name()]."
+			shuttle_status = "Proceeding to destination."
 		if(WAIT_FINISH)
 			shuttle_status = "Arriving at destination now."
-
-	var/datum/computer/file/embedded_program/docking/docking_controller = shuttle.active_docking_controller
-
-	var/fuel_pressure = 0
-	var/fuel_max_pressure = 0
-	if(shuttle.fuel_ports)
-		if(shuttle.fuel_ports.len)
-			for(var/obj/structure/fuel_port/FP in shuttle.fuel_ports) //loop through fuel ports
-				if(FP.contents.len)
-					var/obj/item/weapon/tank/fuel_tank = FP.contents[1]
-					if(istype(fuel_tank))
-						fuel_pressure += fuel_tank.air_contents.return_pressure()
-						fuel_max_pressure += 1013
-
-	if(fuel_max_pressure == 0) fuel_max_pressure = 1
 
 	data = list(
 		"destination_name" = shuttle.get_destination_name(),
 		"can_pick" = shuttle.moving_status == SHUTTLE_IDLE,
 		"shuttle_status" = shuttle_status,
 		"shuttle_state" = shuttle_state,
-		"has_docking" = docking_controller? 1 : 0,
-		"docking_status" = docking_controller? docking_controller.get_docking_status() : null,
-		"docking_override" = docking_controller? docking_controller.override_enabled : null,
-		"can_launch" = shuttle.can_launch(),
-		"can_cancel" = shuttle.can_cancel(),
-		"can_force" = shuttle.can_force(),
-		"fuel_port_present" = shuttle.fuel_consumption? 1 : 0,
-		"fuel_pressure" = fuel_pressure,
-		"fuel_max_pressure" = fuel_max_pressure,
-		"fuel_pressure_status" = (fuel_pressure/fuel_max_pressure > 0.2)? "good" : "bad"
+		"has_docking" = shuttle.docking_controller? 1 : 0,
+		"docking_status" = shuttle.docking_controller? shuttle.docking_controller.get_docking_status() : null,
+		"docking_override" = shuttle.docking_controller? shuttle.docking_controller.override_enabled : null,
+		"can_launch" = shuttle.can_go() && shuttle.can_launch(),
+		"can_cancel" = shuttle.can_go() && shuttle.can_cancel(),
+		"can_force" = shuttle.can_go() && shuttle.can_force(),
 	)
 
 	ui = GLOB.nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
 
 	if (!ui)
-		ui = new(user, src, ui_key, "shuttle_control_console_exploration.tmpl", "[shuttle_tag] Shuttle Control", 510, 340)
+		ui = new(user, src, ui_key, "shuttle_control_console_exploration.tmpl", "[shuttle_tag] Shuttle Control", 470, 310)
 		ui.set_initial_data(data)
 		ui.open()
 		ui.set_auto_update(1)
 
-/obj/machinery/computer/shuttle_control/explore/get_ui_data(var/datum/shuttle/autodock/overmap/shuttle)
-	. = ..()
-	if(istype(shuttle))
-		. += list(
-			"destination_name" = shuttle.get_destination_name(),
-			"can_pick" = shuttle.moving_status == SHUTTLE_IDLE,
-		)
-
-/obj/machinery/computer/shuttle_control/explore/handle_topic_href(var/datum/shuttle/autodock/overmap/shuttle, var/list/href_list)
+/obj/machinery/computer/shuttle_control/explore/Topic(href, href_list)
 	if(..())
 		return 1
+
+	usr.set_machine(src)
+	src.add_fingerprint(usr)
+
+	var/datum/shuttle/ferry/overmap/shuttle = shuttle_controller.shuttles[shuttle_tag]
+	if (!istype(shuttle))
+		return
 
 	if(href_list["pick"])
 		var/list/possible_d = shuttle.get_possible_destinations()
@@ -90,4 +82,11 @@
 			to_chat(usr,"<span class='warning'>No valid landing sites in range.</span>")
 		possible_d = shuttle.get_possible_destinations()
 		if(CanInteract(usr, GLOB.default_state) && (D in possible_d))
-			shuttle.set_destination(possible_d[D])
+			shuttle.set_destination_area(possible_d[D])
+
+	if(href_list["move"])
+		shuttle.launch(src)
+	if(href_list["force"])
+		shuttle.force_launch(src)
+	else if(href_list["cancel"])
+		shuttle.cancel_launch(src)

@@ -52,7 +52,7 @@
 	return alarms
 
 /datum/alarm_handler/proc/has_major_alarms()
-	if(alarms && alarms.len)
+	if(alarms?.len)
 		return 1
 	return 0
 

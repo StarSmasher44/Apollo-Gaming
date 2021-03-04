@@ -153,7 +153,7 @@
 	..()
 
 	var/obj/item/borg/sight/hud/hud = (locate(/obj/item/borg/sight/hud) in src)
-	if(hud && hud.hud)
+	if(hud?.hud)
 		hud.hud.process_hud(src)
 	else
 		switch(src.sensor_mode)
@@ -249,7 +249,7 @@
 			if (machine.check_eye(src) < 0)
 				reset_view(null)
 		else
-			if(client && !client.adminobs)
+			if(!client?.adminobs)
 				reset_view(null)
 
 	return 1

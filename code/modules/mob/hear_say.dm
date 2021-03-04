@@ -4,7 +4,7 @@
 	if(!client)
 		return
 
-	if(speaker && !speaker.client && isghost(src) && get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_SPEECH && !(speaker in view(src)))
+	if(!speaker?.client && isghost(src) && get_preference_value(/datum/client_preference/ghost_ears) == GLOB.PREF_ALL_SPEECH && !(speaker in view(src)))
 			//Does the speaker have a client?  It's either random stuff that observers won't care about (Experiment 97B says, 'EHEHEHEHEHEHEHE')
 			//Or someone snoring.  So we make it where they won't hear it.
 		return
@@ -26,11 +26,11 @@
 		return
 
 	//non-verbal languages are garbled if you can't see the speaker. Yes, this includes if they are inside a closet.
-	if (language && (language.flags & NONVERBAL))
+	if (language?.flags & NONVERBAL)
 		if (!speaker || (src.sdisabilities & BLIND || src.blinded) || !(speaker in view(src)))
 			message = stars(message)
 
-	if(!(language && (language.flags & INNATE))) // skip understanding checks for INNATE languages
+	if(!language?.flags & INNATE) // skip understanding checks for INNATE languages
 		if(!say_understands(speaker,language))
 			if(isanimal(speaker))
 				var/mob/living/simple_animal/S = speaker
@@ -67,6 +67,16 @@
 			else if(!is_blind())
 				to_chat(src, "<span class='name'>[speaker_name]</span>[alt_name] talks but you cannot hear \him.")
 	else
+		if(trigger_words.len < 12)
+//			var/sound_played = 0
+			for(var/word in trigger_words)
+				if(findtext(message, " [word]")) //So it only finds whole words.. no more electr/ICIAN/
+//					if( !sound_played && ( client.prefs.toggles & SOUND_NOTIFICATIONS ))
+//						sound_played = 1
+					src << sound( 'sound/effects/icalert.ogg' )
+
+					message = replacetext( message, " [word] ", "<span class='triggerattention'>[word]</span>" )
+
 		if(language)
 			on_hear_say("<span class='game say'><span class='name'>[speaker_name]</span>[alt_name] [track][language.format_message(message, verb)]</span>")
 		else
@@ -94,15 +104,15 @@
 	var/track = null
 
 	//non-verbal languages are garbled if you can't see the speaker. Yes, this includes if they are inside a closet.
-	if (language && (language.flags & NONVERBAL))
+	if (language?.flags & NONVERBAL)
 		if (!speaker || (src.sdisabilities & BLIND || src.blinded) || !(speaker in view(src)))
 			message = stars(message)
 
-	if(!(language && (language.flags & INNATE))) // skip understanding checks for INNATE languages
+	if(!language?.flags & INNATE) // skip understanding checks for INNATE languages
 		if(!say_understands(speaker,language))
 			if(isanimal(speaker))
 				var/mob/living/simple_animal/S = speaker
-				if(S.speak && S.speak.len)
+				if(S.speak?.len)
 					message = pick(S.speak)
 				else
 					return
@@ -151,7 +161,7 @@
 
 				// If I's display name is currently different from the voice name and using an agent ID then don't impersonate
 				// as this would allow the AI to track I and realize the mismatch.
-				if(I && !(I.name != speaker_name && I.wear_id && istype(I.wear_id,/obj/item/weapon/card/id/syndicate)))
+				if(!(I?.name != speaker_name && I.wear_id && istype(I.wear_id,/obj/item/weapon/card/id/syndicate)))
 					impersonating = I
 					jobname = impersonating.get_assignment()
 				else
@@ -193,6 +203,17 @@
 		if(ishuman(H) && H.has_headset_in_ears() && prob(20))
 			to_chat(src, "<span class='warning'>You feel your headset vibrate but can hear nothing from it!</span>")
 	else
+		// Trigger word notifications
+		LAZYINITLIST(trigger_words)
+		if(trigger_words.len < 12 )
+//			var/sound_played = 0
+			for(var/word in trigger_words)
+				if( findtext( formatted, " [word]" ))
+//					if( !sound_played && ( client.prefs.toggles & SOUND_NOTIFICATIONS ))
+//						sound_played = 1
+					src << sound( 'sound/effects/icalert.ogg' )
+
+					formatted = replacetext( formatted, " [word] ", " <span class='triggerattention'>[word]</span> " )
 		on_hear_radio(part_a, speaker_name, track, part_b, part_c, formatted)
 
 /proc/say_timestamp()
@@ -249,7 +270,7 @@
 		if(copytext(heardword,1, 1) in punctuation)
 			heardword = copytext(heardword,2)
 		if(copytext(heardword,-1) in punctuation)
-			heardword = copytext(heardword,1,lentext(heardword))
+			heardword = copytext(heardword,1,length(heardword))
 		heard = "<span class = 'game_say'>...You hear something about...[heardword]</span>"
 
 	else

@@ -488,7 +488,7 @@ proc/isInSight(var/atom/A, var/atom/B)
 	while(candidates.len <= 0 && i < 5)
 		for(var/mob/observer/ghost/G in GLOB.player_list)
 			if(((G.client.inactivity/10)/60) <= buffer + i) // the most active players are more likely to become an alien
-				if(!(G.mind && G.mind.current && G.mind.current.stat != DEAD))
+				if(!(G.mind?.current && G.mind.current.stat != DEAD))
 					candidates += G.key
 		i++
 	return candidates
@@ -502,7 +502,7 @@ proc/isInSight(var/atom/A, var/atom/B)
 		for(var/mob/observer/ghost/G in GLOB.player_list)
 			if(MODE_XENOMORPH in G.client.prefs.be_special_role)
 				if(((G.client.inactivity/10)/60) <= ALIEN_SELECT_AFK_BUFFER + i) // the most active players are more likely to become an alien
-					if(!(G.mind && G.mind.current && G.mind.current.stat != DEAD))
+					if(!(G.mind?.current && G.mind.current.stat != DEAD))
 						candidates += G.key
 		i++
 	return candidates
@@ -569,7 +569,7 @@ datum/projectile_data
 	var/dest_y = src_y + distance*cos(rotation);
 
 	return new /datum/projectile_data(src_x, src_y, time, distance, power_x, power_y, dest_x, dest_y)
-
+/*
 /proc/GetRedPart(const/hexa)
 	return hex2num(copytext(hexa,2,4))
 
@@ -578,12 +578,12 @@ datum/projectile_data
 
 /proc/GetBluePart(const/hexa)
 	return hex2num(copytext(hexa,6,8))
-
+*/
 /proc/GetHexColors(const/hexa)
 	return list(
-			GetRedPart(hexa),
-			GetGreenPart(hexa),
-			GetBluePart(hexa)
+			GETREDPART(hexa),
+			GETGREENPART(hexa),
+			GETBLUEPART(hexa)
 		)
 
 /proc/MixColors(const/list/colors)
@@ -593,9 +593,9 @@ datum/projectile_data
 	var/list/weights = list()
 
 	for (var/i = 0, ++i <= colors.len)
-		reds.Add(GetRedPart(colors[i]))
-		blues.Add(GetBluePart(colors[i]))
-		greens.Add(GetGreenPart(colors[i]))
+		reds.Add(GETREDPART(colors[i]))
+		blues.Add(GETBLUEPART(colors[i]))
+		greens.Add(GETGREENPART(colors[i]))
 		weights.Add(1)
 
 	var/r = mixOneColor(weights, reds)

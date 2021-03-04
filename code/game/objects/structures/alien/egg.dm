@@ -31,7 +31,7 @@
 	if(progress >= MAX_PROGRESS)
 		for(var/GH in GLOB.ghost_mob_list)
 			var/mob/observer/ghost/O = GH
-			if(O.client && O.client.prefs && (MODE_XENOMORPH in O.client.prefs.be_special_role))
+			if(O.client?.prefs && (MODE_XENOMORPH in O.client.prefs.be_special_role))
 				to_chat(O, "<span class='notice'>An alien is ready to hatch! ([ghost_follow_link(src, O)]) (<a href='byond://?src=\ref[src];spawn=1'>spawn</a>)</span>")
 		STOP_PROCESSING(SSobj, src)
 		ADD_ICON_QUEUE(src)

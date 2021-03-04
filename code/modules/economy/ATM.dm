@@ -67,7 +67,7 @@
 		//short out the machine, shoot sparks, spew money!
 		emagged = 1
 		spark_system.start()
-		spawn_money(rand(100,500),src.loc)
+		spawn_money(rand(100,500),src.loc, 1)
 		//we don't want to grief people by locking their id in an emagged ATM
 		release_held_id(user)
 
@@ -94,23 +94,24 @@
 
 	else if(authenticated_account)
 		if(istype(I,/obj/item/weapon/spacecash))
-			to_chat(user, "\icon[src] <span class='warning'>Warning: Deposits have been disabled until further notice. (NT command #431)</span>")
-			return
-
-/*			var/obj/item/weapon/spacecash/dolla = I
-			if(prob(50))
-				playsound(loc, 'sound/items/polaroid1.ogg', 50, 1)
+			if(!I:persistent)
+				to_chat(user, "\icon[src] <span class='warning'>Warning: Deposits have been disabled until further notice. (NT command #431)</span>")
+				to_chat(user, "((OOC: Only accepts persistent money))")
+				return
 			else
-				playsound(loc, 'sound/items/polaroid2.ogg', 50, 1)
+				var/obj/item/weapon/spacecash/dolla = I
+				if(prob(50))
+					playsound(loc, 'sound/items/polaroid1.ogg', 50, 1)
+				else
+					playsound(loc, 'sound/items/polaroid2.ogg', 50, 1)
 
-			//create a transaction log entry
-			var/datum/transaction/T = new(authenticated_account.owner_name, "Credit deposit", dolla.worth, machine_id)
-			authenticated_account.do_transaction(T)
+				//create a transaction log entry
+				var/datum/transaction/T = new(authenticated_account.owner_name, "Credit deposit", dolla.worth, machine_id)
+				authenticated_account.do_transaction(T)
 
-			to_chat(user, "<span class='info'>You insert [I] into [src].</span>")
-			src.attack_hand(user)
-			qdel(I)
-*/
+				to_chat(user, "<span class='info'>You insert [I] into [src].</span>")
+				src.attack_hand(user)
+				qdel(I)
 	else
 		..()
 
@@ -332,7 +333,7 @@
 				else if(authenticated_account && amount > 0)
 					if(amount <= authenticated_account.bank_balance)
 						playsound(src, 'sound/machines/chime.ogg', 50, 1)
-						spawn_ewallet(amount,src.loc,usr)
+						spawn_ewallet(amount,src.loc,usr, 1)
 
 						//create an entry in the account transaction log
 						var/datum/transaction/T = new(authenticated_account.owner_name, "Credit withdrawal", -amount, machine_id)
@@ -347,7 +348,7 @@
 				else if(authenticated_account && amount > 0)
 					if(amount <= authenticated_account.bank_balance)
 						playsound(src, 'sound/machines/chime.ogg', 50, 1)
-						spawn_money(amount,src.loc,usr)
+						spawn_money(amount,src.loc,usr, 1)
 
 						//remove the money
 						var/datum/transaction/T = new(authenticated_account.owner_name, "Credit withdrawal", -amount, machine_id)
@@ -466,8 +467,9 @@
 	held_card = null
 
 
-/obj/machinery/atm/proc/spawn_ewallet(var/sum, loc, mob/living/carbon/human/human_user as mob)
+/obj/machinery/atm/proc/spawn_ewallet(var/sum, loc, mob/living/carbon/human/human_user as mob, var/persistent = 0)
 	var/obj/item/weapon/spacecash/ewallet/E = new /obj/item/weapon/spacecash/ewallet(loc)
+	E.persistent = 1
 	if(ishuman(human_user) && !human_user.get_active_hand())
 		human_user.put_in_hands(E)
 	E.worth = sum

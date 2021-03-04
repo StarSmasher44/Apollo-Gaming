@@ -12,6 +12,10 @@
 	//	use the SS_NO_FIRE flag instead for systems that never fire to keep it from even being added to the list
 	var/can_fire = TRUE
 
+	// Similar to can_fire, but intended explicitly for subsystems that are asleep. Using this var instead of can_fire
+	//	 allows admins to disable subsystems without them re-enabling themselves.
+	var/suspended = FALSE
+
 	// Bookkeeping variables; probably shouldn't mess with these.
 	var/last_fire = 0		//last world.time we called fire()
 	var/next_fire = 0		//scheduled world.time for next fire()
@@ -168,12 +172,16 @@
 	if(!statclick)
 		statclick = new/obj/effect/statclick/debug(null, "Initializing...", src)
 
-
-
-	if(can_fire && !(SS_NO_FIRE in flags))
-		msg = "[round(cost,1)]ms|[round(tick_usage,1)]%([round(tick_overrun,1)]%)|[round(ticks,0.1)]\t[msg]"
+	var/pre_msg
+	if (flags & SS_NO_FIRE)
+		pre_msg = "NO FIRE"
+	else if (can_fire && !suspended)
+		pre_msg = "[round(cost,1)]ms|[round(tick_usage,1)]%([round(tick_overrun,1)]%)|[round(ticks,0.1)]"
+	else if (!can_fire)
+		pre_msg = "OFFLINE"
 	else
-		msg = "OFFLINE\t[msg]"
+		pre_msg = "SUSPEND"
+	msg = "[pre_msg]\t[msg]"
 
 	var/title = name
 	if (can_fire)

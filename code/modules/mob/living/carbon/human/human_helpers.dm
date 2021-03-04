@@ -61,7 +61,7 @@
 		process_rig(back)
 
 /mob/living/carbon/human/proc/process_glasses(var/obj/item/clothing/glasses/G)
-	if(G && G.active)
+	if(G?.active)
 		equipment_darkness_modifier += G.darkness_view
 		equipment_vision_flags |= G.vision_flags
 		equipment_prescription += G.prescription

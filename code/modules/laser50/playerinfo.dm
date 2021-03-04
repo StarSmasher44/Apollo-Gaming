@@ -17,10 +17,9 @@
 	var/list/warningsys = list() //reason = "", score = 0)
 	var/savefile/playerdb //Not called clientDB to make sure I don't have to re-do everything.
 
-/client/proc/saveclientdb(var/key = key)
+/client/proc/saveclientdb(var/key = ckey)
 	//Loading list of notes for this key
-//	var/savefile/clientdb = new("data/player_saves/[copytext(key, 1, 2)]/[key]/clientdb.sav")
-	if(!playerdb)	get_playerdb()
+	if(!playerdb)	playerdb = new("data/player_saves/[copytext(key, 1, 2)]/[key]/clientdb.sav")
 	playerdb["ckey"] << key
 	playerdb["donator"] << donator
 	playerdb["donatorsince"] << donatorsince
@@ -34,16 +33,25 @@
 	playerdb["lastseen"] << lastseen
 	playerdb["warningsys"] << warningsys
 //	clientdb[""]
+
+	playerdb.Flush() //Sends all final shit to his/her save file.
+
 	return 1
 
-/client/proc/loadclientdb(var/key = key)
+/client/proc/loadclientdb(var/key = ckey)
 	//Loading list of notes for this key
-//	var/savefile/clientdb = new("data/player_saves/[copytext(key, 1, 2)]/[key]/clientdb.sav")
-	if(!playerdb)	get_playerdb()
+	if(!playerdb)	playerdb = new("data/player_saves/[copytext(key, 1, 2)]/[key]/clientdb.sav")
 	playerdb["donator"] >> donator
 	playerdb["donatorsince"] >> donatorsince
 	playerdb["ap_veteran"] >> ap_veteran
 	playerdb["alien_whitelist"] >> alien_whitelist
+	LAZYINITLIST(alien_whitelist)
+	if(!islist(alien_whitelist)) //In case old whitelist meets new.
+		alien_whitelist = list()
+	for(var/race in whitelisted_species)
+		if(!alien_whitelist[race])
+			alien_whitelist[race] = 0 //0 for not, 1 for yes
+
 	playerdb["enforcingmod"] >> enforcingmod
 	playerdb["command_whitelist"] >> command_whitelist
 	playerdb["employee_coin"] >> employee_coin
@@ -57,8 +65,8 @@
 	playerdb["warningsys"] >> warningsys
 	return 1
 
-/client/proc/refreshclientdb(var/key = key) // Refreshes the client DB with recent information.
-	if(!playerdb)	get_playerdb()
+/client/proc/refreshclientdb(var/key = ckey) // Refreshes the client DB with recent information.
+	if(!playerdb)	playerdb = new("data/player_saves/[copytext(key, 1, 2)]/[key]/clientdb.sav")
 	playerdb["iplogs"] >> iplogs
 	if(!iplogs)
 		iplogs = list()
@@ -78,7 +86,7 @@
 	playerdb["cidlogs"] << cidlogs
 	sleep(0)
 	for(var/entry in userdb.dir)
-		if(entry == src.key) //Skip those shits.
+		if(entry == src.ckey) //Skip those shits.
 			continue
 		var/tmp/curkey
 		var/tmp/curip
@@ -88,7 +96,7 @@
 		userdb["[entry]/adr"] >> curip
 		if(curip && curcid)
 			if(curip == src.address && curcid == src.computer_id)
-				if(curkey != src.key || src.key != curkey) //Anything matches, but not the same username?
+				if(curkey != src.ckey || src.ckey != curkey) //Anything matches, but not the same username?
 					var/message = "Possible match: [curkey] matched with [src.key] -- ([curcid]|[src.computer_id]) ([curip]|[src.address])"
 
 					var/double = 0
@@ -113,13 +121,13 @@
 			to_chat(src, "(Old Notification:)<br><span class='warning'><b>WARNING RECIEVED</b> You have recieved an official warning!\n Reason: [SW2.reason] | Score: [score]/[MAXWARNPOINTS]</span>")
 			to_chat(src, "<span class='warning'>Remember that if you reach the maximum, a ban is automatically applied!</span>")
 			SW2.notified = 1
-
-/client/proc/get_playerdb()
-	if(!playerdb)
-		playerdb = new("data/player_saves/[copytext(key, 1, 2)]/[key]/clientdb.sav")
+/*
+/client/proc/get_playerdb(var/key2 = ckey)
+	if(!playerdb || isnull(playerdb))
+		playerdb = new("data/player_saves/[copytext(key2, 1, 2)]/[key2]/clientdb.sav")
 	else
 		return playerdb
-
+*/
 /client/verb/get_days()
 	set name = "Check Age"
 	set desc = "Checks the age of your account on the server."

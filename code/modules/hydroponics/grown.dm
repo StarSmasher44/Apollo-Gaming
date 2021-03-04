@@ -50,7 +50,7 @@
 	// Fill the object up with the appropriate reagents.
 	for(var/rid in seed.chems)
 		var/list/reagent_data = seed.chems[rid]
-		if(reagent_data && reagent_data.len)
+		if(reagent_data?.len)
 			var/rtotal = reagent_data[1]
 			var/list/data = list()
 			if(reagent_data.len > 1 && potency > 0)
@@ -141,7 +141,7 @@
 		overlays |= fruit_leaves
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/Crossed(var/mob/living/M)
-	if(seed && seed.get_trait(TRAIT_JUICY) == 2)
+	if(seed?.get_trait(TRAIT_JUICY) == 2)
 		if(istype(M))
 
 			if(M.buckled)
@@ -233,7 +233,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/grown/apply_hit_effect(mob/living/target, mob/living/user, var/hit_zone)
 	. = ..()
 
-	if(seed && seed.get_trait(TRAIT_STINGS))
+	if(seed?.get_trait(TRAIT_STINGS))
 		if(!reagents || reagents.total_volume <= 0)
 			return
 		reagents.remove_any(rand(1,3))

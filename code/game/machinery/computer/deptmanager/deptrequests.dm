@@ -35,15 +35,11 @@ var/global/list/pendingdeptrequests = list()
 			requestinfo["requestid"] = rand(0, 1000) //So we reset and hope.
 	requestinfo["requesttype"] = requesttype2
 	requestinfo["requesttext"] = requesttext2
-	requestinfo["fromchar"] = "[get_department_rank_title(get_department(fchar.CharRecords.char_department, 1), fchar.CharRecords.department_rank)] [fchar.job] [fchar.real_name]"
-	requestinfo["tochar"] = "[get_department_rank_title(get_department(tchar.CharRecords.char_department, 1), tchar.CharRecords.department_rank)] [tchar.job] [tchar.real_name]"
+	requestinfo["fromchar"] = "[get_department_rank_title(fchar, fchar.client.prefs.department_rank)] [fchar.job] [fchar.real_name]"
+	requestinfo["tochar"] = "[get_department_rank_title(tchar, tchar.client.prefs.department_rank)] [tchar.job] [tchar.real_name]"
 	requestinfo["tocharkey"] = tchar.ckey
 	requestinfo["score"] = score2
 	requestinfo["time"] = "[stationdate2text()]-[time2text()]"
-
-	//This is needed to properly register the variables, or so I found out after a painfully long period of debugging..
-//	fromchar = "[get_department_rank_title(get_department(fchar.CharRecords.char_department, 1), fchar.CharRecords.department_rank)] [fchar.job] [fchar.real_name]"
-//	tochar = "[get_department_rank_title(get_department(tchar.CharRecords.char_department, 1), tchar.CharRecords.department_rank)] [tchar.job] [tchar.real_name]"
 
 
 	pendingdeptrequests.Add(src) // "REQUEST|[requesttype], Sent by [fromchar:job] [fromchar:real_name], Sent to [tochar:job] [tochar:real_name] For [requesttext]"

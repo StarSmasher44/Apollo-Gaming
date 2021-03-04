@@ -200,7 +200,7 @@
 	name = "standard power cell"
 	desc = "A standard and relatively cheap power cell, commonly used."
 	origin_tech = list(TECH_POWER = 0)
-	maxcharge = 250
+	maxcharge = 500
 	matter = list(DEFAULT_WALL_MATERIAL = 700, "glass" = 40)
 
 /obj/item/weapon/cell/crap/empty/New()
@@ -212,7 +212,7 @@
 	name = "APC power cell"
 	desc = "A special power cell designed for heavy-duty use in area power controllers."
 	origin_tech = list(TECH_POWER = 1)
-	maxcharge = 600
+	maxcharge = 1000
 	matter = list(DEFAULT_WALL_MATERIAL = 700, "glass" = 50)
 
 
@@ -221,7 +221,7 @@
 	desc = "An advanced high-grade power cell, for use in important systems."
 	origin_tech = list(TECH_POWER = 2)
 	icon_state = "hcell"
-	maxcharge = 1000
+	maxcharge = 1250
 	matter = list(DEFAULT_WALL_MATERIAL = 700, "glass" = 60)
 
 /obj/item/weapon/cell/high/empty/New()

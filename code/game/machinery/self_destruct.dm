@@ -44,7 +44,7 @@
 			if(damaged)
 				to_chat(usr, "<span class='warning'>The inserter has been damaged, unable to disarm.</span>")
 				return
-			var/obj/machinery/nuclearbomb/nuke = locate(/obj/machinery/nuclearbomb/station) in get_area(src)
+			var/obj/machinery/nuclearbomb/nuke = locate(/obj/machinery/nuclearbomb/station) in MyArea
 			if(!nuke)
 				to_chat(usr, "<span class='warning'>Unable to interface with the self destruct terminal, unable to disarm.</span>")
 				return

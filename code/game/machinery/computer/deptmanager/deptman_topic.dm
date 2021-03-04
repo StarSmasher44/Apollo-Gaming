@@ -85,7 +85,7 @@
 				screen = 2.2
 			if("addrecord")
 				if(!profiled)	return to_chat(usr, "Unknown system error occurred, could not retrieve profile.")
-				if(profiled.CharRecords.char_department != "Command" || profiled.job == "Captain" || profiled.client.prefs.promoted == JOB_LEVEL_HEAD) //Can't see your bosses, Captain or Heads.
+				if(profiled.client.prefs.char_department != "Command" || profiled.job == "Captain" || profiled.client.prefs.promoted == JOB_LEVEL_HEAD) //Can't see your bosses, Captain or Heads.
 					to_chat(usr, "Leave blank to cancel.")
 					var/record = input("Insert Record:", "Record Management - Department Management")
 					var/score = input("Insert record score (1-10) for the employee rating.", "Record Management - Department Management") as num
@@ -254,7 +254,7 @@
 				var/savefile/S = new /savefile("data/player_saves/[copytext(rckey,1,2)]/[rckey]/preferences.sav")
 				if(!S)					return 0
 				var/default_slot = S["default_slot"]
-				S.cd = GLOB.using_map.character_save_path(S, default_slot)
+				S.cd = GLOB.using_map.character_save_path(default_slot)
 				var/client/CUser //IF the client is online though, we best use that.
 				for(var/client/C in GLOB.clients)
 					if(C.ckey == N.requestinfo["tocharckey"])

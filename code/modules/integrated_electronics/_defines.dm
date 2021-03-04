@@ -235,7 +235,7 @@
 
 /obj/item/integrated_circuit/proc/is_in_open_assembly()
 	var/obj/item/device/electronic_assembly/assembly = get_assembly(loc)
-	return assembly  && assembly.opened
+	return assembly?.opened
 
 /obj/item/integrated_circuit/Topic(href, href_list, state = GLOB.physical_state)
 	if(..())

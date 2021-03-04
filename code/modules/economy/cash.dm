@@ -15,6 +15,7 @@
 	var/access = list()
 	access = access_crate_cash
 	var/worth = 0
+	var/persistent = 0
 	var/global/denominations = list(1000,500,200,100,50,20,10,1)
 
 /obj/item/weapon/spacecash/attackby(obj/item/weapon/W as obj, mob/user as mob)
@@ -156,7 +157,7 @@
 	desc = "It's worth $1000 Credits."
 	worth = 1000
 
-proc/spawn_money(var/sum, spawnloc, mob/living/carbon/human/human_user as mob)
+proc/spawn_money(var/sum, spawnloc, mob/living/carbon/human/human_user as mob, var/persistent = 0)
 	if(sum in list(1000,500,200,100,50,20,10,1))
 		var/cash_type = text2path("/obj/item/weapon/spacecash/bundle/c[sum]")
 		var/obj/cash = new cash_type (usr.loc)

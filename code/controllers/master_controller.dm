@@ -46,6 +46,8 @@ datum/controller/game_controller/proc/setup()
 	report_progress("Initializations complete")
 	initialization_stage |= INITIALIZATION_COMPLETE
 
+	send_discord_message(0, "SS13 server is starting a new round now! Feel free to join!")
+
 datum/controller/game_controller/proc/setup_objects()
 	// Do these first since character setup will rely on them
 
@@ -53,7 +55,7 @@ datum/controller/game_controller/proc/setup_objects()
 
 	if(GLOB.using_map.use_overmap)
 		report_progress("Initializing overmap events")
-		overmap_event_handler.create_events(GLOB.using_map.overmap_z, GLOB.using_map.overmap_size, GLOB.using_map.overmap_event_areas)
+//		overmap_event_handler.create_events(GLOB.using_map.overmap_z, GLOB.using_map.overmap_size, GLOB.using_map.overmap_event_areas)
 
 	if(config.generate_map)
 		report_progress("Performing mining outpost generation..")

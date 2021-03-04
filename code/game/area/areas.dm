@@ -244,47 +244,39 @@ var/list/mob/living/forced_ambiance_list = new
 			thunk(L)
 		L.update_floating()
 
-	L.lastarea = newarea
 	play_ambience(L)
+	L.lastarea = newarea
 
 /area/proc/play_ambience(var/mob/living/L)
 	// Ambience goes down here -- make sure to list each area seperately for ease of adding things in later, thanks! Note: areas adjacent to each other should have the same sounds to prevent cutoff when possible.- LastyScratch
-	if(!(L && L.get_preference_value(/datum/client_preference/play_ambiance) == GLOB.PREF_YES))	return
-
-
-	// If we previously were in an area with force-played ambiance, stop it.
-	if(L in forced_ambiance_list)
-		sound_to(L, sound(null, channel = 1))
-		forced_ambiance_list -= L
+	if(!(L?.get_preference_value(/datum/client_preference/play_ambiance) == GLOB.PREF_YES))	return
 
 	var/turf/T = get_turf(L)
 	var/hum = 0
 	if(!L.ear_deaf && !always_unpowered && power_environ)
-		for(var/obj/machinery/atmospherics/unary/vent_pump/vent in machinecache)
+		for(var/obj/machinery/atmospherics/unary/vent_pump/vent in src)
 			if(vent.can_pump())
 				hum = 1
 				break
-
 	if(hum)
-		if(L && !L.client.ambience_playing)
+		if(!L.client.ambience_playing)
 			L.client.ambience_playing = 1
 			L.playsound_local(T,sound('sound/ambience/vents.ogg', repeat = 1, wait = 0, volume = 20, channel = 2))
 	else
-		if(L && L.client.ambience_playing)
+		if(L.client.ambience_playing)
 			L.client.ambience_playing = 0
 			sound_to(L, sound(null, channel = 2))
 
-	if(forced_ambience)
-		if(forced_ambience.len)
+	if(L.lastarea != src)
+		if(LAZYLEN(forced_ambience))
 			forced_ambiance_list |= L
 			L.playsound_local(T,sound(pick(forced_ambience), repeat = 1, wait = 0, volume = 25, channel = 1))
-		else
+		else	//stop any old area's forced ambience, and try to play our non-forced ones
 			sound_to(L, sound(null, channel = 1))
-	else if(src.ambience.len && prob(35))
-		if((world.time >= L.client.played + 3 MINUTES))
-			var/sound = pick(ambience)
-			L.playsound_local(T, sound(sound, repeat = 0, wait = 0, volume = 15, channel = 1))
-			L.client.played = world.time
+			forced_ambiance_list -= L
+			if(ambience.len && prob(35) && (world.time >= L.client.played + 3 MINUTES))
+				L.playsound_local(T, sound(pick(ambience), repeat = 0, wait = 0, volume = 15, channel = 1))
+				L.client.played = world.time
 
 /area/proc/gravitychange(var/gravitystate = 0)
 	has_gravity = gravitystate
@@ -313,7 +305,7 @@ var/list/mob/living/forced_ambiance_list = new
 
 /area/proc/prison_break()
 	var/obj/machinery/power/apc/theAPC = get_apc()
-	if(theAPC && theAPC.operating)
+	if(theAPC?.operating)
 		for(var/obj/machinery/power/apc/temp_apc in machinecache)
 			temp_apc.overload_lighting(70)
 		for(var/obj/machinery/door/airlock/temp_airlock in machinecache)
@@ -331,7 +323,7 @@ var/list/mob/living/forced_ambiance_list = new
 	if(!T)
 		T = get_turf(AT)
 	var/area/A = get_area(T)
-	if(A && A.has_gravity())
+	if(A?.has_gravity())
 		return 1
 	return 0
 

@@ -1,0 +1,18 @@
+diff a/code/modules/power/apc.dm b/code/modules/power/apc.dm	(rejected hunks)
+@@ -946,14 +946,14 @@
+ 
+ 
+ /obj/machinery/power/apc/surplus()
+ 	if(terminal)
+-		return terminal.surplus()
++		return terminal.powernet.avail - terminal.powernet.load
+ 	else
+ 		return 0
+ 
+ /obj/machinery/power/apc/proc/last_surplus()
+ 	if(terminal && terminal.powernet)
+-		return terminal.powernet.last_surplus()
++		return max(terminal.powernet.avail - terminal.powernet.load, 0)
+ 	else
+ 		return 0
+ 

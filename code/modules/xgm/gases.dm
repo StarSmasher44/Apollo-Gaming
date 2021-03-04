@@ -5,6 +5,7 @@
 	molar_mass = 0.032	// kg/mol
 
 	flags = XGM_GAS_OXIDIZER | XGM_GAS_FUSION_FUEL
+	breathed_product = /datum/reagent/oxygen
 
 /decl/xgm_gas/nitrogen
 	id = "nitrogen"

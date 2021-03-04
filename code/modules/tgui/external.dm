@@ -94,5 +94,5 @@
 	if(istype(ui))
 		ui.close()
 		// Unset machine just to be sure.
-		if(src && src.mob)
+		if(src?.mob)
 			src.mob.unset_machine()

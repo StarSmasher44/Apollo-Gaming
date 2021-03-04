@@ -63,7 +63,7 @@
 	for(var/T in available_chemicals)
 		var/list/reagent = list()
 		reagent["name"] = T
-		if(occupant && occupant.reagents)
+		if(occupant?.reagents)
 			reagent["amount"] = occupant.reagents.get_reagent_amount(T)
 		reagents += list(reagent)
 	data["reagents"] = reagents.Copy()
@@ -111,7 +111,7 @@
 		if(filtering != text2num(href_list["pump"]))
 			toggle_pump()
 	if(href_list["chemical"] && href_list["amount"])
-		if(occupant && occupant.stat != DEAD)
+		if(occupant?.stat != DEAD)
 			if(href_list["chemical"] in available_chemicals) // Your hacks are bad and you should feel bad
 				inject_chemical(usr, href_list["chemical"], text2num(href_list["amount"]))
 
@@ -227,7 +227,7 @@
 		return
 
 	var/chemical_type = available_chemicals[chemical_name]
-	if(occupant && occupant.reagents)
+	if(occupant?.reagents)
 		if(occupant.reagents.get_reagent_amount(chemical_type) + amount <= 20)
 			use_power(amount * CHEM_SYNTH_ENERGY)
 			occupant.reagents.add_reagent(chemical_type, amount)

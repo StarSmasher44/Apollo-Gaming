@@ -37,7 +37,7 @@
 		return
 
 	if(isWirecutter(O))
-		if(cable && cable.amount)
+		if(cable?.amount)
 			var/m = round(input(usr,"Please specify the length of cable to cut","Cut cable",min(cable.amount,30)) as num, 1)
 			m = min(m, cable.amount)
 			m = min(m, 30)
@@ -81,7 +81,7 @@
 /obj/machinery/cablelayer/proc/reset()
 	last_piece = null
 
-/obj/machinery/cablelayer/proc/dismantleFloor(var/turf/new_turf)
+/obj/machinery/cablelayer/proc/dismantleFLOOR(var/turf/new_turf)
 	if(issimfloor(new_turf))
 		var/turf/simulated/floor/T = new_turf
 		if(!T.is_plating())
@@ -92,8 +92,8 @@
 	if(!on)
 		return reset()
 	else
-		dismantleFloor(new_turf)
-	if(!isturf(new_turf) || !dismantleFloor(new_turf))
+		dismantleFLOOR(new_turf)
+	if(!isturf(new_turf) || !dismantleFLOOR(new_turf))
 		return reset()
 	var/fdirn = turn(M_Dir,180)
 	for(var/obj/structure/cable/LC in new_turf)		// check to make sure there's not a cable there already
@@ -108,7 +108,7 @@
 	NC.update_icon()
 
 	var/datum/powernet/PN
-	if(last_piece && last_piece.d2 != M_Dir)
+	if(last_piece?.d2 != M_Dir)
 		last_piece.d1 = min(last_piece.d2, M_Dir)
 		last_piece.d2 = max(last_piece.d2, M_Dir)
 		last_piece.update_icon()

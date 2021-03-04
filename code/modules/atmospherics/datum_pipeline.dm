@@ -15,7 +15,7 @@
 	STOP_PROCESSING(SSprocessing, src)
 	QDEL_NULL(network)
 
-	if(air && air.volume)
+	if(air?.volume)
 		temporarily_store_air()
 		qdel(air)
 	for(var/obj/machinery/atmospherics/pipe/P in members)
@@ -31,7 +31,7 @@
 	if(pressure > alert_pressure)
 		for(var/M in members)
 			var/obj/machinery/atmospherics/pipe/member = M
-			if(member && !member.check_pressure(pressure))
+			if(!member?.check_pressure(pressure))
 				members.Remove(member)
 				break //Only delete 1 pipe per process
 
@@ -121,6 +121,7 @@
 	return network
 
 /datum/pipeline/proc/mingle_with_turf(turf/simulated/target, mingle_volume)
+	if(!air)	return
 	var/datum/gas_mixture/air_sample = air.remove_ratio(mingle_volume/air.volume)
 	air_sample.volume = mingle_volume
 

@@ -90,7 +90,7 @@
 
 	employeecount = 0
 	for(var/mob/living/carbon/human/M in GLOB.player_list)
-		if(M.CharRecords && M.CharRecords.char_department == get_department(department, 0) || M.job && department == "NanoTrasen") //They belong to the manager
+		if(M.CharRecords && M.client.prefs.char_department == get_department(department, 0) || M.job && department == "NanoTrasen") //They belong to the manager
 			employeecount++
 			var/icon/charicon = cached_character_icon(M)
 			var/icon/Front = icon(charicon, dir = SOUTH)
@@ -145,14 +145,11 @@
 
 /obj/machinery/computer/department_manager/ui_interact(user)
 	..()
-	if (!isPlayerLevel(z))
-		to_chat(user, "<span class='warning'>Unable to establish a connection:</span> You're too far away from the [station_name()]!")
-		return
 	var/dat
 	if(authenticated)
 		if(ishuman(user))
 			var/mob/living/carbon/human/H = user
-			if(H.CharRecords.char_department == department)
+			if(H.client.prefs.char_department == department)
 				DeptHead = H
 		switch(screen)
 			if(1)
@@ -182,20 +179,22 @@
 			if(2)
 				dat = "<ul>"
 				for(var/mob/living/carbon/human/M in GLOB.player_list)
-					if(M.CharRecords.char_department == get_department(department, 0) || department == "NanoTrasen")
-						var/datum/job/job = job_master.GetJob(M.job)
+					if(M.client.prefs.char_department == get_department(department, 0) || department == "NanoTrasen")
 						var/photo = employeephotos["[M.ckey]"]
 						dat += {"<li><b>Name:</b> [M.real_name]<body><div class='right' style='float: right;'>Photo:<br><img src=[photo] height=64 width=64 border=4></div></body><br>
 						<b>Age:</b> [M.age]<br>
 						<b>Occupation:</b> [M.job]<br>
-						<b>Occupation Experience: [get_department_rank_title(job.department, M.CharRecords.department_rank)]<br>
-						<b>Clocked Hours:</b> [round(M.CharRecords.department_playtime/3600, 0.1)]<br>
+						<b>Occupation Experience: [get_department_rank_title(M, M.client.prefs.department_rank)]<br>
+						<b>Clocked Hours:</b> [round(M.client.prefs.department_playtime/3600, 0.1)]<br>
 						<b>Employee Grade:</b> [round(M.CharRecords.employeescore, 0.01)]<hr>
-						<a href='?src=\ref[src];choice=Profile;profiled=\ref[M]'>Profile</a></li>"}
+						"}
+						if(M == user)
+							dat += "<a href='?src=\ref[src];choice=Profile;profiled=\ref[M]'>No Editing Rights</a></li>"
+						else
+							dat += "<a href='?src=\ref[src];choice=Profile;profiled=\ref[M]'>Profile</a></li>"
 				dat += "</ul></body></html>"
 			if(2.1) //Character Employee Profile
 				var/photo = employeephotos["[profiled.ckey]"]
-				var/datum/job/job = job_master.GetJob(profiled.job)
 				dat = {"
 						<html>
 						<head>
@@ -207,8 +206,8 @@
 						<b>Name:</b> [profiled.real_name]<body><div class='right' style='float: right;'>Photo:<br><img src=[photo] height=64 width=64 border=4></div></body><br>
 						<b>Age:</b> [profiled.age]<br>
 						<b>Occupation:</b> [profiled.job]<br>
-						<b>Occupation Rank: [get_department_rank_title(job.department, profiled.CharRecords.department_rank)]<br>
-						<b>Clocked Hours:</b> [round(profiled.CharRecords.department_playtime/3600, 0.1)]<br>
+						<b>Occupation Rank: [get_department_rank_title(profiled, profiled.client.prefs.department_rank)]<br>
+						<b>Clocked Hours:</b> [round(profiled.client.prefs.department_playtime/3600, 0.1)]<br>
 						<b>Employee Grade:</b> [round(profiled.CharRecords.employeescore, 0.01)]<hr>
 						<A href='?src=\ref[src];choice=records'>Employee Records</A><A href='?src=\ref[src];choice=promote'>Promote</A><A href='?src=\ref[src];choice=demote'>Demote</A><br>"}
 				dat += "</body></html>"
@@ -303,8 +302,10 @@
 
 /obj/machinery/computer/department_manager/proc/Save_Changes()
 	if(profiled && changedrecord)
-		if(profiled.CharRecords.save_persistent()) //If succeeded..
+		if(profiled.client.prefs.save_character()) //If succeeded..
 			changedrecord = 0
+		else
+			world.log << "ERROR: We couldn't save persistent info for [profiled] ([profiled.CharRecords]"
 
 //PS; H(uman) is optional.
 /obj/machinery/computer/department_manager/proc/Ping(var/text, var/globping, var/mob/living/carbon/human/H) //Pings the console, pings the PDA. Global to 0 is head gets notified.

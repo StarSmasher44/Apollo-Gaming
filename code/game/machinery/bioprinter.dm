@@ -133,7 +133,7 @@
 
 /obj/machinery/organ_printer/robot/dismantle()
 	if(stored_matter >= matter_amount_per_sheet)
-		new /obj/item/stack/material/steel(get_turf(src), Floor(stored_matter/matter_amount_per_sheet))
+		new /obj/item/stack/material/steel(get_turf(src), FLOOR(stored_matter/matter_amount_per_sheet))
 	return ..()
 
 /obj/machinery/organ_printer/robot/New()
@@ -154,7 +154,7 @@
 			return
 		var/obj/item/stack/S = W
 		var/space_left = max_stored_matter - stored_matter
-		var/sheets_to_take = min(S.amount, Floor(space_left/matter_amount_per_sheet))
+		var/sheets_to_take = min(S.amount, FLOOR(space_left/matter_amount_per_sheet))
 		if(sheets_to_take <= 0)
 			to_chat(user, "<span class='warning'>\The [src] is too full.</span>")
 			return
@@ -229,7 +229,7 @@
 	if(istype(W,/obj/item/weapon/reagent_containers/syringe))
 		var/obj/item/weapon/reagent_containers/syringe/S = W
 		var/datum/reagent/blood/injected = locate() in S.reagents.reagent_list //Grab some blood
-		if(injected && injected.data)
+		if(injected?.data)
 			loaded_dna = injected.data
 			to_chat(user, "<span class='info'>You inject the blood sample into the bioprinter.</span>")
 		return

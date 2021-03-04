@@ -188,7 +188,7 @@
 			if (!( machine.check_eye(src) ))
 				reset_view(null)
 		else
-			if(client && !client.adminobs)
+			if(!client?.adminobs)
 				reset_view(null)
 
 	return 1
@@ -198,5 +198,5 @@
 			if (machine.check_eye(src) < 0)
 				reset_view(null)
 		else
-			if(client && !client.adminobs)
+			if(!client?.adminobs)
 				reset_view(null)

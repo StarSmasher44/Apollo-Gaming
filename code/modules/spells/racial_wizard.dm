@@ -65,7 +65,7 @@
 /spell/aoe_turf/conjure/summon/resomi/take_charge(mob/user = user, var/skipcharge)
 	. = ..()
 	var/mob/living/carbon/human/H = user
-	if(H && H.shock_stage >= 30)
+	if(H?.shock_stage >= 30)
 		H.visible_message("<b>[user]</b> drops to the floor, thrashing wildly while foam comes from their mouth.")
 		H.Paralyse(20)
 		H.adjustBrainLoss(10)

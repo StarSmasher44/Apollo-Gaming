@@ -65,6 +65,10 @@
 	S["version"] << SAVEFILE_VERSION_MAX
 	player_setup.save_character(S)
 	loaded_character = S
+
+	// For safety
+	S.Flush()
+
 	return S
 
 /datum/preferences/proc/sanitize_preferences()

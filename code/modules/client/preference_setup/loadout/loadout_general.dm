@@ -55,11 +55,13 @@
 	display_name = "boot knife"
 	path = /obj/item/weapon/material/kitchen/utensil/knife/boot
 	cost = 3
+	cost_money = 30
 
 /datum/gear/lunchbox
 	display_name = "lunchbox"
 	description = "A little lunchbox."
 	cost = 2
+	cost_money = 15
 	path = /obj/item/weapon/storage/lunchbox
 
 /datum/gear/lunchbox/New()
@@ -76,11 +78,13 @@
 	display_name = "towel"
 	path = /obj/item/weapon/towel
 	flags = GEAR_HAS_COLOR_SELECTION
+	cost_money = 3
 
 /datum/gear/plush_toy
 	display_name = "plush toy"
 	description = "A plush toy."
 	path = /obj/item/toy/plushie
+	cost_money = 5
 
 /datum/gear/plush_toy/New()
 	..()

@@ -7,7 +7,7 @@ var/list/limb_icon_cache = list()
 	overlays.Cut()
 	 // This is a kludge, only one icon has more than one generation of children though.
 	for(var/obj/item/organ/external/organ in contents)
-		if(organ.children && organ.children.len)
+		if(organ.children?.len)
 			for(var/obj/item/organ/external/child in organ.children)
 				overlays += child.mob_icon
 		overlays += organ.mob_icon
@@ -18,7 +18,7 @@ var/list/limb_icon_cache = list()
 	h_col = list(human.r_hair, human.g_hair, human.b_hair)
 	if(robotic >= ORGAN_ROBOT)
 		var/datum/robolimb/franchise = all_robolimbs[model]
-		if(!(franchise && franchise.skintone))
+		if(!(franchise?.skintone))
 			return
 	if(species && human.species && species.name != human.species.name)
 		return
@@ -33,7 +33,7 @@ var/list/limb_icon_cache = list()
 	h_col = list(dna.GetUIValue(DNA_UI_HAIR_R),dna.GetUIValue(DNA_UI_HAIR_G),dna.GetUIValue(DNA_UI_HAIR_B))
 	if(robotic >= ORGAN_ROBOT)
 		var/datum/robolimb/franchise = all_robolimbs[model]
-		if(!(franchise && franchise.skintone))
+		if(!(franchise?.skintone))
 			return
 	if(!isnull(dna.GetUIValue(DNA_UI_SKIN_TONE)) && (species.appearance_flags & HAS_A_SKIN_TONE))
 		s_tone = dna.GetUIValue(DNA_UI_SKIN_TONE)
@@ -63,9 +63,9 @@ var/list/limb_icon_cache = list()
 	var/gender = "_m"
 	if(!gendered_icon)
 		gender = null
-	else if (dna && dna.GetUIState(DNA_UI_GENDER))
+	else if (dna?.GetUIState(DNA_UI_GENDER))
 		gender = "_f"
-	else if(owner && owner.gender == FEMALE)
+	else if(owner?.gender == FEMALE)
 		gender = "_f"
 
 	icon_state = "[icon_name][gender]"
@@ -172,7 +172,7 @@ var/list/robot_hud_colours = list("#ffffff","#cccccc","#aaaaaa","#888888","#6666
 			applying.Blend(rgb(-s_tone,  -s_tone,  -s_tone), ICON_SUBTRACT)
 		icon_cache_key += "_tone_[s_tone]"
 	else
-		if(s_col && s_col.len >= 3)
+		if(s_col?.len >= 3)
 			applying.Blend(rgb(s_col[1], s_col[2], s_col[3]), s_col_blend)
 			icon_cache_key += "_color_[s_col[1]]_[s_col[2]]_[s_col[3]]_[s_col_blend]"
 

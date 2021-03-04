@@ -34,7 +34,7 @@
 		if(is_valid_apc(apc))
 			apcs += apc
 			// Greatly increase the chance for APCs in maintenance areas to be selected
-			var/area/A = get_area(apc)
+			var/area/A = apc.MyArea
 			if(istype(A,/area/maintenance))
 				apcs += apc
 				apcs += apc
@@ -46,4 +46,4 @@
 
 /datum/event/apc_damage/proc/is_valid_apc(var/obj/machinery/power/apc/apc)
 	var/turf/T = get_turf(apc)
-	return !apc.is_critical && !apc.emagged && T && (T.z in GLOB.using_map.player_levels)
+	return !apc.is_critical && !apc.emagged && (T?.z in GLOB.using_map.player_levels)

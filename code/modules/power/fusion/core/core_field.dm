@@ -42,7 +42,7 @@
 /obj/effect/fusion_em_field/New(loc, var/obj/machinery/power/fusion_core/new_owned_core)
 	..()
 
-	set_light(light_min_range,light_min_power)
+	set_light(light_min_range, light_min_power)
 	last_range = light_min_range
 	last_power = light_min_power
 
@@ -92,7 +92,7 @@
 	var/datum/gas_mixture/uptake_gas = owned_core.loc.return_air()
 	if(uptake_gas)
 		uptake_gas = uptake_gas.remove_by_flag(XGM_GAS_FUSION_FUEL, rand(50,100))
-	if(uptake_gas && uptake_gas.total_moles)
+	if(uptake_gas?.total_moles)
 		for(var/gasname in uptake_gas.gas)
 			if(uptake_gas.gas[gasname]*10 > reactants[gasname])
 				AddParticles(gasname, uptake_gas.gas[gasname]*10)
@@ -137,7 +137,8 @@
 		use_power = light_min_power + ceil((light_max_power-light_min_power)*temp_mod)
 
 	if(last_range != use_range || last_power != use_power)
-		set_light(use_range,use_power)
+		set_light(use_range, min(use_power, 1)) //cap first arg at 1 to avoid breaking lighting stuff.
+		filters = filter(type="blur", size=1)
 		last_range = use_range
 		last_power = use_power
 
@@ -205,7 +206,7 @@
 
 /obj/effect/fusion_em_field/proc/Rupture()
 	visible_message("<span class='danger'>\The [src] shudders like a dying animal before flaring to eye-searing brightness and rupturing!</span>")
-	set_light(15, 15, "#ccccff")
+	set_light(light_max_range, light_max_power, "#ccccff")
 	empulse(get_turf(src), ceil(plasma_temperature/1000), ceil(plasma_temperature/300))
 	sleep(5)
 	RadiateAll()
@@ -282,7 +283,7 @@
 /obj/effect/fusion_em_field/proc/Radiate()
 	if(isturf(loc))
 		var/empsev = max(1, min(3, ceil(size/2)))
-		for(var/atom/movable/AM in range(max(1,Floor(size/2)), loc))
+		for(var/atom/movable/AM in range(max(1,FLOOR(size/2)), loc))
 
 			if(AM == src || AM == owned_core || !AM.simulated)
 				continue
@@ -299,19 +300,27 @@
 			tick_instability += rand(30,50)
 			AM.emp_act(empsev)
 
-	if(owned_core && owned_core.loc)
+	if(owned_core?.loc)
 		var/datum/gas_mixture/environment = owned_core.loc.return_air()
-		if(environment && environment.temperature < (T0C+1000)) // Putting an upper bound on it to stop it being used in a TEG.
+		if(environment?.temperature < (T0C+1000)) // Putting an upper bound on it to stop it being used in a TEG.
 			environment.add_thermal_energy(plasma_temperature*20000)
 	radiation = 0
 
 /obj/effect/fusion_em_field/proc/change_size(var/newsize = 1)
 	var/changed = 0
+	var/static/list/size_to_icon = list(
+			"3" = 'icons/effects/96x96.dmi',
+			"5" = 'icons/effects/160x160.dmi',
+			"7" = 'icons/effects/224x224.dmi',
+			"9" = 'icons/effects/288x288.dmi',
+			"11" = 'icons/effects/352x352.dmi',
+			"13" = 'icons/effects/416x416.dmi'
+			)
 
 	if( ((newsize-1)%2==0) && (newsize<=13) )
 		icon = 'icons/obj/machines/power/fusion.dmi'
 		if(newsize>1)
-			icon = "icons/effects/[newsize*32]x[newsize*32].dmi"
+			icon = size_to_icon["[newsize]"]
 		icon_state = "emfield_s[newsize]"
 		pixel_x = ((newsize-1) * -16) * PIXEL_MULTIPLIER
 		pixel_y = ((newsize-1) * -16) * PIXEL_MULTIPLIER
@@ -332,7 +341,7 @@
 		//determine a random amount to actually react this cycle, and remove it from the standard pool
 		//this is a hack, and quite nonrealistic :(
 		for(var/reactant in react_pool)
-			react_pool[reactant] = rand(Floor(react_pool[reactant]/2),react_pool[reactant])
+			react_pool[reactant] = rand(FLOOR(react_pool[reactant]/2),react_pool[reactant])
 			reactants[reactant] -= react_pool[reactant]
 			if(!react_pool[reactant])
 				react_pool -= reactant

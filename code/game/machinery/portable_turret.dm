@@ -234,8 +234,7 @@ var/list/turret_icons
 		ui.set_auto_update(1)
 
 /obj/machinery/porta_turret/proc/HasController()
-	var/area/A = get_area(src)
-	return A && A.turret_controls.len > 0
+	return MyArea?.turret_controls.len > 0
 
 /obj/machinery/porta_turret/CanUseTopic(var/mob/user)
 	if(HasController())

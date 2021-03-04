@@ -16,9 +16,9 @@
 */
 /turf/simulated/proc/update_graphic(list/graphic_add = null, list/graphic_remove = null)
 	if(LAZYLEN(graphic_add))
-		overlays += graphic_add
+		vis_contents += graphic_add
 	if(LAZYLEN(graphic_remove))
-		overlays -= graphic_remove
+		vis_contents -= graphic_remove
 
 /*
 /turf/simulated/proc/update_graphic(list/graphic_add = null, list/graphic_remove = null)
@@ -132,7 +132,7 @@
 
 /turf/simulated/update_air_properties()
 
-	if(zone && zone.invalid) //this turf's zone is in the process of being rebuilt
+	if(zone?.invalid) //this turf's zone is in the process of being rebuilt
 		c_copy_air() //not very efficient :(
 		zone = null //Easier than iterating through the list at the zone.
 

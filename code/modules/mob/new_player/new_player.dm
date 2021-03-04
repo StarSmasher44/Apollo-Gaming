@@ -100,7 +100,7 @@
 			totalPlayersReady = 0
 			for(var/mob/new_player/player in GLOB.player_list)
 				var/highjob
-				if(player.client && player.client.prefs && player.client.prefs.job_high)
+				if(player.client?.prefs && player.client.prefs.job_high)
 					highjob = " as [player.client.prefs.job_high]"
 				stat("[player.key]", (player.ready)?("(Playing[highjob])"):(null))
 				totalPlayers++
@@ -195,7 +195,7 @@
 		if(!config.enter_allowed)
 			to_chat(usr, "<span class='notice'>There is an administrative lock on entering the game!</span>")
 			return
-		if(ticker && ticker.mode && ticker.mode.explosion_in_progress)
+		if(ticker?.mode && ticker.mode.explosion_in_progress)
 			to_chat(usr, "<span class='danger'>The [station_name()] is currently exploding. Joining would go poorly.</span>")
 			return
 
@@ -344,9 +344,6 @@
 	if(!IsJobAvailable(job))
 		alert("[job.title] is not available. Please try another.")
 		return 0
-//	if(!job.is_branch_allowed(client.mob:CharRecords.char_department))
-//		alert("Wrong branch of service for [job.title]. Valid branches is: [job.department].")
-//		return 0
 	if(!job.is_valid_department(src.client.prefs.char_department, src))
 		alert("Wrong branch of service for [job.title]. Valid branch is: [get_department(client.prefs.char_department, 1)].")
 		return 0
@@ -391,11 +388,8 @@
 	if(!character)
 		return 0
 
-	character:CharRecords = new(character)
-
 	character = job_master.EquipRank(character, job.title, 1)					//equips the human
 	equip_custom_items(character)
-
 
 	// AIs don't need a spawnpoint, they must spawn at an empty core
 	if(character.mind.assigned_role == "AI")
@@ -419,6 +413,11 @@
 
 	ticker.mode.handle_latejoin(character)
 	GLOB.universe.OnPlayerLatejoin(character)
+	if(ishuman(character))
+		var/mob/living/carbon/human/H = character
+		if(!H.CharRecords)
+			H.CharRecords = new(H)
+
 	if(job_master.ShouldCreateRecords(job.title))
 		if(character.mind.assigned_role != "Cyborg")
 			CreateModularRecord(character)
@@ -546,7 +545,7 @@
 		new_character.disabilities |= NEARSIGHTED
 
 	// Give them their cortical stack if we're using them.
-	if(config && config.use_cortical_stacks && client && client.prefs.has_cortical_stack /*&& new_character.should_have_organ(BP_BRAIN)*/)
+	if(config?.use_cortical_stacks &&client?.prefs.has_cortical_stack /*&& new_character.should_have_organ(BP_BRAIN)*/)
 		new_character.create_stack()
 
 	// Do the initial caching of the player's body icons.
@@ -555,6 +554,9 @@
 	new_character.regenerate_icons()
 
 	new_character.key = key		//Manually transfer the key to log them in
+	new_character.CharRecords = new(new_character)
+	calculate_department_rank(new_character)
+
 	return new_character
 
 /mob/new_player/proc/ViewManifest()

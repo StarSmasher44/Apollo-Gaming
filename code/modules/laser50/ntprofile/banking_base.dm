@@ -1,15 +1,19 @@
 #define SavMult 3000 //Interest = 2+(Amount/3000) = multiplier
+
 var/global/list/bank_accounts = list()
 var/global/interest_rate = 2 //Interest rate in percentage
 
 
 /datum/money_account
 	var/owner_name = ""
-	var/tmp/mob/living/carbon/human/owner_mob
 	var/account_number = 0
 	var/account_pin = 0
-//	var/money = 0
 	var/bank_balance = 0
+
+
+
+
+
 	var/saved_till //world.time of how long it will be stuck.
 	var/savings_balance = 0 //Savings is locked-away money in return for interest rates.
 	var/savings_level = 1 //Multiplier of interest rate.
@@ -25,9 +29,6 @@ var/global/interest_rate = 2 //Interest rate in percentage
 
 /datum/money_account/New()
 	..()
-	for(var/datum/money_account/MA in bank_accounts) //Quickfix for trying to make shit work.
-		if(!MA.owner_mob || !MA.owner_name)
-			del(MA)
 	bank_accounts |= src
 	all_money_accounts |= src
 
@@ -114,18 +115,14 @@ var/global/interest_rate = 2 //Interest rate in percentage
 		if(D.account_number == account_number)
 			return D
 
+//ONLY USED BY DEPARTMENTS.
 /proc/create_account(var/new_owner_name = "Default user", var/mob/living/carbon/human/owner, var/department = "")
 	if(department)
-		if(istype(department_accounts[department], /datum/money_account))
-			return 1
-		else
-			if(owner.CharRecords.bank_account)
-				return //Already has one.
+		var/datum/money_account/MA = department_accounts[department]
+		if(!MA)
 			//create a new account
 			var/datum/money_account/M = new()
 			M.owner_name = new_owner_name
-			if(!department)
-				M.owner_mob = owner
 			M.account_pin = rand(1111, 111111)
 			if(department)
 				M.bank_balance = rand(1000, 2500)

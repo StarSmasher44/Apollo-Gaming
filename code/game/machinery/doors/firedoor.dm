@@ -56,7 +56,7 @@
 	for(var/obj/machinery/door/firedoor/F in loc)
 		if(F != src)
 			return INITIALIZE_HINT_QDEL
-	var/area/A = get_area(src)
+	var/area/A = MyArea
 	ASSERT(istype(A))
 
 	LAZYADD(A.all_doors, src)

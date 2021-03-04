@@ -21,6 +21,7 @@
 
 /atom/movable/lighting_overlay/Initialize()
 	// doesn't need special init
+	verbs.Cut()
 	initialized = TRUE
 	return INITIALIZE_HINT_NORMAL
 

@@ -129,7 +129,7 @@
 
 /obj/machinery/alarm/Initialize()
 	. = ..()
-	alarm_area = get_area(src)
+	alarm_area = MyArea
 	area_uid = alarm_area.uid
 	if (name == "alarm")
 		name = "[alarm_area.name] Air Alarm"

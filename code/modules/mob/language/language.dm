@@ -32,7 +32,7 @@
 
 	for(var/i = 0;i<name_count;i++)
 		new_name = ""
-		for(var/x = rand(Floor(syllable_count/syllable_divisor),syllable_count);x>0;x--)
+		for(var/x = rand(FLOOR(syllable_count/syllable_divisor),syllable_count);x>0;x--)
 			new_name += pick(syllables)
 		full_name += " [capitalize(lowertext(new_name))]"
 
@@ -168,13 +168,13 @@
 	return (speaking.can_speak_special(src) && (universal_speak || (speaking && speaking.flags & INNATE) || speaking in src.languages))
 
 /mob/proc/get_language_prefix()
-	if(client && client.prefs.language_prefixes && client.prefs.language_prefixes.len)
+	if(client?.prefs.language_prefixes && client.prefs.language_prefixes.len)
 		return client.prefs.language_prefixes[1]
 
 	return config.language_prefixes[1]
 
 /mob/proc/is_language_prefix(var/prefix)
-	if(client && client.prefs.language_prefixes && client.prefs.language_prefixes.len)
+	if(client?.prefs.language_prefixes && client.prefs.language_prefixes.len)
 		return prefix in client.prefs.language_prefixes
 
 	return prefix in config.language_prefixes

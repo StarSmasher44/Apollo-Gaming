@@ -26,11 +26,12 @@
 	var/is_stealthed = C.is_stealthed()
 
 	var/ooc_style = "everyone"
-	if(C.donator)
-		ooc_style = "donator[C.donator]"
-	if(C.ap_veteran)
+
+	if(C.ap_veteran && !C.donator)
 		ooc_style = "apveteran"
-	if(holder && !is_stealthed)
+	else if(C.donator)
+		ooc_style = "donator[C.donator]"
+	else if(holder && !is_stealthed)
 		ooc_style = "elevated"
 		if(holder.rights & R_MOD)
 			ooc_style = "moderator"
@@ -38,7 +39,6 @@
 			ooc_style = "developer"
 		if(holder.rights & R_ADMIN)
 			ooc_style = "admin"
-
 	var/can_badmin = !is_stealthed && can_select_ooc_color(C) && (C.prefs.ooccolor != initial(C.prefs.ooccolor))
 	var/ooc_color = C.prefs.ooccolor
 

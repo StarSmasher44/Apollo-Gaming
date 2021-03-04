@@ -149,7 +149,7 @@
 /obj/machinery/portable_atmospherics/powered/powered()
 	if(use_power) //using area power
 		return ..()
-	if(cell && cell.charge)
+	if(cell?.charge)
 		return 1
 	return 0
 

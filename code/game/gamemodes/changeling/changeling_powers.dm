@@ -533,7 +533,7 @@ var/global/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","E
 	C.digitalcamo = !C.digitalcamo
 
 	spawn(0)
-		while(C && C.digitalcamo && C.mind && C.mind.changeling)
+		while(C?.digitalcamo && C.mind?.changeling)
 			C.mind.changeling.chem_charges = max(C.mind.changeling.chem_charges - 1, 0)
 			sleep(40)
 

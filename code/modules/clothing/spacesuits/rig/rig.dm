@@ -456,7 +456,7 @@
 
 	data["charge"] =       cell ? round(cell.charge,1) : 0
 	data["maxcharge"] =    cell ? cell.maxcharge : 0
-	data["chargestatus"] = cell ? Floor(percent2(cell)/2) : 0
+	data["chargestatus"] = cell ? FLOOR(percent2(cell)/2) : 0
 
 	data["emagged"] =       subverted
 	data["coverlock"] =     locked
@@ -618,7 +618,7 @@
 	if(seal_delay > 0 && istype(M) && M.back == src)
 		M.visible_message("<font color='blue'>[M] starts putting on \the [src]...</font>", "<font color='blue'>You start putting on \the [src]...</font>")
 		if(!do_after(M,seal_delay,src))
-			if(M && M.back == src)
+			if(M?.back == src)
 				if(!M.unEquip(src))
 					return
 			src.forceMove(get_turf(src))

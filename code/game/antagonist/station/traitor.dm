@@ -104,6 +104,8 @@ var/datum/antagonist/traitor/traitors
 	traitor_mob.mind.store_memory("<b>Code Phrase</b>: [syndicate_code_phrase]")
 	traitor_mob.mind.store_memory("<b>Code Response</b>: [syndicate_code_response]")
 	to_chat(traitor_mob, "Use the code words, preferably in the order provided, during regular conversation, to identify other agents. Proceed with caution, however, as everyone is a potential foe.")
+	traitor_mob.trigger_words += syndicate_code_phrase
+	traitor_mob.trigger_words += syndicate_code_response
 
 /datum/antagonist/traitor/proc/spawn_uplink(var/mob/living/carbon/human/traitor_mob)
 	if(!ishuman(traitor_mob))

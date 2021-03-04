@@ -29,4 +29,4 @@
 	l_ear = /obj/item/device/radio/headset/heads/captain
 	head = /obj/item/clothing/head/beret/centcom/captain
 	belt = /obj/item/weapon/gun/energy
-	id_pda_assignment = "NanoTrasen Navy Captain"
+	id_pda_assignment = "NanoTrasen Navy Commander"

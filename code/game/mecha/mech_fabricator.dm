@@ -175,7 +175,7 @@
 		return
 
 	if(materials[material] + amnt <= res_max_amount)
-		if(stack && stack.amount >= 1)
+		if(stack?.amount >= 1)
 			var/count = 0
 			overlays += "fab-load-metal"
 			spawn(10)
@@ -252,7 +252,7 @@
 		var/obj/new_item = D.Fabricate(loc, src)
 		visible_message("\The [src] pings, indicating that \the [D] is complete.", "You hear a ping.")
 		if(mat_efficiency != 1)
-			if(new_item.matter && new_item.matter.len > 0)
+			if(new_item.matter?.len > 0)
 				for(var/i in new_item.matter)
 					new_item.matter[i] = new_item.matter[i] * mat_efficiency
 	remove_from_queue(1)

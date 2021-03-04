@@ -50,7 +50,8 @@
 	light_range = source_atom.light_range
 	light_color = source_atom.light_color
 
-	parse_light_color()
+//	parse_light_color()
+	PARSE_LIGHT_COLOR(src)
 
 	effect_str      = list()
 	affecting_turfs = list()
@@ -58,17 +59,17 @@
 	update()
 
 
-	return ..()
+//	return ..()
 
 // Kill ourselves.
 /datum/light_source/proc/destroy()
 	total_lighting_sources--
 	destroyed = TRUE
 	force_update()
-	if(source_atom && source_atom.light_sources)
+	if(source_atom?.light_sources)
 		source_atom.light_sources -= src
 
-	if(top_atom && top_atom.light_sources)
+	if(top_atom?.light_sources)
 		top_atom.light_sources    -= src
 
 // Call it dirty, I don't care.
@@ -110,6 +111,7 @@
 
 // Will check if we actually need to update, and update any variables that may need to be updated.
 /datum/light_source/proc/check()
+	var/atom/source_atom = src.source_atom
 	if(!source_atom || !light_range || !light_power || QDELETED(source_atom))
 		destroy()
 		return 1
@@ -139,9 +141,10 @@
 
 	if(source_atom.light_color != light_color)
 		light_color = source_atom.light_color
-		parse_light_color()
+//		parse_light_color()
+		PARSE_LIGHT_COLOR(src)
 		. = 1
-
+/*
 // Decompile the hexadecimal colour into lumcounts of each perspective.
 /datum/light_source/proc/parse_light_color()
 	if(light_color)
@@ -152,7 +155,7 @@
 		lum_r = 1
 		lum_g = 1
 		lum_b = 1
-
+*/
 // Macro that applies light to a new corner.
 // It is a macro in the interest of speed, yet not having to copy paste it.
 // If you're wondering what's with the backslashes, the backslashes cause BYOND to not automatically end the line.

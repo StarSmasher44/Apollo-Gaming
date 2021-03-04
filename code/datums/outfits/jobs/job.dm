@@ -15,9 +15,8 @@
 
 /decl/hierarchy/outfit/job/equip_id(mob/living/carbon/human/H)
 	var/obj/item/weapon/card/id/C = ..()
-	if(H.mind && H.mind.initial_account)
-		if(H.mind.initial_account)
-			C.associated_account_number = H.mind.initial_account.account_number
-			if(!C.associated_account_number)
-				C.associated_account_number = H.CharRecords.bank_account.account_number
+//	if(H.mind?.initial_account)
+//		C.associated_account_number = H.mind.initial_account.account_number
+//		if(!C.associated_account_number)
+//			C.associated_account_number = H.client.prefs.bank_account.account_number
 	return C

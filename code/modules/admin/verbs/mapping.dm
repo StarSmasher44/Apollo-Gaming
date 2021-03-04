@@ -151,6 +151,7 @@ var/list/debug_verbs = list (
 		,/client/proc/testZAScolors
 		,/client/proc/testZAScolors_remove
 		,/datum/admins/proc/setup_supermatter
+		,/datum/admins/proc/setup_fusion
 		,/client/proc/atmos_toggle_debug
 		,/client/proc/spawn_tanktransferbomb
 	)
@@ -284,7 +285,7 @@ var/list/debug_verbs = list (
 		if(istype(A,type_path))
 			var/atom/B = A
 			while(!(isturf(B.loc)))
-				if(B && B.loc)
+				if(B?.loc)
 					B = B.loc
 				else
 					break

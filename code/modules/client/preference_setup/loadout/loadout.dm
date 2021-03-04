@@ -37,6 +37,8 @@ var/list/gear_datums = list()
 	for(var/loadout_category in loadout_categories)
 		var/datum/loadout_category/LC = loadout_categories[loadout_category]
 		LC.gear = sortAssoc(LC.gear)
+	if(LOADOUT_MONEY)
+		config.max_gear_cost = 75
 	return 1
 
 /datum/category_item/player_setup_item/loadout
@@ -67,8 +69,12 @@ var/list/gear_datums = list()
 					break
 		if(!okay)
 			continue
-		if(max_cost && G.cost > max_cost)
-			continue
+		if(LOADOUT_MONEY)
+			if(max_cost && G.cost_money > max_cost)
+				continue
+		else
+			if(max_cost && G.cost > max_cost)
+				continue
 		. += gear_name
 
 /datum/category_item/player_setup_item/loadout/sanitize_character()
@@ -94,10 +100,16 @@ var/list/gear_datums = list()
 					gears -= gear_name
 				else
 					var/datum/gear/G = gear_datums[gear_name]
-					if(total_cost + G.cost > config.max_gear_cost)
-						gears -= gear_name
+					if(LOADOUT_MONEY)
+						if(total_cost + G.cost_money > config.max_gear_cost)
+							gears -= gear_name
+						else
+							total_cost += G.cost_money
 					else
-						total_cost += G.cost
+						if(total_cost + G.cost > config.max_gear_cost)
+							gears -= gear_name
+						else
+							total_cost += G.cost
 		else
 			pref.gear_list[index] = list()
 
@@ -108,7 +120,10 @@ var/list/gear_datums = list()
 	for(var/i = 1; i <= gears.len; i++)
 		var/datum/gear/G = gear_datums[gears[i]]
 		if(G)
-			total_cost += G.cost
+			if(LOADOUT_MONEY)
+				total_cost += G.cost_money
+			else
+				total_cost += G.cost
 
 	var/fcolor =  "#3366cc"
 	if(total_cost < config.max_gear_cost)
@@ -118,7 +133,7 @@ var/list/gear_datums = list()
 	. += "<a href='?src=\ref[src];prev_slot=1'>\<\<</a><b><font color = '[fcolor]'>\[[pref.gear_slot]\]</font> </b><a href='?src=\ref[src];next_slot=1'>\>\></a>"
 
 	if(config.max_gear_cost < INFINITY)
-		. += "<b><font color = '[fcolor]'>[total_cost]/[config.max_gear_cost]</font> loadout points spent.</b>"
+		. += "<b><font color = '[fcolor]'>[total_cost]/[config.max_gear_cost]</font> [LOADOUT_MONEY ? "Dollars Spent" : "loadout points spent."]</b>"
 
 	. += "<a href='?src=\ref[src];clear_loadout=1'>Clear Loadout</a>"
 	. += "<a href='?src=\ref[src];toggle_hiding=1'>[hide_unavailable_gear ? "Show all" : "Hide unavailable"]</a></center></td></tr>"
@@ -137,13 +152,22 @@ var/list/gear_datums = list()
 		for(var/gear in LC.gear)
 			if(gear in pref.gear_list[pref.gear_slot])
 				var/datum/gear/G = LC.gear[gear]
-				category_cost += G.cost
+				if(LOADOUT_MONEY)
+					category_cost += G.cost_money
+				else
+					category_cost += G.cost
 
 		if(category == current_tab)
-			. += " <span class='linkOn'>[category] - [category_cost]</span> "
+			if(LOADOUT_MONEY)
+				. += " <span class='linkOn'>[category] - $[category_cost]</span> "
+			else
+				. += " <span class='linkOn'>[category] - [category_cost]</span> "
 		else
 			if(category_cost)
-				. += " <a href='?src=\ref[src];select_category=[category]'><font color = '#e67300'>[category] - [category_cost]</font></a> "
+				if(LOADOUT_MONEY)
+					. += " <a href='?src=\ref[src];select_category=[category]'><font color = '#e67300'>[category] - $[category_cost]</font></a> "
+				else
+					. += " <a href='?src=\ref[src];select_category=[category]'><font color = '#e67300'>[category] - [category_cost]</font></a> "
 			else
 				. += " <a href='?src=\ref[src];select_category=[category]'>[category] - 0</a> "
 
@@ -166,7 +190,10 @@ var/list/gear_datums = list()
 		var/datum/gear/G = LC.gear[gear_name]
 		var/ticked = (G.display_name in pref.gear_list[pref.gear_slot])
 		entry += "<tr style='vertical-align:top;'><td width=25%><a style='white-space:normal;' [ticked ? "class='linkOn' " : ""]href='?src=\ref[src];toggle_gear=[html_encode(G.display_name)]'>[G.display_name]</a></td>"
-		entry += "<td width = 10% style='vertical-align:top'>[G.cost]</td>"
+		if(LOADOUT_MONEY)
+			entry += "<td width = 10% style='vertical-align:top'>$[G.cost_money]</td>"
+		else
+			entry += "<td width = 10% style='vertical-align:top'>[G.cost]</td>"
 		entry += "<td><font size=2>[G.description]</font>"
 		var/allowed = 1
 		if(G.allowed_roles)
@@ -216,8 +243,20 @@ var/list/gear_datums = list()
 	metadata["[tweak]"] = new_metadata
 
 /datum/category_item/player_setup_item/loadout/proc/GetMaxGearCost(var/client/C)
-	if(C && C.donator)
-		return config.max_gear_cost+(C.donator*4)
+	if(LOADOUT_MONEY)
+		if(C)
+			if(C.donator)
+				return 75+(C.donator*25)
+			else
+				return 75
+	else
+		if(C)
+			if(C.donator)
+				return config.max_gear_cost+(C.donator*4)
+			else
+				return config.max_gear_cost
+
+
 
 /datum/category_item/player_setup_item/loadout/OnTopic(href, href_list, user)
 	if(href_list["toggle_gear"])
@@ -228,9 +267,17 @@ var/list/gear_datums = list()
 			var/total_cost = 0
 			for(var/gear_name in pref.gear_list[pref.gear_slot])
 				var/datum/gear/G = gear_datums[gear_name]
-				if(istype(G)) total_cost += G.cost
-			if((total_cost+TG.cost) <= config.max_gear_cost)
-				pref.gear_list[pref.gear_slot] += TG.display_name
+				if(istype(G))
+					if(LOADOUT_MONEY)
+						total_cost += G.cost_money
+					else
+						total_cost += G.cost
+			if(LOADOUT_MONEY)
+				if(TG && (total_cost+TG.cost_money) <= config.max_gear_cost)
+					pref.gear_list[pref.gear_slot] += TG.display_name
+			else
+				if(TG && (total_cost+TG.cost) <= config.max_gear_cost)
+					pref.gear_list[pref.gear_slot] += TG.display_name
 		return TOPIC_REFRESH_UPDATE_PREVIEW
 	if(href_list["gear"] && href_list["tweak"])
 		var/datum/gear/gear = gear_datums[href_list["gear"]]
@@ -292,6 +339,7 @@ var/list/gear_datums = list()
 	var/description        //Description of this gear. If left blank will default to the description of the pathed item.
 	var/path               //Path to item.
 	var/cost = 1           //Number of points used. Items in general cost 1 point, storage/armor/gloves/special use costs 2 points.
+	var/cost_money = 10    //Amount it takes in Dollars (PERSISTENT MONEY)
 	var/slot               //Slot to equip to.
 	var/list/allowed_roles //Roles that can spawn with this item.
 	var/whitelisted        //Term to check the whitelist for..

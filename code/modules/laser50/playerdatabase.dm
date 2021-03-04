@@ -12,20 +12,16 @@ var/global/datum/offlinedb/ODB
 
 /proc/AddToDB(var/client/C)
 	if(userdb && C)
-		if(userdb["[C.key]"])
+		if(userdb["[C.ckey]"])
 			//We gotta update their IP and CID with most recent info.
-			userdb["[C.key]/cid"] << C.computer_id
-			userdb["[C.key]/adr"] << C.address
+			userdb["[C.ckey]/cid"] << C.computer_id
+			userdb["[C.ckey]/adr"] << C.address
 			return 0 // Already in the DB, no action required.
 		else
-			userdb["[C.key]"] << C.key
+			userdb["[C.ckey]"] << C.ckey
 			//Save IP and CID, only newest will remain.
-			userdb["[C.key]/cid"] << C.computer_id
-			userdb["[C.key]/adr"] << C.address
-
-/hook/startup/proc/Init_PlayerDB()
-	if(!ODB)
-		ODB = new(src)
+			userdb["[C.ckey]/cid"] << C.computer_id
+			userdb["[C.ckey]/adr"] << C.address
 
 /proc/open_playerdb()
 	if(!ODB)
@@ -76,6 +72,7 @@ var/global/datum/offlinedb/ODB
 		if(1)
 			if(ODB.selection) //Player has been chosen.
 				ODB.setuser(ODB.selection)
+				if(!ODB.selection)	return
 				var/savefile/clientdb = new("data/player_saves/[copytext(ODB.selection, 1, 2)]/[ODB.selection]/clientdb.sav")
 				var/lastseen = round((world.realtime - clientdb["lastseen"]) / 864000, 0.1)
 				var/watched = 0
@@ -144,8 +141,8 @@ var/global/datum/offlinedb/ODB
 /datum/offlinedb/proc/setuser(var/selected) //selected = client key
 	if(selected)
 		for(var/client/C in GLOB.clients)
-			if(C.key == selected)
-				ODB.selection = C.key
+			if(C.ckey == selected)
+				ODB.selection = C.ckey
 				ODB.selectionclient = C
 
 /datum/offlinedb/proc/WarningSystem(var/selected)
@@ -206,8 +203,8 @@ var/global/datum/offlinedb/ODB
 	switch(href_list["choice"])
 		if("userdb")
 			for(var/client/C in GLOB.clients)
-				if(C.key == ODB.selection)
-					ODB.selection = C.key
+				if(C.ckey == ODB.selection)
+					ODB.selection = C.ckey
 					ODB.selectionclient = C
 			if(!ODB.selection)
 				ODB.selection = href_list["player"]
@@ -343,7 +340,7 @@ var/global/datum/offlinedb/ODB
 					var/cointype = input("Select what type coin", "Grant Admin Coins") in list("Command Coin", "Employee Coin")
 					switch(cointype)
 						if("Command Coin")
-							var/coins = 0
+							var/coins = input("Amount of coins?", "Give Employee Coins") as num
 							clientdb["command_coin"] >> coins
 							coins = coins+ODB.selectionclient.command_coin
 							coins += 1
@@ -352,9 +349,9 @@ var/global/datum/offlinedb/ODB
 							message_admins("[key_name_admin(usr)] has awarded [ODB.selection] a [cointype].")
 							to_chat(ODB.selectionclient, "You have been awarded a [cointype]!")
 						if("Employee Coin")
-							var/coins = 0
+							var/coins = input("Amount of coins?", "Give Employee Coins") as num
 							clientdb["employee_coin"] >> coins
-							coins = coins+ODB.selectionclient.command_coin
+							coins = coins+ODB.selectionclient.employee_coin
 							coins += 1
 							clientdb["employee_coin"] << coins
 							ODB.selectionclient.employee_coin = coins
@@ -365,25 +362,17 @@ var/global/datum/offlinedb/ODB
 					if(!race)
 						return 0
 					var/alienlist = clientdb["alien_whitelist"]
+					LAZYINITLIST(alienlist)
 					if(aor == "Remove" && alienlist)
 						var/reason = input("Reason for removal?", "Alien whitelist removal") as text
 						if(!reason)	return to_chat(usr, "No reason specified, aborting.")
-						if(findtext(alienlist, race.name))
-							alienlist = replacetext(alienlist, race.name, "")
-							clientdb["alien_whitelist"] << alienlist
+						alienlist["[race.name]"] = 0
+						clientdb["alien_whitelist"] << alienlist
 						notes_add(ckey(ODB.selection),"[usr.client.ckey] removed alien whitelist ([race.name]) from [ODB.selection]. - Reason: [reason]",usr)
 						to_chat(usr, "whitelist for [race.name] removed from [ODB.selection]")
 						message_admins("[key_name_admin(usr)] has de-whitelisted [ODB.selection] for species [race.name]")
 					else
-						if(!alienlist)
-							alienlist = "[race]"
-							clientdb["alien_whitelist"] << alienlist
-						else
-							if(findtext(alienlist, race)) //What, already in there?
-								usr << "<span class='warning'>Could not add [race] to the whitelist of [ODB.selection]. Already found.</span>"
-								return 0
-							else
-								alienlist = "[alienlist],[race]"
+						alienlist["[race.name]"] = 1
 						message_admins("[key_name_admin(usr)] has whitelisted [ODB.selection] for [race].")
 						to_chat(ODB.selectionclient, "You are now whitelisted for [race]! Remember to read their lore! (List: [alienlist])")
 						clientdb["alien_whitelist"] << alienlist
@@ -400,13 +389,14 @@ var/global/datum/offlinedb/ODB
 							usr << "<span class='warning'>Could not add [ODB.selection] to donators. Already a donator.</span>"
 							return 0
 						var/tier = input("What Donator Tier? (Tier 1-3)", "Donator tier") as num
-						if(tier && tier <= 3 && tier >= 0)
+						if(tier && tier <= 4 && tier >= 0)
 							donator = tier
 							message_admins("[key_name_admin(usr)] has added [ODB.selection] (Tier [tier]) as a donator.")
 							to_chat(ODB.selectionclient, "You are now a donator! Thank you for donating! (Tier [tier])")
 							clientdb["donatorsince"] << world.realtime
-					if(donator && donator <= 3 && donator >= 0)
+					if(donator && donator <= 4)
 						clientdb["donator"] << donator
+						ODB.selectionclient.donator = donator
 				if("Veterans")
 					var/veteran = clientdb["ap_veteran"]
 					if(aor == "remove" && veteran)
@@ -421,6 +411,7 @@ var/global/datum/offlinedb/ODB
 							usr << "<span class='warning'>Could not add [ODB.selection] to veterans. Already a veteran.</span>"
 							return 0
 						veteran = 1
+						ODB.selectionclient.ap_veteran = 1
 						message_admins("[key_name_admin(usr)] has added [ODB.selection] as a veteran.")
 						to_chat(ODB.selectionclient, "You are now a Apollo Veteran!")
 						clientdb["ap_veteran"] << veteran
@@ -428,7 +419,7 @@ var/global/datum/offlinedb/ODB
 			WarningSystem(ODB.selection)
 		if("removerelate")
 			var/toremove = locate(href_list["text"])
-			world << "Toremove is [toremove]"
+//			world << "Toremove is [toremove]"
 			var/savefile/clientdb = new("data/player_saves/[copytext(ODB.selection, 1, 2)]/[ODB.selection]/clientdb.sav")
 			if(toremove && ODB.selection)
 				switch(alert("Are you sure you wish to delete this entry?","Remove Entry","Yes","No"))

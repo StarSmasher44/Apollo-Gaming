@@ -107,7 +107,7 @@
 
 /decl/hierarchy/mil_uniform/ec/sup
 	name = "EC supply"
-	departments = SUP
+	departments = LOG
 
 	utility_extra = list(/obj/item/clothing/head/beret/solgov/expedition/supply, /obj/item/clothing/head/ushanka/solgov, /obj/item/clothing/suit/storage/hooded/wintercoat/solgov)
 	utility_under = /obj/item/clothing/under/solgov/utility/expeditionary/supply

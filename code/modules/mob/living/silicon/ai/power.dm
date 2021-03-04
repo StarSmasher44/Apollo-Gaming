@@ -85,9 +85,9 @@
 
 // Handles all necessary power checks: Area power, inteliCard and Malf AI APU power and manual override.
 /mob/living/silicon/ai/proc/has_power(var/respect_override = 1)
-	if(psupply && psupply.powered())
+	if(psupply?.powered())
 		return 1
-	if(isitem(src.loc))
+	if(istype(src.loc, /obj/item))
 		return 1
 	if(APU_power || admin_powered)
 		return 1
@@ -194,7 +194,7 @@
 	use_power = 2
 	power_channel = EQUIP
 	var/mob/living/silicon/ai/powered_ai = null
-	invisibility = 100
+	invisibility = 0
 
 /obj/machinery/ai_powersupply/New(var/mob/living/silicon/ai/ai=null)
 	powered_ai = ai
@@ -217,4 +217,7 @@
 	return 2
 
 /obj/machinery/ai_powersupply/powered(var/chan = -1)
-	return ..(chan, get_area(powered_ai))
+	if(!istype(MyArea, /area)) //Hopefully fixes AI not being able to work at all...
+		MyArea = powered_ai.lastarea
+	if(src && ismachine(src))
+		return ..(chan, MyArea)

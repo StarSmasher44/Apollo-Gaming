@@ -143,7 +143,7 @@
 	layer = ABOVE_HUMAN_LAYER  					// They were appearing under mobs which is a little weird - Ostaf
 	use_power = 2
 	idle_power_usage = 2
-	active_power_usage = 20
+	active_power_usage = 15
 	power_channel = LIGHT //Lights are calc'd via area so they dont need to be in the machine list
 
 	var/on = 0					// 1 if on, 0 if off
@@ -157,6 +157,11 @@
 
 	var/current_mode = null
 
+/obj/machinery/light/large
+	light_type = /obj/item/weapon/light/tube/large
+	desc = "A large tube lighting fixture."
+	active_power_usage = 20
+
 // the smaller bulb light fixture
 /obj/machinery/light/small
 	icon_state = "bulb1"
@@ -164,12 +169,15 @@
 	desc = "A small lighting fixture."
 	light_type = /obj/item/weapon/light/bulb
 	construct_type = /obj/machinery/light_construct/small
+	active_power_usage = 12
 
 /obj/machinery/light/small/emergency
 	light_type = /obj/item/weapon/light/bulb/red
+	active_power_usage = 4
 
 /obj/machinery/light/small/red
 	light_type = /obj/item/weapon/light/bulb/red
+	active_power_usage = 4
 
 /obj/machinery/light/spot
 	name = "spotlight"
@@ -343,14 +351,14 @@
 		// attempt to break the light
 		//If xenos decide they want to smash a light bulb with a toolbox, who am I to stop them? /N
 
-	else if(lightbulb && (lightbulb.status != LIGHT_BROKEN))
+	else if(lightbulb?.status != LIGHT_BROKEN)
 
 		if(prob(1 + W.force * 5))
 
 			user.visible_message("<span class='warning'>[user.name] smashed the light!</span>", "<span class='warning'>You smash the light!</span>", "You hear a tinkle of breaking glass")
 			if(on && (W.flags & CONDUCT))
 				if (prob(12))
-					electrocute_mob(user, get_area(src), src, 0.3)
+					electrocute_mob(user, MyArea, src, 0.3)
 			broken()
 
 		else
@@ -371,7 +379,7 @@
 			s.set_up(3, 1, src)
 			s.start()
 			if (prob(75))
-				electrocute_mob(user, get_area(src), src, rand(0.7,1.0))
+				electrocute_mob(user, MyArea, src, rand(0.7,1.0))
 
 
 // returns whether this light has power
@@ -466,7 +474,7 @@
 		return
 
 	if(!skip_sound_and_sparks)
-		if(lightbulb && !(lightbulb.status == LIGHT_BROKEN))
+		if(!(lightbulb?.status == LIGHT_BROKEN))
 			playsound(src.loc, 'sound/effects/Glasshit.ogg', 75, 1)
 		if(on)
 			s.set_up(3, 1, src)
@@ -552,8 +560,8 @@
 	matter = list("glass" = 100)
 
 	brightness_range = 7	// luminosity when on, also used in power calculation
-	brightness_power = 7
-	brightness_color = "#fffee0"
+	brightness_power = 6
+	brightness_color = LIGHT_COLOR_INCANDESCENT_TUBE
 	lighting_modes = list(
 		LIGHTMODE_EMERGENCY = list(l_range = 4, l_power = 2, l_color = "#da0205"),
 		)
@@ -576,7 +584,7 @@
 
 	brightness_range = 5
 	brightness_power = 4
-	brightness_color = "#a0a080"
+	brightness_color = LIGHT_COLOR_INCANDESCENT_BULB
 	lighting_modes = list(
 		LIGHTMODE_EMERGENCY = list(l_range = 3, l_power = 1, l_color = "#da0205"),
 		)

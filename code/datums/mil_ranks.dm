@@ -71,7 +71,7 @@ var/datum/mil_branches/mil_branches = new()
  */
 /datum/mil_branches/proc/spawn_ranks(var/branch_name, var/datum/species/S)
 	var/datum/mil_branch/branch = get_branch(branch_name)
-	return branch && branch.spawn_ranks(S)
+	return branch?.spawn_ranks(S)
 
 /**
  *  Return a true value if branch_name is a valid spawn branch key

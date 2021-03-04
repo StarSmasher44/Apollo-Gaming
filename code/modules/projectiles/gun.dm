@@ -143,11 +143,11 @@
 	if(!user.aiming)
 		user.aiming = new(user)
 
-	if(user && user.client && user.aiming && user.aiming.active && user.aiming.aiming_at != A)
+	if(user?.client && user.aiming?.active && user.aiming.aiming_at != A)
 		PreFire(A,user,params) //They're using the new gun system, locate what they're aiming at.
 		return
 
-	if(user && user.a_intent == I_HELP) //regardless of what happens, refuse to shoot if help intent is on
+	if(user?.a_intent == I_HELP) //regardless of what happens, refuse to shoot if help intent is on
 		to_chat(user, "<span class='warning'>You refrain from firing \the [src] as your intent is set to help.</span>")
 	else
 		Fire(A,user,params) //Otherwise, fire normally.
@@ -206,7 +206,7 @@
 		if(i < burst)
 			sleep(burst_delay)
 
-		if(!(target && target.loc))
+		if(!(target?.loc))
 			target = targloc
 			pointblank = 0
 

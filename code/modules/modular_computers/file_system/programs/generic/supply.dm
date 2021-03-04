@@ -53,7 +53,7 @@
 			data["can_print"] = can_print()
 
 		if(3)// Shuttle monitoring and control
-			var/datum/shuttle/autodock/ferry/supply/shuttle = supply_controller.shuttle
+			var/datum/shuttle/ferry/supply/cargo/shuttle = supply_controller.shuttle
 			if(istype(shuttle))
 				data["shuttle_location"] = shuttle.at_station() ? GLOB.using_map.name : "Remote location"
 			else
@@ -150,7 +150,7 @@
 		return 1
 
 	if(href_list["launch_shuttle"])
-		var/datum/shuttle/autodock/ferry/supply/shuttle = supply_controller.shuttle
+		var/datum/shuttle/ferry/supply/cargo/shuttle = supply_controller.shuttle
 		if(!shuttle)
 			to_chat(user, "<span class='warning'>Error connecting to the shuttle.</span>")
 			return
@@ -221,7 +221,7 @@
 			category_contents[sp.name] = category
 
 /datum/nano_module/supply/proc/get_shuttle_status()
-	var/datum/shuttle/autodock/ferry/supply/shuttle = supply_controller.shuttle
+	var/datum/shuttle/ferry/supply/shuttle = supply_controller.shuttle
 	if(!istype(shuttle))
 		return "No Connection"
 

@@ -113,7 +113,7 @@ Class Procs:
 	var/panel_open = 0
 	var/global/gl_uid = 1
 	var/interact_offline = 0 // Can the machine be interacted with while de-powered.
-	var/area/MyArea
+	var/tmp/area/MyArea
 	var/special_power_checks = FALSE
 
 #define SETAREA(byond)            \
@@ -140,7 +140,7 @@ Class Procs:
 
 /obj/machinery/Destroy()
 	STOP_PROCESSING(SSmachines, src)
-	if(MyArea && MyArea.machinecache)
+	if(MyArea?.machinecache)
 		MyArea.machinecache -= src
 	MyArea = null
 
@@ -245,7 +245,7 @@ Class Procs:
 	if(isrobot(user))
 		// For some reason attack_robot doesn't work
 		// This is to stop robots from using cameras to remotely control machines.
-		if(user.client && user.client.eye == user)
+		if(user.client?.eye == user)
 			return src.attack_hand(user)
 	else
 		return src.attack_hand(user)
@@ -309,7 +309,7 @@ Class Procs:
 		if(MyArea)
 			var/obj/machinery/power/apc/temp_apc = MyArea.get_apc()
 
-			if(temp_apc && temp_apc.terminal && temp_apc.terminal.powernet)
+			if(temp_apc?.terminal && temp_apc.terminal.powernet)
 				temp_apc.terminal.powernet.trigger_warning()
 		if(user.stunned)
 			return 1

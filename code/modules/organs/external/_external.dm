@@ -99,7 +99,7 @@
 			wound.embedded_objects.Cut()
 		wounds.Cut()
 
-	if(parent && parent.children)
+	if(parent?.children)
 		parent.children -= src
 
 	if(children)
@@ -111,7 +111,7 @@
 			qdel(O)
 
 	applied_pressure = null
-	if(splinted && splinted.loc == src)
+	if(splinted?.loc == src)
 		qdel(splinted)
 	splinted = null
 
@@ -242,7 +242,7 @@
 
 /obj/item/organ/external/proc/is_parent_dislocated()
 	var/obj/item/organ/external/O = parent
-	while(O && O.dislocated != -1)
+	while(O?.dislocated != -1)
 		if(O.dislocated == 1)
 			return 1
 		O = O.parent
@@ -405,7 +405,7 @@ This function completely restores a damaged organ to perfect condition.
 		owner.organs_by_name[organ_tag] = null
 		owner.organs_by_name -= organ_tag
 		while(null in owner.organs) owner.organs -= null
-	if(children && children.len)
+	if(children?.len)
 		for(var/obj/item/organ/external/E in children)
 			E.remove_rejuv()
 	children.Cut()
@@ -685,7 +685,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		else
 			brute_dam += W.damage
 
-		if(!(robotic >= ORGAN_ROBOT) && W.bleeding() && (H && H.should_have_organ(BP_HEART)))
+		if(!(robotic >= ORGAN_ROBOT) && W.bleeding() && (H?.should_have_organ(BP_HEART)))
 			W.bleed_timer--
 			status |= ORGAN_BLEEDING
 
@@ -911,7 +911,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 		W.germ_level = 0
 	return rval
 
-/obj/item/organ/external/proc/clamp()
+/obj/item/organ/external/proc/clamp2()
 	var/rval = 0
 	src.status &= ~ORGAN_BLEEDING
 	for(var/datum/wound/W in wounds)

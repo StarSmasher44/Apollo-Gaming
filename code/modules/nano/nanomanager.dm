@@ -104,7 +104,7 @@ GLOBAL_DATUM_INIT(nanomanager, /datum/nanomanager, new) // NanoManager, the mana
 	var/update_count = 0
 	for (var/ui_key in open_uis[src_object_key])
 		for (var/datum/nanoui/ui in open_uis[src_object_key][ui_key])
-			if(ui && ui.src_object && ui.user && ui.src_object.nano_host())
+			if(ui?.src_object && ui.user && ui.src_object.nano_host())
 				ui.process(1)
 				update_count++
 	return update_count
@@ -124,7 +124,7 @@ GLOBAL_DATUM_INIT(nanomanager, /datum/nanomanager, new) // NanoManager, the mana
 	var/close_count = 0
 	for (var/ui_key in open_uis[src_object_key])
 		for (var/datum/nanoui/ui in open_uis[src_object_key][ui_key])
-			if(ui && ui.src_object && ui.user && ui.src_object.nano_host())
+			if(ui?.src_object && ui.user && ui.src_object.nano_host())
 				ui.close()
 				close_count++
 	return close_count

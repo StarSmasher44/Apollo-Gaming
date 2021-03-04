@@ -44,7 +44,7 @@
 
 /obj/item/weapon/gun/magnetic/railgun/check_ammo()
 	var/obj/item/weapon/rcd_ammo/ammo = loaded
-	return ammo && ammo.remaining
+	return ammo?.remaining
 
 /obj/item/weapon/gun/magnetic/railgun/use_ammo()
 	var/obj/item/weapon/rcd_ammo/ammo = loaded

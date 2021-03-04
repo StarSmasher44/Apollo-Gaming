@@ -122,6 +122,7 @@
 	return
 
 /atom/proc/emp_act(var/severity)
+	set waitfor = FALSE
 	return
 
 /atom/proc/set_density(var/new_density)
@@ -473,7 +474,7 @@ its easier to just keep the beam vertical.
 		return 0
 	for(var/obj/O in T.contents)
 		if(O.flags & OBJ_CLIMBABLE) continue
-		if(O && O.density && !(O.flags & ON_BORDER)) //ON_BORDER structures are handled by the Adjacent() check.
+		if(O?.density && !(O.flags & ON_BORDER)) //ON_BORDER structures are handled by the Adjacent() check.
 			return O
 	return 0
 

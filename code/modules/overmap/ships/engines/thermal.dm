@@ -8,8 +8,8 @@
 	nozzle = _holder
 
 /datum/ship_engine/thermal/Destroy()
+	..()
 	nozzle = null
-	. = ..()
 
 /datum/ship_engine/thermal/get_status()
 	return nozzle.get_status()
@@ -50,19 +50,19 @@
 	var/on = 1
 	var/datum/ship_engine/thermal/controller
 	var/thrust_limit = 1	//Value between 1 and 0 to limit the resulting thrust
-	var/moles_per_burn = 5
+	var/moles_per_burn = 10
 
-/obj/machinery/atmospherics/unary/engine/Initialize()
-	. = ..()
+/obj/machinery/atmospherics/unary/engine/initialize()
+	..()
 	controller = new(src)
 
 /obj/machinery/atmospherics/unary/engine/Destroy()
-	QDEL_NULL(controller)
-	. = ..()
+	..()
+	qdel_null(controller)
 
 /obj/machinery/atmospherics/unary/engine/proc/get_status()
 	. = list()
-	.+= "Location: [MyArea]."
+	.+= "Location: [get_area(src)]."
 	if(!powered())
 		.+= "Insufficient power to operate."
 	if(!check_fuel())
@@ -109,7 +109,7 @@
 	name = "engine exhaust"
 	icon = 'icons/effects/effects.dmi'
 	icon_state = "smoke"
-	light_color = "#ed9200"
+	light_color = "#ED9200"
 	anchored = 1
 
 /obj/effect/engine_exhaust/New(var/turf/nloc, var/ndir, var/temp)
@@ -122,14 +122,3 @@
 	playsound(loc, 'sound/effects/spray.ogg', 50, 1, -1)
 	spawn(20)
 		qdel(src)
-
-/obj/item/weapon/circuitboard/unary_atmos/engine
-	name = T_BOARD("gas thruster")
-	icon_state = "mcontroller"
-	build_path = /obj/machinery/atmospherics/unary/engine/
-	origin_tech = list(TECH_POWER = 1, TECH_ENGINEERING = 2)
-	req_components = list(
-							/obj/item/stack/cable_coil = 2,
-							/obj/item/weapon/stock_parts/matter_bin = 1,
-							/obj/item/weapon/stock_parts/capacitor = 1,
-							/obj/item/pipe = 2)

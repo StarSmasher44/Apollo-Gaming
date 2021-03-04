@@ -72,7 +72,7 @@
 
 /datum/trader/proc/add_to_pool(var/list/pool, var/list/possible, var/base_chance = 100, var/force = 0)
 	var/divisor = 1
-	if(pool && pool.len)
+	if(pool?.len)
 		divisor = pool.len
 	if(force || prob(base_chance/divisor))
 		var/new_item = get_possible_item(possible)
@@ -203,7 +203,7 @@
 	return get_response("compliment_accept", "Thank you!")
 
 /datum/trader/proc/trade(var/list/offers, var/num, var/turf/location)
-	if(offers && offers.len)
+	if(offers?.len)
 		for(var/offer in offers)
 			if(ismob(offer))
 				var/text = mob_transfer_message

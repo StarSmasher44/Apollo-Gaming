@@ -22,7 +22,7 @@
 		var/list/all_antag_types = all_antag_types()
 		for(var/cur_antag_type in all_antag_types)
 			var/datum/antagonist/antag = all_antag_types[cur_antag_type]
-			if(antag && antag.is_type(antag_type))
+			if(antag?.is_type(antag_type))
 				return antag
 
 /proc/clear_antag_roles(var/datum/mind/player, var/implanted)

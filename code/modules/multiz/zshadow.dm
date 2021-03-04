@@ -43,7 +43,7 @@
 
 // Relay some stuff they hear
 /mob/zshadow/hear_say(var/message, var/verb = "says", var/datum/language/language = null, var/alt_name = "", var/italics = 0, var/mob/speaker = null, var/sound/speech_sound, var/sound_vol)
-	if(speaker && speaker.z != src.z)
+	if(speaker?.z != src.z)
 		return // Only relay speech on our actual z, otherwise we might relay sounds that were themselves relayed up!
 	if(isliving(owner))
 		verb += " from above"
@@ -75,7 +75,7 @@
 		qdel(M.shadow)
 		M.shadow = null
 		var/client/C = M.client
-		if(C && C.eye == shadow)
+		if(C?.eye == shadow)
 			M.reset_view(0)
 
 //

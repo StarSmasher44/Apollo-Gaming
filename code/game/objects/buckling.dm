@@ -39,7 +39,7 @@
 	return 1
 
 /obj/proc/unbuckle_mob()
-	if(buckled_mob && buckled_mob.buckled == src)
+	if(buckled_mob?.buckled == src)
 		. = buckled_mob
 		buckled_mob.buckled = null
 		buckled_mob.anchored = initial(buckled_mob.anchored)

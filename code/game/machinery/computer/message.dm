@@ -74,7 +74,7 @@
 /obj/machinery/computer/message_monitor/Initialize()
 	//Is the server isn't linked to a server, and there's a server available, default it to the first one in the list.
 	if(!linkedServer)
-		if(GLOB.message_servers && GLOB.message_servers.len > 0)
+		if(GLOB?.message_servers.len > 0)
 			linkedServer = GLOB.message_servers[1]
 	return . = ..()
 
@@ -303,10 +303,10 @@
 		if(auth) linkedServer.active = !linkedServer.active
 	//Find a server
 	if (href_list["find"])
-		if(GLOB.message_servers && GLOB.message_servers.len > 1)
+		if(GLOB?.message_servers.len > 1)
 			src.linkedServer = input(usr,"Please select a server.", "Select a server.", null) as null|anything in GLOB.message_servers
 			message = "<span class='alert'>NOTICE: Server selected.</span>"
-		else if(GLOB.message_servers && GLOB.message_servers.len > 0)
+		else if(GLOB?.message_servers.len > 0)
 			linkedServer = GLOB.message_servers[1]
 			message =  "<span class='notice'>NOTICE: Only Single Server Detected - Server selected.</span>"
 		else
@@ -364,7 +364,7 @@
 			update_icon()
 			//Time it takes to bruteforce is dependant on the password length.
 			spawn(100*length(src.linkedServer.decryptkey))
-				if(src && src.linkedServer && usr)
+				if(src?.linkedServer && usr)
 					BruteForce(usr)
 	//Delete the log.
 	if (href_list["delete"])
@@ -414,7 +414,7 @@
 					for(var/obj/item/device/pda/P in PDAs)
 						if(!P.owner || P.toff || P.hidden) continue
 						sendPDAs += P
-					if(PDAs && PDAs.len > 0)
+					if(PDAs?.len > 0)
 						customrecepient = input(usr, "Select a PDA from the list.") as null|anything in sortAtom(sendPDAs)
 					else
 						customrecepient = null

@@ -24,7 +24,7 @@
 	var/has_lips
 
 /obj/item/organ/external/head/get_agony_multiplier()
-	return (owner && owner.headcheck(organ_tag)) ? 1.50 : 1
+	return (owner?.headcheck(organ_tag)) ? 1.50 : 1
 
 /obj/item/organ/external/head/robotize(var/company, var/skip_prosthetics, var/keep_organs)
 	if(company)
@@ -91,7 +91,7 @@
 	var/image/res = image('icons/mob/human_face.dmi',"bald_s")
 	if(owner.f_style)
 		var/datum/sprite_accessory/facial_hair_style = facial_hair_styles_list[owner.f_style]
-		if(facial_hair_style && facial_hair_style.species_allowed && (GET_BODY_TYPE(owner) in facial_hair_style.species_allowed))
+		if(facial_hair_style?.species_allowed && (GET_BODY_TYPE(owner) in facial_hair_style.species_allowed))
 			var/icon/facial_s = new/icon("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]_s")
 			if(facial_hair_style.do_colouration)
 				facial_s.Blend(rgb(owner.r_facial, owner.g_facial, owner.b_facial), ICON_ADD)

@@ -11,7 +11,7 @@
 
 /obj/item/organ/internal/New(var/mob/living/carbon/holder)
 	if(max_damage)
-		min_bruised_damage = Floor(max_damage / 4)
+		min_bruised_damage = FLOOR(max_damage / 4)
 	..()
 	if(iscarbon(holder))
 		holder.internal_organs |= src

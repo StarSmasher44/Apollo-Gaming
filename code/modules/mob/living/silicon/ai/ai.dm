@@ -146,7 +146,7 @@ var/list/ai_verbs_default = list(
 
 	additional_law_channels["Holopad"] = ":h"
 
-	if (isturf(loc))
+	if (istype(loc, /turf))
 		add_ai_verbs(src)
 
 	//Languages
@@ -616,7 +616,7 @@ var/list/ai_verbs_default = list(
 				src.camera = null
 		else
 			var/obj/machinery/camera/camera = near_range_camera(src.eyeobj)
-			if(camera && !camera.light_disabled)
+			if(!camera?.light_disabled)
 				src.camera = camera
 				src.camera.set_light(AI_CAMERA_LUMINOSITY)
 		camera_light_on = world.timeofday + 1 * 20 // Update the light every 2 seconds.
@@ -696,7 +696,7 @@ var/list/ai_verbs_default = list(
 	return 0
 
 /mob/living/silicon/ai/proc/is_in_chassis()
-	return isturf(loc)
+	return istype(loc, /turf)
 
 /mob/living/silicon/ai/proc/multitool_mode()
 	set name = "Toggle Multitool Mode"

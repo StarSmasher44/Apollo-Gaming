@@ -10,24 +10,19 @@ obj/machinery/recharger
 	idle_power_usage = 4
 	active_power_usage = 30 KILOWATTS
 	var/obj/item/charging = null
-	var/static/list/allowed_devices
+	var/list/allowed_devices = list(/obj/item/weapon/gun/energy, /obj/item/weapon/gun/magnetic/railgun, /obj/item/weapon/melee/baton, /obj/item/weapon/cell, /obj/item/modular_computer/, /obj/item/device/suit_sensor_jammer, /obj/item/weapon/computer_hardware/battery_module, /obj/item/weapon/shield_diffuser, /obj/item/clothing/mask/smokable/ecig)
 	var/icon_state_charged = "recharger2"
 	var/icon_state_charging = "recharger1"
 	var/icon_state_idle = "recharger0" //also when unpowered
 	var/portable = 1
-
-obj/machinery/recharger/Initialize()
-	..()
-	allowed_devices = typecacheof(list(/obj/item/weapon/gun/energy, /obj/item/weapon/gun/magnetic/railgun, /obj/item/weapon/melee/baton, /obj/item/weapon/cell, /obj/item/modular_computer/, /obj/item/device/suit_sensor_jammer, /obj/item/weapon/computer_hardware/battery_module, /obj/item/weapon/shield_diffuser, /obj/item/clothing/mask/smokable/ecig))
-
 
 obj/machinery/recharger/attackby(obj/item/weapon/G as obj, mob/user as mob)
 	if(issilicon(user))
 		return
 
 	var/allowed = 0
-	if (is_type_in_typecache(G, allowed_devices)) allowed = 1
-
+	for (var/allowed_type in allowed_devices)
+		if (istype(G, allowed_type)) allowed = 1
 	if(allowed)
 		if(charging)
 			to_chat(user, "<span class='warning'>\A [charging] is already charging here.</span>")
@@ -166,3 +161,4 @@ obj/machinery/recharger/wallcharger
 	icon_state_charging = "wrecharger1"
 	icon_state_idle = "wrecharger0"
 	portable = 0
+	allowed_devices = list(/obj/item/weapon/gun/magnetic/railgun, /obj/item/weapon/gun/energy, /obj/item/weapon/melee/baton)

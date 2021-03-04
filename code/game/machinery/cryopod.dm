@@ -232,7 +232,7 @@
 	for(var/d in GLOB.cardinal)
 		var/turf/T = get_step(src,d)
 		var/obj/machinery/door/blast/B = locate() in T
-		if(B && B.density)
+		if(B?.density)
 			B.force_open()
 			break
 
@@ -254,7 +254,7 @@
 
 //Don't use these for in-round leaving
 /obj/machinery/cryopod/lifepod/Process()
-	if(evacuation_controller && evacuation_controller.state >= EVAC_LAUNCHING)
+	if(evacuation_controller?.state >= EVAC_LAUNCHING)
 		if(occupant && !launched)
 			launch()
 		..()
@@ -477,6 +477,10 @@
 			if(ishuman(M) && applies_stasis)
 				var/mob/living/carbon/human/H = M
 				H.in_stasis = 1
+				if(H.CharRecords)
+					H.client.prefs.save_character()
+
+					qdel(H.CharRecords)
 
 			// Book keeping!
 			var/turf/location = get_turf(src)

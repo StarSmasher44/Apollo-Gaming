@@ -34,10 +34,10 @@
 #define CEILING(x, y) ( -round(-(x) / (y)) * (y) )
 
 // round() acts like floor(x, 1) by default but can't handle other values
-#define FLOOR(x, y) ( round((x) / (y)) * (y) )
+// #define FLOOR(x, y) ( round((x) / (y)) * (y) )
 
 #define Clamp(CLVALUE,CLMIN,CLMAX) ( max( (CLMIN), min((CLVALUE), (CLMAX)) ) )
-/*
+
 // Similar to clamp but the bottom rolls around to the top and vice versa. min is inclusive, max is exclusive
 #define WRAP(val, min, max) ( min == max ? min : (val) - (round(((val) - (min))/((max) - (min))) * ((max) - (min))) )
 
@@ -51,14 +51,14 @@
 #define COT(x) (1 / TAN(x))
 
 // Secant
-#define SEC(x) (1 / cos(x))
+// #define SEC(x) (1 / cos(x))
 
 // Cosecant
 #define CSC(x) (1 / sin(x))
 
 #define ATAN2(x, y) ( !(x) && !(y) ? 0 : (y) >= 0 ? arccos((x) / sqrt((x)*(x) + (y)*(y))) : -arccos((x) / sqrt((x)*(x) + (y)*(y))) )
 // Greatest Common Divisor - Euclid's algorithm
-*/
+
 /*
 /proc/Gcd(a, b)
 	return b ? Gcd(b, (a) % (b)) : a

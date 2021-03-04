@@ -387,7 +387,7 @@ var/global/list/damage_icon_parts = list()
 		return
 
 	//masks and helmets can obscure our hair.
-	if( (head && (head.flags_inv & BLOCKHAIR)) || (wear_mask && (wear_mask.flags_inv & BLOCKHAIR)))
+	if( (head?.flags_inv & BLOCKHAIR) || (wear_mask?.flags_inv & BLOCKHAIR))
 		if(update_icons)   update_icons()
 		return
 
@@ -511,7 +511,7 @@ var/global/list/damage_icon_parts = list()
 
 /mob/living/carbon/human/update_inv_ears(var/update_icons=1)
 	overlays_standing[EARS_LAYER] = null
-	if( (head && (head.flags_inv & (BLOCKHAIR | BLOCKHEADHAIR))) || (wear_mask && (wear_mask.flags_inv & (BLOCKHAIR | BLOCKHEADHAIR))))
+	if((head?.flags_inv & (BLOCKHAIR | BLOCKHEADHAIR)) || (wear_mask?.flags_inv & (BLOCKHAIR | BLOCKHEADHAIR)))
 		if(update_icons)   update_icons()
 		return
 
@@ -689,7 +689,7 @@ var/global/list/damage_icon_parts = list()
 	var/t_state = "[species.get_tail(src)]_once"
 
 	var/image/tail_overlay = overlays_standing[TAIL_LAYER]
-	if(tail_overlay && tail_overlay.icon_state == t_state)
+	if(tail_overlay?.icon_state == t_state)
 		return //let the existing animation finish
 
 	tail_overlay = set_tail_state(t_state)

@@ -58,7 +58,7 @@
 			if(!mecha.occupant)
 				continue
 			M = mecha.occupant
-		if(M && M.stat)
+		if(M?.stat)
 			continue
 		if(mode == "specific")
 			if(!(A in allowed_targets))

@@ -339,7 +339,7 @@ SUBSYSTEM_DEF(garbage)
 
 /datum/proc/find_references(skip_alert)
 	running_find_references = type
-	if(usr && usr.client)
+	if(usr?.client)
 		if(usr.client.running_find_references)
 			testing("CANCELLED search for references to a [usr.client.running_find_references].")
 			usr.client.running_find_references = null
@@ -357,7 +357,7 @@ SUBSYSTEM_DEF(garbage)
 	//this keeps the garbage collector from failing to collect objects being searched for in here
 	SSgarbage.can_fire = 0
 
-	if(usr && usr.client)
+	if(usr?.client)
 		usr.client.running_find_references = type
 
 	testing("Beginning search for references to a [type].")
@@ -366,7 +366,7 @@ SUBSYSTEM_DEF(garbage)
 	for(var/datum/thing in world)
 		DoSearchVar(thing, "WorldRef: [thing]")
 	testing("Completed search for references to a [type].")
-	if(usr && usr.client)
+	if(usr?.client)
 		usr.client.running_find_references = null
 	running_find_references = null
 
@@ -384,7 +384,7 @@ SUBSYSTEM_DEF(garbage)
 		find_references(TRUE)
 
 /datum/proc/DoSearchVar(X, Xname)
-	if(usr && usr.client && !usr.client.running_find_references) return
+	if(usr?.client && !usr.client.running_find_references) return
 	if(isdatum(X))
 		var/datum/D = X
 		if(D.last_find_references == last_find_references)

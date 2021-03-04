@@ -95,7 +95,7 @@
 				var/warning = sanitize(input(usr,"Message:","Enter your message here!",""))
 				if(!warning) return
 				var/obj/item/weapon/implant/I = locate(href_list["warn"])
-				if((I)&&(I.imp_in))
+				if(I?.imp_in)
 					var/mob/living/carbon/R = I.imp_in
 					to_chat(R, "<span class='notice'>You hear a voice in your head saying: '[warning]'</span>")
 

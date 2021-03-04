@@ -513,7 +513,7 @@
 
 	//Supply (Khaki)
 		jobs += "<table cellpadding='1' cellspacing='0' width='100%'>"
-		jobs += "<tr bgcolor='f0e68c'><th colspan='[length(GLOB.supply_positions)]'><a href='?src=\ref[src];jobban3=supplydept;jobban4=\ref[M]'>Supply Positions</a></th></tr><tr align='center'>"
+		jobs += "<tr bgcolor='f0e68c'><th colspan='[length(GLOB.supply_positions)]'><a href='?src=\ref[src];jobban3=supplydept;jobban4=\ref[M]'>Logistics Positions</a></th></tr><tr align='center'>"
 		for(var/jobPos in GLOB.supply_positions)
 			if(!jobPos)	continue
 			var/datum/job/job = job_master.GetJob(jobPos)
@@ -1271,6 +1271,7 @@
 				if((R_ADMIN|R_MOD|R_MENTOR) & X.holder.rights)
 					to_chat(X, take_msg)
 			to_chat(M, "<span class='notice'><b>Your message is being attended to by [usr.client]. Thanks for your patience!</b></span>")
+			post_webhook_event(WEBHOOK_ADMIN_PM, list("title"="Help is nolonger needed", "message"="Request for Help from **[key_name(M)]** is being tended to by **[key_name(usr)]**."))
 			adminhelps_unanswered--
 		else
 			to_chat(usr, "<span class='warning'>Unable to locate mob.</span>")

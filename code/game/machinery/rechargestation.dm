@@ -119,7 +119,7 @@
 		if(potato)
 			target = potato.cell
 
-	if(target && !target.fully_charged())
+	if(!target?.fully_charged())
 		var/diff = min(target.maxcharge - target.charge, charging_power * CELLRATE) // Capped by charging_power / tick
 		var/charge_used = cell.use(diff)
 		target.give(charge_used)

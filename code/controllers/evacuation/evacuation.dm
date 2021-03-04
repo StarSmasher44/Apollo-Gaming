@@ -15,7 +15,6 @@ var/datum/evacuation_controller/evacuation_controller
 	var/recall
 	var/auto_recall_time
 	var/emergency_evacuation
-	var/evacuation_reason = "" //Workaround for making the escape shuttle take a reason.
 
 	var/evac_prep_delay =   10 MINUTES
 	var/evac_launch_delay =  3 MINUTES
@@ -40,11 +39,14 @@ var/datum/evacuation_controller/evacuation_controller
 	var/datum/announcement/priority/evac_called =   new(0)
 	var/datum/announcement/priority/evac_recalled = new(0)
 
+	var/evacuation_reason = "Emergency"
+
 /datum/evacuation_controller/proc/auto_recall(var/_recall)
 	recall = _recall
 
 /datum/evacuation_controller/proc/set_up()
 	set waitfor=0
+	set background=1
 	return
 
 /datum/evacuation_controller/proc/get_cooldown_message()
@@ -59,13 +61,11 @@ var/datum/evacuation_controller/evacuation_controller
 
 	if(!can_evacuate(user, forced))
 		return 0
-	if(!evacuation_reason)
-		evacuation_reason = "N/A"
 
 	emergency_evacuation = _emergency_evac
 
 	var/evac_prep_delay_multiplier = 1
-	if(ticker && ticker.mode)
+	if(ticker?.mode)
 		evac_prep_delay_multiplier = ticker.mode.shuttle_delay
 
 	var/additional_delay
@@ -88,15 +88,14 @@ var/datum/evacuation_controller/evacuation_controller
 	state = EVAC_PREPPING
 
 	if(emergency_evacuation)
-		for(var/AS in all_areas)
-			if(istype(AS, /area/hallway))
-				var/area/A = AS
+		for(var/area/A in all_areas)
+			if(istype(A, /area/hallway))
 				A.readyalert()
 		if(!skip_announce)
 			GLOB.using_map.emergency_shuttle_called_announcement()
 	else
 		if(!skip_announce)
-			priority_announcement.Announce(replacetext(replacetext(GLOB.using_map.shuttle_called_message, "%dock_name%", "[GLOB.using_map.dock_name]"),  "%ETA%", "[round(get_eta()/60)] minute\s") + "Reason stated: [evacuation_reason]")
+			priority_announcement.Announce(replacetext(replacetext(GLOB.using_map.shuttle_called_message, "%dock_name%", "[GLOB.using_map.dock_name]"),  "%ETA%", "[round(get_eta()/60)] minute\s"))
 
 	return 1
 
@@ -117,9 +116,8 @@ var/datum/evacuation_controller/evacuation_controller
 
 	if(emergency_evacuation)
 		evac_recalled.Announce(GLOB.using_map.emergency_shuttle_recall_message)
-		for(var/AR in all_areas)
-			if(istype(AR, /area/hallway))
-				var/area/A = AR
+		for(var/area/A in all_areas)
+			if(istype(A, /area/hallway))
 				A.readyreset()
 		emergency_evacuation = 0
 	else
@@ -135,8 +133,6 @@ var/datum/evacuation_controller/evacuation_controller
 		evac_waiting.Announce(replacetext(GLOB.using_map.emergency_shuttle_docked_message, "%ETD%", "[estimated_time] minute\s"), new_sound = sound('sound/effects/Evacuation.ogg', volume = 35))
 	else
 		priority_announcement.Announce(replacetext(replacetext(GLOB.using_map.shuttle_docked_message, "%dock_name%", "[GLOB.using_map.dock_name]"),  "%ETD%", "[estimated_time] minute\s"))
-	if(config.announce_shuttle_dock_to_irc)
-		send2mainirc("The shuttle has docked with the station. It will depart in approximately [estimated_time] minute\s.")
 
 /datum/evacuation_controller/proc/launch_evacuation()
 
@@ -160,19 +156,19 @@ var/datum/evacuation_controller/evacuation_controller
 	if(state == EVAC_PREPPING && recall && world.time >= auto_recall_time)
 		cancel_evacuation()
 		return
-	switch(state)
-		if(EVAC_PREPPING)
-			if(world.time >= evac_ready_time)
-				finish_preparing_evac()
-		if(EVAC_LAUNCHING)
-			if(world.time >= evac_launch_time)
-				launch_evacuation()
-		if(EVAC_IN_TRANSIT)
-			if(world.time >= evac_arrival_time)
-				finish_evacuation()
-		if(EVAC_COOLDOWN)
-			if(world.time >= evac_cooldown_time)
-				state = EVAC_IDLE
+
+	if(state == EVAC_PREPPING)
+		if(world.time >= evac_ready_time)
+			finish_preparing_evac()
+	else if(state == EVAC_LAUNCHING)
+		if(world.time >= evac_launch_time)
+			launch_evacuation()
+	else if(state == EVAC_IN_TRANSIT)
+		if(world.time >= evac_arrival_time)
+			finish_evacuation()
+	else if(state == EVAC_COOLDOWN)
+		if(world.time >= evac_cooldown_time)
+			state = EVAC_IDLE
 
 /datum/evacuation_controller/proc/available_evac_options()
 	return list()

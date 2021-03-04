@@ -206,7 +206,7 @@
 
 /obj/item/device/radio/proc/autosay(var/message, var/from, var/channel) //BS12 EDIT
 	var/datum/radio_frequency/connection = null
-	if(channel && channels && channels.len > 0)
+	if(channel && channels?.len > 0)
 		if (channel == "department")
 			channel = channels[1]
 		connection = secure_radio_connections[channel]
@@ -227,7 +227,7 @@
 		return radio_connection
 
 	// Otherwise, if a channel is specified, look for it.
-	if(channels && channels.len > 0)
+	if(channels?.len > 0)
 		if (message_mode == "department") // Department radio shortcut
 			message_mode = channels[1]
 
@@ -242,7 +242,7 @@
 	//  Fix for permacell radios, but kinda eh about actually fixing them.
 	if(!M || !message) return 0
 
-	if(speaking && (speaking.flags & (NONVERBAL|SIGNLANG))) return 0
+	if((speaking?.flags & (NONVERBAL|SIGNLANG))) return 0
 
 	if(istype(M)) M.trigger_aiming(TARGET_CAN_RADIO)
 
@@ -736,7 +736,7 @@
 	invisibility = 101
 	listening = 0
 	canhear_range = 0
-	channels=list("Engineering" = 1, "Security" = 1, "Medical" = 1, "Command" = 1, "Common" = 1, "Science" = 1, "Supply" = 1, "Service" = 1, "Exploration" = 1)
+	channels=list("Engineering" = 1, "Security" = 1, "Medical" = 1, "Command" = 1, "Common" = 1, "Science" = 1, "Logistics" = 1, "Service" = 1, "Exploration" = 1)
 
 /obj/item/device/radio/announcer/Destroy()
 	crash_with("attempt to delete a [src.type] detected, and prevented.")

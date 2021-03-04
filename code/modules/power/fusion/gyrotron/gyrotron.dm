@@ -28,11 +28,11 @@ var/list/gyrotrons = list()
 /obj/machinery/power/emitter/gyrotron/Destroy()
 	gyrotrons -= src
 	return ..()
-/* Already done in control.
+
 /obj/machinery/power/emitter/gyrotron/Process()
 	active_power_usage = mega_energy * GYRO_POWER
 	. = ..()
-*/
+
 /obj/machinery/power/emitter/gyrotron/get_rand_burst_delay()
 	return rate*10
 

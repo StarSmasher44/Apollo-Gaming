@@ -67,7 +67,7 @@
 
 	if(code)
 		if(!paper_spawn_loc)
-			if(leader && leader.current)
+			if(leader?.current)
 				paper_spawn_loc = get_turf(leader.current)
 			else
 				paper_spawn_loc = get_turf(locate("landmark*Nuclear-Code"))
@@ -77,7 +77,7 @@
 			var/obj/item/weapon/paper/P = new(paper_spawn_loc)
 			P.info = "The nuclear authorization code is: <b>[code]</b>"
 			P.name = "nuclear bomb code"
-			if(leader && leader.current)
+			if(leader?.current)
 				if(get_turf(P) == get_turf(leader.current) && !(leader.current.l_hand && leader.current.r_hand))
 					leader.current.put_in_hands(P)
 
