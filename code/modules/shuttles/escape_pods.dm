@@ -29,7 +29,7 @@ var/list/escape_pods_by_name = list()
 			controller_master.pod = src
 
 /datum/shuttle/ferry/escape_pod/can_launch()
-	if(!arming_controller?.armed)	//must be armed
+	if(arming_controller && !arming_controller.armed)	//must be armed
 		return 0
 	if(location)
 		return 0	//it's a one-way trip.

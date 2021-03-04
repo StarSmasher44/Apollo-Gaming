@@ -39,8 +39,9 @@
 //	. = ..()
 
 	total_lighting_corners++
-	z = new_turf.z
+
 	t1 = new_turf
+	z = new_turf.z
 
 	var/vertical   = diagonal & ~(diagonal - 1) // The horizontal directions (4 and 8) are bigger than the vertical ones (1 and 2), so we can reliably say the lsb is the horizontal direction.
 	var/horizontal = diagonal & ~vertical       // Now that we know the horizontal one we can get the vertical one.
@@ -86,7 +87,6 @@
 
 	update_active()
 
-
 #define OVERLAY_PRESENT(T) (T?.lighting_overlay)
 
 /datum/lighting_corner/proc/update_active()
@@ -98,9 +98,6 @@
 
 // God that was a mess, now to do the rest of the corner code! Hooray!
 /datum/lighting_corner/proc/update_lumcount(var/delta_r, var/delta_g, var/delta_b)
-//	if ((abs(delta_r)+abs(delta_g)+abs(delta_b)) == 0)
-	if (!(delta_r || delta_g || delta_b)) // 0 is falsey ok
-		return
 
 	lum_r += delta_r
 	lum_g += delta_g
@@ -110,19 +107,6 @@
 		needs_update = TRUE
 		lighting_update_corners += src
 
-/*
-#define UPDATE_MASTER(T) \
-	if (T.lighting_overlay && !T.lighting_object.needs_update) { \
-			T.lighting_overlay.needs_update = TRUE; \
-			lighting_update_overlays += T.lighting_overlay; \
-	}
-*/
-#define UPDATE_MASTER(T) \
-	if (T?.lighting_overlay && !T.lighting_overlay.needs_update) { \
-			T.lighting_overlay.needs_update = TRUE; \
-			lighting_update_overlays += T.lighting_overlay; \
-	}
-/*
 #define UPDATE_MASTER(T) \
 	if (T?.lighting_overlay) { \
 		if (!T.lighting_overlay.needs_update) { \
@@ -130,7 +114,7 @@
 			lighting_update_overlays += T.lighting_overlay; \
 		} \
 	}
-*/
+
 /datum/lighting_corner/proc/update_overlays()
 	// Cache these values a head of time so 4 individual lighting overlays don't all calculate them individually.
 	var/lum_r = src.lum_r > 0 ? LIGHTING_MULT_FACTOR * sqrt(src.lum_r) : src.lum_r
