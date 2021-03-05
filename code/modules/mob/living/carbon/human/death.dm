@@ -61,7 +61,7 @@
 
 	callHook("death", list(src, gibbed))
 
-	if(ticker?.mode)
+	if(ticker && ticker.mode)
 		sql_report_death(src)
 		ticker.mode.check_win()
 

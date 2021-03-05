@@ -152,5 +152,5 @@
 									update_desc()
 									break
 							to_chat(user, desc)
-							if(P?.loc != src && !istype(P, /obj/item/stack/cable_coil))
+							if(P && P.loc != src && !istype(P, /obj/item/stack/cable_coil))
 								to_chat(user, "<span class='warning'>You cannot add that component to the machine!</span>")

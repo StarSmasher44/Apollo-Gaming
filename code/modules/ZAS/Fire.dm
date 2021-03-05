@@ -132,7 +132,7 @@ turf/proc/hotspot_expose(exposed_temperature, exposed_volume, soh = 0)
 
 	var/turf/simulated/my_tile = loc
 	if(!issimturf(my_tile) || !my_tile.zone)
-		if(my_tile?.fire == src)
+		if(my_tile && my_tile.fire == src)
 			my_tile.fire = null
 		RemoveFire()
 		return 1
@@ -338,7 +338,7 @@ datum/gas_mixture/proc/check_recombustability(list/fuel_objs)
 	if(!.)
 		return 0
 
-	if(fuel_objs?.len)
+	if(fuel_objs && fuel_objs.len)
 		return 1
 
 	. = 0

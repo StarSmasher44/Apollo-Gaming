@@ -76,7 +76,7 @@
 			to_chat(user, "There is already a seed loaded.")
 			return
 		var/obj/item/seeds/S =W
-		if(S?.seed.get_trait(TRAIT_IMMUTABLE) > 0)
+		if(S.seed && S.seed.get_trait(TRAIT_IMMUTABLE) > 0)
 			to_chat(user, "That seed is not compatible with our genetics technology.")
 		else
 			user.drop_from_inventory(W)
@@ -209,7 +209,7 @@
 		last_action = world.time
 		active = 1
 
-		if(seed?.seed)
+		if(seed && seed.seed)
 			genetics = seed.seed
 			degradation = 0
 

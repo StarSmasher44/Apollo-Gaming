@@ -94,7 +94,7 @@
 /obj/item/organ/internal/cell/replaced()
 	..()
 	// This is very ghetto way of rebooting an IPC. TODO better way.
-	if(owner?.stat == DEAD)
+	if(owner && owner.stat == DEAD)
 		owner.set_stat(CONSCIOUS)
 		owner.visible_message("<span class='danger'>\The [owner] twitches visibly!</span>")
 
@@ -141,7 +141,7 @@
 	stored_mmi.icon_state = "mmi_full"
 	icon_state = stored_mmi.icon_state
 
-	if(owner?.stat == DEAD)
+	if(owner && owner.stat == DEAD)
 		owner.set_stat(CONSCIOUS)
 		owner.switch_from_dead_to_living_mob_list()
 		owner.visible_message("<span class='danger'>\The [owner] twitches visibly!</span>")
@@ -153,7 +153,7 @@
 		parent.implants += transfer_and_delete()
 
 /obj/item/organ/internal/mmi_holder/removed()
-	if(owner?.mind)
+	if(owner && owner.mind)
 		persistantMind = owner.mind
 		if(owner.ckey)
 			ownerckey = owner.ckey

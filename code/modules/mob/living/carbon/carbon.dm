@@ -54,7 +54,7 @@
 			user.last_special = world.time + 50
 			src.visible_message("<span class='danger'>You hear something rumbling inside [src]'s stomach...</span>")
 			var/obj/item/I = user.get_active_hand()
-			if(I?.force)
+			if(I && I.force)
 				var/d = rand(round(I.force / 4), I.force)
 				if(ishuman(src))
 					var/mob/living/carbon/human/H = src
@@ -90,7 +90,7 @@
 		var/obj/item/organ/external/temp = H.organs_by_name[BP_R_HAND]
 		if (H.hand)
 			temp = H.organs_by_name[BP_L_HAND]
-		if(!temp?.is_usable())
+		if(temp && !temp.is_usable())
 			to_chat(H, "<span class='warning'>You can't use your [temp.name]</span>")
 			return
 

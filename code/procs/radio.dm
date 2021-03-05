@@ -47,7 +47,7 @@
 	return null
 
 /proc/check_signal(var/datum/signal/signal)
-	return signal?.data["done"]
+	return signal && signal.data["done"]
 
 /proc/get_sender_reception(var/atom/sender, var/datum/signal/signal)
 	return check_signal(signal) ? TELECOMMS_RECEPTION_SENDER : TELECOMMS_RECEPTION_NONE
@@ -55,7 +55,7 @@
 /proc/get_receiver_reception(var/receiver, var/datum/signal/signal)
 	if(receiver && check_signal(signal))
 		var/turf/pos = get_turf(receiver)
-		if(pos?.z in signal.data["level"])
+		if(pos && (pos.z in signal.data["level"]))
 			return TELECOMMS_RECEPTION_RECEIVER
 	return TELECOMMS_RECEPTION_NONE
 
@@ -68,7 +68,7 @@
 	var/datum/signal/signal = sender.telecomms_process(do_sleep)	// Be aware that this proc calls sleep, to simulate transmition delays
 	reception.telecomms_reception |= get_sender_reception(sender, signal)
 	reception.telecomms_reception |= get_receiver_reception(receiver, signal)
-	reception.message = signal?.data["compression"] > 0 ? Gibberish(message, signal.data["compression"] + 50) : message
+	reception.message = signal && signal.data["compression"] > 0 ? Gibberish(message, signal.data["compression"] + 50) : message
 
 	return reception
 

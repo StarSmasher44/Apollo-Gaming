@@ -233,7 +233,7 @@
 	if(stat & BROKEN)
 		return
 
-	if(user?.loc == src)
+	if(user && user.loc == src)
 		to_chat(usr, "<span class='warning'>You cannot reach the controls from inside.</span>")
 		return
 
@@ -396,7 +396,7 @@
 	var/datum/gas_mixture/env = L.return_air()
 
 	var/power_draw = -1
-	if(env?.temperature > 0)
+	if(env && env.temperature > 0)
 		var/transfer_moles = (PUMP_MAX_FLOW_RATE/env.volume)*env.total_moles	//group_multiplier is divided out here
 		power_draw = pump_gas(src, env, air_contents, transfer_moles, active_power_usage)
 
@@ -511,7 +511,7 @@
 		//Check for any living mobs trigger hasmob.
 		//hasmob effects whether the package goes to cargo or its tagged destination.
 		for(var/mob/living/M in D)
-			if(M?.stat != 2 && !is_drone(M))
+			if(M && M.stat != 2 && !is_drone(M))
 				hasmob = 1
 
 		//Checks 1 contents level deep. This means that players can be sent through disposals...
@@ -519,7 +519,7 @@
 		for(var/obj/O in D)
 			if(O.contents)
 				for(var/mob/living/M in O.contents)
-					if(M?.stat != 2 && !is_drone(M))
+					if(M && M.stat != 2 && !is_drone(M))
 						hasmob = 1
 
 		// now everything inside the disposal gets put into the holder
@@ -718,7 +718,7 @@
 		if(P)
 			// find other holder in next loc, if inactive merge it with current
 			var/obj/structure/disposalholder/H2 = locate() in P
-			if(!H2?.active)
+			if(H2 && !H2.active)
 				H.merge(H2)
 
 			H.forceMove(P)
@@ -1026,7 +1026,7 @@
 		if(P)
 			// find other holder in next loc, if inactive merge it with current
 			var/obj/structure/disposalholder/H2 = locate() in P
-			if(!H2?.active)
+			if(H2 && !H2.active)
 				H.merge(H2)
 
 			H.forceMove(P)
@@ -1076,7 +1076,7 @@
 		if(P)
 			// find other holder in next loc, if inactive merge it with current
 			var/obj/structure/disposalholder/H2 = locate() in P
-			if(!H2?.active)
+			if(H2 && !H2.active)
 				H.merge(H2)
 
 			H.forceMove(P)
@@ -1335,7 +1335,7 @@
 
 	if(P)
 		var/obj/structure/disposalholder/H2 = locate() in P
-		if(!H2?.active)
+		if(H2 && !H2.active)
 			H.merge(H2)
 
 		H.forceMove(P)
@@ -1430,7 +1430,7 @@
 		if(P)
 			// find other holder in next loc, if inactive merge it with current
 			var/obj/structure/disposalholder/H2 = locate() in P
-			if(!H2?.active)
+			if(H2 && !H2.active)
 				H.merge(H2)
 
 			H.forceMove(P)
@@ -1501,18 +1501,18 @@
 	/*
 	These shouldn't be required
 	var/obj/machinery/disposal/D = locate() in src.loc
-	if(D?.anchored)
+	if(D && D.anchored)
 		return
 
 	//Disposal outlet
 	var/obj/structure/disposaloutlet/O = locate() in src.loc
-	if(O?.anchored)
+	if(O && O.anchored)
 		return
 	*/
 
 	//Disposal constructors
 	var/obj/structure/disposalconstruct/C = locate() in src.loc
-	if(C?.anchored)
+	if(C && C.anchored)
 		return
 
 	var/turf/T = src.loc

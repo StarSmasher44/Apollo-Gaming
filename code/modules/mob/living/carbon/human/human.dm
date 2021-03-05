@@ -79,7 +79,7 @@
 			stat(null, "Phoron Stored: [P.stored_plasma]/[P.max_plasma]")
 
 		var/obj/item/organ/internal/cell/potato = internal_organs_by_name[BP_CELL]
-		if(potato?.cell)
+		if(potato && potato.cell)
 			stat("Battery charge:", "[potato.get_charge()]/[potato.cell.maxcharge]")
 
 		if(back && istype(back,/obj/item/weapon/rig))
@@ -381,7 +381,7 @@
 		var/obj/item/organ/external/list/standing = list()
 		for(var/limb_tag in list(BP_L_FOOT, BP_R_FOOT))
 			var/obj/item/organ/external/E = organs_by_name[limb_tag]
-			if(E?.is_usable())
+			if(E && E.is_usable())
 				standing[E.organ_tag] = E
 		if((def_zone == BP_L_FOOT || def_zone == BP_L_LEG) && standing[BP_L_FOOT])
 			floor_organ = standing[BP_L_FOOT]
@@ -395,7 +395,7 @@
 
 	var/obj/item/organ/external/list/to_shock = trace_shock(initial_organ, floor_organ)
 
-	if(to_shock?.len)
+	if(to_shock && to_shock.len)
 		shock_damage /= to_shock.len
 		shock_damage = round(shock_damage, 0.1)
 	else
@@ -417,7 +417,7 @@
 		return list(init)
 
 	for(var/obj/item/organ/external/E in list(floor, init))
-		while(E?.parent_organ)
+		while(E && E.parent_organ)
 			E = organs_by_name[E.parent_organ]
 			traced_organs += E
 			if(E == init)
@@ -888,7 +888,7 @@
 
 /mob/living/carbon/human/proc/is_lung_ruptured()
 	var/obj/item/organ/internal/lungs/L = internal_organs_by_name[BP_LUNGS]
-	return L?.is_bruised()
+	return L && L.is_bruised()
 
 /mob/living/carbon/human/proc/rupture_lung()
 	var/obj/item/organ/internal/lungs/L = internal_organs_by_name[BP_LUNGS]
@@ -1105,11 +1105,11 @@
 
 
 	// Rebuild the HUD. If they aren't logged in then login() should reinstantiate it for them.
-	if(client?.screen)
+	if(client && client.screen)
 		client.screen.len = null
 		InitializeHud()
 
-	if(config?.use_cortical_stacks && client?.prefs.has_cortical_stack)
+	if(config && config.use_cortical_stacks && client && client.prefs.has_cortical_stack)
 		create_stack()
 	full_prosthetic = null
 
@@ -1190,7 +1190,7 @@
 
 	. = CAN_INJECT
 	for(var/obj/item/clothing/C in list(head, wear_mask, wear_suit, w_uniform, gloves, shoes))
-		if((C?.body_parts_covered & affecting.body_part) && (C.item_flags & THICKMATERIAL))
+		if(C && (C.body_parts_covered & affecting.body_part) && (C.item_flags & THICKMATERIAL))
 			if(istype(C, /obj/item/clothing/suit/space))
 				. = INJECTION_PORT //it was going to block us, but it's a space suit so it doesn't because it has some kind of port
 			else
@@ -1262,7 +1262,7 @@
 /mob/living/carbon/human/has_eyes()
 	if(internal_organs_by_name[BP_EYES])
 		var/obj/item/organ/internal/eyes = internal_organs_by_name[BP_EYES]
-		if(eyes?.is_usable())
+		if(eyes && eyes.is_usable())
 			return 1
 	return 0
 
@@ -1274,7 +1274,7 @@
 /mob/living/carbon/human/check_slipmove()
 	if(h_style)
 		var/datum/sprite_accessory/hair/S = hair_styles_list[h_style]
-		if(S?.flags & HAIR_TRIPPABLE && prob(0.4))
+		if(S && S.flags & HAIR_TRIPPABLE && prob(0.4))
 			slip(S, 4)
 			return TRUE
 	return FALSE
@@ -1307,7 +1307,7 @@
 	var/list/limbs = list()
 	for(var/limb in organs_by_name)
 		var/obj/item/organ/external/current_limb = organs_by_name[limb]
-		if(current_limb?.dislocated > 0 && !current_limb.is_parent_dislocated()) //if the parent is also dislocated you will have to relocate that first
+		if(current_limb && current_limb.dislocated > 0 && !current_limb.is_parent_dislocated()) //if the parent is also dislocated you will have to relocate that first
 			limbs |= current_limb
 	var/obj/item/organ/external/current_limb = input(usr,"Which joint do you wish to relocate?") as null|anything in limbs
 
@@ -1342,7 +1342,7 @@
 
 
 /mob/living/carbon/human/can_stand_overridden()
-	if(wearing_rig?.ai_can_move_suit(check_for_ai = 1))
+	if(wearing_rig && wearing_rig.ai_can_move_suit(check_for_ai = 1))
 		// Actually missing a leg will screw you up. Everything else can be compensated for.
 		for(var/limbcheck in list(BP_L_LEG,BP_R_LEG))
 			var/obj/item/organ/affecting = get_organ(limbcheck)
@@ -1435,9 +1435,9 @@
 	else if(organ_check in list(BP_LIVER, BP_KIDNEYS))
 		affecting = organs_by_name[BP_GROIN]
 
-	if(affecting?.robotic >= ORGAN_ROBOT)
+	if(affecting && (affecting.robotic >= ORGAN_ROBOT))
 		return 0
-	return (species?.has_organ[organ_check])
+	return (species && species.has_organ[organ_check])
 
 /mob/living/carbon/human/can_feel_pain(var/obj/item/organ/check_organ)
 	if(isSynthetic())

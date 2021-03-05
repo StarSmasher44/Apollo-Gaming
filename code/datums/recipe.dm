@@ -52,7 +52,7 @@
 
 /datum/recipe/proc/check_fruit(var/obj/container)
 	. = 1
-	if(fruit?.len)
+	if(fruit && fruit.len)
 		var/list/checklist = list()
 		 // You should trust Copy().
 		checklist = fruit.Copy()
@@ -71,7 +71,7 @@
 
 /datum/recipe/proc/check_items(var/obj/container as obj)
 	. = 1
-	if (items?.len)
+	if (items && items.len)
 		var/list/checklist = list()
 		checklist = items.Copy() // You should really trust Copy
 		for(var/obj/O in container.InsertedContents())

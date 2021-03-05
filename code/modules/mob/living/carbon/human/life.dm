@@ -53,7 +53,7 @@
 	life_tick++
 
 	// This is not an ideal place for this but it will do for now.
-	if(wearing_rig?.offline)
+	if(wearing_rig && wearing_rig.offline)
 		wearing_rig = null
 
 	..()
@@ -115,7 +115,7 @@
 
 	var/pressure_adjustment_coefficient = 1 // Assume no protection at first.
 
-	if((wear_suit?.item_flags & STOPPRESSUREDAMAGE) && (head?.item_flags & STOPPRESSUREDAMAGE)) // Complete set of pressure-proof suit worn, assume fully sealed.
+	if(wear_suit && (wear_suit.item_flags & STOPPRESSUREDAMAGE) && head && (head.item_flags & STOPPRESSUREDAMAGE)) // Complete set of pressure-proof suit worn, assume fully sealed.
 		pressure_adjustment_coefficient = 0
 
 		// Handles breaches in your space suit. 10 suit damage equals a 100% loss of pressure protection.
@@ -247,7 +247,7 @@
 		// END DOGSHIT SNOWFLAKE
 
 		var/obj/item/organ/internal/diona/nutrients/rad_organ = locate() in internal_organs
-		if (!rad_organ?.is_broken())
+		if (rad_organ && !rad_organ.is_broken())
 			var/rads = radiation/25
 
 			radiation -= rads
@@ -307,11 +307,11 @@
 	/** breathing **/
 
 /mob/living/carbon/human/handle_chemical_smoke(var/datum/gas_mixture/environment)
-	if(wear_mask?.item_flags & BLOCK_GAS_SMOKE_EFFECT)
+	if(wear_mask && (wear_mask.item_flags & BLOCK_GAS_SMOKE_EFFECT))
 		return
-	if(glasses?.item_flags & BLOCK_GAS_SMOKE_EFFECT)
+	if(glasses && (glasses.item_flags & BLOCK_GAS_SMOKE_EFFECT))
 		return
-	if(head?.item_flags & BLOCK_GAS_SMOKE_EFFECT)
+	if(head && (head.item_flags & BLOCK_GAS_SMOKE_EFFECT))
 		return
 	..()
 
@@ -907,7 +907,7 @@
 				nutrition += 10
 
 /mob/living/carbon/human/proc/handle_changeling()
-	if(mind?.changeling)
+	if(mind && mind.changeling)
 		mind.changeling.regenerate()
 
 /mob/living/carbon/human/proc/handle_shock()
@@ -1096,7 +1096,7 @@
 	if (BITTEST(hud_updateflag, SPECIALROLE_HUD))
 		var/image/holder = hud_list[SPECIALROLE_HUD]
 		holder.icon_state = "hudblank"
-		if(mind?.special_role)
+		if(mind && mind.special_role)
 			if(GLOB.hud_icon_reference[mind.special_role])
 				holder.icon_state = GLOB.hud_icon_reference[mind.special_role]
 			else

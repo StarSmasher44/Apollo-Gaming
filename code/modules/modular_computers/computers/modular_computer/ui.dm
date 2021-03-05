@@ -120,10 +120,10 @@
 		data["PC_batterypercent"] = "N/C"
 		data["PC_showbatteryicon"] = battery_module ? 1 : 0
 
-	if(tesla_link?.enabled && apc_powered)
+	if(tesla_link && tesla_link.enabled && apc_powered)
 		data["PC_apclinkicon"] = "charging.gif"
 
-	if(network_card?.is_banned())
+	if(network_card && network_card.is_banned())
 		data["PC_ntneticon"] = "sig_warning.gif"
 	else
 		switch(get_ntnet_status())
@@ -143,7 +143,7 @@
 		program_headers.Add(list(list(
 			"icon" = P.ui_header
 		)))
-	if(active_program?.ui_header)
+	if(active_program && active_program.ui_header)
 		program_headers.Add(list(list(
 			"icon" = active_program.ui_header
 		)))

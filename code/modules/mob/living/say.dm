@@ -171,7 +171,7 @@ proc/get_radio_key_from_channel(var/channel)
 
 	// This is broadcast to all mobs with the language,
 	// irrespective of distance or anything else.
-	if(speaking?.flags & HIVEMIND)
+	if(speaking && (speaking.flags & HIVEMIND))
 		speaking.broadcast(src,trim(message))
 		return 1
 
@@ -189,7 +189,7 @@ proc/get_radio_key_from_channel(var/channel)
 
 	message = handle_autohiss(message, speaking)
 
-	if(!(speaking?.flags & NO_STUTTER))
+	if(!(speaking && (speaking.flags & NO_STUTTER)))
 		var/list/message_data = list(message, verb, 0)
 		if(handle_speech_problems(message_data))
 			message = message_data[1]

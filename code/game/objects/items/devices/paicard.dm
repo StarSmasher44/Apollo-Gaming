@@ -154,7 +154,7 @@
 				</td>
 			</table>
 		"}
-		if(!pai?.master_dna || !pai.master)
+		if(pai && (!pai.master_dna || !pai.master))
 			dat += {"
 				<table>
 					<td class="button">
@@ -321,13 +321,13 @@
 		qdel(src)
 
 /obj/item/device/paicard/see_emote(mob/living/M, text)
-	if(pai?.client && !pai.canmove)
+	if(pai && pai.client && !pai.canmove)
 		var/rendered = "<span class='message'>[text]</span>"
 		pai.show_message(rendered, 2)
 	..()
 
 /obj/item/device/paicard/show_message(msg, type, alt, alt_type)
-	if(pai?.client)
+	if(pai && pai.client)
 		var/rendered = "<span class='message'>[msg]</span>"
 		pai.show_message(rendered, type)
 	..()

@@ -177,7 +177,7 @@
 		var/obj/item/organ/external/temp = H.organs_by_name[BP_R_HAND]
 		if (user.hand)
 			temp = H.organs_by_name[BP_L_HAND]
-		if(!temp?.is_usable())
+		if(temp && !temp.is_usable())
 			to_chat(user, "<span class='notice'>You try to move your [temp.name], but cannot!</span>")
 			return
 		if(!temp)
@@ -309,7 +309,7 @@ var/list/global/slot_flags_enumeration = list(
 
 	var/mob/living/carbon/human/H = M
 	var/list/mob_equip = list()
-	if(H.species.hud?.equip_slots)
+	if(H.species.hud && H.species.hud.equip_slots)
 		mob_equip = H.species.hud.equip_slots
 
 	if(H.species && !(slot in mob_equip))
@@ -457,7 +457,7 @@ var/list/global/slot_flags_enumeration = list(
 	var/mob/living/carbon/human/H = M
 	if(ishuman(H))
 		for(var/obj/item/protection in list(H.head, H.wear_mask, H.glasses))
-			if(protection?.body_parts_covered & EYES)
+			if(protection && (protection.body_parts_covered & EYES))
 				// you can't stab someone in the eyes wearing a mask!
 				to_chat(user, "<span class='warning'>You're going to need to remove the eye covering first.</span>")
 				return
@@ -580,7 +580,7 @@ var/list/global/slot_flags_enumeration = list(
 	set category = "Object"
 
 	var/obj/item/I = get_active_hand()
-	if(I?.simulated)
+	if(I && I.simulated)
 		I.showoff(src)
 
 /*
@@ -722,7 +722,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 			if(!ret_overlay)
 				var/icon/final_I = new(mob_icon, icon_state = mob_state)
 				var/list/shifts = equip_adjusts[slot]
-				if(shifts?.len)
+				if(shifts && shifts.len)
 					var/shift_facing
 					for(shift_facing in shifts)
 						var/list/facing_list = shifts[shift_facing]

@@ -230,7 +230,7 @@
 		resetTarget()
 		lookForTargets()
 		if(will_patrol && !pulledby && !target)
-			if(patrol_path?.len)
+			if(patrol_path && patrol_path.len)
 				for(var/i = 1 to patrol_speed)
 					sleep(20 / (patrol_speed + 1))
 					handlePatrol()
@@ -305,7 +305,7 @@
 				minDist = get_dist(src, N)
 				targ = N
 
-	if(targ?.codes["next_patrol"])
+	if(targ && targ.codes["next_patrol"])
 		for(var/obj/machinery/navbeacon/N in navbeacons)
 			if(N.location == targ.codes["next_patrol"])
 				targ = N
@@ -321,7 +321,7 @@
 /mob/living/bot/proc/calcTargetPath()
 	target_path = AStar(get_turf(loc), get_turf(target), /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, max_target_dist, id = botcard, exclude = obstacle)
 	if(!target_path)
-		if(target?.loc)
+		if(target && target.loc)
 			ignore_list |= target
 		resetTarget()
 		obstacle = null

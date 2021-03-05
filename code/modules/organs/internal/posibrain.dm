@@ -136,7 +136,7 @@
 	update_icon()
 
 /obj/item/organ/internal/posibrain/update_icon()
-	if(src.brainmob?.key)
+	if(src.brainmob && src.brainmob.key)
 		icon_state = "posibrain-occupied"
 	else
 		icon_state = "posibrain"
@@ -146,7 +146,7 @@
 		overlays |= image('icons/obj/assemblies.dmi', "posibrain-shackles")
 
 /obj/item/organ/internal/posibrain/proc/transfer_identity(var/mob/living/carbon/H)
-	if(H?.mind)
+	if(H && H.mind)
 		brainmob.set_stat(CONSCIOUS)
 		H.mind.transfer_to(brainmob)
 		brainmob.name = H.real_name

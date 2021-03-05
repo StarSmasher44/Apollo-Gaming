@@ -168,13 +168,13 @@
 	return (speaking.can_speak_special(src) && (universal_speak || (speaking && speaking.flags & INNATE) || speaking in src.languages))
 
 /mob/proc/get_language_prefix()
-	if(client?.prefs.language_prefixes && client.prefs.language_prefixes.len)
+	if(client && client.prefs.language_prefixes && client.prefs.language_prefixes.len)
 		return client.prefs.language_prefixes[1]
 
 	return config.language_prefixes[1]
 
 /mob/proc/is_language_prefix(var/prefix)
-	if(client?.prefs.language_prefixes && client.prefs.language_prefixes.len)
+	if(client && client.prefs.language_prefixes && client.prefs.language_prefixes.len)
 		return prefix in client.prefs.language_prefixes
 
 	return prefix in config.language_prefixes

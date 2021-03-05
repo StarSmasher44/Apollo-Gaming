@@ -22,7 +22,7 @@
 	data["station_name"] = station_name()
 	data["manifest"] = html_crew_manifest()
 	data["assignments"] = show_assignments
-	if(program?.computer)
+	if(program && program.computer)
 		data["have_id_slot"] = !!program.computer.card_slot
 		data["have_printer"] = !!program.computer.nano_printer
 		data["authenticated"] = program.can_run(user)
@@ -35,7 +35,7 @@
 	data["mmode"] = mod_mode
 	data["centcom_access"] = is_centcom
 
-	if(program?.computer && program.computer.card_slot)
+	if(program && program.computer && program.computer.card_slot)
 		var/obj/item/weapon/card/id/id_card = program.computer.card_slot.stored_card
 		data["has_id"] = !!id_card
 		data["id_account_number"] = id_card ? id_card.associated_account_number : null

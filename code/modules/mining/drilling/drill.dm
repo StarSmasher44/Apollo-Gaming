@@ -241,7 +241,7 @@
 	else
 		anchored = 1
 
-	if(supports?.len >= braces_needed)
+	if(supports && supports.len >= braces_needed)
 		supported = 1
 
 	update_icon()
@@ -268,14 +268,14 @@
 	for(var/iy = 0,iy < 5, iy++)
 		for(var/ix = 0, ix < 5, ix++)
 			mine_turf = locate(tx + ix, ty + iy, T.z)
-			if(mine_turf?.has_resources)
+			if(mine_turf && mine_turf.has_resources)
 				resource_field += mine_turf
 
 	if(!resource_field.len)
 		system_error("resources depleted")
 
 /obj/machinery/mining/drill/proc/use_cell_power()
-	return cell?.checked_use(actual_power_usage * CELLRATE)
+	return cell && cell.checked_use(actual_power_usage * CELLRATE)
 
 /obj/machinery/mining/drill/verb/unload()
 	set name = "Unload Drill"
@@ -306,7 +306,7 @@
 	component_parts += new /obj/item/weapon/circuitboard/miningdrillbrace(src)
 
 /obj/machinery/mining/brace/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(connected?.active)
+	if(connected && connected.active)
 		to_chat(user, "<span class='notice'>You can't work with the brace of a running drill!</span>")
 		return
 

@@ -488,7 +488,7 @@ proc/isInSight(var/atom/A, var/atom/B)
 	while(candidates.len <= 0 && i < 5)
 		for(var/mob/observer/ghost/G in GLOB.player_list)
 			if(((G.client.inactivity/10)/60) <= buffer + i) // the most active players are more likely to become an alien
-				if(!(G.mind?.current && G.mind.current.stat != DEAD))
+				if(!(G.mind && G.mind.current && G.mind.current.stat != DEAD))
 					candidates += G.key
 		i++
 	return candidates
@@ -502,7 +502,7 @@ proc/isInSight(var/atom/A, var/atom/B)
 		for(var/mob/observer/ghost/G in GLOB.player_list)
 			if(MODE_XENOMORPH in G.client.prefs.be_special_role)
 				if(((G.client.inactivity/10)/60) <= ALIEN_SELECT_AFK_BUFFER + i) // the most active players are more likely to become an alien
-					if(!(G.mind?.current && G.mind.current.stat != DEAD))
+					if(!(G.mind && G.mind.current && G.mind.current.stat != DEAD))
 						candidates += G.key
 		i++
 	return candidates

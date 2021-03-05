@@ -402,7 +402,7 @@ swapmap
 	// this could be safely called for an obj or mob as well, but
 	// probably not an area
 	proc/Contains(turf/T)
-		return (T?.x>=x1 && T.x<=x2\
+		return (T && T.x>=x1 && T.x<=x2\
 		          && T.y>=y1 && T.y<=y2\
 		          && T.z>=z1 && T.z<=z2)
 

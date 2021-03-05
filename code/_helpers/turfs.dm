@@ -2,7 +2,7 @@
 // For example, using this on a disk, which is in a bag, on a mob, will return the mob because it's on the turf.
 /proc/get_atom_on_turf(var/atom/movable/M)
 	var/atom/mloc = M
-	while(mloc?.loc && !isturf(mloc.loc))
+	while(mloc && mloc.loc && !isturf(mloc.loc))
 		mloc = mloc.loc
 	return mloc
 
@@ -66,7 +66,7 @@
 */
 
 /proc/is_holy_turf(var/turf/T)
-	return T?.holy
+	return T && T.holy
 
 /proc/is_not_holy_turf(var/turf/T)
 	return !is_holy_turf(T)

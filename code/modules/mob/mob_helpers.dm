@@ -372,7 +372,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 				a_intent = intent_numeric((intent_numeric(a_intent)+1) % 4)
 			if("left")
 				a_intent = intent_numeric((intent_numeric(a_intent)+3) % 4)
-		if(hud_used?.action_intent)
+		if(hud_used && hud_used.action_intent)
 			hud_used.action_intent.icon_state = "intent_[a_intent]"
 
 	else if(isrobot(src))
@@ -383,7 +383,7 @@ var/list/intents = list(I_HELP,I_DISARM,I_GRAB,I_HURT)
 				a_intent = I_HURT
 			if("right","left")
 				a_intent = intent_numeric(intent_numeric(a_intent) - 3)
-		if(hud_used?.action_intent)
+		if(hud_used && hud_used.action_intent)
 			if(a_intent == I_HURT)
 				hud_used.action_intent.icon_state = I_HURT
 			else
@@ -428,9 +428,9 @@ proc/is_blind(A)
 		C = O
 	else if(istype(O, /datum/mind))
 		var/datum/mind/M = O
-		if(M.current?.client)
+		if(M.current && M.current.client)
 			C = M.current.client
-		else if(M.original?.client)
+		else if(M.original && M.original.client)
 			C = M.original.client
 
 	if(C)

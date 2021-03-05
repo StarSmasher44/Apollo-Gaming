@@ -58,7 +58,7 @@
 		chambered = loaded[1] //load next casing.
 		if(handle_casings != HOLD_CASINGS)
 			loaded -= chambered
-	else if(ammo_magazine?.stored_ammo.len)
+	else if(ammo_magazine && ammo_magazine.stored_ammo.len)
 		chambered = ammo_magazine.stored_ammo[ammo_magazine.stored_ammo.len]
 		if(handle_casings != HOLD_CASINGS)
 			ammo_magazine.stored_ammo -= chambered
@@ -225,7 +225,7 @@
 	var/bullets = 0
 	if(loaded)
 		bullets += loaded.len
-	if(ammo_magazine?.stored_ammo)
+	if(ammo_magazine && ammo_magazine.stored_ammo)
 		bullets += ammo_magazine.stored_ammo.len
 	if(chambered)
 		bullets += 1

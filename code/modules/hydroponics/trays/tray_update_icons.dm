@@ -85,7 +85,7 @@
 	overlays |= new_overlays
 
 	// Update bioluminescence.
-	if(seed?.get_trait(TRAIT_BIOLUM))
+	if(seed && seed.get_trait(TRAIT_BIOLUM))
 		set_light(round(seed.get_trait(TRAIT_POTENCY)/10), l_color = seed.get_trait(TRAIT_BIOLUM_COLOUR))
 	else
 		set_light(0)

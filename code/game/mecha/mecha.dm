@@ -235,7 +235,7 @@
 			to_chat(user, "It's heavily damaged.")
 		else
 			to_chat(user, "It's falling apart.")
-	if(equipment?.len)
+	if(equipment && equipment.len)
 		to_chat(user, "It's equipped with:")
 		for(var/obj/item/mecha_parts/mecha_equipment/ME in equipment)
 			to_chat(user, "\icon[ME] [ME]")
@@ -256,7 +256,7 @@
 /*
 /atom/DblClick(object,location,control,params)
 	var/mob/M = src.mob
-	if(M?.in_contents_of(/obj/mecha))
+	if(M && M.in_contents_of(/obj/mecha))
 
 		if(mech_click == world.time) return
 		mech_click = world.time
@@ -295,9 +295,9 @@
 		if (src.interface_action(target))
 			return
 	if(!target.Adjacent(src))
-		if(selected?.is_ranged())
+		if(selected && selected.is_ranged())
 			selected.action(target)
-	else if(selected?.is_melee())
+	else if(selected && selected.is_melee())
 		selected.action(target)
 	else
 		src.melee_action(target)
@@ -1049,7 +1049,7 @@
 	return
 
 /obj/mecha/proc/moved_inside(var/mob/living/carbon/human/H as mob)
-	if(H?.client && H in range(1))
+	if(H && H.client && H in range(1))
 		H.reset_view(src)
 		/*
 		H.client.perspective = EYE_PERSPECTIVE
@@ -1413,7 +1413,7 @@
 
 /obj/mecha/proc/occupant_message(message as text)
 	if(message)
-		if(src.occupant?.client)
+		if(src.occupant && src.occupant.client)
 			to_chat(src.occupant, "\icon[src] [message]")
 	return
 

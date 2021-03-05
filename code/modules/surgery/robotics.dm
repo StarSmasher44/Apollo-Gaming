@@ -288,7 +288,7 @@
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 
 	for(var/obj/item/organ/I in affected.internal_organs)
-		if(I?.damage > 0)
+		if(I && I.damage > 0)
 			if(I.robotic >= ORGAN_ROBOT)
 				user.visible_message("[user] starts mending the damage to [target]'s [I.name]'s mechanisms.", \
 				"You start mending the damage to [target]'s [I.name]'s mechanisms." )
@@ -301,7 +301,7 @@
 
 	for(var/obj/item/organ/I in affected.internal_organs)
 
-		if(I?.damage > 0)
+		if(I && I.damage > 0)
 			if(I.robotic >= ORGAN_ROBOT)
 				user.visible_message("<span class='notice'>[user] repairs [target]'s [I.name] with [tool].</span>", \
 				"<span class='notice'>You repair [target]'s [I.name] with [tool].</span>" )

@@ -395,7 +395,7 @@
 			return
 
 		var/adminrank = "Player"
-		if(usr?.client && usr.client.holder)
+		if(usr && usr.client && usr.client.holder)
 			adminrank = usr.client.holder.rank
 
 
@@ -444,7 +444,7 @@
 			return
 
 		var/adminrank = "Player"
-		if(usr?.client && usr.client.holder)
+		if(usr && usr.client && usr.client.holder)
 			adminrank = usr.client.holder.rank
 
 
@@ -515,7 +515,7 @@
 			return
 
 		var/adminrank = "Player"
-		if(usr?.client && usr.client.holder)
+		if(usr && usr.client && usr.client.holder)
 			adminrank = usr.client.holder.rank
 
 

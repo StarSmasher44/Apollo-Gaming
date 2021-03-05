@@ -421,7 +421,7 @@ The slots that you can use are found in items_clothing.dm and are the inventory 
 		else
 			var/turf_brightness = 1
 			var/turf/T = get_turf(H)
-			if(T?.lighting_overlay)
+			if(T && T.lighting_overlay)
 				turf_brightness = min(1, T.get_lumcount())
 			if(turf_brightness < 0.33)
 				light = 0

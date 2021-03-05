@@ -34,7 +34,7 @@
 
 /weakref/proc/resolve()
 	var/datum/D = locate(ref)
-	if(D?.weakref == src)
+	if(D && D.weakref == src)
 		return D
 	return null
 

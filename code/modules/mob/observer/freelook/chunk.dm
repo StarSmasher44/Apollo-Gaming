@@ -105,13 +105,13 @@
 /datum/chunk/proc/add_eye(mob/observer/eye/eye)
 	seenby += eye
 	eye.visibleChunks += src
-	if(eye.owner?.client)
+	if(eye.owner && eye.owner.client)
 		eye.owner.client.images += obscured
 
 /datum/chunk/proc/remove_eye(mob/observer/eye/eye)
 	seenby -= eye
 	eye.visibleChunks -= src
-	if(eye.owner?.client)
+	if(eye.owner && eye.owner.client)
 		eye.owner.client.images -= obscured
 
 // Updates the chunk, makes sure that it doesn't update too much. If the chunk isn't being watched it will
@@ -155,7 +155,7 @@
 			obscured -= obfuscation_image
 			for(var/eye in seenby)
 				var/mob/observer/eye/m = eye
-				if(m?.owner && m.owner.client)
+				if(m && m.owner && m.owner.client)
 					m.owner.client.images -= obfuscation_image
 
 	for(var/turf in visRemoved)
@@ -165,7 +165,7 @@
 			obscured += obfuscation_image
 			for(var/eye in seenby)
 				var/mob/observer/eye/m = eye
-				if(m?.owner && m.owner.client)
+				if(m && m.owner && m.owner.client)
 					m.owner.client.images += obfuscation_image
 
 	dirty = FALSE

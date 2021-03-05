@@ -1,17 +1,17 @@
 /mob/living/silicon/robot/slip_chance(var/prob_slip)
-	if(module?.no_slip)
+	if(module && module.no_slip)
 		return 0
 	..(prob_slip)
 
 /mob/living/silicon/robot/Check_Shoegrip()
-	if(module?.no_slip)
+	if(module && module.no_slip)
 		return 1
 	return 0
 
 /mob/living/silicon/robot/Allow_Spacemove()
 	if(module)
 		for(var/obj/item/weapon/tank/jetpack/J in module.modules)
-			if(J?.allow_thrust(0.01))
+			if(J && J.allow_thrust(0.01))
 				return 1
 	. = ..()
 

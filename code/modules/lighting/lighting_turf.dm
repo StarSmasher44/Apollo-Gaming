@@ -74,14 +74,14 @@
 // If an opaque movable atom moves around we need to potentially update visibility.
 /turf/Entered(var/atom/movable/Obj, var/atom/OldLoc)
 	. = ..()
-	if(Obj?.opacity)
+	if(Obj && Obj.opacity)
 		if(!opaque_counter++)
 			reconsider_lights()
 
 
 /turf/Exited(var/atom/movable/Obj, var/atom/newloc)
 	. = ..()
-	if(Obj?.opacity)
+	if(Obj && Obj.opacity)
 		if(!(--opaque_counter))
 			reconsider_lights()
 

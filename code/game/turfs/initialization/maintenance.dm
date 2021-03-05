@@ -61,7 +61,7 @@
 
 	for(var/dir in list(WEST, EAST))	// For the sake of efficiency, west wins over east in the case of 1-tile valid spots, rather than doing pick()
 		var/turf/neighbour = get_step(T, dir)
-		if(neighbour?.density)
+		if(neighbour && neighbour.density)
 			if(dir == WEST)
 				new /obj/effect/decal/cleanable/cobweb(T)
 			if(dir == EAST)

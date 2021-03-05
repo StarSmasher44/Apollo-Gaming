@@ -496,7 +496,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/observer/ghost/MayRespawn(var/feedback = 0, var/respawn_time = 0)
 	if(!client)
 		return 0
-	if(mind?.current && mind.current.stat != DEAD && can_reenter_corpse == CORPSE_CAN_REENTER)
+	if(mind && mind.current && mind.current.stat != DEAD && can_reenter_corpse == CORPSE_CAN_REENTER)
 		if(feedback)
 			to_chat(src, "<span class='warning'>Your non-dead body prevents you from respawning.</span>")
 		return 0
@@ -505,7 +505,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 			to_chat(src, "<span class='warning'>antagHUD restrictions prevent you from respawning.</span>")
 		return 0
 	if(!started_as_observer && client && client.prefs.permadeath)
-		if(mind?.current.stat == DEAD) //Permadeath and dead.
+		if(mind && mind.current.stat == DEAD) //Permadeath and dead.
 			to_chat(src, "<span class='warning'>Due to having perma-death enabled, respawns are disabled to prevent cheating.</span>")
 			return 0
 
@@ -570,7 +570,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	announce_ghost_joinleave(client, 0)
 
 	var/mob/new_player/M = new /mob/new_player()
-	if(src.mind && src.mind.original && src.mind.original.real_name)
+	if(src.mind && src.mind.original.real_name)
 		src.mind.original.real_name = M.old_name
 //		M.old_name = src.real_name
 

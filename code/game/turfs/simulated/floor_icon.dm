@@ -38,10 +38,10 @@ var/list/flooring_cache = list()
 					if(!(istype(T) && T.flooring && T.flooring.name == flooring.name))
 						overlays |= get_flooring_overlay("[flooring.icon_base]-corner-[diagonal]", "[flooring.icon_base]_corners", diagonal)
 
-		if(flooring.can_paint && decals?.len)
+		if(flooring.can_paint && decals && decals.len)
 			overlays |= decals
 
-	else if(decals?.len)
+	else if(decals && decals.len)
 		for(var/image/I in decals)
 			if(I.plane != ABOVE_PLATING_PLANE)
 				continue

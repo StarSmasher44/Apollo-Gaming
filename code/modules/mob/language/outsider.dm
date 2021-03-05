@@ -60,7 +60,7 @@
 
 /datum/language/ling/broadcast(var/mob/living/speaker,var/message,var/speaker_mask)
 
-	if(speaker.mind?.changeling)
+	if(speaker.mind && speaker.mind.changeling)
 		..(speaker,message,speaker.mind.changeling.changelingID)
 	else
 		..(speaker,message)

@@ -142,7 +142,7 @@
 	//Disfigured face
 	if(!skipface) //Disfigurement only matters for the head currently.
 		var/obj/item/organ/external/head/E = get_organ(BP_HEAD)
-		if(E?.disfigured) //Check to see if we even have a head and if the head's disfigured.
+		if(E && E.disfigured) //Check to see if we even have a head and if the head's disfigured.
 			if(E.species) //Check to make sure we have a species
 				msg += E.species.disfigure_msg(src)
 			else //Just in case they lack a species for whatever reason.
@@ -151,7 +151,7 @@
 	//splints
 	for(var/organ in list(BP_L_LEG, BP_R_LEG, BP_L_ARM, BP_R_ARM))
 		var/obj/item/organ/external/o = get_organ(organ)
-		if(o?.splinted && o.splinted.loc == o)
+		if(o && o.splinted && o.splinted.loc == o)
 			msg += "<span class='warning'>[T.He] [T.has] \a [o.splinted] on [T.his] [o.name]!</span>\n"
 
 	if(mSmallsize in mutations)

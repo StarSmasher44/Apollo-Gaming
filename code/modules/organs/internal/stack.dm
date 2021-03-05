@@ -31,7 +31,7 @@
 	invasive = 1
 
 /obj/item/organ/internal/stack/proc/do_backup()
-	if(owner?.stat != DEAD && !is_broken() && owner.mind)
+	if(owner && owner.stat != DEAD && !is_broken() && owner.mind)
 		languages = owner.languages.Copy()
 		backup = owner.mind
 		default_language = owner.default_language

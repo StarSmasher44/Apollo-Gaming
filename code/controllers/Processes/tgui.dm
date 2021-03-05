@@ -16,7 +16,7 @@ var/global/datum/controller/process/tgui/tgui_process
 /datum/controller/process/tgui/doWork()
 	for(var/gui in processing_uis)
 		var/datum/tgui/ui = gui
-		if(ui?.user && ui.src_object)
+		if(ui && ui.user && ui.src_object)
 			ui.process()
 			SCHECK
 			continue

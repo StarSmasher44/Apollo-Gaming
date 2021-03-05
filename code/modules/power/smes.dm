@@ -67,7 +67,7 @@
 	for(var/d in GLOB.cardinal)
 		var/turf/T = get_step(src, d)
 		for(var/obj/machinery/power/terminal/term in T)
-			if(term?.dir == turn(d, 180) && !term.master)
+			if(term && term.dir == turn(d, 180) && !term.master)
 				terminals |= term
 				term.master = src
 				term.connect_to_network()

@@ -156,7 +156,7 @@ proc/medical_scan_results(var/mob/living/carbon/human/H, var/verbose)
 
 	for(var/name in H.organs_by_name)
 		var/obj/item/organ/external/e = H.organs_by_name[name]
-		if(e?.status & ORGAN_BROKEN)
+		if(e && e.status & ORGAN_BROKEN)
 			. += "<span class='warning'>Bone fractures detected. Advanced scanner required for location.</span>"
 			break
 

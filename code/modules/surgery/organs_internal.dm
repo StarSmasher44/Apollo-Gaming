@@ -65,7 +65,7 @@
 	if(!affected || affected.how_open() < 2)
 		return
 	for(var/obj/item/organ/internal/I in affected.internal_organs)
-		if(I?.damage > 0 && I.robotic < ORGAN_ROBOT && (!I.status & ORGAN_DEAD || I.can_recover()) && (I.surface_accessible || affected.how_open() >= (affected.encased ? 3 : 2)))
+		if(I && I.damage > 0 && I.robotic < ORGAN_ROBOT && (!I.status & ORGAN_DEAD || I.can_recover()) && (I.surface_accessible || affected.how_open() >= (affected.encased ? 3 : 2)))
 			user.visible_message("[user] starts treating damage to [target]'s [I.name] with [tool_name].", \
 			"You start treating damage to [target]'s [I.name] with [tool_name]." )
 
@@ -85,7 +85,7 @@
 	if(!affected || affected.how_open() < 2)
 		return
 	for(var/obj/item/organ/internal/I in affected.internal_organs)
-		if(I?.damage > 0 && I.robotic < ORGAN_ROBOT && (I.surface_accessible || affected.how_open() >= (affected.encased ? SURGERY_ENCASED : SURGERY_RETRACTED)))
+		if(I && I.damage > 0 && I.robotic < ORGAN_ROBOT && (I.surface_accessible || affected.how_open() >= (affected.encased ? SURGERY_ENCASED : SURGERY_RETRACTED)))
 			if(I.status & ORGAN_DEAD && I.can_recover())
 				user.visible_message("<span class='notice'>[user] treats damage to [target]'s [I.name] with [tool_name], though it needs to be recovered further.</span>", \
 				"<span class='notice'>You treat damage to [target]'s [I.name] with [tool_name], though it needs to be recovered further.</span>" )
@@ -113,7 +113,7 @@
 		affected.take_damage(dam_amt, 0, (DAM_SHARP|DAM_EDGE), used_weapon = tool)
 
 	for(var/obj/item/organ/internal/I in affected.internal_organs)
-		if(I?.damage > 0 && I.robotic < ORGAN_ROBOT && (I.surface_accessible || affected.how_open() >= (affected.encased ? 3 : 2)))
+		if(I && I.damage > 0 && I.robotic < ORGAN_ROBOT && (I.surface_accessible || affected.how_open() >= (affected.encased ? 3 : 2)))
 			I.take_damage(dam_amt,0)
 
 //////////////////////////////////////////////////////////////////

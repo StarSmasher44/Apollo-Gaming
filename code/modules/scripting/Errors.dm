@@ -20,7 +20,7 @@
 		var/token/token
 		New(token/t)
 			token=t
-			if(t?.line) message="[t.line]: [message]"
+			if(t&&t.line) message="[t.line]: [message]"
 			if(istype(t))message+="[t.value]"
 			else message+="[t]"
 
@@ -48,7 +48,7 @@
 	ExpectedToken
 		message="Expected: '"
 		New(id, token/T)
-			if(T?.line) message="[T.line]: [message]"
+			if(T && T.line) message="[T.line]: [message]"
 			message+="[id]'. "
 			if(T)message+="Found '[T.value]'."
 

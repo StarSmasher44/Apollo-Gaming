@@ -10,7 +10,7 @@
 
 	for(var/path in paths)
 		var/datum/chemical_reaction/D = new path()
-		if(D?.required_reagents.len)
+		if(D.required_reagents && D.required_reagents.len)
 			var/reagent_id = D.required_reagents[1]
 			if(!chemical_reactions_list[reagent_id])
 				chemical_reactions_list[reagent_id] = list()
@@ -998,7 +998,7 @@
 	set waitfor = 0
 	..()
 	sleep(50)
-	if(!(holder.my_atom?.loc))
+	if(!(holder.my_atom && holder.my_atom.loc))
 		return
 
 	var/turf/location = get_turf(holder.my_atom)

@@ -30,7 +30,7 @@
 	// After that, remove ourselves from the mob seeing us, so we can qdel cleanly.
 	if(my_mob)
 		my_mob.ability_master = null
-		if(my_mob.client?.screen)
+		if(my_mob.client && my_mob.client.screen)
 			my_mob.client.screen -= src
 		my_mob = null
 /obj/screen/movable/ability_master/MouseDrop()
@@ -48,7 +48,7 @@
 /obj/screen/movable/ability_master/proc/toggle_open(var/forced_state = 0)
 	if(showing && (forced_state != 2)) // We are closing the ability master, hide the abilities.
 		for(var/obj/screen/ability/O in ability_objects)
-			if(my_mob?.client)
+			if(my_mob && my_mob.client)
 				my_mob.client.screen -= O
 //			O.handle_icon_updates = 0
 		showing = 0
@@ -80,13 +80,13 @@
 		var/xpos = x_position + (x_position < 8 ? 1 : -1)*(i%7)
 		var/ypos = y_position + (y_position < 8 ? round(i/7) : -round(i/7))
 		A.screen_loc = "[encode_screen_X(xpos)]:[x_pix],[encode_screen_Y(ypos)]:[y_pix]"
-		if(my_mob?.client)
+		if(my_mob && my_mob.client)
 			my_mob.client.screen += A
 //			A.handle_icon_updates = 1
 
 /obj/screen/movable/ability_master/proc/update_abilities(forced = 0, mob/user)
 	update_icon()
-	if(user?.client)
+	if(user && user.client)
 		if(!(src in user.client.screen))
 			user.client.screen += src
 	var/i = 1
@@ -152,7 +152,7 @@
 /obj/screen/movable/ability_master/proc/get_ability_by_spell(var/spell/s)
 	for(var/screen in spell_objects)
 		var/obj/screen/ability/spell/S = screen
-		if(S?.spell == s)
+		if(S && S.spell == s)
 			return S
 	return null
 
@@ -180,7 +180,7 @@
 /obj/screen/ability/Destroy()
 	if(ability_master)
 		ability_master.ability_objects -= src
-		if(ability_master.my_mob?.client)
+		if(ability_master.my_mob && ability_master.my_mob.client)
 			ability_master.my_mob.client.screen -= src
 	if(ability_master && !ability_master.ability_objects.len)
 		ability_master.update_icon()

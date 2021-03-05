@@ -150,7 +150,7 @@
 	var/drained_energy = 0
 
 	// First try to drain the power directly from attached power grid.
-	if(terminal?.powernet)
+	if(terminal && terminal.powernet)
 		terminal.powernet.trigger_warning()
 		drained_energy += terminal.powernet.draw_power(amount)
 
@@ -259,7 +259,7 @@
 		else
 			if (stat & MAINT)
 				to_chat(user, "The cover is closed. Something wrong with it: it doesn't work.")
-			else if (!hacker?.hacked_apcs_hidden)
+			else if (hacker && !hacker.hacked_apcs_hidden)
 				to_chat(user, "The cover is locked.")
 			else
 				to_chat(user, "The cover is closed.")
@@ -859,7 +859,7 @@
 		var/permit = 0 // Malfunction variable. If AI hacks APC it can control it even without AI control wire.
 		var/mob/living/silicon/ai/AI = user
 		var/mob/living/silicon/robot/robot = user
-		if(!hacker?.hacked_apcs_hidden)
+		if(hacker && !hacker.hacked_apcs_hidden)
 			if(hacker == AI)
 				permit = 1
 			else if(istype(robot) && robot.connected_ai && robot.connected_ai == hacker) // Cyborgs can use APCs hacked by their AI
@@ -1239,7 +1239,7 @@ obj/machinery/power/apc/proc/autoset(var/cur_state, var/on)
 /obj/machinery/power/apc/proc/overload_lighting(var/chance = 100)
 	if(/* !get_connection() || */ !operating || shorted)
 		return
-	if(cell?.charge>=20)
+	if( cell && cell.charge>=20)
 		cell.use(20);
 		for(var/obj/machinery/light/L in MyArea.machinecache)
 			if(prob(chance))
@@ -1248,7 +1248,7 @@ obj/machinery/power/apc/proc/autoset(var/cur_state, var/on)
 			stoplag(1)
 
 /obj/machinery/power/apc/proc/setsubsystem(val)
-	if(cell?.charge > 0)
+	if(cell && cell.charge > 0)
 		switch(val)
 			if(2) return POWERCHAN_ON_AUTO
 			if(1) return POWERCHAN_ON

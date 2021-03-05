@@ -82,7 +82,7 @@
 		interact(usr)
 
 /obj/item/weapon/implant/explosive/receive_signal(datum/signal/signal)
-	if(signal?.encryption == code)
+	if(signal && signal.encryption == code)
 		activate()
 
 /obj/item/weapon/implant/explosive/proc/set_frequency(new_frequency)

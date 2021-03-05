@@ -195,7 +195,7 @@
 			A.ex_act(hitpwr)
 
 	//then, ram the turf if it still exists
-	if(!T?.CanPass(src, src.loc, 0.5, 0))
+	if(T && !T.CanPass(src, src.loc, 0.5, 0))
 		T.ex_act(hitpwr)
 
 //process getting 'hit' by colliding with a dense object

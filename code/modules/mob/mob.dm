@@ -14,7 +14,7 @@
 			if(!istype(screenobj) || !screenobj.globalscreen)
 				qdel(screenobj)
 		client.screen = list()
-	if(mind?.current == src)
+	if(mind && mind.current == src)
 		spellremove(src)
 	ghostize()
 	..()
@@ -414,7 +414,7 @@
 
 	var/is_admin = 0
 
-	if(client.holder?.rights & R_ADMIN)
+	if(client.holder && (client.holder.rights & R_ADMIN))
 		is_admin = 1
 
 	if(is_admin && stat == DEAD)
@@ -604,7 +604,7 @@
 	return stat == DEAD
 
 /mob/proc/is_mechanical()
-	if(mind?.assigned_role == "Cyborg" || mind?.assigned_role == "AI")
+	if(mind && (mind.assigned_role == "Cyborg" || mind.assigned_role == "AI"))
 		return 1
 	return issilicon(src) || get_species() == SPECIES_IPC
 
@@ -631,7 +631,7 @@
 		return
 
 	if(statpanel("Status"))
-		if(ticker?.current_state != GAME_STATE_PREGAME)
+		if(ticker && ticker.current_state != GAME_STATE_PREGAME)
 			stat("Local Time", stationtime2text())
 			stat("Local Date", stationdate2text())
 			stat("Round Duration", roundduration2text())
@@ -746,7 +746,7 @@
 	if(!canface() || client.moving || world.time < client.move_delay)
 		return 0
 	set_dir(ndir)
-	if(buckled?.buckle_movable)
+	if(buckled && buckled.buckle_movable)
 		buckled.set_dir(ndir)
 	client.move_delay += movement_delay()
 	return 1
@@ -1077,7 +1077,7 @@ mob/proc/yank_out_object()
 	set desc = "Toggles whether or not you will be considered a candidate by an add-antag vote."
 	set category = "OOC"
 	if(isghostmind(src.mind) || isnewplayer(src))
-		if(ticker?.looking_for_antags)
+		if(ticker && ticker.looking_for_antags)
 			if(src.mind in ticker.antag_pool)
 				ticker.antag_pool -= src.mind
 				to_chat(usr, "You have left the antag pool.")
@@ -1092,7 +1092,7 @@ mob/proc/yank_out_object()
 	return (!alpha || !mouse_opacity || viewer.see_invisible < invisibility)
 
 /client/proc/check_has_body_select()
-	return mob?.hud_used && istype(mob.zone_sel, /obj/screen/zone_sel)
+	return mob && mob.hud_used && istype(mob.zone_sel, /obj/screen/zone_sel)
 
 /client/verb/body_toggle_head()
 	set name = "body-toggle-head"

@@ -75,7 +75,7 @@
 		return R.cell
 	if(istype(src.loc, /obj/item/rig_module))
 		var/obj/item/rig_module/module = src.loc
-		if(module.holder?.wearer)
+		if(module.holder && module.holder.wearer)
 			var/mob/living/carbon/human/H = module.holder.wearer
 			if(istype(H) && H.back)
 				var/obj/item/weapon/rig/suit = H.back

@@ -79,7 +79,7 @@
 	return 1
 
 /mob/living/silicon/sil_brainmob/statelaw(var/law, var/mob/living/L = src)
-	if(container?.owner)
+	if(container && container.owner)
 		L = container.owner
 	return ..(law, L)
 

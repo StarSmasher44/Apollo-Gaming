@@ -32,7 +32,7 @@ Macros:
 */
 
 // macro-ized to cut down on proc calls
-#define check(c) (c?.valid())
+#define check(c) (c && c.valid())
 
 /turf/var/tmp/connection_manager/connections
 

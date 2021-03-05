@@ -297,7 +297,7 @@
 			else
 				beepskyData["botstatus"] = list("loca" = null, "mode" = -1)
 			var/botsCount=0
-			if(SC.botlist?.len)
+			if(SC.botlist && SC.botlist.len)
 				for(var/mob/living/bot/B in SC.botlist)
 					botsCount++
 					if(B.loc)

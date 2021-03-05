@@ -189,11 +189,11 @@ steam.start() -- spawns the effect
 	if (iscarbon(M))
 		return 0
 	if (M.internal != null)
-		if(M.wear_mask?.item_flags & AIRTIGHT)
+		if(M.wear_mask && (M.wear_mask.item_flags & AIRTIGHT))
 			return 0
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
-			if(H.head?.item_flags & AIRTIGHT)
+			if(H.head && (H.head.item_flags & AIRTIGHT))
 				return 0
 		return 0
 	return 1

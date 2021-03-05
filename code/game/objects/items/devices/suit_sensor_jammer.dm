@@ -206,7 +206,7 @@ obj/item/device/suit_sensor_jammer/ui_act(action, params)
 	if(!pos)
 		return FALSE
 	var/turf/T = get_turf(src)
-	return T?.z == pos.z && get_dist(T, pos) <= range
+	return T && T.z == pos.z && get_dist(T, pos) <= range
 
 #undef JAMMER_MAX_RANGE
 #undef JAMMER_POWER_CONSUMPTION
