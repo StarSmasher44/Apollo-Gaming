@@ -1264,7 +1264,7 @@
 	NC.update_icon()
 
 	var/datum/powernet/PN
-	if(last_piece && last_piece.d2 != chassis.dir)
+	if(last_piece?.d2 != chassis.dir)
 		last_piece.d1 = min(last_piece.d2, chassis.dir)
 		last_piece.d2 = max(last_piece.d2, chassis.dir)
 		last_piece.update_icon()

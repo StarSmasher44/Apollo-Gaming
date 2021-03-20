@@ -108,11 +108,11 @@
 			if(!gear)
 				continue
 			var/obj/item/voice_changer/changer = locate() in gear
-			if(changer && changer.active && changer.voice)
+			if(changer?.active && changer.voice)
 				voice_sub = changer.voice
 	if(voice_sub)
 		return voice_sub
-	if(mind && mind.changeling && mind.changeling.mimicing)
+	if(mind?.changeling && mind.changeling.mimicing)
 		return mind.changeling.mimicing
 	if(GetSpecialVoice())
 		return GetSpecialVoice()

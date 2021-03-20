@@ -81,7 +81,7 @@
 
 /obj/item/weapon/anodevice/Process()
 	if(activated)
-		if(inserted_battery && inserted_battery.battery_effect && (inserted_battery.stored_charge > 0) )
+		if(inserted_battery?.battery_effect && (inserted_battery.stored_charge > 0) )
 			//make sure the effect is active
 			if(!inserted_battery.battery_effect.activated)
 				inserted_battery.battery_effect.ToggleActivate(1)

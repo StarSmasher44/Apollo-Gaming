@@ -160,7 +160,7 @@ obj/var/contaminated = 0
 turf/Entered(obj/item/I)
 	. = ..()
 	//Items that are in phoron, but not on a mob, can still be contaminated.
-	if(isitem(I) && vsc && vsc.plc.CLOTH_CONTAMINATION && I.can_contaminate())
+	if(isitem(I) && vsc?.plc.CLOTH_CONTAMINATION && I.can_contaminate())
 		var/datum/gas_mixture/env = return_air(1)
 		if(!env)
 			return

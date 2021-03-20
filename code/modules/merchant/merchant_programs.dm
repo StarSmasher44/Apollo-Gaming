@@ -66,7 +66,7 @@
 		return
 
 /datum/computer_file/program/merchant/proc/test_fire()
-	if(pad && pad.get_target())
+	if(pad?.get_target())
 		return 1
 	return 0
 

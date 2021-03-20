@@ -175,7 +175,7 @@ var/global/datum/controller/occupations/job_master
 
 	proc/ResetOccupations()
 		for(var/mob/new_player/player in GLOB.player_list)
-			if((player) && (player.mind))
+			if(player?.mind)
 				player.mind.assigned_role = null
 				player.mind.special_role = null
 		SetupOccupations()
@@ -392,7 +392,7 @@ var/global/datum/controller/occupations/job_master
 							loadout_taken_slots.Add(G.slot)
 
 			// do accessories last so they don't attach to a suit that will be replaced
-			if(H.char_rank && H.char_rank.accessory)
+			if(H.char_rank?.accessory)
 				for(var/accessory_path in H.char_rank.accessory)
 					var/list/accessory_data = H.char_rank.accessory[accessory_path]
 					if(islist(accessory_data))

@@ -380,7 +380,7 @@
 			chest.check_limb_support(wearer)
 
 	if(!offline)
-		if(cell && cell.charge > 0 && electrified > 0)
+		if(cell?.charge > 0 && electrified > 0)
 			electrified--
 
 		if(malfunction_delay > 0)
@@ -427,7 +427,7 @@
 		return 0
 
 	// This is largely for cancelling stealth and whatever.
-	if(mod && mod.disruptive)
+	if(mod?.disruptive)
 		for(var/obj/item/rig_module/module in (installed_modules - mod))
 			if(module.active && module.disruptable)
 				module.deactivate()

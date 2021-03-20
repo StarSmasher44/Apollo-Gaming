@@ -687,7 +687,7 @@ var/world_topic_spam_protect_time = world.timeofday
 		features += "~[n] player"
 
 
-	if (config && config.hostedby)
+	if (config?.hostedby)
 		features += "<b>[config.hostedby]</b>"
 
 	if (features)

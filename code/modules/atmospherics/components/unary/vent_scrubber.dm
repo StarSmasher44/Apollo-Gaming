@@ -77,7 +77,7 @@
 		var/turf/T = get_turf(src)
 		if(!isturf(T))
 			return
-		if(!T.is_plating() && node && node.level == 1 && istype(node, /obj/machinery/atmospherics/pipe))
+		if(!T.is_plating() && node?.level == 1 && istype(node, /obj/machinery/atmospherics/pipe))
 			return
 		else
 			if(node)

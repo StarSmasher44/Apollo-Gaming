@@ -120,7 +120,7 @@ proc/RadioChat(mob/living/user, message, distortion_chance = 60, distortion_spee
 					newletter = ""
 				distortion += 0.25 * distortion_speed
 			else if(prob(2 * distortion)) // Mishearing
-				if(language && language.syllables && prob(50))
+				if(language?.syllables && prob(50))
 					newletter = pick(language.syllables)
 				else
 					newletter =	pick("a","e","i","o","u")

@@ -570,7 +570,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	announce_ghost_joinleave(client, 0)
 
 	var/mob/new_player/M = new /mob/new_player()
-	if(src.mind && src.mind.original.real_name)
+	if(src.mind && src.mind.original?.real_name)
 		src.mind.original.real_name = M.old_name
 //		M.old_name = src.real_name
 

@@ -53,7 +53,7 @@
 /obj/item/rig_module/ai_container/Process()
 	if(integrated_ai)
 		var/obj/item/weapon/rig/rig = get_rig()
-		if(rig && rig.ai_override_enabled)
+		if(rig?.ai_override_enabled)
 			integrated_ai.get_rig_stats = 1
 		else
 			integrated_ai.get_rig_stats = 0
@@ -374,7 +374,7 @@
 /obj/item/rig_module/power_sink/deactivate()
 
 	if(interfaced_with)
-		if(holder && holder.wearer)
+		if(holder?.wearer)
 			to_chat(holder.wearer, "<span class = 'warning'>Your power sink retracts as the module deactivates.</span>")
 		drain_complete()
 	interfaced_with = null
@@ -429,7 +429,7 @@
 		return ..()
 
 	var/mob/living/carbon/human/H
-	if(holder && holder.wearer)
+	if(holder?.wearer)
 		H = holder.wearer
 
 	if(!H || !istype(H))

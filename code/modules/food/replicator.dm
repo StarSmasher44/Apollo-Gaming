@@ -142,7 +142,7 @@
 		start_making = 1
 
 /obj/machinery/food_replicator/Process()
-	if(queued_dishes && queued_dishes.len)
+	if(queued_dishes?.len)
 		if(start_making) //want to do this first so that the first dish won't instantly come out
 			src.audible_message("<b>\The [src]</b> rumbles and vibrates.")
 			playsound(src.loc, 'sound/machines/juicer.ogg', 50, 1)
@@ -150,7 +150,7 @@
 			start_making = 0
 		if(world.time > make_time)
 			dispense_food(queued_dishes[1])
-			if(queued_dishes && queued_dishes.len) //more to come
+			if(queued_dishes?.len) //more to come
 				queued_dishes -= queued_dishes[1]
 				start_making = 1
 	..()

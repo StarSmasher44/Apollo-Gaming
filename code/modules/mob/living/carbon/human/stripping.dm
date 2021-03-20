@@ -135,7 +135,7 @@
 /mob/living/carbon/human/proc/remove_splints(var/mob/living/user)
 	var/removed_splint = 0
 	for(var/obj/item/organ/external/o in organs)
-		if (o && o.splinted)
+		if (o?.splinted)
 			var/obj/item/S = o.splinted
 			if(!istype(S) || S.loc != o) //can only remove splints that are actually worn on the organ (deals with hardsuit splints)
 				to_chat(user, "<span class='warning'>You cannot remove any splints on [src]'s [o.name] - [o.splinted] is supporting some of the breaks.</span>")

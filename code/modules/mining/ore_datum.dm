@@ -6,7 +6,7 @@ var/global/list/ores_by_type = list()
 	return 1
 
 /proc/ensure_ore_data_initialised()
-	if(ore_data && ore_data.len) return
+	if(ore_data?.len) return
 
 	for(var/oretype in subtypesof(/ore))
 		var/ore/O = new oretype()

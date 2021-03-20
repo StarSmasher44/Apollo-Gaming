@@ -148,7 +148,7 @@
 
 /obj/item/rig_module/fabricator/energy_net/engage(atom/target)
 
-	if(holder && holder.wearer)
+	if(holder?.wearer)
 		if(..(target) && target)
 			holder.wearer.Beam(target,"n_beam",,10)
 		return 1
@@ -221,7 +221,7 @@
 	src.holder.set_light(0, 0, "#000000")
 
 	explosion(get_turf(src), explosion_values[1], explosion_values[2], explosion_values[3], explosion_values[4])
-	if(holder && holder.wearer)
+	if(holder?.wearer)
 		holder.wearer.drop_from_inventory(src)
 		qdel(holder)
 	qdel(src)

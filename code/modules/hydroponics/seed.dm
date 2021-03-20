@@ -148,12 +148,12 @@
 	if(!get_trait(TRAIT_STINGS))
 		return
 
-	if(chems && chems.len && target.reagents)
+	if(chems?.len && target.reagents)
 
 		var/obj/item/organ/external/affecting = pick(target.organs)
 
 		for(var/obj/item/clothing/C in list(target.head, target.wear_mask, target.wear_suit, target.w_uniform, target.gloves, target.shoes))
-			if(C && (C.body_parts_covered & affecting) && (C.item_flags & THICKMATERIAL))
+			if((C?.body_parts_covered & affecting) && (C.item_flags & THICKMATERIAL))
 				affecting = null
 
 		if(!(target.species && target.species.flags & (NO_EMBED|NO_MINOR_CUT)))	affecting = null
@@ -274,7 +274,7 @@
 	if(consume_gasses && consume_gasses.len)
 		var/missing_gas = 0
 		for(var/gas in consume_gasses)
-			if(environment && environment.gas && environment.gas[gas] && \
+			if(environment?.gas && environment.gas[gas] && \
 			 environment.gas[gas] >= consume_gasses[gas])
 				if(!check_only)
 					environment.adjust_gas(gas,-consume_gasses[gas],1)
@@ -293,7 +293,7 @@
 		health_change += rand(1,3) * HYDRO_SPEED_MULTIPLIER
 
 	// Handle gas production.
-	if(exude_gasses && exude_gasses.len && !check_only)
+	if(exude_gasses?.len && !check_only)
 		for(var/gas in exude_gasses)
 			environment.adjust_gas(gas, max(1,round((exude_gasses[gas]*(get_trait(TRAIT_POTENCY)/5))/exude_gasses.len)))
 

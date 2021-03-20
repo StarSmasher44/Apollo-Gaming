@@ -321,13 +321,13 @@
 		qdel(src)
 
 /obj/item/device/paicard/see_emote(mob/living/M, text)
-	if(pai && pai.client && !pai.canmove)
+	if(pai?.client && !pai.canmove)
 		var/rendered = "<span class='message'>[text]</span>"
 		pai.show_message(rendered, 2)
 	..()
 
 /obj/item/device/paicard/show_message(msg, type, alt, alt_type)
-	if(pai && pai.client)
+	if(pai?.client)
 		var/rendered = "<span class='message'>[msg]</span>"
 		pai.show_message(rendered, type)
 	..()

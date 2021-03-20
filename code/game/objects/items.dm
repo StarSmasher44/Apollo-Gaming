@@ -457,7 +457,7 @@ var/list/global/slot_flags_enumeration = list(
 	var/mob/living/carbon/human/H = M
 	if(ishuman(H))
 		for(var/obj/item/protection in list(H.head, H.wear_mask, H.glasses))
-			if(protection && (protection.body_parts_covered & EYES))
+			if(protection?.body_parts_covered & EYES)
 				// you can't stab someone in the eyes wearing a mask!
 				to_chat(user, "<span class='warning'>You're going to need to remove the eye covering first.</span>")
 				return
@@ -580,7 +580,7 @@ var/list/global/slot_flags_enumeration = list(
 	set category = "Object"
 
 	var/obj/item/I = get_active_hand()
-	if(I && I.simulated)
+	if(I?.simulated)
 		I.showoff(src)
 
 /*
@@ -722,7 +722,7 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 			if(!ret_overlay)
 				var/icon/final_I = new(mob_icon, icon_state = mob_state)
 				var/list/shifts = equip_adjusts[slot]
-				if(shifts && shifts.len)
+				if(shifts?.len)
 					var/shift_facing
 					for(shift_facing in shifts)
 						var/list/facing_list = shifts[shift_facing]

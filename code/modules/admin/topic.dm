@@ -2006,7 +2006,7 @@ mob/living/silicon/ai/can_centcom_reply()
 
 /mob/observer/ghost/extra_admin_link(var/source, var/prefix, var/sufix, var/short_links)
 	. = ..()
-	if(mind && (mind.current && !isghost(mind.current)))
+	if((mind?.current && !isghost(mind.current)))
 		. += "<A HREF='?[source];adminplayerobservefollow=\ref[mind.current]'>[prefix][short_links ? "B" : "BDY"][sufix]</A>"
 
 /proc/admin_jump_link(var/atom/target, var/source, var/delimiter = "|", var/prefix, var/sufix, var/short_links)
@@ -2022,7 +2022,7 @@ mob/living/silicon/ai/can_centcom_reply()
 	return
 
 /mob/get_admin_jump_link(var/atom/target, var/delimiter, var/prefix, var/sufix)
-	return client && client.get_admin_jump_link(target, delimiter, prefix, sufix)
+	return client?.get_admin_jump_link(target, delimiter, prefix, sufix)
 
 /client/get_admin_jump_link(var/atom/target, var/delimiter, var/prefix, var/sufix)
 	if(holder)

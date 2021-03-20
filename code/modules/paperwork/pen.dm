@@ -125,7 +125,7 @@
 	signature = sanitize(input("Enter new signature. Leave blank for 'Anonymous'", "New Signature", signature))
 
 /obj/item/weapon/pen/proc/get_signature(var/mob/user)
-	return (user && user.real_name) ? user.real_name : "Anonymous"
+	return (user?.real_name) ? user.real_name : "Anonymous"
 
 /obj/item/weapon/pen/chameleon/get_signature(var/mob/user)
 	return signature ? signature : "Anonymous"

@@ -110,7 +110,7 @@ var/global/datum/matchmaker/matchmaker = new()
 	finalized = 1
 	to_chat(holder.current,"<span class='warning'>You have finalized a connection with [other.holder].</span>")
 	to_chat(other.holder.current,"<span class='warning'>[holder] has finalized a connection with you.</span>")
-	if(other && other.finalized)
+	if(other?.finalized)
 		to_chat(holder.current,"<span class='warning'>Your connection with [other.holder] is now confirmed!</span>")
 		to_chat(other.holder.current,"<span class='warning'>Your connection with [holder] is now confirmed!</span>")
 		var/list/candidates = filter_list(GLOB.player_list, /mob/living/carbon/human)

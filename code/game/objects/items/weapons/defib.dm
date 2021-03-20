@@ -43,7 +43,7 @@
 	if(paddles) //in case paddles got destroyed somehow.
 		if(paddles.loc == src)
 			new_overlays += "[initial(icon_state)]-paddles"
-		if(bcell && bcell.check_charge(paddles.chargecost))
+		if(bcell?.check_charge(paddles.chargecost))
 			if(!paddles.safety)
 				new_overlays += "[initial(icon_state)]-emagged"
 			else

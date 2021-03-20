@@ -217,7 +217,7 @@ proc/blood_splatter(var/target,var/datum/reagent/blood/source,var/large,var/spra
 		B = new decal_type(T)
 
 	var/obj/effect/decal/cleanable/blood/drip/drop = B
-	if(istype(drop) && drips && drips.len && !large)
+	if(istype(drop) && drips?.len && !large)
 		drop.overlays |= drips
 		drop.drips |= drips
 

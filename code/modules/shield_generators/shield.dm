@@ -29,12 +29,12 @@
 
 
 /obj/effect/shield/update_icon()
-	if(gen && gen.check_flag(MODEFLAG_PHOTONIC) && !disabled_for && !diffused_for)
+	if(gen?.check_flag(MODEFLAG_PHOTONIC) && !disabled_for && !diffused_for)
 		set_opacity(1)
 	else
 		set_opacity(0)
 
-	if(gen && gen.check_flag(MODEFLAG_OVERCHARGE))
+	if(gen?.check_flag(MODEFLAG_OVERCHARGE))
 		icon_state = "shield_overcharged"
 	else
 		icon_state = "shield_normal"
@@ -259,7 +259,7 @@
 	update_explosion_resistance()
 
 /obj/effect/shield/proc/update_explosion_resistance()
-	if(gen && gen.check_flag(MODEFLAG_HYPERKINETIC))
+	if(gen?.check_flag(MODEFLAG_HYPERKINETIC))
 		explosion_resistance = INFINITY
 	else
 		explosion_resistance = 0

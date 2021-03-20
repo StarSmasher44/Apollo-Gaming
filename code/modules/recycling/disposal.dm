@@ -396,7 +396,7 @@
 	var/datum/gas_mixture/env = L.return_air()
 
 	var/power_draw = -1
-	if(env && env.temperature > 0)
+	if(env?.temperature > 0)
 		var/transfer_moles = (PUMP_MAX_FLOW_RATE/env.volume)*env.total_moles	//group_multiplier is divided out here
 		power_draw = pump_gas(src, env, air_contents, transfer_moles, active_power_usage)
 
@@ -511,7 +511,7 @@
 		//Check for any living mobs trigger hasmob.
 		//hasmob effects whether the package goes to cargo or its tagged destination.
 		for(var/mob/living/M in D)
-			if(M && M.stat != 2 && !is_drone(M))
+			if(M?.stat != 2 && !is_drone(M))
 				hasmob = 1
 
 		//Checks 1 contents level deep. This means that players can be sent through disposals...

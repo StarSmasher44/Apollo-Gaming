@@ -165,7 +165,7 @@
 /obj/item/mecha_parts/mecha_equipment/tool/sleeper/proc/get_available_reagents()
 	var/output
 	var/obj/item/mecha_parts/mecha_equipment/tool/syringe_gun/SG = locate(/obj/item/mecha_parts/mecha_equipment/tool/syringe_gun) in chassis
-	if(SG && SG.reagents && islist(SG.reagents.reagent_list))
+	if(SG?.reagents && islist(SG.reagents.reagent_list))
 		for(var/datum/reagent/R in SG.reagents.reagent_list)
 			if(R.volume > 0)
 				output += "<a href=\"?src=\ref[src];inject=\ref[R];source=\ref[SG]\">Inject [R.name]</a><br />"

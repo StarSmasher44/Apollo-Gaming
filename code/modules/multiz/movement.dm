@@ -52,7 +52,7 @@
 	return FALSE
 
 /mob/living/carbon/human/can_overcome_gravity()
-	return species && species.can_overcome_gravity(src)
+	return species?.can_overcome_gravity(src)
 
 /mob/observer/zMove(direction)
 	var/turf/destination = (direction == UP) ? GetAbove(src) : GetBelow(src)
@@ -195,7 +195,7 @@
 	return base_storage_cost(w_class)
 
 /mob/living/carbon/human/handle_fall_effect(var/turf/landing)
-	if(species && species.handle_fall_special(src, landing))
+	if(species?.handle_fall_special(src, landing))
 		return
 
 	..()

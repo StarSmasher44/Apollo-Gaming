@@ -6,7 +6,7 @@
 	set category = "Hardsuit"
 	set src = usr.contents
 
-	if(wearer && wearer.back == src)
+	if(wearer?.back == src)
 		ui_interact(usr)
 
 /obj/item/weapon/rig/verb/toggle_vision()

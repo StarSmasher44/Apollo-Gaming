@@ -158,7 +158,7 @@
 		set_density(1)
 		set_opacity(1)
 	else
-		layer = (seed && seed.force_layer) ? seed.force_layer : ABOVE_OBJ_LAYER
+		layer = (seed?.force_layer) ? seed.force_layer : ABOVE_OBJ_LAYER
 		set_density(0)
 
 	if(!growth_type && !floor)
@@ -189,7 +189,7 @@
 
 	for(var/wallDir in GLOB.cardinal)
 		var/turf/newTurf = get_step(T,wallDir)
-		if(newTurf && newTurf.density)
+		if(newTurf?.density)
 			direction |= wallDir
 
 	for(var/obj/effect/vine/shroom in T.contents)

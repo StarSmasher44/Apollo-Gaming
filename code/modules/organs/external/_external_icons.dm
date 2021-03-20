@@ -63,9 +63,9 @@ var/list/limb_icon_cache = list()
 	var/gender = "_m"
 	if(!gendered_icon)
 		gender = null
-	else if (dna && dna.GetUIState(DNA_UI_GENDER))
+	else if (dna?.GetUIState(DNA_UI_GENDER))
 		gender = "_f"
-	else if(owner && owner.gender == FEMALE)
+	else if(owner?.gender == FEMALE)
 		gender = "_f"
 
 	icon_state = "[icon_name][gender]"
@@ -172,7 +172,7 @@ var/list/robot_hud_colours = list("#ffffff","#cccccc","#aaaaaa","#888888","#6666
 			applying.Blend(rgb(-s_tone,  -s_tone,  -s_tone), ICON_SUBTRACT)
 		icon_cache_key += "_tone_[s_tone]"
 	else
-		if(s_col && s_col.len >= 3)
+		if(s_col?.len >= 3)
 			applying.Blend(rgb(s_col[1], s_col[2], s_col[3]), s_col_blend)
 			icon_cache_key += "_color_[s_col[1]]_[s_col[2]]_[s_col[3]]_[s_col_blend]"
 

@@ -186,7 +186,7 @@
 
 /obj/item/rig_module/mounted/energy_blade/Process()
 
-	if(holder && holder.wearer)
+	if(holder?.wearer)
 		if(!(locate(/obj/item/weapon/melee/energy/blade) in holder.wearer))
 			deactivate()
 			return 0

@@ -80,9 +80,9 @@
 
 // Only store attack logs if any of the involved subjects have (had) a client
 /proc/store_admin_attack_log(var/mob/attacker, var/mob/victim)
-	if(attacker && attacker.ckey)
+	if(attacker?.ckey)
 		return TRUE
-	if(victim && victim.ckey)
+	if(victim?.ckey)
 		return TRUE
 	return FALSE
 

@@ -108,7 +108,7 @@ var/religion_name = null
 			GLOB.using_map.station_name += pick("13","XIII","Thirteen")
 
 
-	if (config && config.server_name)
+	if (config?.server_name)
 		world.name = "[config.server_name]: [name]"
 	else
 		world.name = GLOB.using_map.station_name
@@ -118,7 +118,7 @@ var/religion_name = null
 /proc/world_name(var/name)
 	GLOB.using_map.station_name = name
 
-	if (config && config.server_name)
+	if (config?.server_name)
 		world.name = "[config.server_name]: [name]"
 	else
 		world.name = name

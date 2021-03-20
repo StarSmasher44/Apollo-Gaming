@@ -66,7 +66,7 @@
 */
 
 /proc/is_holy_turf(var/turf/T)
-	return T && T.holy
+	return T?.holy
 
 /proc/is_not_holy_turf(var/turf/T)
 	return !is_holy_turf(T)
@@ -78,7 +78,7 @@
 	return !turf_contains_dense_objects(T)
 
 /proc/is_station_turf(var/turf/T)
-	return T && isStationLevel(T.z)
+	return isStationLevel(T?.z)
 
 /proc/has_air(var/turf/T)
 	return !!T.return_air()

@@ -631,7 +631,7 @@
 		return
 
 	if(statpanel("Status"))
-		if(ticker && ticker.current_state != GAME_STATE_PREGAME)
+		if(ticker?.current_state != GAME_STATE_PREGAME)
 			stat("Local Time", stationtime2text())
 			stat("Local Date", stationdate2text())
 			stat("Round Duration", roundduration2text())
@@ -746,7 +746,7 @@
 	if(!canface() || client.moving || world.time < client.move_delay)
 		return 0
 	set_dir(ndir)
-	if(buckled && buckled.buckle_movable)
+	if(buckled?.buckle_movable)
 		buckled.set_dir(ndir)
 	client.move_delay += movement_delay()
 	return 1

@@ -155,7 +155,7 @@
 			obscured -= obfuscation_image
 			for(var/eye in seenby)
 				var/mob/observer/eye/m = eye
-				if(m && m.owner && m.owner.client)
+				if(m?.owner && m.owner.client)
 					m.owner.client.images -= obfuscation_image
 
 	for(var/turf in visRemoved)
@@ -165,7 +165,7 @@
 			obscured += obfuscation_image
 			for(var/eye in seenby)
 				var/mob/observer/eye/m = eye
-				if(m && m.owner && m.owner.client)
+				if(m?.owner && m.owner.client)
 					m.owner.client.images += obfuscation_image
 
 	dirty = FALSE

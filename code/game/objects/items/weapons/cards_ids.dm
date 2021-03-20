@@ -155,7 +155,7 @@ var/const/NO_EMAG_ACT = -50
 
 /obj/item/weapon/card/id/proc/update_name()
 	name = "[registered_name]'s ID Card"
-	if(military_rank && military_rank.name_short)
+	if(military_rank?.name_short)
 		name = military_rank.name_short + " " + name
 	if(assignment)
 		name = name + " ([assignment])"

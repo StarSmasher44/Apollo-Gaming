@@ -855,7 +855,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 //SYNDICATE FUNCTIONS===================================
 
 		if("Toggle Door")
-			if(cartridge && cartridge.access_remote_door)
+			if(cartridge?.access_remote_door)
 				for(var/obj/machinery/door/blast/M in button_machines)
 					if(M.id == cartridge.remote_door_id)
 						if(M.density)
@@ -864,7 +864,7 @@ var/global/list/obj/item/device/pda/PDAs = list()
 							M.close()
 
 		if("Detonate")//Detonate PDA... maybe
-			if(cartridge && cartridge.access_detonate_pda)
+			if(cartridge?.access_detonate_pda)
 				var/obj/item/device/pda/P = locate(href_list["target"])
 				var/datum/reception/reception = get_reception(src, P, "", do_sleep = 0)
 				if(!(reception.message_server && reception.telecomms_reception & TELECOMMS_RECEPTION_SENDER))

@@ -150,7 +150,7 @@
 	var/drained_energy = 0
 
 	// First try to drain the power directly from attached power grid.
-	if(terminal && terminal.powernet)
+	if(terminal?.powernet)
 		terminal.powernet.trigger_warning()
 		drained_energy += terminal.powernet.draw_power(amount)
 
@@ -1239,7 +1239,7 @@ obj/machinery/power/apc/proc/autoset(var/cur_state, var/on)
 /obj/machinery/power/apc/proc/overload_lighting(var/chance = 100)
 	if(/* !get_connection() || */ !operating || shorted)
 		return
-	if( cell && cell.charge>=20)
+	if(cell?.charge>=20)
 		cell.use(20);
 		for(var/obj/machinery/light/L in MyArea.machinecache)
 			if(prob(chance))
@@ -1248,7 +1248,7 @@ obj/machinery/power/apc/proc/autoset(var/cur_state, var/on)
 			stoplag(1)
 
 /obj/machinery/power/apc/proc/setsubsystem(val)
-	if(cell && cell.charge > 0)
+	if(cell?.charge > 0)
 		switch(val)
 			if(2) return POWERCHAN_ON_AUTO
 			if(1) return POWERCHAN_ON

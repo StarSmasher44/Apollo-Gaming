@@ -58,7 +58,7 @@
 	var/datum/turbolift_floor/floor
 
 /obj/structure/lift/button/Destroy()
-	if(floor && floor.ext_panel == src)
+	if(floor?.ext_panel == src)
 		floor.ext_panel = null
 	floor = null
 	return ..()

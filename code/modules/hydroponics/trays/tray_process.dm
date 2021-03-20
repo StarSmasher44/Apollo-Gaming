@@ -141,7 +141,7 @@
 		pestlevel += 0.1 * HYDRO_SPEED_MULTIPLIER
 
 	// Some seeds will self-harvest if you don't keep a lid on them.
-	if(seed && seed.can_self_harvest && harvest && !closed_system && prob(5))
+	if(seed?.can_self_harvest && harvest && !closed_system && prob(5))
 		harvest()
 
 	check_health(needs_icon_update)

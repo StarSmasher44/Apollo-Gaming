@@ -134,7 +134,7 @@ var/list/mining_floors = list()
 			M.selected.action(src)
 
 /turf/simulated/mineral/proc/MineralSpread()
-	if(mineral && mineral.spread)
+	if(mineral?.spread)
 		for(var/trydir in GLOB.cardinal)
 			if(prob(mineral.spread_chance))
 				var/turf/simulated/mineral/target_turf = get_step(src, trydir)
@@ -190,7 +190,7 @@ var/list/mining_floors = list()
 		var/newDepth = excavation_level + P.excavation_amount // Used commonly below
 		//handle any archaeological finds we might uncover
 		var/fail_message = ""
-		if(finds && finds.len)
+		if(finds?.len)
 			var/datum/find/F = finds[1]
 			if(newDepth > F.excavation_required) // Digging too deep can break the item. At least you won't summon a Balrog (probably)
 				fail_message = ". <b>[pick("There is a crunching noise","[W] collides with some different rock","Part of the rock face crumbles away","Something breaks under [W]")]</b>"
@@ -206,7 +206,7 @@ var/list/mining_floors = list()
 					artifact_debris()
 
 		if(do_after(user,P.digspeed, src))
-			if(finds && finds.len)
+			if(finds?.len)
 				var/datum/find/F = finds[1]
 				if(newDepth == F.excavation_required) // When the pick hits that edge just right, you extract your find perfectly, it's never confined in a rock
 					excavate_find(1, F)
@@ -239,7 +239,7 @@ var/list/mining_floors = list()
 			var/updateIcon = 0
 
 			//archaeo overlays
-			if(!archaeo_overlay && finds && finds.len)
+			if(!archaeo_overlay && finds?.len)
 				var/datum/find/F = finds[1]
 				if(F.excavation_required <= excavation_level + F.view_range)
 					archaeo_overlay = "overlay_archaeo[rand(1,3)]"
@@ -298,7 +298,7 @@ var/list/mining_floors = list()
 
 /turf/simulated/mineral/proc/GetDrilled(var/artifact_fail = 0)
 	//var/destroyed = 0 //used for breaking strange rocks
-	if (mineral && mineral.result_amount)
+	if (mineral?.result_amount)
 
 		//if the turf has already been excavated, some of it's ore has been removed
 		for (var/i = 1 to mineral.result_amount - mined_ore)

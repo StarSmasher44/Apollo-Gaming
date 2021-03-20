@@ -73,7 +73,7 @@
 		if(harvest)
 			new_overlays += status_overlays[6]
 
-	if((!density || !opacity) && seed && seed.get_trait(TRAIT_LARGE))
+	if((!density || !opacity) && seed?.get_trait(TRAIT_LARGE))
 		if(!mechanical)
 			set_density(1)
 		set_opacity(1)
@@ -85,7 +85,7 @@
 	overlays |= new_overlays
 
 	// Update bioluminescence.
-	if(seed && seed.get_trait(TRAIT_BIOLUM))
+	if(seed?.get_trait(TRAIT_BIOLUM))
 		set_light(round(seed.get_trait(TRAIT_POTENCY)/10), l_color = seed.get_trait(TRAIT_BIOLUM_COLOUR))
 	else
 		set_light(0)

@@ -15,9 +15,9 @@
 	var/turf/up = GetAbove(loc)
 	var/turf/down = GetBelow(loc)
 
-	if(start && start.CanZPass(src, DOWN))
+	if(start?.CanZPass(src, DOWN))
 		zlevel_neighbors += down
-	if(up && up.CanZPass(src, UP))
+	if(up?.CanZPass(src, UP))
 		zlevel_neighbors += up
 
 	return zlevel_neighbors
@@ -112,10 +112,10 @@
 	if(is_mature())
 		if(!buckled_mob)
 			var/mob/living/list/targets = targets_in_range()
-			if(targets && targets.len && prob(round(seed.get_trait(TRAIT_POTENCY)/4)))
+			if(targets?.len && prob(round(seed.get_trait(TRAIT_POTENCY)/4)))
 				entangle(pick(targets))
 
-		if(parent && parent.possible_children && neighbors.len && prob(spread_chance))
+		if(parent?.possible_children && neighbors.len && prob(spread_chance))
 			spread_to(pick(neighbors))
 			update_neighbors()
 

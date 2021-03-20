@@ -111,7 +111,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 /obj/item/clothing/mask/smokable/proc/smoke(amount)
 	smoketime -= amount
-	if(reagents && reagents.total_volume) // check if it has any reagents at all
+	if(reagents?.total_volume) // check if it has any reagents at all
 		if(ishuman(loc))
 			var/mob/living/carbon/human/C = loc
 			var/toxiccycle = C.check_head_coverage_airtight() //IT DOES NOT EVEN RETURN AN OBJECT YOU BAYSTATION NERDS

@@ -56,7 +56,7 @@
 
 	damage_threshold_value = round(max_damage / damage_threshold_count)
 	spawn(5)
-		if(brainmob && brainmob.client)
+		if(brainmob?.client)
 			brainmob.client.screen.len = null //clear the hud
 
 /obj/item/organ/internal/brain/Destroy()
@@ -80,7 +80,7 @@
 
 /obj/item/organ/internal/brain/examine(mob/user) // -- TLE
 	. = ..(user)
-	if(brainmob && brainmob.client)//if thar be a brain inside... the brain.
+	if(brainmob?.client)//if thar be a brain inside... the brain.
 		to_chat(user, "You can feel the small spark of life still left in this one.")
 	else
 		to_chat(user, "This one seems particularly lifeless. Perhaps it will regain some of its luster later..")

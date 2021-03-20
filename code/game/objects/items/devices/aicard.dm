@@ -143,13 +143,13 @@
 	ADD_ICON_QUEUE(src)
 
 /obj/item/weapon/aicard/see_emote(mob/living/M, text)
-	if(carded_ai && carded_ai.client)
+	if(carded_ai?.client)
 		var/rendered = "<span class='message'>[text]</span>"
 		carded_ai.show_message(rendered, 2)
 	..()
 
 /obj/item/weapon/aicard/show_message(msg, type, alt, alt_type)
-	if(carded_ai && carded_ai.client)
+	if(carded_ai?.client)
 		var/rendered = "<span class='message'>[msg]</span>"
 		carded_ai.show_message(rendered, type)
 	..()

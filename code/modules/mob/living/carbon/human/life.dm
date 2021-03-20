@@ -1,7 +1,7 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:32
 
 //NOTE: Breathing happens once per FOUR TICKS, unless the last breath fails. In which case it happens once per ONE TICK! So oxyloss healing is done once per 4 ticks while oxyloss damage is applied once per tick!
-#define HUMAN_MAX_OXYLOSS 3 //Defines how much oxyloss humans can get per tick. A tile with no air at all (such as space) applies this value, otherwise it's a percentage of it.
+#define HUMAN_MAX_OXYLOSS 4 //Defines how much oxyloss humans can get per tick. A tile with no air at all (such as space) applies this value, otherwise it's a percentage of it.
 
 #define HUMAN_CRIT_TIME_CUSHION (10 MINUTES) //approximate time limit to stabilize someone in crit
 #define HUMAN_CRIT_HEALTH_CUSHION (config.health_threshold_crit - config.health_threshold_dead)
@@ -53,7 +53,7 @@
 	life_tick++
 
 	// This is not an ideal place for this but it will do for now.
-	if(wearing_rig && wearing_rig.offline)
+	if(wearing_rig?.offline)
 		wearing_rig = null
 
 	..()
@@ -115,7 +115,7 @@
 
 	var/pressure_adjustment_coefficient = 1 // Assume no protection at first.
 
-	if(wear_suit && (wear_suit.item_flags & STOPPRESSUREDAMAGE) && head && (head.item_flags & STOPPRESSUREDAMAGE)) // Complete set of pressure-proof suit worn, assume fully sealed.
+	if((wear_suit?.item_flags & STOPPRESSUREDAMAGE) && (head?.item_flags & STOPPRESSUREDAMAGE)) // Complete set of pressure-proof suit worn, assume fully sealed.
 		pressure_adjustment_coefficient = 0
 
 		// Handles breaches in your space suit. 10 suit damage equals a 100% loss of pressure protection.
@@ -307,11 +307,11 @@
 	/** breathing **/
 
 /mob/living/carbon/human/handle_chemical_smoke(var/datum/gas_mixture/environment)
-	if(wear_mask && (wear_mask.item_flags & BLOCK_GAS_SMOKE_EFFECT))
+	if((wear_mask?.item_flags & BLOCK_GAS_SMOKE_EFFECT))
 		return
-	if(glasses && (glasses.item_flags & BLOCK_GAS_SMOKE_EFFECT))
+	if((glasses?.item_flags & BLOCK_GAS_SMOKE_EFFECT))
 		return
-	if(head && (head.item_flags & BLOCK_GAS_SMOKE_EFFECT))
+	if((head?.item_flags & BLOCK_GAS_SMOKE_EFFECT))
 		return
 	..()
 
@@ -907,7 +907,7 @@
 				nutrition += 10
 
 /mob/living/carbon/human/proc/handle_changeling()
-	if(mind && mind.changeling)
+	if(mind?.changeling)
 		mind.changeling.regenerate()
 
 /mob/living/carbon/human/proc/handle_shock()
@@ -1096,7 +1096,7 @@
 	if (BITTEST(hud_updateflag, SPECIALROLE_HUD))
 		var/image/holder = hud_list[SPECIALROLE_HUD]
 		holder.icon_state = "hudblank"
-		if(mind && mind.special_role)
+		if(mind?.special_role)
 			if(GLOB.hud_icon_reference[mind.special_role])
 				holder.icon_state = GLOB.hud_icon_reference[mind.special_role]
 			else

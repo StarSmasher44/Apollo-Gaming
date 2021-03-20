@@ -106,7 +106,7 @@
 
 /turf/space/Entered(atom/movable/A as mob|obj)
 	..()
-	if(A && A.loc == src && ticker && ticker.mode)
+	if(A?.loc == src && ticker?.mode)
 
 		// Okay, so let's make it so that people can travel z levels but not nuke disks!
 		// if(ticker.mode.name == "mercenary")	return
@@ -145,7 +145,7 @@
 			A.z = target_z
 			A.x = world.maxx - 2
 			spawn (0)
-				if ((A && A.loc))
+				if ((A?.loc))
 					A.loc.Entered(A)
 	else if (src.x >= world.maxx)
 		if(istype(A, /obj/effect/meteor))
@@ -171,7 +171,7 @@
 			A.z = target_z
 			A.x = 3
 			spawn (0)
-				if ((A && A.loc))
+				if ((A?.loc))
 					A.loc.Entered(A)
 	else if (src.y <= 1)
 		if(istype(A, /obj/effect/meteor))
@@ -196,7 +196,7 @@
 			A.z = target_z
 			A.y = world.maxy - 2
 			spawn (0)
-				if ((A && A.loc))
+				if ((A?.loc))
 					A.loc.Entered(A)
 
 	else if (src.y >= world.maxy)
@@ -222,7 +222,7 @@
 			A.z = target_z
 			A.y = 3
 			spawn (0)
-				if ((A && A.loc))
+				if ((A?.loc))
 					A.loc.Entered(A)
 	return
 

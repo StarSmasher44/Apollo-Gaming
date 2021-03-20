@@ -36,7 +36,7 @@
 
 
 /datum/event/prison_break/announce()
-	if(areas && areas.len > 0)
+	if(areas?.len > 0)
 		command_announcement.Announce("[pick("Gr3y.T1d3 virus","Malignant trojan")] detected in [station_name()] [(eventDept == "Security")? "imprisonment":"containment"] subroutines. Secure any compromised areas immediately. [station_name()] AI involvement is recommended.", "[eventDept] Alert")
 
 
@@ -45,7 +45,7 @@
 		if(is_type_in_list(A,areaType) && !is_type_in_list(A,areaNotType))
 			areas += A
 
-	if(areas && areas.len > 0)
+	if(areas?.len > 0)
 		var/my_department = "[station_name()] firewall subroutines"
 		var/rc_message = "An unknown malicious program has been detected in the [english_list(areaName)] lighting and airlock control systems at [stationtime2text()]. Systems will be fully compromised within approximately three minutes. Direct intervention is required immediately.<br>"
 		for(var/obj/machinery/message_server/MS in GLOB.message_servers)
@@ -59,12 +59,12 @@
 
 /datum/event/prison_break/tick()
 	if(activeFor == releaseWhen)
-		if(areas && areas.len > 0)
+		if(areas?.len > 0)
 			var/obj/machinery/power/apc/theAPC = null
 			for(var/AS in areas)
 				var/area/A = AS
 				theAPC = A.get_apc()
-				if(theAPC && theAPC.operating)	//If the apc's off, it's a little hard to overload the lights.
+				if(theAPC?.operating)	//If the apc's off, it's a little hard to overload the lights.
 					for(var/obj/machinery/light/L in A.machinecache)
 						L.flicker(10)
 

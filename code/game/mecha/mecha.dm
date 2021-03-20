@@ -235,7 +235,7 @@
 			to_chat(user, "It's heavily damaged.")
 		else
 			to_chat(user, "It's falling apart.")
-	if(equipment && equipment.len)
+	if(equipment?.len)
 		to_chat(user, "It's equipped with:")
 		for(var/obj/item/mecha_parts/mecha_equipment/ME in equipment)
 			to_chat(user, "\icon[ME] [ME]")
@@ -295,9 +295,9 @@
 		if (src.interface_action(target))
 			return
 	if(!target.Adjacent(src))
-		if(selected && selected.is_ranged())
+		if(selected?.is_ranged())
 			selected.action(target)
-	else if(selected && selected.is_melee())
+	else if(selected?.is_melee())
 		selected.action(target)
 	else
 		src.melee_action(target)

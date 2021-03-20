@@ -689,7 +689,7 @@ var/global/list/damage_icon_parts = list()
 	var/t_state = "[species.get_tail(src)]_once"
 
 	var/image/tail_overlay = overlays_standing[TAIL_LAYER]
-	if(tail_overlay && tail_overlay.icon_state == t_state)
+	if(tail_overlay?.icon_state == t_state)
 		return //let the existing animation finish
 
 	tail_overlay = set_tail_state(t_state)

@@ -8,7 +8,7 @@
 
 	if (isspace(loc)) return -1 // It's hard to be slowed down in space by... anything
 
-	if(embedded_flag || (stomach_contents && stomach_contents.len))
+	if(embedded_flag || (stomach_contents?.len))
 		handle_embedded_and_stomach_objects() //Moving with objects stuck in you can cause bad times.
 
 	if(CE_SPEEDBOOST in chem_effects)
@@ -116,6 +116,6 @@
 /mob/living/carbon/human/Check_Shoegrip()
 	if(species.flags & NO_SLIP)
 		return 1
-	if(shoes && (shoes.item_flags & NOSLIP) && istype(shoes, /obj/item/clothing/shoes/magboots))  //magboots + dense_object = no floating
+	if((shoes?.item_flags & NOSLIP) && istype(shoes, /obj/item/clothing/shoes/magboots))  //magboots + dense_object = no floating
 		return 1
 	return 0

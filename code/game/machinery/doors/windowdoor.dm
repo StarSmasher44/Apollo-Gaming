@@ -19,7 +19,7 @@
 /obj/machinery/door/window/Initialize()
 	. = ..()
 	update_nearby_tiles()
-	if (src.req_access && src.req_access.len)
+	if (src.req_access?.len)
 		src.icon_state = "[src.icon_state]"
 		src.base_state = src.icon_state
 	return

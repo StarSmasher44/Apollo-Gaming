@@ -11,7 +11,7 @@
 		to_chat(src, "<span class='notice'>You will no longer examine things you click on.</span>")
 
 /mob/observer/ghost/DblClickOn(var/atom/A, var/params)
-	if(can_reenter_corpse && mind && mind.current)
+	if(can_reenter_corpse && mind?.current)
 		if(A == mind.current || (mind.current in A)) // double click your corpse or whatever holds it
 			reenter_corpse()						// (cloning scanner, body bag, closet, mech, etc)
 			return
@@ -42,7 +42,7 @@
 /atom/proc/attack_ghost(mob/observer/ghost/user as mob)
 	if(!isghost(user))
 		return
-	if(user.client && user.client.inquisitive_ghost)
+	if(user.client?.inquisitive_ghost)
 		user.examinate(src)
 	return
 

@@ -81,7 +81,7 @@
 			pref.clientfps = Clamp(new_fps, CLIENT_MIN_FPS, CLIENT_MAX_FPS)
 
 			var/mob/target_mob = preference_mob()
-			if(target_mob && target_mob.client)
+			if(target_mob?.client)
 				target_mob.client.apply_fps(pref.clientfps)
 			return TOPIC_REFRESH
 

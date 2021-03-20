@@ -83,7 +83,7 @@ var/global/datum/controller/plants/plant_controller // Set in New().
 	var/list/gene_datums = decls_repository.get_decls_of_subtype(/decl/plantgene)
 	var/list/used_masks = list()
 	var/list/plant_traits = ALL_GENES
-	while(plant_traits && plant_traits.len)
+	while(plant_traits?.len)
 		var/gene_tag = pick(plant_traits)
 		var/gene_mask = "[uppertext(num2hex(rand(0,255)))]"
 
