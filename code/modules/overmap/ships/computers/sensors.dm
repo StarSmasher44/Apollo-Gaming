@@ -183,9 +183,9 @@
 	if(!use_power && health == 0)
 		return
 	if(!use_power) //need some juice to kickstart
-	update_icon()
 		use_power_oneoff(idle_power_usage*5)
 	update_use_power(!use_power)
+	ADD_ICON_QUEUE(src)
 
 /obj/machinery/shipsensors/Process()
 	..()

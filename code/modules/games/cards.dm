@@ -327,4 +327,4 @@
 
 			concealed = pick(0,1)	//Maybe up, maybe down.
 
-	update_icon()	//Automatically qdels if no card can be found.
+	ADD_ICON_QUEUE(src)	//Automatically qdels if no card can be found.

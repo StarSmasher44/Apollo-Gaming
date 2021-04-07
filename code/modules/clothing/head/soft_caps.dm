@@ -13,7 +13,7 @@
 /obj/item/clothing/head/soft/New()
 	..()
 	set_extension(src, /datum/extension/base_icon_state, /datum/extension/base_icon_state, icon_state)
-	update_icon()
+	ADD_ICON_QUEUE(src)
 
 /obj/item/clothing/head/soft/update_icon()
 	var/datum/extension/base_icon_state/bis = get_extension(src, /datum/extension/base_icon_state)

@@ -17,7 +17,7 @@
 	New()
 		..()
 		reagents.add_reagent(/datum/reagent/inaprovaline, 60)
-		update_icon()
+		ADD_ICON_QUEUE(src)
 
 
 /obj/item/weapon/reagent_containers/glass/bottle/robot/antitoxin
@@ -30,5 +30,5 @@
 	New()
 		..()
 		reagents.add_reagent(/datum/reagent/dylovene, 60)
-		update_icon()
+		ADD_ICON_QUEUE(src)
 

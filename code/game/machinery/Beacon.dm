@@ -47,6 +47,6 @@
 			if(Beacon.loc != loc)
 				Beacon.loc = loc
 
-		update_icon()
+		ADD_ICON_QUEUE(src)
 
 

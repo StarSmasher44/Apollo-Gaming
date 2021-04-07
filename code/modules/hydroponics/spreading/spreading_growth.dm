@@ -78,7 +78,7 @@
 			health -= seed.handle_environment(T,T.return_air(),null,1)
 		if(health < max_health)
 			health += 1
-			update_icon()
+			ADD_ICON_QUEUE(src)
 		if(health > max_health)
 			health = max_health
 		if(parent == src && health == max_health && !plant && issimturf(T) && !T.CanZPass(src, DOWN))
@@ -86,7 +86,7 @@
 			plant.dir = src.dir
 			plant.transform = src.transform
 			plant.age = seed.get_trait(TRAIT_MATURATION)-1
-			plant.update_icon()
+			ADD_ICON_QUEUE(plant)
 			if(growth_type==0) //Vines do not become invisible.
 				set_invisibility(INVISIBILITY_MAXIMUM)
 			else

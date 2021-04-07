@@ -13,7 +13,7 @@
 	for(var/obj/structure/catwalk/C in get_turf(src))
 		if(C != src)
 			qdel(C)
-	update_icon()
+	ADD_ICON_QUEUE(src)
 	redraw_nearby_catwalks()
 
 

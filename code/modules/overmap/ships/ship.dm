@@ -112,7 +112,7 @@
 		var/turf/newloc = locate(x + deltas[1], y + deltas[2], z)
 		if(newloc)
 			Move(newloc)
-		update_icon()
+		ADD_ICON_QUEUE(src)
 
 /obj/effect/overmap/ship/update_icon()
 	if(!is_still())

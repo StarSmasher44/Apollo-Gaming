@@ -418,7 +418,7 @@
 
 /obj/item/clothing/glasses/eyepatch/hud/Initialize()
 	.  = ..()
-	update_icon()
+	ADD_ICON_QUEUE(src)
 
 /obj/item/clothing/glasses/eyepatch/hud/attack_self()
 	..()

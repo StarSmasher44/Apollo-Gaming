@@ -367,7 +367,7 @@
 			else
 				for(var/i in 1 to (isnull(data)? 1 : data))
 					new item_path(src)
-		update_icon()
+		ADD_ICON_QUEUE(src)
 
 /obj/item/weapon/storage/emp_act(severity)
 	if(!isliving(src.loc))

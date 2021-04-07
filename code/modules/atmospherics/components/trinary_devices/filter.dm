@@ -270,5 +270,5 @@ obj/machinery/atmospherics/trinary/filter/m_filter/New()
 			node3 = target
 			break
 
-	update_icon()
+	ADD_ICON_QUEUE(src)
 	update_underlays()

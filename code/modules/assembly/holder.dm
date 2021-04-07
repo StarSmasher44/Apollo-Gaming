@@ -246,7 +246,7 @@
 		a_left = tmr
 		a_right = ign
 		secured = 1
-		update_icon()
+		ADD_ICON_QUEUE(src)
 		name = initial(name) + " ([tmr.time] secs)"
 
 		loc.verbs += /obj/item/device/assembly_holder/timer_igniter/verb/configure

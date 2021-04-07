@@ -44,7 +44,7 @@
 		S.tracker = 1
 		S.anchored = 1
 	S.loc = src
-	update_icon()
+	ADD_ICON_QUEUE(src)
 
 //updates the tracker icon and the facing angle for the control computer
 /obj/machinery/power/tracker/proc/set_angle(var/angle)

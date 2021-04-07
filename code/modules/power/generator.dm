@@ -131,7 +131,7 @@
 		genlev = 1
 	if(genlev != lastgenlev)
 		lastgenlev = genlev
-		update_icon()
+		ADD_ICON_QUEUE(src)
 	add_avail(effective_gen)
 
 /obj/machinery/power/generator/attack_ai(mob/user)

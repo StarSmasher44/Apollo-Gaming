@@ -167,7 +167,7 @@
 						qdel(src)
 		*/
 
-		update_icon()
+		ADD_ICON_QUEUE(src)
 
 
 	proc/magnetic_process() // proc that actually does the pulling

@@ -122,7 +122,7 @@
 	..()
 	for(var/T in starts_with)
 		reagents.add_reagent(T, starts_with[T])
-	update_icon()
+	ADD_ICON_QUEUE(src)
 	return
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/attack(mob/M as mob, mob/user as mob)

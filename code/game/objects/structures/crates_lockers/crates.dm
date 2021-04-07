@@ -80,7 +80,7 @@ obj/structure/closet/crate
 
 /obj/structure/closet/crate/secure/Initialize()
 	. = ..()
-	update_icon()
+	ADD_ICON_QUEUE(src)
 
 /obj/structure/closet/crate/secure/update_icon()
 	..()

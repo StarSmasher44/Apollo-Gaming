@@ -34,7 +34,7 @@
 		init(H)
 	robotize()
 	unshackle()
-	update_icon()
+	ADD_ICON_QUEUE(src)
 
 /obj/item/organ/internal/posibrain/proc/init(var/mob/living/carbon/H)
 	brainmob = new(src)

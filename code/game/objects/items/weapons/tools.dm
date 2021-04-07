@@ -199,7 +199,7 @@
 		tank = new tank
 
 	set_extension(src, /datum/extension/base_icon_state, /datum/extension/base_icon_state, icon_state)
-	update_icon()
+	ADD_ICON_QUEUE(src)
 
 	. = ..()
 

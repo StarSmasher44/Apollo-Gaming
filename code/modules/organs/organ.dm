@@ -69,7 +69,7 @@ var/list/organ_cache = list()
 	create_reagents(5 * (w_class-1)**2)
 	reagents.add_reagent(/datum/reagent/nutriment/protein, reagents.maximum_volume)
 
-	update_icon()
+	ADD_ICON_QUEUE(src)
 
 /obj/item/organ/proc/set_dna(var/datum/dna/new_dna)
 	if(new_dna)

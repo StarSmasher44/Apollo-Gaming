@@ -29,7 +29,7 @@ var/global/list/stool_cache = list() //haha stool
 		qdel(src)
 		return
 	force = round(material.get_blunt_damage()*0.4)
-	update_icon()
+	ADD_ICON_QUEUE(src)
 
 /obj/item/weapon/stool/padded/New(var/newloc, var/new_material)
 	..(newloc, "steel", "carpet")

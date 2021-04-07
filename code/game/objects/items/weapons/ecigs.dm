@@ -86,7 +86,7 @@ obj/item/clothing/mask/smokable/ecig/deluxe/examine(mob/user)
 		src.visible_message("<span class='notice'>\The [src] powered down automatically.</span>", null, 2)
 		active=0//autodisable the cigarette
 		STOP_PROCESSING(SSobj, src)
-		update_icon()
+		ADD_ICON_QUEUE(src)
 		return
 
 	idle ++
@@ -99,7 +99,7 @@ obj/item/clothing/mask/smokable/ecig/deluxe/examine(mob/user)
 				to_chat(C, "<span class='notice'>There is no liquid left in \the [src], so you shut it down.</span>")
 			active=0//autodisable the cigarette
 			STOP_PROCESSING(SSobj, src)
-			update_icon()
+			ADD_ICON_QUEUE(src)
 			return
 
 		if (src == C.wear_mask && C.check_has_mouth()) //transfer, but only when not disabled

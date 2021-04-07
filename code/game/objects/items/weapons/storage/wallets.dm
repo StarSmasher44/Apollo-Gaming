@@ -111,7 +111,7 @@
 /obj/item/weapon/storage/wallet/poly/New()
 	..()
 	color = get_random_colour()
-	update_icon()
+	ADD_ICON_QUEUE(src)
 
 /obj/item/weapon/storage/wallet/poly/verb/change_color()
 	set name = "Change Wallet Color"

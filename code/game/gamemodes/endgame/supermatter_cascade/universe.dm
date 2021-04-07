@@ -79,7 +79,8 @@ AUTOMATED ALERT: Link to [command_name()] lost.
 	for(var/area/A in all_areas)
 		if(!isarea(A) || isspacearea(A) || istype(A,/area/beach))
 			continue
-		A.update_icon()
+		ADD_ICON_QUEUE(A)
+
 		CHECK_TICK
 
 /datum/universal_state/supermatter_cascade/OverlayAndAmbientSet()

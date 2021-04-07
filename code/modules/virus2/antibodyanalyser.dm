@@ -54,12 +54,12 @@
 			container.forceMove(get_turf(src))
 			container = null
 
-			update_icon()
+			ADD_ICON_QUEUE(src)
 
 	else if(container && !scanning && !pause)
 		if(container.reagents.has_reagent(/datum/reagent/antibodies))
 			scanning = 5
-			update_icon()
+			ADD_ICON_QUEUE(src)
 		else
 			container.forceMove(get_turf(src))
 			container = null

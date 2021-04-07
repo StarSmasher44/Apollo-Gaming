@@ -17,7 +17,7 @@
 	..()
 	bcolor = blcolor
 	blood = nblood
-	update_icon()
+	ADD_ICON_QUEUE(src)
 
 /obj/effect/rune/update_icon()
 	overlays.Cut()

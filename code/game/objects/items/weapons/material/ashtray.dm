@@ -16,7 +16,7 @@ var/global/list/ashtray_cache = list()
 		qdel(src)
 		return
 	max_butts = round(material.hardness/10) //This is arbitrary but whatever.
-	update_icon()
+	ADD_ICON_QUEUE(src)
 
 /obj/item/weapon/material/ashtray/update_icon()
 	color = null

@@ -32,7 +32,7 @@
 		return
 	if(new_padding_material)
 		padding_material = get_material_by_name(new_padding_material)
-	update_icon()
+	ADD_ICON_QUEUE(src)
 
 /obj/structure/bed/get_material()
 	return material

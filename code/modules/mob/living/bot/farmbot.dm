@@ -190,7 +190,7 @@
 		busy = 0
 		action = ""
 		update_icons()
-		T.update_icon()
+		ADD_ICON_QUEUE(T)
 	else if(istype(A, /obj/structure/sink))
 		if(!tank || tank.reagents.total_volume >= tank.reagents.maximum_volume)
 			return

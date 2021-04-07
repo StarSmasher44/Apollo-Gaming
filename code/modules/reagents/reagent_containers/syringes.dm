@@ -33,7 +33,7 @@
 
 	dropped(mob/user)
 		..()
-		update_icon()
+		ADD_ICON_QUEUE(src)
 
 	attack_self(mob/user as mob)
 
@@ -294,7 +294,7 @@
 		..()
 		reagents.add_reagent(/datum/reagent/inaprovaline, 15)
 		mode = SYRINGE_INJECT
-		update_icon()
+		ADD_ICON_QUEUE(src)
 
 /obj/item/weapon/reagent_containers/syringe/antitoxin
 	name = "Syringe (anti-toxin)"
@@ -303,7 +303,7 @@
 		..()
 		reagents.add_reagent(/datum/reagent/dylovene, 15)
 		mode = SYRINGE_INJECT
-		update_icon()
+		ADD_ICON_QUEUE(src)
 
 /obj/item/weapon/reagent_containers/syringe/antiviral
 	name = "Syringe (spaceacillin)"
@@ -312,7 +312,7 @@
 		..()
 		reagents.add_reagent(/datum/reagent/spaceacillin, 15)
 		mode = SYRINGE_INJECT
-		update_icon()
+		ADD_ICON_QUEUE(src)
 
 /obj/item/weapon/reagent_containers/syringe/drugs
 	name = "Syringe (drugs)"
@@ -323,14 +323,14 @@
 		reagents.add_reagent(/datum/reagent/mindbreaker,  5)
 		reagents.add_reagent(/datum/reagent/cryptobiolin, 5)
 		mode = SYRINGE_INJECT
-		update_icon()
+		ADD_ICON_QUEUE(src)
 
 /obj/item/weapon/reagent_containers/syringe/ld50_syringe/choral
 	New()
 		..()
 		reagents.add_reagent(/datum/reagent/chloralhydrate, 60)
 		mode = SYRINGE_INJECT
-		update_icon()
+		ADD_ICON_QUEUE(src)
 
 /obj/item/weapon/reagent_containers/syringe/steroid
 	name = "Syringe (anabolic steroids)"

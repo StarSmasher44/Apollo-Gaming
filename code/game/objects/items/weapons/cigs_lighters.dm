@@ -163,7 +163,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 			return
 		flags &= ~NOREACT // allowing reagents to react after being lit
 		reagents.process_reactions()
-		update_icon()
+		ADD_ICON_QUEUE(src)
 		var/turf/T = get_turf(src)
 		T.visible_message(flavor_text)
 		set_light(2, 0.25, "#e38f46")
@@ -173,7 +173,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	set_light(0)
 	lit = 0
 	STOP_PROCESSING(SSobj, src)
-	update_icon()
+	ADD_ICON_QUEUE(src)
 
 /obj/item/clothing/mask/smokable/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	..()
@@ -584,11 +584,11 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	create_reagents(max_fuel)
 	reagents.add_reagent(/datum/reagent/fuel, max_fuel)
 	set_extension(src, /datum/extension/base_icon_state, /datum/extension/base_icon_state, icon_state)
-	update_icon()
+	ADD_ICON_QUEUE(src)
 
 /obj/item/weapon/flame/lighter/proc/light(mob/user)
 	lit = 1
-	update_icon()
+	ADD_ICON_QUEUE(src)
 	light_effects(user)
 	set_light(2)
 	START_PROCESSING(SSobj, src)
@@ -607,7 +607,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 /obj/item/weapon/flame/lighter/proc/shutoff(mob/user)
 	lit = 0
-	update_icon()
+	ADD_ICON_QUEUE(src)
 	if(user)
 		shutoff_effects(user)
 	else

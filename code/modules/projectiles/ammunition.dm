@@ -120,7 +120,7 @@
 	if(initial_ammo)
 		for(var/i in 1 to initial_ammo)
 			stored_ammo += new ammo_type(src)
-	update_icon()
+	ADD_ICON_QUEUE(src)
 
 /obj/item/ammo_magazine/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W, /obj/item/ammo_casing))

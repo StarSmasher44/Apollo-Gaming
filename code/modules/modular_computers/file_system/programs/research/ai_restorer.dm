@@ -71,7 +71,7 @@
 		A.lying = 0
 		A.switch_from_dead_to_living_mob_list()
 		A.add_ai_verbs()
-		A.update_icon()
+		ADD_ICON_QUEUE(A)
 		var/obj/item/weapon/aicard/AC = A.loc
 		if(AC)
 			ADD_ICON_QUEUE(AC)

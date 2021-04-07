@@ -49,7 +49,7 @@
 	. = ..()
 	if(holding)   verbs |= /obj/machinery/portable_atmospherics/reagent_sublimator/proc/remove_tank
 	if(container) verbs |= /obj/machinery/portable_atmospherics/reagent_sublimator/proc/remove_container
-	update_icon()
+	ADD_ICON_QUEUE(src)
 
 // Coded this before realizing base type didn't support tank mixing, leaving it in just in case someone decides to add it.
 /obj/machinery/portable_atmospherics/reagent_sublimator/proc/remove_tank()
@@ -151,8 +151,8 @@
 			air_contents.merge(produced)
 		else
 			visible_message("<span class='notice'>\The [src] pings as it finishes processing the contents of \the [container].</span>")
-			update_icon()
 			update_use_power(POWER_USE_IDLE)
+			ADD_ICON_QUEUE(src)
 
 /obj/machinery/portable_atmospherics/reagent_sublimator/update_icon()
 	icon_state = "[icon_set]-[use_power == POWER_USE_ACTIVE ? "on" : "off"]-[container ? "loaded" : "unloaded"]-[holding ? "tank" : "notank"]"

@@ -123,7 +123,7 @@
 		wiresexposed = 1
 		pixel_x = (dir & 3)? 0 : (dir == 4 ? -24 : 24)
 		pixel_y = (dir & 3)? (dir ==1 ? -24 : 24) : 0
-		update_icon()
+		ADD_ICON_QUEUE(src)
 		frame.transfer_fingerprints_to(src)
 
 /obj/machinery/alarm/Initialize()

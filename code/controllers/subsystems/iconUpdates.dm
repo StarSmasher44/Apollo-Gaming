@@ -44,17 +44,17 @@ var/datum/controller/subsystem/icon_updater/iconupdater
 
 	switch(icon_updates.len)
 		if(0 to 1000 && backlogspeed)
-			priority = 25
-			wait = 20
+			priority = 10
+			wait = 7
 			backlogspeed = 0
 		if(1500 to 3000)
 			if(iconslasttick < 50) //Large backlog, or not processing enough icons per tick
-				wait = 15
+				wait = 7
 			priority = 30
 			backlogspeed = 1
 		if(3001 to 6000)
 			if(iconslasttick < 50)
-				wait = 15
+				wait = 7
 			priority = 35
 			backlogspeed = 1
 			message_admins("Something went bad with the Icon Updater and its running behind a lot.. Let Laser know.")
@@ -72,7 +72,7 @@ var/datum/controller/subsystem/icon_updater/iconupdater
 			AT.update_icon()
 			iconscomplete++
 		icon_updates -= AT
-		CHECK_TICK2(80)
+		CHECK_TICK2(92)
 	report_progress("Icon refresh completed. [iconscomplete] icons refreshed.")
 
 #define ADD_ICON_QUEUE(THING)           \

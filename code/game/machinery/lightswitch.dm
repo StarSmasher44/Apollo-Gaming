@@ -25,7 +25,7 @@
 		name = "light switch ([connected_area.name])"
 
 	connected_area.set_lightswitch(on)
-	update_icon()
+	ADD_ICON_QUEUE(src)
 
 /obj/machinery/light_switch/update_icon()
 	if(!overlay)

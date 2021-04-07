@@ -40,7 +40,7 @@
 		var/fusionchance = max(90, (core_temp - min_fusion_temp) / (min_fusion_temp/100))
 		if(prob(fusionchance))
 			fusion = 1
-			update_icon()
+			ADD_ICON_QUEUE(src)
 
 	var/turf/L = loc
 	if(isturf(L))

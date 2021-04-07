@@ -90,7 +90,7 @@
 
 /obj/item/weapon/gun/update_twohanding()
 	if(one_hand_penalty)
-		update_icon() // In case item_state is set somewhere else.
+		ADD_ICON_QUEUE(src) // In case item_state is set somewhere else.
 	..()
 
 /obj/item/weapon/gun/update_icon()
