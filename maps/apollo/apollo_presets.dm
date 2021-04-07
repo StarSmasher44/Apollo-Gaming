@@ -1,5 +1,7 @@
 var/const/NETWORK_CIVILIAN_EAST       = "Civilian East"
 var/const/NETWORK_CIVILIAN_WEST       = "Civilian West"
+var/const/NETWORK_CIVILIAN_NORTH      = "Civilian North"
+var/const/NETWORK_CIVILIAN_SOUTH      = "Civilian South"
 var/const/NETWORK_MAINTENANCE         = "Maintenance Deck"
 var/const/NETWORK_PRISON              = "Prison"
 var/const/NETWORK_RESEARCH_OUTPOST    = "Research Outpost"
@@ -19,6 +21,8 @@ var/const/NETWORK_TELECOM             = "Tcomsat"
 	station_networks = list(
 		NETWORK_CIVILIAN_EAST,
 		NETWORK_CIVILIAN_WEST,
+		NETWORK_CIVILIAN_NORTH,
+		NETWORK_CIVILIAN_SOUTH,
 		NETWORK_COMMAND,
 		NETWORK_ENGINE,
 		NETWORK_ENGINEERING,
@@ -51,6 +55,13 @@ var/const/NETWORK_TELECOM             = "Tcomsat"
 
 /obj/machinery/camera/network/civilian_west
 	network = list(NETWORK_CIVILIAN_WEST)
+
+/obj/machinery/camera/network/civilian_south
+	network = list(NETWORK_CIVILIAN_SOUTH)
+
+
+/obj/machinery/camera/network/civilian_north
+	network = list(NETWORK_CIVILIAN_NORTH)
 
 /obj/machinery/camera/network/command
 	network = list(NETWORK_COMMAND)
