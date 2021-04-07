@@ -4,7 +4,7 @@
 	var/datum/pipeline/parent
 	var/volume = 0
 	var/leaking = 0
-	use_power = 0
+	use_power = POWER_USE_OFF
 	device_type = BINARY_D
 
 	var/alert_pressure = 170*ONE_ATMOSPHERE

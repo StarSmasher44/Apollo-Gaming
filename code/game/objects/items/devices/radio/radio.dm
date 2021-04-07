@@ -736,6 +736,7 @@
 	invisibility = 101
 	listening = 0
 	canhear_range = 0
+//	power_usage = 0
 	channels=list("Engineering" = 1, "Security" = 1, "Medical" = 1, "Command" = 1, "Common" = 1, "Science" = 1, "Logistics" = 1, "Service" = 1, "Exploration" = 1)
 
 /obj/item/device/radio/announcer/Destroy()

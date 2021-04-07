@@ -136,7 +136,7 @@
 		use_range = light_min_range + ceil((light_max_range-light_min_range)*temp_mod)
 		use_power = light_min_power + ceil((light_max_power-light_min_power)*temp_mod)
 
-	if(last_range != use_range || last_power != use_power)
+	if(last_range != use_range || last_power != use_power || color != light_color)
 		set_light(use_range, min(use_power, 1)) //cap first arg at 1 to avoid breaking lighting stuff.
 		filters = filter(type="blur", size=1)
 		last_range = use_range

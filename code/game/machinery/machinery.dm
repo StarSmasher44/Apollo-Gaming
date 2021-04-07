@@ -101,13 +101,14 @@ Class Procs:
 	var/stat = 0
 	var/emagged = 0
 	var/malf_upgraded = 0
-	var/use_power = 1
+	var/use_power = POWER_USE_IDLE
 		//0 = dont run the auto
 		//1 = run auto, use idle
 		//2 = run auto, use active
 	var/idle_power_usage = 0
 	var/active_power_usage = 0
 	var/power_channel = EQUIP //EQUIP, ENVIRON or LIGHT
+	var/power_init_complete = FALSE // Helps with bookkeeping when initializing atoms. Don't modify.
 	var/list/component_parts = null //list of all the parts used to build it, if made from certain kinds of frames.
 	var/uid
 	var/panel_open = 0
@@ -131,12 +132,23 @@ Class Procs:
 /obj/machinery/New()
 	SETAREA(src) // Must be done ASAP.
 	..()
-
+/*
 /obj/machinery/Initialize(mapload, d=0)
 	. = ..()
 	if(d)
 		set_dir(d)
 	START_PROCESSING(SSmachines, src)
+*/
+
+/obj/machinery/Initialize(mapload, d=0)
+	. = ..()
+	if(d)
+		set_dir(d)
+	START_PROCESSING(SSmachines, src) // It's safe to remove machines from here, but only if base machinery/Process returned PROCESS_KILL.
+//	SSmachines.machinery += src // All machines should remain in this list, always.
+//	RefreshParts()
+//	power_change()
+
 
 /obj/machinery/Destroy()
 	STOP_PROCESSING(SSmachines, src)
@@ -158,7 +170,7 @@ Class Procs:
 
 /obj/machinery/emp_act(severity)
 	if(use_power && stat == 0)
-		use_power(7500/severity)
+		use_power_oneoff(7500/severity)
 
 		var/obj/effect/overlay/pulse2 = new /obj/effect/overlay(loc)
 		pulse2.icon = 'icons/effects/effects.dmi'
@@ -192,27 +204,6 @@ Class Procs:
 /obj/machinery/proc/update_use_power(var/new_use_power)
 	use_power = new_use_power
 */
-/obj/machinery/proc/auto_use_power()
-	if(!powered(power_channel))
-		return 0
-	switch(use_power)
-		if(1)
-			switch(power_channel)
-				if(EQUIP)
-					MyArea.used_equip += idle_power_usage
-				if(LIGHT)
-					MyArea.used_light += idle_power_usage
-				if(ENVIRON)
-					MyArea.used_environ += idle_power_usage
-		if(2)
-			switch(power_channel)
-				if(EQUIP)
-					MyArea.used_equip += active_power_usage
-				if(LIGHT)
-					MyArea.used_light += active_power_usage
-				if(ENVIRON)
-					MyArea.used_environ += active_power_usage
-	return 1
 
 /proc/is_operable(var/obj/machinery/M, var/mob/user)
 	return ismachine(M) && M.operable()

@@ -3,7 +3,7 @@
 	desc = "A powerful machine capable of compressing with huge force"
 	anchored = 1
 	density = 1
-	use_power = 1
+	use_power = POWER_USE_IDLE
 	idle_power_usage = 40
 	active_power_usage = 5000
 	icon = 'icons/obj/machines/power/archon.dmi'
@@ -51,13 +51,13 @@
 	..()
 	if(stat & (BROKEN|NOPOWER))	return
 	if(active == 1 && capacity < max_capacity) //Charge once per tick.
-		use_power = 2
+		update_use_power(POWER_USE_ACTIVE)
 		capacity += active_power_usage
 		capacity = min(capacity, max_capacity) //No more than 100k always
 	else
 		active = 0
 	if(active == 2 && capacity > 0) //Actively compressing & has juice left
-		use_power = 2
+		update_use_power(POWER_USE_ACTIVE)
 //	if(in_use)
 //		for(var/mob/M in range(1))
 //			if(M.machine == src)

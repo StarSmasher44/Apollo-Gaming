@@ -546,7 +546,7 @@
 
 /obj/machinery/button/windowtint/proc/toggle_tint()
 	set waitfor = FALSE
-	use_power(5)
+	use_power_oneoff(5)
 
 	active = !active
 	update_icon()

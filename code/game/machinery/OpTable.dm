@@ -5,7 +5,6 @@
 	icon_state = "table2-idle"
 	density = 1
 	anchored = 1.0
-	use_power = 1
 	idle_power_usage = 3
 	active_power_usage = 60
 	var/mob/living/carbon/human/victim = null

@@ -31,7 +31,7 @@ var/list/allowed_perf_settings = list("25", "50", "75", "100")
 	//HTML-related vars
 	var/sci_panel = 1
 
-	use_power = 1
+	use_power = POWER_USE_IDLE
 	idle_power_usage = BASE_POWER_USE
 
 /obj/machinery/sci_server/Initialize()

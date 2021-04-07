@@ -10,7 +10,8 @@
 #define LIGHT_BURNED 3
 
 #define LIGHT_BULB_TEMPERATURE 400 //K - used value for a 60W bulb
-#define LIGHTING_POWER_FACTOR 10		//15W per luminosity * range
+#define LIGHTING_POWER_FACTOR 8		//15W per luminosity * range
+#define LIGHTING_SMALL_POWER_FACTOR 5
 
 
 #define LIGHTMODE_EMERGENCY "emergency_lighting"
@@ -141,7 +142,7 @@
 	anchored = 1
 	plane = ABOVE_HUMAN_PLANE
 	layer = ABOVE_HUMAN_LAYER  					// They were appearing under mobs which is a little weird - Ostaf
-	use_power = 2
+	use_power = POWER_USE_ACTIVE
 	idle_power_usage = 2
 	active_power_usage = 15
 	power_channel = LIGHT //Lights are calc'd via area so they dont need to be in the machine list
@@ -185,8 +186,8 @@
 	light_type = /obj/item/weapon/light/tube/large
 
 // create a new lighting fixture
-/obj/machinery/light/New(atom/newloc, obj/machinery/light_construct/construct = null)
-	..(newloc)
+/obj/machinery/light/Initialize(mapload, obj/machinery/light_construct/construct = null)
+	. = ..(mapload)
 
 	s.set_up(1, 1, src)
 
@@ -226,7 +227,7 @@
 			on = 0
 
 	if(on)
-		use_power = 2
+		update_use_power(POWER_USE_ACTIVE)
 
 		var/changed = 0
 		if(current_mode && (current_mode in lightbulb.lighting_modes))
@@ -238,11 +239,15 @@
 			switch_check()
 //			update_icon()
 	else
-		use_power = 0
+		update_use_power(POWER_USE_OFF)
 		set_light(0)
 //		update_icon()
 
-	active_power_usage = ((light_range * light_power) * LIGHTING_POWER_FACTOR)
+	change_power_consumption((light_range * light_power) * LIGHTING_POWER_FACTOR, POWER_USE_ACTIVE)
+
+/obj/machinery/light/small/update_icon(var/trigger = 1)
+	..(trigger)
+	change_power_consumption((light_range * light_power) * LIGHTING_POWER_FACTOR, POWER_USE_ACTIVE)
 
 /obj/machinery/light/proc/get_status()
 	if(!lightbulb)
@@ -278,11 +283,11 @@
 	if(enable)
 		if(LIGHTMODE_EMERGENCY in lightbulb.lighting_modes)
 			set_mode(LIGHTMODE_EMERGENCY)
-			power_channel = ENVIRON
+			update_power_channel(ENVIRON)
 	else
 		if(current_mode == LIGHTMODE_EMERGENCY)
 			set_mode(null)
-			power_channel = initial(power_channel)
+			update_power_channel(initial(power_channel))
 
 // attempt to set the light's on/off status
 // will not switch on if broken/burned/empty
@@ -398,6 +403,7 @@
 			on = !on
 			update_icon(0)
 			sleep(amount)
+			CHECK_TICK
 		on = (get_status() == LIGHT_OK)
 		update_icon(0)
 	flickering = 0

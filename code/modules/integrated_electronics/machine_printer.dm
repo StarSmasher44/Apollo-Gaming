@@ -13,7 +13,7 @@ var/list/integrated_circuit_blacklist = list(/obj/item/integrated_circuit, /obj/
 	var/metal = 0
 	var/maxMetal = 100
 	var/metal_mult = 0.5
-	use_power = 1
+	use_power = POWER_USE_IDLE
 	idle_power_usage = 30
 	active_power_usage = 2500
 	var/static/list/recipe_list

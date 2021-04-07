@@ -2,7 +2,7 @@
 	icon = 'icons/atmos/oxyregenerator.dmi'
 	icon_state = "off"
 	level = 1
-	use_power = 0
+	use_power = POWER_USE_OFF
 	idle_power_usage = 200		//internal circuitry, friction losses and stuff
 	power_rating = 10000
 	var/id = null
@@ -35,7 +35,7 @@
 
 	if (power_draw >= 0)
 		last_power_draw = power_draw
-		use_power(power_draw)
+		use_power_oneoff(power_draw)
 
 		if(network1)
 			network1.update = 1
@@ -81,7 +81,7 @@
 	if(..())
 		return 1
 	if(href_list["toggleStatus"])
-		use_power = !use_power
+		update_use_power(!use_power)
 		update_icon()
 		return 1
 	if(href_list["setPower"]) //setting power to 0 is redundant anyways

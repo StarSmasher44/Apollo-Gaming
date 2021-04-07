@@ -8,7 +8,6 @@
 	layer = BELOW_OBJ_LAYER
 	density = 1
 	anchored = 1
-	use_power = 1
 	idle_power_usage = 20
 	active_power_usage = 125
 	flags = NOREACT

@@ -37,7 +37,7 @@
 	icon = 'icons/obj/subliminator.dmi'
 	icon_state = "sublimator-off-unloaded-notank"
 	density = TRUE
-	use_power = 1
+	use_power = POWER_USE_IDLE
 
 	var/icon_set = "subliminator"
 	var/sublimated_units_per_tick = 20
@@ -86,15 +86,14 @@
 		user.visible_message("<span class='notice'>\The [user] removes \the [container] from \the [src].</span>")
 		container = null
 		verbs -= /obj/machinery/portable_atmospherics/reagent_sublimator/proc/remove_container
-		if(use_power >= 2)
-			update_use_power(src, 1)
+		if(use_power >= POWER_USE_ACTIVE)
+			update_use_power(POWER_USE_IDLE)
 		update_icon()
 	else
 		to_chat(user, "<span class='warning'>\The [src] has no reagent container loaded.</span>")
 
 /obj/machinery/portable_atmospherics/reagent_sublimator/attack_hand(var/mob/user)
-	var/answer = use_power == 2 ? 1 : 2
-	update_use_power(src, answer)
+	update_use_power(use_power == POWER_USE_ACTIVE ? POWER_USE_IDLE : POWER_USE_ACTIVE)
 	user.visible_message("<span class='notice'>\The [user] switches \the [src] [use_power == 2 ? "on" : "off"].</span>")
 	update_icon()
 	return TRUE
@@ -122,17 +121,17 @@
 
 	if(stat & (BROKEN|NOPOWER))
 		if(use_power)
-			update_use_power(src, 0)
-			update_icon()
+			update_use_power(POWER_USE_OFF)
+			ADD_ICON_QUEUE(src)
 		return
 
-	if(use_power >= 2 && container && container.reagents)
+	if(use_power >= POWER_USE_ACTIVE && container && container.reagents)
 		if(reagent_whitelist)
 			for(var/datum/reagent/R in container.reagents.reagent_list)
 				if(!is_type_in_list(R, reagent_whitelist))
 					audible_message("<span class='notice'>\The [src] pings rapidly and powers down, refusing to process the contents of \the [container].</span>")
-					update_use_power(src, 0)
-					update_icon()
+					update_use_power(POWER_USE_OFF)
+					ADD_ICON_QUEUE(src)
 					return
 
 		var/datum/gas_mixture/produced = new
@@ -152,11 +151,11 @@
 			air_contents.merge(produced)
 		else
 			visible_message("<span class='notice'>\The [src] pings as it finishes processing the contents of \the [container].</span>")
-			update_use_power(src, 1)
 			update_icon()
+			update_use_power(POWER_USE_IDLE)
 
 /obj/machinery/portable_atmospherics/reagent_sublimator/update_icon()
-	icon_state = "[icon_set]-[use_power == 2 ? "on" : "off"]-[container ? "loaded" : "unloaded"]-[holding ? "tank" : "notank"]"
+	icon_state = "[icon_set]-[use_power == POWER_USE_ACTIVE ? "on" : "off"]-[container ? "loaded" : "unloaded"]-[holding ? "tank" : "notank"]"
 
 /obj/machinery/portable_atmospherics/reagent_sublimator/examine(var/mob/user)
 	. = ..()

@@ -6,7 +6,6 @@
 	layer = BELOW_OBJ_LAYER
 	density = 1
 	anchored = 1
-	use_power = 1
 	idle_power_usage = 5
 	active_power_usage = 200
 	flags = OPENCONTAINER | NOREACT
@@ -290,7 +289,7 @@
 	for (var/i=1 to seconds)
 		if (stat & (NOPOWER|BROKEN))
 			return 0
-		use_power(500)
+		use_power_oneoff(500)
 		sleep(10)
 	return 1
 

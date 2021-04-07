@@ -124,7 +124,7 @@
 		log_and_message_admins("## WARNING: Unable to locate pump at [x] [y] [z]!")
 		return SETUP_WARNING
 	P.target_pressure = P.max_pressure_setting
-	P.use_power = 1
+	P.update_use_power(POWER_USE_IDLE)
 	ADD_ICON_QUEUE(P)
 	return SETUP_OK
 
@@ -237,7 +237,7 @@
 				return SETUP_WARNING
 		F.rebuild_filtering_list()
 
-	F.use_power = 1
+	F.update_use_power(POWER_USE_IDLE)
 	ADD_ICON_QUEUE(F)
 	return SETUP_OK
 

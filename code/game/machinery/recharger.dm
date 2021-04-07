@@ -6,7 +6,6 @@ obj/machinery/recharger
 	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "recharger0"
 	anchored = 1
-	use_power = 1
 	idle_power_usage = 4
 	active_power_usage = 30 KILOWATTS
 	var/obj/item/charging = null
@@ -78,12 +77,12 @@ obj/machinery/recharger/attack_hand(mob/user as mob)
 
 obj/machinery/recharger/Process()
 	if(stat & (NOPOWER|BROKEN) || !anchored)
-		update_use_power(src, 0)
+		update_use_power(POWER_USE_OFF)
 		icon_state = icon_state_idle
 		return
 
 	if(!charging)
-		update_use_power(src, 1)
+		update_use_power(POWER_USE_IDLE)
 		icon_state = icon_state_idle
 	else
 		var/cell = charging
@@ -117,10 +116,10 @@ obj/machinery/recharger/Process()
 			if(!C.fully_charged())
 				icon_state = icon_state_charging
 				C.give(active_power_usage*CELLRATE)
-				update_use_power(src, 2)
+				update_use_power(POWER_USE_ACTIVE)
 			else
 				icon_state = icon_state_charged
-				update_use_power(src, 1)
+				update_use_power(POWER_USE_IDLE)
 			return
 
 obj/machinery/recharger/emp_act(severity)

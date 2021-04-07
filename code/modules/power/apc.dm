@@ -72,7 +72,7 @@
 
 	icon_state = "apc0"
 	anchored = 1
-	use_power = 0
+	use_power = POWER_USE_OFF
 	req_access = list(access_engine_equip)
 	clicksound = "switch"
 	var/area/area

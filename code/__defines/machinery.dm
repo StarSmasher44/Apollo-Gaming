@@ -15,6 +15,13 @@ var/global/defer_powernet_rebuild = 0      // True if net rebuild will be called
 #define DOOR_CRUSH_DAMAGE 40
 #define ALIEN_SELECT_AFK_BUFFER  1    // How many minutes that a person can be AFK before not being allowed to be an alien.
 
+#define POWER_USE_OFF    0
+#define POWER_USE_IDLE   1
+#define POWER_USE_ACTIVE 2
+
+// Channel numbers for power.
+#define POWER_CHAN -1 // Use default channel
+
 // Channel numbers for power.
 #define EQUIP   1
 #define LIGHT   2
@@ -76,7 +83,7 @@ var/list/restricted_camera_networks = list(NETWORK_ERT,NETWORK_MERCENARY,"Secret
  *	Atmospherics Machinery.
 */
 #define MAX_SIPHON_FLOWRATE   2500 // L/s. This can be used to balance how fast a room is siphoned. Anything higher than CELL_VOLUME has no effect.
-#define MAX_SCRUBBER_FLOWRATE 200  // L/s. Max flow rate when scrubbing from a turf.
+#define MAX_SCRUBBER_FLOWRATE 250  // L/s. Max flow rate when scrubbing from a turf.
 
 // These balance how easy or hard it is to create huge pressure gradients with pumps and filters.
 // Lower values means it takes longer to create large pressures differences.
@@ -113,12 +120,3 @@ var/list/restricted_camera_networks = list(NETWORK_ERT,NETWORK_MERCENARY,"Secret
 // Misc process flags.
 #define M_PROCESSES 0x1
 #define M_USES_POWER 0x2
-
-// If this is returned from a machine's process() proc, the machine will stop processing but
-// will continue to have power calculations done.
-
-#define update_use_power(Machine, new_power)            \
-	if(Machine)               \
-	{                          \
-		Machine.use_power = new_power             \
-	}

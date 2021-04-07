@@ -10,7 +10,7 @@
 	density = 1
 	anchored = 1
 
-	use_power = 1
+	use_power = POWER_USE_IDLE
 	idle_power_usage = 75
 	active_power_usage = 10000	//10 kW. It's a big all-body scanner.
 
@@ -49,7 +49,7 @@
 	usr.client.eye = src
 	usr.forceMove(src)
 	src.occupant = usr
-	update_use_power(src, 2)
+	update_use_power(POWER_USE_ACTIVE)
 	src.icon_state = "body_scanner_1"
 	for(var/obj/O in src)
 		//O = null
@@ -69,7 +69,7 @@
 		src.occupant.client.perspective = MOB_PERSPECTIVE
 	src.occupant.dropInto(loc)
 	src.occupant = null
-	update_use_power(src, 1)
+	update_use_power(POWER_USE_IDLE)
 	src.icon_state = "body_scanner_0"
 	return
 
@@ -85,7 +85,7 @@
 	var/mob/M = G.affecting
 	M.forceMove(src)
 	src.occupant = M
-	update_use_power(src, 2)
+	update_use_power(POWER_USE_ACTIVE)
 	src.icon_state = "body_scanner_1"
 	for(var/obj/O in src)
 		O.forceMove(loc)
@@ -113,7 +113,7 @@
 	var/mob/M = target
 	M.forceMove(src)
 	src.occupant = M
-	update_use_power(src, 2)
+	update_use_power(POWER_USE_ACTIVE)
 	src.icon_state = "body_scanner_1"
 	for(var/obj/O in src)
 		O.forceMove(loc)

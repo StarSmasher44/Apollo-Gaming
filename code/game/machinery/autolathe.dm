@@ -4,7 +4,6 @@
 	icon_state = "autolathe"
 	density = 1
 	anchored = 1
-	use_power = 1
 	idle_power_usage = 25
 	active_power_usage = 2500
 	clicksound = "keyboard"
@@ -247,12 +246,13 @@
 			return
 
 		busy = 1
-		update_use_power(src, 2)
+		update_use_power(POWER_USE_ACTIVE)
 
 		//Check if we still have the materials.
 		for(var/material in making.resources)
 			if(!isnull(stored_material[material]))
 				if(stored_material[material] < round(making.resources[material] * mat_efficiency) * multiplier)
+					busy = 0
 					return
 
 		//Consume materials.
@@ -266,7 +266,7 @@
 		sleep(build_time)
 
 		busy = 0
-		update_use_power(src, 1)
+		update_use_power(POWER_USE_IDLE)
 
 		//Sanity check.
 		if(!making || !src) return

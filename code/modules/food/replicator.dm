@@ -5,7 +5,6 @@
 	icon_state = "soda"
 	density = 1
 	anchored = 1
-	use_power = 1
 	idle_power_usage = 45
 	flags = OBJ_ANCHORABLE
 	var/biomass = 100
@@ -114,7 +113,7 @@
 	var/atom/A = new type(src.loc)
 	A.name = text
 	A.desc = "Looks... actually pretty good."
-	use_power(75000)
+	use_power_oneoff(75000)
 	return 1
 
 /obj/machinery/food_replicator/RefreshParts()

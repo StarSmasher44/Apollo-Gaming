@@ -5,6 +5,7 @@
 	icon_screen = "dna"
 	circuit = /obj/item/weapon/circuitboard/curefab
 	var/curing
+	idle_power_usage = 500
 	var/virusing
 
 	var/obj/item/weapon/reagent_containers/container = null
@@ -70,7 +71,6 @@
 
 	if(stat & (NOPOWER|BROKEN))
 		return
-	use_power(500)
 
 	if(curing)
 		curing -= 1
